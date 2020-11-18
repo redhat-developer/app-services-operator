@@ -38,7 +38,6 @@ spec:
                         description: 'The kind of credentials in use'
                         type: string
                         enum: [clientCredentials]
-                        default: clientCredentials
                       clientId:
                         description: The ClientID used for the client credential. Can only be used if the credentials kind is clientCredentials.
                         properties:
