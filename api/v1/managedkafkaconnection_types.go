@@ -9,9 +9,6 @@ import (
 
 // ManagedKafkaConnectionSpec contains credentials and connection parameters to Managed Kafka
 type ManagedKafkaConnectionSpec struct {
-	// INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
-	// Important: Run "make" to regenerate code after modifying this file
-
 	BootstrapServer BootstrapServerSpec `json:"bootstrapServer"`
 	Credentials     CredentialsSpec     `json:"credentials"`
 }
@@ -41,9 +38,9 @@ type CredentialsSpec struct {
 }
 
 // ManagedKafkaConnectionStatus defines the observed state of ManagedKafkaConnection
-type ManagedKafkaConnectionStatus struct {
+// type ManagedKafkaConnectionStatus struct {
  
-}
+// }
 
 // +kubebuilder:object:root=true
 // +kubebuilder:subresource:status
@@ -55,7 +52,7 @@ type ManagedKafkaConnection struct {
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
 	Spec   ManagedKafkaConnectionSpec   `json:"spec,omitempty"`
-	Status ManagedKafkaConnectionStatus `json:"status,omitempty"`
+	// Status ManagedKafkaConnectionStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

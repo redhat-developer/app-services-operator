@@ -11,11 +11,5 @@ spec:
     # other types in the future
     kind: ClientCredentials
     # The actual credential values 
-    clientId:
-      # Values can appear in the custom resource
-      value: abc123
-    clientSecret:
-      # Values can be a reference to a secret, configMap etc.
-      valueFrom:
-        key: clientSecret
-        name: managedKafkaSecret
+    clientID: abc123
+    clientSecret: clientSecret
