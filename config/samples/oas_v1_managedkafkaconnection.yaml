@@ -1,0 +1,7 @@
+apiVersion: oas.redhat.com/v1
+kind: ManagedKafkaConnection
+metadata:
+  name: managedkafkaconnection-sample
+spec:
+  # Add fields here
+  foo: bar

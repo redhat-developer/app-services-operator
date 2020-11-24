@@ -212,14 +212,14 @@ spec:
 
 
   # either Namespaced or Cluster
-  scope: Namespaced
+  scope: Cluster
   names:
     # plural name to be used in the URL: /apis/<group>/<version>/<plural>
     plural: managedkafkas
     # singular name to be used as an alias on the CLI and for display
     singular: managedkafka
     # kind is normally the CamelCased singular type. Your resource manifests use this.
-    kind: ManagedKafka
+    kind: ManagedKafkaConnection
     # shortNames allow shorter string to match your resource on the CLI
     shortNames:
       - mk

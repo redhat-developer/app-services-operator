@@ -1,21 +1,10 @@
-# Managed Kafka Operator POC
+# OpenShift Managed Application Services Operator (RHOAS)
 
-## Running Operator:
-
-1. Regenerate operator and resources
-   `make generate`
-   `make manifests`
-  
-2. Install operator
-
-  `make install`
-
-3. Disable webhooks `make run ENABLE_WEBHOOKS=false`
-see [operator-sdk documentation](https://sdk.operatorframework.io/docs/building-operators/golang/tutorial/) for further info
+> Work in Progress: Kafka Operator POC
 
 ## Resources
 
-### ManagedKafkaConnection
+### ManagedKafkaConnection Example
 
 ```yaml
 apiVersion: operators.coreos.com/v1alpha1
@@ -40,3 +29,7 @@ spec:
         key: clientSecret
         name: managedKafkaSecret
 ```
+
+## Contributing
+
+Check out the [Contributing Guide](./CONTRIBUTING.md) to learn more about the repository and how you can contribute.
