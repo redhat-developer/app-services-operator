@@ -1,6 +1,6 @@
-# OpenShift Managed Application Services Operator (RHOAS)
+# OpenShift Application Services Operator (RHOAS)
 
-> Work in Progress: Kafka Operator POC
+> Work in Progress - Kafka Operator POC
 
 ## Resources
 
@@ -14,7 +14,7 @@ metadata:
 spec:
   bootstrapServer:
     # This is the host name of the Kafka bootstrap
-    host: foo.bar.com
+    host: myhost.apps.openshift.com
   credentials:
     # Right now we only support clientCredentials, but by specifying credentials kind we allow ourselves to specify 
     # other types in the future
