@@ -19,8 +19,7 @@ spec:
     status: {}
   validation:
     openAPIV3Schema:
-      description: ManagedKafkaConnection is the Schema for the managedkafkaconnections
-        API
+      description: ManagedKafkaConnection schema
       properties:
         apiVersion:
           description: 'APIVersion defines the versioned schema of this representation
@@ -35,23 +34,29 @@ spec:
         metadata:
           type: object
         spec:
-          description: ManagedKafkaConnectionSpec defines the desired state of ManagedKafkaConnection
+          description: ManagedKafkaConnectionSpec contains credentials and connection
+            parameters to Managed Kafka
           properties:
             bootstrapServer:
-              description: BootstrapServerSpec contains server host information
+              description: BootstrapServerSpec contains server host information that
+                can be used to connecto the Managed Kafka
               properties:
                 host:
+                  description: Host full host to Managed Kafka Service including port
                   type: string
               type: object
             credentials:
-              description: CredentialsSpec specification
+              description: CredentialsSpec specification containing various formats
+                of credentials
               properties:
                 clientID:
+                  description: ClientID Represents username in client credentials
                   type: string
                 clientSecret:
+                  description: ClientID Represents password in client credentials
                   type: string
                 kind:
-                  description: CredentialType enumeration for types of credentails
+                  description: Type of the credential format. For example "ClientCredentials"
                   type: string
               type: object
           required:

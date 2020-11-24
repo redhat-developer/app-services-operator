@@ -7,7 +7,7 @@ import (
 // EDIT THIS FILE!  THIS IS SCAFFOLDING FOR YOU TO OWN!
 // NOTE: json tags are required.  Any new fields you add must have json tags for the fields to be serialized.
 
-// ManagedKafkaConnectionSpec defines the desired state of ManagedKafkaConnection
+// ManagedKafkaConnectionSpec contains credentials and connection parameters to Managed Kafka
 type ManagedKafkaConnectionSpec struct {
 	// INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
 	// Important: Run "make" to regenerate code after modifying this file
@@ -16,8 +16,9 @@ type ManagedKafkaConnectionSpec struct {
 	Credentials     CredentialsSpec     `json:"credentials"`
 }
 
-// BootstrapServerSpec contains server host information
+// BootstrapServerSpec contains server host information that can be used to connecto the Managed Kafka
 type BootstrapServerSpec struct {
+	// Host full host to Managed Kafka Service including port 
 	Host string `json:"host,omitempty"`
 }
 
@@ -29,24 +30,26 @@ const (
 	ClientCredentials CredentialType = "ClientCredentials"
 )
 
-// CredentialsSpec specification
+// CredentialsSpec specification containing various formats of credentials
 type CredentialsSpec struct {
+	// Type of the credential format. For example "ClientCredentials"
 	Kind         CredentialType `json:"kind,omitempty"`
+	// ClientID Represents username in client credentials
 	CientID      string         `json:"clientID,omitempty"`
+	// ClientID Represents password in client credentials
 	ClientSecret string         `json:"clientSecret,omitempty"`
 }
 
 // ManagedKafkaConnectionStatus defines the observed state of ManagedKafkaConnection
 type ManagedKafkaConnectionStatus struct {
-	// INSERT ADDITIONAL STATUS FIELD - define observed state of cluster
-	// Important: Run "make" to regenerate code after modifying this file
+ 
 }
 
 // +kubebuilder:object:root=true
 // +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster
 
-// ManagedKafkaConnection is the Schema for the managedkafkaconnections API
+// ManagedKafkaConnection schema
 type ManagedKafkaConnection struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
