@@ -12,8 +12,28 @@ type ManagedKafkaConnectionSpec struct {
 	// INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
 	// Important: Run "make" to regenerate code after modifying this file
 
-	// Foo is an example field of ManagedKafkaConnection. Edit ManagedKafkaConnection_types.go to remove/update
-	Foo string `json:"foo,omitempty"`
+	BootstrapServer BootstrapServerSpec `json:"bootstrapServer"`
+	Credentials     CredentialsSpec     `json:"credentials"`
+}
+
+// BootstrapServerSpec contains server host information
+type BootstrapServerSpec struct {
+	Host string `json:"host,omitempty"`
+}
+
+// CredentialType enumeration for types of credentails
+type CredentialType string
+
+const (
+	// ClientCredentials ... type
+	ClientCredentials CredentialType = "ClientCredentials"
+)
+
+// CredentialsSpec specification
+type CredentialsSpec struct {
+	Kind         CredentialType `json:"kind,omitempty"`
+	CientID      string         `json:"clientID,omitempty"`
+	ClientSecret string         `json:"clientSecret,omitempty"`
 }
 
 // ManagedKafkaConnectionStatus defines the observed state of ManagedKafkaConnection
