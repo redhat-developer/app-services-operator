@@ -11,10 +11,6 @@
 3. Disable webhooks `make run ENABLE_WEBHOOKS=false`
 see [operator-sdk documentation](https://sdk.operatorframework.io/docs/building-operators/golang/tutorial/) for further info
 
-4. Applying generated API to kubernetes
-
-oc apply -f config/crd/bases/oas.redhat.com_managedkafkaconnections.yaml 
-
 ## Commands Used to Create Operator
 
 Operator has muliple names embeeded that we need to clarify
@@ -37,4 +33,22 @@ operator-sdk create api --version=v1 --group=oas --kind=ManagedKafkaConnection -
 
 ```
 operator-sdk create api --version=v1 --group=oas --kind=ManagedKafkaConnection --namespaced=false --resource=false --controller=true
+```
+
+## Testing CRD only
+
+Applying generated API to kubernetes
+
+oc apply -f config/crd/bases/oas.redhat.com_managedkafkaconnections.yaml =
+oc apply -f config/samples/oas_v1_managedkafkaconnection.yaml 
+
+## Reaplying binding metadata
+
+Required values in metadata
+
+```
+  service.binding/host: 'path={.spec.bootstrapServer.host}'
+  service.binding/user: 'path={.spec.credentials.clientID}'
+  service.binding/password: 'path={.spec.credentials.clientSecret}'
+  service.binding/secret: 'path={.spec.credentials.clientSecret},objectType=Secret'
 ```
