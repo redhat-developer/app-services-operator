@@ -1,4 +1,21 @@
-## Sample ManagedKafkaConnection
+# Managed Kafka Operator POC
+
+## Running Operator:
+
+1. Regenerate operator and resources
+   `make generate`
+   `make manifests`
+  
+2. Install operator
+
+  `make install`
+
+3. Disable webhooks `make run ENABLE_WEBHOOKS=false`
+see [operator-sdk documentation](https://sdk.operatorframework.io/docs/building-operators/golang/tutorial/) for further info
+
+## Resources
+
+### ManagedKafkaConnection
 
 ```yaml
 apiVersion: operators.coreos.com/v1alpha1
