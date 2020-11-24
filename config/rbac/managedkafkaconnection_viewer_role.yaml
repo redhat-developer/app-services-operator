@@ -1,0 +1,20 @@
+# permissions for end users to view managedkafkaconnections.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: managedkafkaconnection-viewer-role
+rules:
+- apiGroups:
+  - oas.redhat.com
+  resources:
+  - managedkafkaconnections
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - oas.redhat.com
+  resources:
+  - managedkafkaconnections/status
+  verbs:
+  - get

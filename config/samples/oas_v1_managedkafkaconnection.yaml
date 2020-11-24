@@ -1,16 +1,7 @@
-# OpenShift Managed Application Services Operator (RHOAS)
-
-> Work in Progress: Kafka Operator POC
-
-## Resources
-
-### ManagedKafkaConnection Example
-
-```yaml
-apiVersion: operators.coreos.com/v1alpha1
+apiVersion: oas.redhat.com/v1
 kind: ManagedKafkaConnection
 metadata:
-  name: projectKafkaConnection
+  name: managedkafkaconnection-sample
 spec:
   bootstrapServer:
     # This is the host name of the Kafka bootstrap
@@ -28,8 +19,3 @@ spec:
       valueFrom:
         key: clientSecret
         name: managedKafkaSecret
-```
-
-## Contributing
-
-Check out the [Contributing Guide](./CONTRIBUTING.md) to learn more about the repository and how you can contribute.

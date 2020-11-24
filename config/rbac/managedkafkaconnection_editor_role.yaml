@@ -1,0 +1,24 @@
+# permissions for end users to edit managedkafkaconnections.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: managedkafkaconnection-editor-role
+rules:
+- apiGroups:
+  - oas.redhat.com
+  resources:
+  - managedkafkaconnections
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - oas.redhat.com
+  resources:
+  - managedkafkaconnections/status
+  verbs:
+  - get

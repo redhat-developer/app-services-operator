@@ -2,6 +2,10 @@ domain: redhat.com
 layout: go.kubebuilder.io/v2
 projectName: rhoas-operator
 repo: github.com/bf2fc6cc711aee1a0c2a/operator
+resources:
+- group: oas
+  kind: ManagedKafkaConnection
+  version: v1
 version: 3-alpha
 plugins:
   go.sdk.operatorframework.io/v2-alpha: {}

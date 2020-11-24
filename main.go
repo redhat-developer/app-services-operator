@@ -10,6 +10,8 @@ import (
 	_ "k8s.io/client-go/plugin/pkg/client/auth/gcp"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
+
+	oasv1 "github.com/bf2fc6cc711aee1a0c2a/operator/api/v1"
 	// +kubebuilder:scaffold:imports
 )
 
@@ -21,6 +23,7 @@ var (
 func init() {
 	utilruntime.Must(clientgoscheme.AddToScheme(scheme))
 
+	utilruntime.Must(oasv1.AddToScheme(scheme))
 	// +kubebuilder:scaffold:scheme
 }
 
