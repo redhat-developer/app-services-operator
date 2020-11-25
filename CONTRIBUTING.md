@@ -74,7 +74,6 @@ https://github.com/redhat-developer/service-binding-operator/blob/master/example
 oc get ManagedKafkaConnection managedkafkaconnection-sample -o yaml
 ```
 
-
 3. Review binding info and apply it
 ```
 oc apply -f ./hack/binding-example.yaml
@@ -83,4 +82,22 @@ oc apply -f ./hack/binding-example.yaml
 4. Check binding status
 ```
 oc get servicebinding my-kafka-binding-request -o yaml
+```
+
+
+## Installing operator
+
+```
+kubectl apply -f - << EOD
+---
+apiVersion: operators.coreos.com/v1alpha1
+kind: CatalogSource
+metadata:
+    name: managed-kafka-operators
+    namespace: openshift-marketplace
+spec:
+    sourceType: grpc
+    image: quay.io/wtrocki/9ed633bb57ee71f8865ba7a442a73c06
+    displayName: Mananaged Kafka Operator
+EOD
 ```
