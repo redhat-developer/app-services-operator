@@ -41,10 +41,12 @@ type CredentialsSpec struct {
 type ManagedKafkaConnectionStatus struct {
 }
 
+// Not working  // +kubebuilder:printcolumn:name="service.binding/host",type="string",JSONPath=".metadata.annotations",description="status of the kind"
+
 // +kubebuilder:object:root=true
 // +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster
-// +kubebuilder:printcolumn:name="service.binding/host",type="integer",JSONPath=".metadata.annotations",description="status of the kind"
+// +k8s:openapi-gen=true
 
 // ManagedKafkaConnection schema
 type ManagedKafkaConnection struct {
@@ -56,6 +58,7 @@ type ManagedKafkaConnection struct {
 }
 
 // +kubebuilder:object:root=true
+// +k8s:openapi-gen=true
 
 // ManagedKafkaConnectionList contains a list of ManagedKafkaConnection
 type ManagedKafkaConnectionList struct {
