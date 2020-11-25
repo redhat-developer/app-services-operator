@@ -35,14 +35,9 @@ operator-sdk create api --version=v1 --group=oas --kind=ManagedKafkaConnection -
 operator-sdk create api --version=v1 --group=oas --kind=ManagedKafkaConnection --namespaced=false --resource=false --controller=true
 ```
 
-## Testing CRD only
-
-Applying generated API to kubernetes
-
-oc apply -f config/crd/bases/oas.redhat.com_managedkafkaconnections.yaml =
-oc apply -f config/samples/oas_v1_managedkafkaconnection.yaml 
-
 ## Reaplying binding metadata
+
+> NOTE: This is temporary solution for POC
 
 Required values in metadata
 
@@ -51,4 +46,41 @@ Required values in metadata
   service.binding/user: 'path={.spec.credentials.clientID}'
   service.binding/password: 'path={.spec.credentials.clientSecret}'
   service.binding/secret: 'path={.spec.credentials.clientSecret},objectType=Secret'
+```
+
+## Testing using CRDs
+
+Applying generated API to kubernetes
+
+```
+oc apply -f config/crd/bases/oas.redhat.com_managedkafkaconnections.yaml 
+oc apply -f config/samples/oas_v1_managedkafkaconnection.yaml 
+```
+
+Check if 
+
+```
+ oc get crd managedkafkaconnections.oas.redhat.com -o yaml
+```
+
+### Testing binding
+
+1. Follow steps in
+
+https://github.com/redhat-developer/service-binding-operator/blob/master/examples/nodejs_postgresql/README.md
+
+2. Check if ManagedKafkaConnection was created
+```
+oc get ManagedKafkaConnection managedkafkaconnection-sample -o yaml
+```
+
+
+3. Review binding info and apply it
+```
+oc apply -f ./hack/binding-example.yaml
+```
+
+4. Check binding status
+```
+oc get servicebinding my-kafka-binding-request -o yaml
 ```
