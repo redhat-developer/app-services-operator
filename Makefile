@@ -1,7 +1,7 @@
 # Current Operator version
-VERSION ?= 0.0.1
+VERSION ?= 0.0.777
 # Default bundle image tag
-BUNDLE_IMG ?= controller-bundle:$(VERSION)
+BUNDLE_IMG ?= quay.io/wtrocki/9ed633bb57ee71f8865ba7a442a73c06:$(VERSION)
 # Options for 'bundle-build'
 ifneq ($(origin CHANNELS), undefined)
 BUNDLE_CHANNELS := --channels=$(CHANNELS)
