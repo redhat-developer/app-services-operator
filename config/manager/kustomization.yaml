@@ -1,2 +1,8 @@
 resources:
 - manager.yaml
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+images:
+- name: controller
+  newName: quay.io/wtrocki/9ed633bb57ee71f8865ba7a442a73c06
+  newTag: latest
