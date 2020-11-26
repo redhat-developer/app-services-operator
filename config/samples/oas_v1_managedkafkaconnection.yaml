@@ -12,5 +12,5 @@ spec:
     # other types in the future
     kind: ClientCredentials
     # The actual credential values 
-    clientID: 
+    clientID: clientID
     clientSecret: clientSecret

@@ -41,8 +41,6 @@ type CredentialsSpec struct {
 type ManagedKafkaConnectionStatus struct {
 }
 
-// Not working  // +kubebuilder:printcolumn:name="service.binding/host",type="string",JSONPath=".metadata.annotations",description="status of the kind"
-
 // +kubebuilder:object:root=true
 // +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster

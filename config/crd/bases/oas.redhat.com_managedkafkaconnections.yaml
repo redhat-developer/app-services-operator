@@ -8,7 +8,6 @@ metadata:
     service.binding/host: 'path={.spec.bootstrapServer.host}'
     service.binding/user: 'path={.spec.credentials.clientID}'
     service.binding/password: 'path={.spec.credentials.clientSecret}'
-    service.binding/secret: 'path={.spec.credentials.clientSecret},objectType=Secret'
   creationTimestamp: null
   name: managedkafkaconnections.oas.redhat.com
 spec:
