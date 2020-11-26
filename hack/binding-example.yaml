@@ -2,15 +2,14 @@ apiVersion: operators.coreos.com/v1alpha1
 kind: ServiceBinding
 metadata:
   name: managed-kafka-binding-request
-  namespace: binding-demo
 spec:
   application:
     group: apps
     name: nodejs-app
     resource: deployments
     version: v1
-
   detectBindingResources: true
+  
   services:
   - group: oas.redhat.com
     version: v1
