@@ -39,13 +39,12 @@ operator-sdk create api --version=v1 --group=oas --kind=ManagedKafkaConnection -
 
 > NOTE: This is temporary solution for POC
 
-Required values in metadata
+When operator is created it is missing metadata.
 
 ```
   service.binding/host: 'path={.spec.bootstrapServer.host}'
   service.binding/user: 'path={.spec.credentials.clientID}'
   service.binding/password: 'path={.spec.credentials.clientSecret}'
-  service.binding/secret: 'path={.spec.credentials.clientSecret},objectType=Secret'
 ```
 
 ## Testing using CRDs
