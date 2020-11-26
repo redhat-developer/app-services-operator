@@ -80,9 +80,8 @@ oc apply -f ./hack/binding-example.yaml
 
 4. Check binding status
 ```
-oc get servicebinding my-kafka-binding-request -o yaml
+oc get servicebinding managed-kafka-binding-request-o yaml
 ```
-
 
 ## Installing operator
 
