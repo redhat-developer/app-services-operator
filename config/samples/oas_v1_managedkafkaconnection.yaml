@@ -2,10 +2,6 @@ apiVersion: oas.redhat.com/v1
 kind: ManagedKafkaConnection
 metadata:
   name: managedkafkaconnection-sample
-  labels: 
-      app.kubernetes.io/name: kafkaservice
-      app.kubernetes.io/component: database
-      app.kubernetes.io/instance: kafkaservice-mgkfk20
 
 spec:
   bootstrapServer:
@@ -16,5 +12,5 @@ spec:
     # other types in the future
     kind: ClientCredentials
     # The actual credential values 
-    clientID: abc123
+    clientID: 
     clientSecret: clientSecret
