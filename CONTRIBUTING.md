@@ -80,7 +80,7 @@ oc apply -f ./hack/binding-example.yaml
 
 4. Check binding status
 ```
-oc get servicebinding managed-kafka-binding-request-o yaml
+oc get servicebinding managed-kafka-binding-request -o yaml
 ```
 
 ## Installing operator
@@ -91,11 +91,11 @@ kubectl apply -f - << EOD
 apiVersion: operators.coreos.com/v1alpha1
 kind: CatalogSource
 metadata:
-    name: managed-kafka-operators
+    name: managed-kafka-operator-deployment
     namespace: openshift-marketplace
 spec:
     sourceType: grpc
     image: quay.io/wtrocki/9ed633bb57ee71f8865ba7a442a73c06
-    displayName: Mananaged Kafka Operator
+    displayName: Mananaged Kafka Operator deployment
 EOD
 ```
