@@ -6,8 +6,7 @@ metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.3.0
     service.binding/host: 'path={.spec.bootstrapServer.host}'
-    service.binding/user: 'path={.spec.credentials.clientID}'
-    service.binding/password: 'path={.spec.credentials.clientSecret}'
+    service.binding/credentials: 'path={.spec.credentials.secretName},objectType=Secret'
   creationTimestamp: null
   name: managedkafkaconnections.oas.redhat.com
 spec:
@@ -52,14 +51,11 @@ spec:
               description: CredentialsSpec specification containing various formats
                 of credentials
               properties:
-                clientID:
-                  description: ClientID Represents username in client credentials
-                  type: string
-                clientSecret:
-                  description: ClientID Represents password in client credentials
-                  type: string
                 kind:
                   description: Type of the credential format. For example "ClientCredentials"
+                  type: string
+                secretName:
+                  description: Reference to secret name that needs to be fetched
                   type: string
               type: object
           required:

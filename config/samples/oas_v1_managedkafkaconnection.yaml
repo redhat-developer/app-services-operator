@@ -10,7 +10,6 @@ spec:
   credentials:
     # Right now we only support clientCredentials, but by specifying credentials kind we allow ourselves to specify 
     # other types in the future
-    kind: ClientCredentials
-    # The actual credential values 
-    clientID: clientID
-    clientSecret: clientSecret
+    kind: ClientCredentialsSecret
+    # Name of the secret that will be mounted
+    secretName: mysecret
