@@ -44,6 +44,10 @@ run: generate fmt vet manifests
 install: manifests kustomize
 	$(KUSTOMIZE) build config/crd | kubectl apply -f -
 
+# Test kustomize
+installLocal: manifests kustomize
+	$(KUSTOMIZE) build config/crd > local-test.yaml
+
 # Uninstall CRDs from a cluster
 uninstall: manifests kustomize
 	$(KUSTOMIZE) build config/crd | kubectl delete -f -

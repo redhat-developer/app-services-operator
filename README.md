@@ -34,7 +34,6 @@ spec:
     secretName: bindingdemo
 ```
 
-
 ```
 kind: Secret
 apiVersion: v1

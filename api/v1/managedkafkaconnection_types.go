@@ -1,6 +1,7 @@
 package v1
 
 import (
+	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -20,16 +21,20 @@ type BootstrapServerSpec struct {
 }
 
 // CredentialType
+// +kubebuilder:validation:Enum=ClientCredentialsSecret;
 type CredentialType string
 
 const (
-	// ClientCredentials ... enumeration for types of credentials
+	// ClientCredentials enumeration for types of credentials
 	ClientCredentials CredentialType = "ClientCredentialsSecret"
 )
 
 // CredentialsSpec specification containing various formats of credentials
 type CredentialsSpec struct {
-	// Type of the credential format. For example "ClientCredentials"
+	// Type of the credential format.
+	// Valid values are:
+	// - "ClientCredentialsSecret" (default): Uses secret name to mount credentials
+	// +optional
 	Kind CredentialType `json:"kind,omitempty"`
 	// Reference to secret name that needs to be fetched
 	SecretName string `json:"secretName,omitempty"`
@@ -37,6 +42,21 @@ type CredentialsSpec struct {
 
 // ManagedKafkaConnectionStatus defines the observed state of ManagedKafkaConnection
 type ManagedKafkaConnectionStatus struct {
+	// Linked secret
+	// +optional
+	Secret corev1.ObjectReference `json:"secret,omitempty"`
+
+	// Created deployment
+	// +optional
+	Deployment corev1.ObjectReference `json:"deployment,omitempty"`
+
+	// Operator status message containing current status for resource
+	// +optional
+	Message string `json:"message,omitempty"`
+
+	// Information about the last time operator was scheduled to run
+	// +optional
+	LastUpdate *metav1.Time `json:"lastUpdated,omitempty"`
 }
 
 // +kubebuilder:object:root=true
