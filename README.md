@@ -22,7 +22,7 @@ for purpose of making Managed Kafka appear
 ### Examples
 
 ```
-apiVersion: oas.redhat.com/v1
+apiVersion: rhoas.redhat.com/v1
 kind: ManagedKafkaConnection
 metadata:
   name: bindingdemo-serviceapi

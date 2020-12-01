@@ -5,7 +5,7 @@ metadata:
   name: managedkafkaconnection-editor-role
 rules:
 - apiGroups:
-  - oas.redhat.com
+  - rhoas.redhat.com
   resources:
   - managedkafkaconnections
   verbs:
@@ -17,7 +17,7 @@ rules:
   - update
   - watch
 - apiGroups:
-  - oas.redhat.com
+  - rhoas.redhat.com
   resources:
   - managedkafkaconnections/status
   verbs:

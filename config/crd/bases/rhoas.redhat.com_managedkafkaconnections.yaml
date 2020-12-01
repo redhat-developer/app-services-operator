@@ -6,9 +6,9 @@ metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.3.0
   creationTimestamp: null
-  name: managedkafkaconnections.oas.redhat.com
+  name: managedkafkaconnections.rhoas.redhat.com
 spec:
-  group: oas.redhat.com
+  group: rhoas.redhat.com
   names:
     kind: ManagedKafkaConnection
     listKind: ManagedKafkaConnectionList

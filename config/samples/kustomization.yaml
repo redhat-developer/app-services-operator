@@ -1,4 +1,4 @@
 ## Append samples you want in your CSV to this file as resources ##
 resources:
-- oas_v1_managedkafkaconnection.yaml
+- rhoas_v1_managedkafkaconnection.yaml
 # +kubebuilder:scaffold:manifestskustomizesamples

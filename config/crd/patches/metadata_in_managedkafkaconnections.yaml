@@ -6,4 +6,4 @@ metadata:
   annotations:
     service.binding/host: 'path={.spec.bootstrapServer.host}'
     service.binding/credentials: 'path={.spec.credentials.secretName},objectType=Secret'
-  name: managedkafkaconnections.oas.redhat.com
+  name: managedkafkaconnections.rhoas.redhat.com

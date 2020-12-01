@@ -3,7 +3,7 @@ layout: go.kubebuilder.io/v2
 projectName: rhoas-operator
 repo: github.com/bf2fc6cc711aee1a0c2a/operator
 resources:
-- group: oas
+- group: rhoas
   kind: ManagedKafkaConnection
   version: v1
 version: 3-alpha

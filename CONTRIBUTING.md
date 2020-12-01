@@ -22,17 +22,17 @@ Renames on this project should be handled by recreating project completely.
 
 1. Init operator
 
-operator-sdk init --domain=redhat.com --plugins=go.kubebuilder.io/v2 --project-name=oas-operator --repo=github.com/bf2fc6cc711aee1a0c2a/operator
+operator-sdk init --domain=redhat.com --plugins=go.kubebuilder.io/v2 --project-name=rhoas-operator --repo=github.com/bf2fc6cc711aee1a0c2a/operator
 
 2. Create API (without controller)
 ```
-operator-sdk create api --version=v1 --group=oas --kind=ManagedKafkaConnection --namespaced=false --resource=true --controller=false
+operator-sdk create api --version=v1 --group=rhoas --kind=ManagedKafkaConnection --namespaced=false --resource=true --controller=false
 ```
 
 3. Add controller to your API if needed (later phase)
 
 ```
-operator-sdk create api --version=v1 --group=oas --kind=ManagedKafkaConnection --namespaced=false --resource=false --controller=true
+operator-sdk create api --version=v1 --group=rhoas --kind=ManagedKafkaConnection --namespaced=false --resource=false --controller=true
 ```
 
 ## Reaplying binding metadata
@@ -52,14 +52,14 @@ When operator is created it is missing metadata.
 Applying generated API to kubernetes
 
 ```
-oc apply -f config/crd/bases/oas.redhat.com_managedkafkaconnections.yaml 
-oc apply -f config/samples/oas_v1_managedkafkaconnection.yaml 
+oc apply -f config/crd/bases/rhoas.redhat.com_managedkafkaconnections.yaml 
+oc apply -f config/samples/rhoas_v1_managedkafkaconnection.yaml 
 ```
 
 Check if 
 
 ```
- oc get crd managedkafkaconnections.oas.redhat.com -o yaml
+ oc get crd managedkafkaconnections.rhoas.redhat.com -o yaml
 ```
 
 ### Testing binding
