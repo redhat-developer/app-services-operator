@@ -20,7 +20,7 @@ import (
 
 // ManagedKafkaConnectionReconciler reconciles a ManagedKafkaConnection object
 type ManagedKafkaConnectionReconciler struct {
-	client.Client
+	Client client.Client
 	Log    logr.Logger
 	Scheme *runtime.Scheme
 }
@@ -36,7 +36,7 @@ func (r *ManagedKafkaConnectionReconciler) Reconcile(req ctrl.Request) (ctrl.Res
 
 	mkConnection := &rhoasv1.ManagedKafkaConnection{}
 	// Read connection
-	if err := r.Get(ctx, req.NamespacedName, mkConnection); err != nil {
+	if err := r.Client.Get(ctx, req.NamespacedName, mkConnection); err != nil {
 		log.Error(err, "unable to fetch Managed Kafka")
 		// we'll ignore not-found errors, since they can't be fixed by an immediate
 		// requeue (we'll need to wait for a new notification), and we can get them
@@ -55,9 +55,9 @@ func (r *ManagedKafkaConnectionReconciler) Reconcile(req ctrl.Request) (ctrl.Res
 		log.Info(message)
 		return ctrl.Result{}, errors.New(message)
 	}
-
+	namespace := "custom-topology" //req.NamespacedName.Namespace
 	// Build deployment
-	deployment := newDeploymentForCR(mkConnection)
+	deployment := newDeploymentForCR(mkConnection, namespace)
 	// Set Database instance as the owner and controller
 	if err := ctrl.SetControllerReference(mkConnection, deployment, r.Scheme); err != nil {
 		return ctrl.Result{}, err
@@ -65,9 +65,9 @@ func (r *ManagedKafkaConnectionReconciler) Reconcile(req ctrl.Request) (ctrl.Res
 
 	// Create deployment
 	deploymentFound := &appsv1.Deployment{}
-	err := r.Client.Get(context.TODO(), types.NamespacedName{Name: deployment.Name, Namespace: mkConnection.Namespace}, deploymentFound)
+	err := r.Client.Get(context.TODO(), types.NamespacedName{Name: deployment.Name, Namespace: namespace}, deploymentFound)
 	if err != nil && errors.IsNotFound(err) {
-		log.Info("Creating a new Deployment", "Deployment.Namespace", deployment.Namespace, "Deployment.Name", deployment.Name)
+		log.Info("--------- Creating a new Deployment", "Deployment.Namespace", deployment.Namespace, "Deployment.Name", deployment.Name)
 		err = r.Client.Create(context.TODO(), deployment)
 		if err != nil {
 			log.Error(err, "Problem with creating deployment")
@@ -81,7 +81,7 @@ func (r *ManagedKafkaConnectionReconciler) Reconcile(req ctrl.Request) (ctrl.Res
 
 	// Check if this Secret already exists
 	secretFound := &corev1.Secret{}
-	err = r.Client.Get(context.TODO(), types.NamespacedName{Name: mkConnection.Spec.Credentials.SecretName, Namespace: mkConnection.Namespace}, secretFound)
+	err = r.Client.Get(context.TODO(), types.NamespacedName{Name: mkConnection.Spec.Credentials.SecretName, Namespace: namespace}, secretFound)
 	if err != nil && errors.IsNotFound(err) {
 		log.Error(err, "Cannot find specified secret", mkConnection.Spec.Credentials.SecretName)
 		return ctrl.Result{}, nil
@@ -102,7 +102,7 @@ func (r *ManagedKafkaConnectionReconciler) Reconcile(req ctrl.Request) (ctrl.Res
 	return ctrl.Result{}, nil
 }
 
-func newDeploymentForCR(cr *rhoasv1.ManagedKafkaConnection) *appsv1.Deployment {
+func newDeploymentForCR(cr *rhoasv1.ManagedKafkaConnection, namespace string) *appsv1.Deployment {
 	labels := map[string]string{
 		"app": cr.Name,
 	}
@@ -112,8 +112,8 @@ func newDeploymentForCR(cr *rhoasv1.ManagedKafkaConnection) *appsv1.Deployment {
 	}}
 	deployment := &appsv1.Deployment{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      cr.Name + "-deployment",
-			Namespace: cr.Namespace,
+			Name:      "kafkaproxy-deployment",
+			Namespace: namespace,
 			Labels:    labels,
 		},
 		Spec: appsv1.DeploymentSpec{

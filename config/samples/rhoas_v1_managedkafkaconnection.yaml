@@ -1,7 +1,7 @@
 apiVersion: rhoas.redhat.com/v1
 kind: ManagedKafkaConnection
 metadata:
-  name: managedkafkaconnection-sample
+  name: rhosak-demo
 
 spec:
   bootstrapServer:
