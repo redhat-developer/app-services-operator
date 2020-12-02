@@ -126,15 +126,15 @@ func newDeploymentForCR(cr *rhoasv1.ManagedKafkaConnection, namespace string) *a
 			},
 			Template: corev1.PodTemplateSpec{
 				ObjectMeta: metav1.ObjectMeta{
-					Name:      cr.Name + "-deployment",
+					Name:      "kafka-deployment",
 					Namespace: cr.Namespace,
 					Labels:    labels,
 				},
 				Spec: corev1.PodSpec{
 					Containers: []corev1.Container{
 						{
-							Name:            "alpine",
-							Image:           "alpine",
+							Name:            "noop",
+							Image:           "wtrocki/noop:1.0.0",
 							ImagePullPolicy: corev1.PullIfNotPresent,
 							Ports:           containerPorts,
 							Env:             []corev1.EnvVar{},
