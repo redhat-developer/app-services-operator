@@ -30,7 +30,7 @@ spec:
   bootstrapServer:
     host: 'myhost.apps.openshift.com'
   credentials:
-    kind: ClientCredentialsSecret
+    type: ClientCredentialsSecret
     secretName: bindingdemo
 ```
 

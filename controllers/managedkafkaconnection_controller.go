@@ -6,13 +6,14 @@ import (
 	appsv1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	types "k8s.io/apimachinery/pkg/types"
+
+	ctrl "sigs.k8s.io/controller-runtime"
 
 	"github.com/go-logr/logr"
+	"github.com/pingcap/errors"
 	"k8s.io/apimachinery/pkg/runtime"
-	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
-	"sigs.k8s.io/controller-runtime/pkg/controller/controllerutil"
-	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 
 	rhoasv1 "github.com/bf2fc6cc711aee1a0c2a/operator/api/v1"
 )
@@ -34,6 +35,7 @@ func (r *ManagedKafkaConnectionReconciler) Reconcile(req ctrl.Request) (ctrl.Res
 	log := r.Log.WithValues("managedkafkaconnection", req.NamespacedName)
 
 	mkConnection := &rhoasv1.ManagedKafkaConnection{}
+	// Read connection
 	if err := r.Get(ctx, req.NamespacedName, mkConnection); err != nil {
 		log.Error(err, "unable to fetch Managed Kafka")
 		// we'll ignore not-found errors, since they can't be fixed by an immediate
@@ -42,10 +44,59 @@ func (r *ManagedKafkaConnectionReconciler) Reconcile(req ctrl.Request) (ctrl.Res
 		return ctrl.Result{}, client.IgnoreNotFound(err)
 	}
 
+	// Validate spec
+	if mkConnection.Spec.Credentials.Type != "" && mkConnection.Spec.Credentials.Type != "ClientCredentialsSecret" {
+		message := "Spec supports only ClientCredentialsSecret. Please validate your spec"
+		log.Info(message)
+		return ctrl.Result{}, errors.New(message)
+	}
+	if mkConnection.Spec.BootstrapServer.Host == "" {
+		message := "Spec.BootstrapServer.Host missing. Please validate your spec"
+		log.Info(message)
+		return ctrl.Result{}, errors.New(message)
+	}
+
+	// Build deployment
 	deployment := newDeploymentForCR(mkConnection)
 	// Set Database instance as the owner and controller
-	if err := controllerutil.SetControllerReference(mkConnection, deployment, r.Scheme); err != nil {
-		return reconcile.Result{}, err
+	if err := ctrl.SetControllerReference(mkConnection, deployment, r.Scheme); err != nil {
+		return ctrl.Result{}, err
+	}
+
+	// Create deployment
+	deploymentFound := &appsv1.Deployment{}
+	err := r.Client.Get(context.TODO(), types.NamespacedName{Name: deployment.Name, Namespace: mkConnection.Namespace}, deploymentFound)
+	if err != nil && errors.IsNotFound(err) {
+		log.Info("Creating a new Deployment", "Deployment.Namespace", deployment.Namespace, "Deployment.Name", deployment.Name)
+		err = r.Client.Create(context.TODO(), deployment)
+		if err != nil {
+			log.Error(err, "Problem with creating deployment")
+			return ctrl.Result{}, err
+		}
+		deploymentFound = deployment
+		return ctrl.Result{Requeue: true}, nil
+	} else if err != nil {
+		return ctrl.Result{Requeue: false}, err
+	}
+
+	// Check if this Secret already exists
+	secretFound := &corev1.Secret{}
+	err = r.Client.Get(context.TODO(), types.NamespacedName{Name: mkConnection.Spec.Credentials.SecretName, Namespace: mkConnection.Namespace}, secretFound)
+	if err != nil && errors.IsNotFound(err) {
+		log.Error(err, "Cannot find specified secret", mkConnection.Spec.Credentials.SecretName)
+		return ctrl.Result{}, nil
+	} else if err != nil {
+		return ctrl.Result{}, err
+	}
+
+	// Update status
+	mkConnection.Status.DeploymentName = deploymentFound.Name
+	mkConnection.Status.DeploymentName = mkConnection.Spec.Credentials.SecretName
+
+	err = r.Client.Status().Update(context.TODO(), mkConnection)
+	if err != nil {
+		log.Error(err, "Failed to update status with DBConfigMap")
+		return ctrl.Result{}, err
 	}
 
 	return ctrl.Result{}, nil
@@ -82,9 +133,8 @@ func newDeploymentForCR(cr *rhoasv1.ManagedKafkaConnection) *appsv1.Deployment {
 				Spec: corev1.PodSpec{
 					Containers: []corev1.Container{
 						{
-							// TODO
-							Name:            "",
-							Image:           "",
+							Name:            "alpine",
+							Image:           "alpine",
 							ImagePullPolicy: corev1.PullIfNotPresent,
 							Ports:           containerPorts,
 							Env:             []corev1.EnvVar{},

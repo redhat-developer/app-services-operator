@@ -9,6 +9,15 @@ rules:
 - apiGroups:
   - rhoas.redhat.com
   resources:
+  - deployments
+  verbs:
+  - create
+  - delete
+  - patch
+  - update
+- apiGroups:
+  - rhoas.redhat.com
+  resources:
   - managedkafkaconnections
   verbs:
   - create
