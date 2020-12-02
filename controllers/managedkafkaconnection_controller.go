@@ -91,7 +91,7 @@ func (r *ManagedKafkaConnectionReconciler) Reconcile(req ctrl.Request) (ctrl.Res
 
 	// Update status
 	mkConnection.Status.DeploymentName = deploymentFound.Name
-	mkConnection.Status.DeploymentName = mkConnection.Spec.Credentials.SecretName
+	mkConnection.Status.SecretName = mkConnection.Spec.Credentials.SecretName
 
 	err = r.Client.Status().Update(context.TODO(), mkConnection)
 	if err != nil {
