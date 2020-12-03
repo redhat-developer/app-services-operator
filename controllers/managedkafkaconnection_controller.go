@@ -33,11 +33,9 @@ type ManagedKafkaConnectionReconciler struct {
 func (r *ManagedKafkaConnectionReconciler) Reconcile(req ctrl.Request) (ctrl.Result, error) {
 	ctx := context.Background()
 	log := r.Log.WithValues("managedkafkaconnection", req.NamespacedName)
-
 	mkConnection := &rhoasv1.ManagedKafkaConnection{}
 	// Read connection
 	if err := r.Client.Get(ctx, req.NamespacedName, mkConnection); err != nil {
-		log.Error(err, "unable to fetch Managed Kafka")
 		// we'll ignore not-found errors, since they can't be fixed by an immediate
 		// requeue (we'll need to wait for a new notification), and we can get them
 		// on deleted requests.
@@ -55,7 +53,7 @@ func (r *ManagedKafkaConnectionReconciler) Reconcile(req ctrl.Request) (ctrl.Res
 		log.Info(message)
 		return ctrl.Result{}, errors.New(message)
 	}
-	namespace := "custom-topology" //req.NamespacedName.Namespace
+	namespace := req.NamespacedName.Namespace
 	// Build deployment
 	deployment := newDeploymentForCR(mkConnection, namespace)
 	// Set Database instance as the owner and controller
@@ -112,7 +110,7 @@ func newDeploymentForCR(cr *rhoasv1.ManagedKafkaConnection, namespace string) *a
 	}}
 	deployment := &appsv1.Deployment{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      "kafkaproxy-deployment",
+			Name:      cr.Name + "-deployment",
 			Namespace: namespace,
 			Labels:    labels,
 		},
@@ -126,7 +124,7 @@ func newDeploymentForCR(cr *rhoasv1.ManagedKafkaConnection, namespace string) *a
 			},
 			Template: corev1.PodTemplateSpec{
 				ObjectMeta: metav1.ObjectMeta{
-					Name:      "kafka-deployment",
+					Name:      cr.Name + "deployment",
 					Namespace: cr.Namespace,
 					Labels:    labels,
 				},

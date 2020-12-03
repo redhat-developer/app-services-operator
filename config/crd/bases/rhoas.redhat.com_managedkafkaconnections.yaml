@@ -14,7 +14,7 @@ spec:
     listKind: ManagedKafkaConnectionList
     plural: managedkafkaconnections
     singular: managedkafkaconnection
-  scope: Cluster
+  scope: Namespaced
   subresources:
     status: {}
   validation:

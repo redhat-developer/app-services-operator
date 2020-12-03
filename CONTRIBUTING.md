@@ -32,7 +32,7 @@ operator-sdk create api --version=v1 --group=rhoas --kind=ManagedKafkaConnection
 3. Add controller to your API if needed (later phase)
 
 ```
-operator-sdk create api --version=v1 --group=rhoas --kind=ManagedKafkaConnection --namespaced=false --resource=false --controller=true
+operator-sdk create api --version=v1 --group=rhoas --kind=ManagedKafkaConnection --namespaced=true --resource=false --controller=true
 ```
 
 ## Testing using CRDs

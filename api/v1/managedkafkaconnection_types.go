@@ -61,7 +61,7 @@ type ManagedKafkaConnectionStatus struct {
 
 // +kubebuilder:object:root=true
 // +kubebuilder:subresource:status
-// +kubebuilder:resource:scope=Cluster
+// +kubebuilder:resource:scope=Namespaced
 // +k8s:openapi-gen=true
 
 // ManagedKafkaConnection schema
