@@ -56,6 +56,7 @@ func (r *ManagedKafkaConnectionReconciler) Reconcile(req ctrl.Request) (ctrl.Res
 	namespace := req.NamespacedName.Namespace
 	// Build deployment
 	deployment := newDeploymentForCR(mkConnection, namespace)
+
 	// Set Database instance as the owner and controller
 	if err := ctrl.SetControllerReference(mkConnection, deployment, r.Scheme); err != nil {
 		return ctrl.Result{}, err
