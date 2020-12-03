@@ -176,5 +176,4 @@ spec:
   provider:
     name: RedHat
     url: redhat.com
-  replaces: rhoas-operator.v0.0.777
   version: 0.1.0
