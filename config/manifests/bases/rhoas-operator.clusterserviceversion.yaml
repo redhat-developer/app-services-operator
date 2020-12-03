@@ -1,0 +1,48 @@
+apiVersion: operators.coreos.com/v1alpha1
+kind: ClusterServiceVersion
+metadata:
+  annotations:
+    alm-examples: '[]'
+    capabilities: Basic Install
+    operators.operatorframework.io/builder: operator-sdk-v1.2.0
+    operators.operatorframework.io/project_layout: go.kubebuilder.io/v2
+  name: rhoas-operator.vX.Y.Z
+  namespace: placeholder
+spec:
+  apiservicedefinitions: {}
+  customresourcedefinitions:
+    owned:
+    - description: ManagedKafkaConnection schema
+      displayName: Managed Kafka Connection
+      kind: ManagedKafkaConnection
+      name: managedkafkaconnections.rhoas.redhat.com
+      version: v1
+  description: Application Services Binding Operator
+  displayName: OpenShiftApplicationServices
+  icon:
+  - base64data: "AAABAAEAEBAAAAEAIABoBAAAFgAAACgAAAAQAAAAIAAAAAEAIAAAAAAAAAQAABILAAASCwAAAAAAAAAAAACgo/YAoKP2AKCj9gCgo/YAoKP2AKCj9gCgo/YAoKP2AKCj9gCgo/YAoKP2AKCj9gCgo/YAoKP2AKCj9gCgo/YAoKP2AKCj9gCgo/YAoKP2AKCj9gCgo/YAoKP2AKCj9gCgo/YAoKP2AKCj9gCgo/YAoKP2AKCj9gCgo/YAoKP2AKCj9gCgo/YAoKP2AKCj9gCgo/YAoKP2AKCj9gCgo/YAoKP2AKCj9gCgo/YAoKP2AKCj9gCgo/YAoKP2AKCj9gAAAP//AAD//6Cj9gCgo/YAoKP2AKCj9gCgo/YAAAD//wAA//+go/YAoKP2AKCj9gCgo/YAAAD//wAA//+go/YAAAD//wAA//+go/YAoKP2AKCj9gCgo/YAoKP2AAAA//8AAP//oKP2AKCj9gCgo/YAAAD//wAA//8AAP//oKP2AAAA//8AAP//oKP2AKCj9gCgo/YAoKP2AKCj9gAAAP//AAD//6Cj9gCgo/YAAAD//wAA//8AAP//oKP2AKCj9gAAAP//AAD//6Cj9gCgo/YAoKP2AKCj9gCgo/YAAAD//wAA//+go/YAAAD//wAA//8AAP//oKP2AKCj9gCgo/YAAAD//wAA//+go/YAoKP2AKCj9gCgo/YAoKP2AAAA//8AAP//AAD//wAA//8AAP//oKP2AKCj9gCgo/YAoKP2AAAA//8AAP//oKP2AKCj9gCgo/YAoKP2AKCj9gAAAP//AAD//wAA//8AAP//oKP2AKCj9gCgo/YAoKP2AKCj9gAAAP//AAD//6Cj9gAAAP//AAD//wAA//+go/YAAAD//wAA//8AAP//AAD//wAA//+go/YAoKP2AKCj9gCgo/YAAAD//wAA//+go/YAAAD//wAA//8AAP//oKP2AAAA//8AAP//oKP2AAAA//8AAP//AAD//6Cj9gCgo/YAoKP2AAAA//8AAP//AAD//wAA//+go/YAAAD//wAA//8AAP//AAD//6Cj9gCgo/YAAAD//wAA//8AAP//oKP2AKCj9gAAAP//AAD//wAA//+go/YAoKP2AKCj9gAAAP//AAD//wAA//+go/YAoKP2AKCj9gAAAP//AAD//wAA//+go/YAAAD//wAA//+go/YAoKP2AKCj9gCgo/YAoKP2AAAA//8AAP//oKP2AKCj9gCgo/YAoKP2AAAA//8AAP//oKP2AKCj9gCgo/YAoKP2AKCj9gCgo/YAoKP2AKCj9gCgo/YAoKP2AKCj9gCgo/YAoKP2AKCj9gCgo/YAoKP2AKCj9gCgo/YAoKP2AKCj9gCgo/YAoKP2AKCj9gCgo/YAoKP2AKCj9gCgo/YAoKP2AKCj9gCgo/YAoKP2AKCj9gCgo/YA//8AAP//AAD//wAAPnkAAD5xAAA+YwAAPkcAAD4PAAA+HwAAIg8AACJHAAAIYwAAHHEAAD55AAD//wAA//8AAA=="
+    mediatype: "image/png"
+  install:
+    spec:
+      deployments: null
+    strategy: ""
+  installModes:
+  - supported: false
+    type: OwnNamespace
+  - supported: true
+    type: SingleNamespace
+  - supported: true
+    type: MultiNamespace
+  - supported: true
+    type: AllNamespaces
+  keywords:
+  - kafka
+  - services
+  links:
+  - name: rhoas operator
+    url: https://rhoas-operator.domain
+  maturity: alpha
+  provider:
+    name: RedHat
+    url: redhat.com
+  version: 0.1.0
