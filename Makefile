@@ -1,5 +1,5 @@
 # Current Operator version
-VERSION ?= 0.0.777
+VERSION ?= 0.1.0
 # Default bundle image tag
 BUNDLE_IMG ?= quay.io/wtrocki/cdd59c7b5936ee1e79b6f1f9bfcb5d74:$(VERSION)
 # Options for 'bundle-build'
