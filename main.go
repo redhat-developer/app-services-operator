@@ -11,7 +11,8 @@ import (
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
 
-	oasv1 "github.com/bf2fc6cc711aee1a0c2a/operator/api/v1"
+	rhoasv1 "github.com/bf2fc6cc711aee1a0c2a/operator/api/v1"
+	"github.com/bf2fc6cc711aee1a0c2a/operator/controllers"
 	// +kubebuilder:scaffold:imports
 )
 
@@ -23,7 +24,7 @@ var (
 func init() {
 	utilruntime.Must(clientgoscheme.AddToScheme(scheme))
 
-	utilruntime.Must(oasv1.AddToScheme(scheme))
+	utilruntime.Must(rhoasv1.AddToScheme(scheme))
 	// +kubebuilder:scaffold:scheme
 }
 
@@ -50,6 +51,14 @@ func main() {
 		os.Exit(1)
 	}
 
+	if err = (&controllers.ManagedKafkaConnectionReconciler{
+		Client: mgr.GetClient(),
+		Log:    ctrl.Log.WithName("controllers").WithName("ManagedKafkaConnection"),
+		Scheme: mgr.GetScheme(),
+	}).SetupWithManager(mgr); err != nil {
+		setupLog.Error(err, "unable to create controller", "controller", "ManagedKafkaConnection")
+		os.Exit(1)
+	}
 	// +kubebuilder:scaffold:builder
 
 	setupLog.Info("starting manager")

@@ -1,6 +1,6 @@
-// Package v1 contains API Schema definitions for the oas v1 API group
+// Package v1 contains API Schema definitions for the rhoas v1 API group
 // +kubebuilder:object:generate=true
-// +groupName=oas.redhat.com
+// +groupName=rhoas.redhat.com
 package v1
 
 import (
@@ -10,7 +10,7 @@ import (
 
 var (
 	// GroupVersion is group version used to register these objects
-	GroupVersion = schema.GroupVersion{Group: "oas.redhat.com", Version: "v1"}
+	GroupVersion = schema.GroupVersion{Group: "rhoas.redhat.com", Version: "v1"}
 
 	// SchemeBuilder is used to add go types to the GroupVersionKind scheme
 	SchemeBuilder = &scheme.Builder{GroupVersion: GroupVersion}

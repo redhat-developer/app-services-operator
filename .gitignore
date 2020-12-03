@@ -24,3 +24,6 @@ bin
 *~
 
 local-test.yaml
+container/container
+
+postgresql-operator

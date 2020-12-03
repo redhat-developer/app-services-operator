@@ -22,29 +22,17 @@ Renames on this project should be handled by recreating project completely.
 
 1. Init operator
 
-operator-sdk init --domain=redhat.com --plugins=go.kubebuilder.io/v2 --project-name=oas-operator --repo=github.com/bf2fc6cc711aee1a0c2a/operator
+operator-sdk init --domain=redhat.com --plugins=go.kubebuilder.io/v2 --project-name=rhoas-operator --repo=github.com/bf2fc6cc711aee1a0c2a/operator
 
 2. Create API (without controller)
 ```
-operator-sdk create api --version=v1 --group=oas --kind=ManagedKafkaConnection --namespaced=false --resource=true --controller=false
+operator-sdk create api --version=v1 --group=rhoas --kind=ManagedKafkaConnection --namespaced=false --resource=true --controller=false
 ```
 
 3. Add controller to your API if needed (later phase)
 
 ```
-operator-sdk create api --version=v1 --group=oas --kind=ManagedKafkaConnection --namespaced=false --resource=false --controller=true
-```
-
-## Reaplying binding metadata
-
-> NOTE: This is temporary solution for POC
-
-When operator is created it is missing metadata.
-
-```
-  service.binding/host: 'path={.spec.bootstrapServer.host}'
-  service.binding/user: 'path={.spec.credentials.clientID}'
-  service.binding/password: 'path={.spec.credentials.clientSecret}'
+operator-sdk create api --version=v1 --group=rhoas --kind=ManagedKafkaConnection --namespaced=true --resource=false --controller=true
 ```
 
 ## Testing using CRDs
@@ -52,26 +40,27 @@ When operator is created it is missing metadata.
 Applying generated API to kubernetes
 
 ```
-oc apply -f config/crd/bases/oas.redhat.com_managedkafkaconnections.yaml 
-oc apply -f config/samples/oas_v1_managedkafkaconnection.yaml 
+make install
+make run ENABLE_WEBHOOKS=false
 ```
 
-Check if 
+Create sample resource
+```
+oc apply -f config/samples/rhoas_v1_managedkafkaconnection.yaml 
+```
+
+Check if resource was created
 
 ```
- oc get crd managedkafkaconnections.oas.redhat.com -o yaml
+ oc get crd managedkafkaconnections.rhoas.redhat.com -o yaml
 ```
 
-### Testing binding
+### Testing Service Binding
 
 1. Follow steps in
 
 https://github.com/redhat-developer/service-binding-operator/blob/master/examples/nodejs_postgresql/README.md
 
-2. Check if ManagedKafkaConnection was created
-```
-oc get ManagedKafkaConnection managedkafkaconnection-sample -o yaml
-```
 
 3. Review binding info and apply it
 ```
@@ -83,7 +72,7 @@ oc apply -f ./hack/binding-example.yaml
 oc get servicebinding managed-kafka-binding-request -o yaml
 ```
 
-## Installing operator
+## Installing Operator Using Catalog
 
 ```
 kubectl apply -f - << EOD

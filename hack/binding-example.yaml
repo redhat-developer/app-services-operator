@@ -11,7 +11,7 @@ spec:
   detectBindingResources: true
   
   services:
-  - group: oas.redhat.com
+  - group: rhoas.redhat.com
     version: v1
     kind: ManagedKafkaConnection
     name: managedkafkaconnection-sample

@@ -1,7 +1,6 @@
 package v1
 
 import (
-	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -35,7 +34,8 @@ type CredentialsSpec struct {
 	// Valid values are:
 	// - "ClientCredentialsSecret" (default): Uses secret name to mount credentials
 	// +optional
-	Kind CredentialType `json:"kind,omitempty"`
+	Type CredentialType `json:"type,omitempty"`
+
 	// Reference to secret name that needs to be fetched
 	SecretName string `json:"secretName,omitempty"`
 }
@@ -44,11 +44,11 @@ type CredentialsSpec struct {
 type ManagedKafkaConnectionStatus struct {
 	// Linked secret
 	// +optional
-	Secret corev1.ObjectReference `json:"secret,omitempty"`
+	SecretName string `json:"secret,omitempty"`
 
 	// Created deployment
 	// +optional
-	Deployment corev1.ObjectReference `json:"deployment,omitempty"`
+	DeploymentName string `json:"deployment,omitempty"`
 
 	// Operator status message containing current status for resource
 	// +optional
@@ -61,7 +61,7 @@ type ManagedKafkaConnectionStatus struct {
 
 // +kubebuilder:object:root=true
 // +kubebuilder:subresource:status
-// +kubebuilder:resource:scope=Cluster
+// +kubebuilder:resource:scope=Namespaced
 // +k8s:openapi-gen=true
 
 // ManagedKafkaConnection schema

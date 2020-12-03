@@ -22,27 +22,35 @@ for purpose of making Managed Kafka appear
 ### Examples
 
 ```
-apiVersion: oas.redhat.com/v1
+kubectl apply -f - << EOD
+---
+apiVersion: rhoas.redhat.com/v1
 kind: ManagedKafkaConnection
 metadata:
-  name: bindingdemo-serviceapi
+  name: kafka-managed
+  namespace: your-namespace
 spec:
   bootstrapServer:
     host: 'myhost.apps.openshift.com'
   credentials:
-    kind: ClientCredentialsSecret
-    secretName: bindingdemo
+    type: ClientCredentialsSecret
+    secretName: kafka-managed-credentials
+EOD
 ```
 
+Rereferenced secret
 ```
+kubectl apply -f - << EOD
+---
 kind: Secret
 apiVersion: v1
 metadata:
-  name: kafka-credentials
+  name: kafka-managed-credentials
 data:
   clientID: YnR0ZzBqbjE3MGhw
   clientSecret: OTAwNTU5Mjc2MzI4Mjk2MQ==
 type: Opaque
+EOD
 ```
 
 ## Contributing

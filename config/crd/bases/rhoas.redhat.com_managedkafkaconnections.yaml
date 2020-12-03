@@ -1,0 +1,97 @@
+
+---
+apiVersion: apiextensions.k8s.io/v1beta1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.3.0
+  creationTimestamp: null
+  name: managedkafkaconnections.rhoas.redhat.com
+spec:
+  group: rhoas.redhat.com
+  names:
+    kind: ManagedKafkaConnection
+    listKind: ManagedKafkaConnectionList
+    plural: managedkafkaconnections
+    singular: managedkafkaconnection
+  scope: Namespaced
+  subresources:
+    status: {}
+  validation:
+    openAPIV3Schema:
+      description: ManagedKafkaConnection schema
+      properties:
+        apiVersion:
+          description: 'APIVersion defines the versioned schema of this representation
+            of an object. Servers should convert recognized schemas to the latest
+            internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+          type: string
+        kind:
+          description: 'Kind is a string value representing the REST resource this
+            object represents. Servers may infer this from the endpoint the client
+            submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+          type: string
+        metadata:
+          type: object
+        spec:
+          description: ManagedKafkaConnectionSpec contains credentials and connection
+            parameters to Managed Kafka
+          properties:
+            bootstrapServer:
+              description: BootstrapServerSpec contains server host information that
+                can be used to connecto the Managed Kafka
+              properties:
+                host:
+                  description: Host full host to Managed Kafka Service including port
+                  type: string
+              type: object
+            credentials:
+              description: CredentialsSpec specification containing various formats
+                of credentials
+              properties:
+                secretName:
+                  description: Reference to secret name that needs to be fetched
+                  type: string
+                type:
+                  description: 'Type of the credential format. Valid values are: -
+                    "ClientCredentialsSecret" (default): Uses secret name to mount
+                    credentials'
+                  enum:
+                  - ClientCredentialsSecret
+                  type: string
+              type: object
+          required:
+          - bootstrapServer
+          - credentials
+          type: object
+        status:
+          description: ManagedKafkaConnectionStatus defines the observed state of
+            ManagedKafkaConnection
+          properties:
+            deployment:
+              description: Created deployment
+              type: string
+            lastUpdated:
+              description: Information about the last time operator was scheduled
+                to run
+              format: date-time
+              type: string
+            message:
+              description: Operator status message containing current status for resource
+              type: string
+            secret:
+              description: Linked secret
+              type: string
+          type: object
+      type: object
+  version: v1
+  versions:
+  - name: v1
+    served: true
+    storage: true
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: []
+  storedVersions: []

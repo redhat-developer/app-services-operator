@@ -5,7 +5,7 @@ metadata:
   name: managedkafkaconnection-viewer-role
 rules:
 - apiGroups:
-  - oas.redhat.com
+  - rhoas.redhat.com
   resources:
   - managedkafkaconnections
   verbs:
@@ -13,7 +13,7 @@ rules:
   - list
   - watch
 - apiGroups:
-  - oas.redhat.com
+  - rhoas.redhat.com
   resources:
   - managedkafkaconnections/status
   verbs:
