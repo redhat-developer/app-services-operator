@@ -28,6 +28,7 @@ apiVersion: rhoas.redhat.com/v1
 kind: ManagedKafkaConnection
 metadata:
   name: kafka-managed
+  namespace: your-namespace
 spec:
   bootstrapServer:
     host: 'myhost.apps.openshift.com'

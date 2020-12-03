@@ -61,9 +61,19 @@ func (r *ManagedKafkaConnectionReconciler) Reconcile(req ctrl.Request) (ctrl.Res
 		return ctrl.Result{}, err
 	}
 
+	// Check if this Secret already exists
+	secretFound := &corev1.Secret{}
+	err := r.Client.Get(context.TODO(), types.NamespacedName{Name: mkConnection.Spec.Credentials.SecretName, Namespace: namespace}, secretFound)
+	if err != nil && errors.IsNotFound(err) {
+		log.Error(err, "Cannot find specified secret: "+mkConnection.Spec.Credentials.SecretName)
+		return ctrl.Result{}, err
+	} else if err != nil {
+		return ctrl.Result{}, err
+	}
+
 	// Create deployment
 	deploymentFound := &appsv1.Deployment{}
-	err := r.Client.Get(context.TODO(), types.NamespacedName{Name: deployment.Name, Namespace: namespace}, deploymentFound)
+	err = r.Client.Get(context.TODO(), types.NamespacedName{Name: deployment.Name, Namespace: namespace}, deploymentFound)
 	if err != nil && errors.IsNotFound(err) {
 		log.Info("--------- Creating a new Deployment", "Deployment.Namespace", deployment.Namespace, "Deployment.Name", deployment.Name)
 		err = r.Client.Create(context.TODO(), deployment)
@@ -75,16 +85,6 @@ func (r *ManagedKafkaConnectionReconciler) Reconcile(req ctrl.Request) (ctrl.Res
 		return ctrl.Result{Requeue: true}, nil
 	} else if err != nil {
 		return ctrl.Result{Requeue: false}, err
-	}
-
-	// Check if this Secret already exists
-	secretFound := &corev1.Secret{}
-	err = r.Client.Get(context.TODO(), types.NamespacedName{Name: mkConnection.Spec.Credentials.SecretName, Namespace: namespace}, secretFound)
-	if err != nil && errors.IsNotFound(err) {
-		log.Error(err, "Cannot find specified secret: "+mkConnection.Spec.Credentials.SecretName)
-		return ctrl.Result{}, err
-	} else if err != nil {
-		return ctrl.Result{}, err
 	}
 
 	// Update status
