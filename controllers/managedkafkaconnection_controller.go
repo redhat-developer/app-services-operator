@@ -65,8 +65,8 @@ func (r *ManagedKafkaConnectionReconciler) Reconcile(req ctrl.Request) (ctrl.Res
 	secretFound := &corev1.Secret{}
 	err := r.Client.Get(context.TODO(), types.NamespacedName{Name: mkConnection.Spec.Credentials.SecretName, Namespace: namespace}, secretFound)
 	if err != nil && errors.IsNotFound(err) {
-		log.Error(err, "Cannot find specified secret: "+mkConnection.Spec.Credentials.SecretName)
-		return ctrl.Result{}, err
+		log.Info("Cannot find specified secret: " + mkConnection.Spec.Credentials.SecretName)
+		return ctrl.Result{}, nil
 	} else if err != nil {
 		return ctrl.Result{}, err
 	}
