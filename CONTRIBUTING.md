@@ -84,7 +84,7 @@ metadata:
     namespace: openshift-marketplace
 spec:
     sourceType: grpc
-    image: quay.io/wtrocki/9ed633bb57ee71f8865ba7a442a73c06
+    image: quay.io/wtrocki/cdd59c7b5936ee1e79b6f1f9bfcb5d74
     displayName: Mananaged Kafka Operator deployment
 EOD
 ```
