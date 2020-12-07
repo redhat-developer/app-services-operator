@@ -1,7 +1,8 @@
 # Current Operator version
 VERSION ?= 0.1.0
+BUNDLE_NAME=quay.io/wtrocki/cdd59c7-bundle
 # Default bundle image tag
-BUNDLE_IMG ?= quay.io/wtrocki/cdd59c7-bundle:$(VERSION)
+BUNDLE_IMG ?= ${BUNDLE_NAME}:$(VERSION)
 # Options for 'bundle-build'
 ifneq ($(origin CHANNELS), undefined)
 BUNDLE_CHANNELS := --channels=$(CHANNELS)
@@ -129,6 +130,8 @@ bundle-build:
 .PHONY: bundle-push
 bundle-push:
 	docker push $(BUNDLE_IMG)
+	docker tag ${BUNDLE_NAME}:0.1.0 ${BUNDLE_NAME}:latest
+	docker push ${BUNDLE_NAME}:latest
 
 ## Added manually based on 
 ## https://sdk.operatorframework.io/docs/olm-integration/generation/#package-manifests-format
