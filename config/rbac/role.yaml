@@ -7,14 +7,17 @@ metadata:
   name: manager-role
 rules:
 - apiGroups:
-  - rhoas.redhat.com
+  - apps
   resources:
   - deployments
   verbs:
   - create
   - delete
+  - get
+  - list
   - patch
   - update
+  - watch
 - apiGroups:
   - rhoas.redhat.com
   resources:

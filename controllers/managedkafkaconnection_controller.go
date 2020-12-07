@@ -27,7 +27,7 @@ type ManagedKafkaConnectionReconciler struct {
 
 // +kubebuilder:rbac:groups=rhoas.redhat.com,resources=managedkafkaconnections,verbs=get;list;watch;create;update;patch;delete
 // +kubebuilder:rbac:groups=rhoas.redhat.com,resources=managedkafkaconnections/status,verbs=get;update;patch
-// +kubebuilder:rbac:groups=rhoas.redhat.com,resources=deployments,verbs=create;update;patch;delete
+// +kubebuilder:rbac:groups=apps,resources=deployments,verbs=get;list;watch;create;update;patch;delete
 
 // Reconcile reconcilation logic
 func (r *ManagedKafkaConnectionReconciler) Reconcile(req ctrl.Request) (ctrl.Result, error) {
