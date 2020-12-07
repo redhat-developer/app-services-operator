@@ -69,6 +69,15 @@ spec:
           - update
           - watch
         - apiGroups:
+          - apps
+          resources:
+          - deployments/finalizers
+          verbs:
+          - create
+          - delete
+          - patch
+          - update
+        - apiGroups:
           - rhoas.redhat.com
           resources:
           - managedkafkaconnections
