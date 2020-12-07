@@ -158,4 +158,4 @@ installOLMOperator:
 
 .PHONY: generateImage
 removeOLMOperator: 
-	operator-sdk run cleanup --version $(VERSION)
+	operator-sdk cleanup rhoas-operator
