@@ -158,7 +158,7 @@ spec:
         serviceAccountName: default
     strategy: deployment
   installModes:
-  - supported: false
+  - supported: true
     type: OwnNamespace
   - supported: true
     type: SingleNamespace
@@ -170,8 +170,8 @@ spec:
   - kafka
   - services
   links:
-  - name: rhoas operator
-    url: https://rhoas-operator.domain
+  - name: Operator Documentation
+    url: https://redhat.com
   maturity: alpha
   provider:
     name: Red Hat
