@@ -75,6 +75,13 @@ oc get servicebinding managed-kafka-binding-request -o yaml
 ## Installing Operator Using Catalog
 
 ```
+make installOLMOperator
+```
+
+
+Alternatively we can use CatalogSource (not recomended unless testing for production)
+
+```
 kubectl apply -f - << EOD
 ---
 apiVersion: operators.coreos.com/v1alpha1

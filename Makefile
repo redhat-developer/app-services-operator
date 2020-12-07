@@ -150,3 +150,12 @@ packagemanifests: kustomize manifests
 .PHONY: generateImage
 generateImage: 
 	base64 ./assets/red-hat-logo.svg
+
+## Used for testing OLM manifests
+.PHONY: generateImage
+installOLMOperator: 
+	operator-sdk run packagemanifests --version $(VERSION)
+
+.PHONY: generateImage
+removeOLMOperator: 
+	operator-sdk run cleanup --version $(VERSION)
