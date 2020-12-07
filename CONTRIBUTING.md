@@ -78,8 +78,14 @@ oc get servicebinding managed-kafka-binding-request -o yaml
 make installOLMOperator
 ```
 
+Removing operator
 
-Alternatively we can use CatalogSource (not recomended unless testing for production)
+```
+make removeOLMOperator
+```
+
+Alternatively we can use CatalogSource
+Not recomended unless testing for production due to lack of easy way to update operator
 
 ```
 kubectl apply -f - << EOD
@@ -91,10 +97,23 @@ metadata:
     namespace: openshift-marketplace
 spec:
     sourceType: grpc
-    image: quay.io/wtrocki/cdd59c7b5936ee1e79b6f1f9bfcb5d74:latest
+    image: quay.io/wtrocki/cdd59c7-index:latest
     displayName: Mananaged Kafka Operator deployment
     updateStrategy:
       registryPoll:
         interval: 20m
 EOD
+```
+
+## Updating the index image
+
+Requirements:
+- opm cli
+- Podman
+
+https://github.com/operator-framework/operator-registry#using-the-index-with-operator-lifecycle-manager
+
+```
+opm index add --build-tool=docker --bundles quay.io/wtrocki/cdd59c7-bundle:latest --tag quay.io/wtrocki/cdd59c7-index:latest
+docker push cdd59c7-index:latest
 ```

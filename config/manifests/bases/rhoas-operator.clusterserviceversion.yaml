@@ -27,7 +27,7 @@ spec:
       deployments: null
     strategy: ""
   installModes:
-  - supported: false
+  - supported: true
     type: OwnNamespace
   - supported: true
     type: SingleNamespace
@@ -39,10 +39,10 @@ spec:
   - kafka
   - services
   links:
-  - name: rhoas operator
-    url: https://rhoas-operator.domain
+  - name: Operator Documentation
+    url: https://redhat.com
   maturity: alpha
   provider:
-    name: RedHat
+    name: Red Hat
     url: redhat.com
   version: 0.1.0
