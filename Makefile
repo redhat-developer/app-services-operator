@@ -133,6 +133,10 @@ bundle-push:
 	docker tag ${BUNDLE_NAME}:0.1.0 ${BUNDLE_NAME}:latest
 	docker push ${BUNDLE_NAME}:latest
 
+## Build and publish all that is needed to make things work
+.PHONY: docker-all
+docker-all: manifests generate docker-build docker-push packagemanifests bundle bundle-build bundle-push
+
 ## Added manually based on 
 ## https://sdk.operatorframework.io/docs/olm-integration/generation/#package-manifests-format
 # Options for "packagemanifests".
