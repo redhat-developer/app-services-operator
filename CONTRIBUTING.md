@@ -115,5 +115,5 @@ https://github.com/operator-framework/operator-registry#using-the-index-with-ope
 
 ```
 opm index add --build-tool=docker --bundles quay.io/wtrocki/cdd59c7-bundle:latest --tag quay.io/wtrocki/cdd59c7-index:latest
-docker push cdd59c7-index:latest
+docker push quay.io/wtrocki/cdd59c7-index:latest
 ```

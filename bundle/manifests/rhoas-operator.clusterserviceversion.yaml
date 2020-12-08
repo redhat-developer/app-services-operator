@@ -75,8 +75,11 @@ spec:
           verbs:
           - create
           - delete
+          - get
+          - list
           - patch
           - update
+          - watch
         - apiGroups:
           - rhoas.redhat.com
           resources:
