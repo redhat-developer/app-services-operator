@@ -166,3 +166,8 @@ installOLMOperator:
 .PHONY: generateImage
 removeOLMOperator: 
 	operator-sdk cleanup rhoas-operator
+
+.PHONY: buildIndexImage
+buildIndexImage: 
+	opm index add --build-tool=docker --bundles quay.io/wtrocki/cdd59c7-bundle:latest --tag quay.io/wtrocki/cdd59c7-index:latest
+	docker push quay.io/wtrocki/cdd59c7-index:latest
