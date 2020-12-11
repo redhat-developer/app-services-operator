@@ -2,7 +2,3 @@
 
 * link:./installation.adoc[Installation process]
 * link:./gettingstarted.adoc[Getting Started]
-
-=== Quickstarts 
-
-* link:./guides/node-binding[Binding your Node Application]
