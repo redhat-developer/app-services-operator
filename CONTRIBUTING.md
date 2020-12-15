@@ -115,3 +115,8 @@ https://github.com/operator-framework/operator-registry#using-the-index-with-ope
 ```
 make buildIndexImage
 ```
+
+## Cleaning all Resources and Bindings
+
+ oc delete ManagedKafkaConnection --all --grace-period=0
+ oc delete ServiceBinding --all --grace-period=0
