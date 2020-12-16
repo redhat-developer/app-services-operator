@@ -12,6 +12,7 @@
     <packaging>jar</packaging>
 
     <properties>
+        <operator.sdk.version>1.5.0</operator.sdk.version>
         <java.version>11</java.version>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
@@ -21,7 +22,7 @@
         <dependency>
             <groupId>io.javaoperatorsdk</groupId>
             <artifactId>operator-framework</artifactId>
-            <version>1.5.0</version>
+            <version>${operator.sdk.version}</version>
           </dependency>
     </dependencies>
 

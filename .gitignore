@@ -28,4 +28,4 @@ container/container
 
 postgresql-operator
 .DS_Store
-java/rhoas/.settings/
+.vscode/settings.json
