@@ -1,3 +1,7 @@
+> NOTE: Documentation covers golang operator. We are in process of migration to java operator. 
+See ./java/rhoas folder
+
+
 ## Running Operator:
 
 1. Regenerate operator and resources
