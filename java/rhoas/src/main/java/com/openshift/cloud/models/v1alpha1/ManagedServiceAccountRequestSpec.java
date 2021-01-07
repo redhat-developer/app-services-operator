@@ -62,6 +62,4 @@ public class ManagedServiceAccountRequestSpec {
     public void setServiceAccountSecretName(String serviceAccountSecretName) {
         this.serviceAccountSecretName = serviceAccountSecretName;
     }
-
-
 }
