@@ -25,6 +25,11 @@
             <artifactId>operator-framework</artifactId>
             <version>${operator.sdk.version}</version>
           </dependency>
+        <dependency>
+            <groupId>io.dekorate</groupId>
+            <artifactId>crd-annotations</artifactId>
+            <version>1.0.1</version>
+        </dependency>
     </dependencies>
 
     <build>
