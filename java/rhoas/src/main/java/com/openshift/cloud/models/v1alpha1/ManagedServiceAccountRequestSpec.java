@@ -1,11 +1,5 @@
 
-package com.openshift.cloud.v1alpha.models;
-
-import java.util.HashMap;
-import java.util.Map;
-mport io.dekorate.crd.annotation.CustomResource;
-import io.dekorate.crd.annotation.Status;
-import io.dekorate.crd.config.Scope;
+package com.openshift.cloud.models.v1alpha1;
 
 public class ManagedServiceAccountRequestSpec {
 
@@ -13,7 +7,7 @@ public class ManagedServiceAccountRequestSpec {
     private String reset;
     private String description;
     private String serviceAccountSecretName;
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+
 
     /**
      * No args constructor for use in serialization
@@ -67,14 +61,6 @@ public class ManagedServiceAccountRequestSpec {
 
     public void setServiceAccountSecretName(String serviceAccountSecretName) {
         this.serviceAccountSecretName = serviceAccountSecretName;
-    }
-
-    public Map<String, Object> getAdditionalProperties() {
-        return this.additionalProperties;
-    }
-
-    public void setAdditionalProperty(String name, Object value) {
-        this.additionalProperties.put(name, value);
     }
 
 
