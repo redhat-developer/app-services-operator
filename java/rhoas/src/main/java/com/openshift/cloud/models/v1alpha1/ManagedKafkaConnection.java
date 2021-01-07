@@ -19,7 +19,6 @@ public class ManagedKafkaConnection {
     }
 
     /**
-     * 
      * @param managedKafkaConnectionSpec
      * @param managedKafkaConnectionStatus
      */

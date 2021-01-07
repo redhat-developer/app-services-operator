@@ -1,9 +1,6 @@
 
 package com.openshift.cloud.models.v1alpha1;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class UserKafka {
 
     private Object mykafka1;
@@ -86,14 +83,6 @@ public class UserKafka {
 
     public void setOwner(String owner) {
         this.owner = owner;
-    }
-
-    public Map<String, Object> getAdditionalProperties() {
-        return this.additionalProperties;
-    }
-
-    public void setAdditionalProperty(String name, Object value) {
-        this.additionalProperties.put(name, value);
     }
 
 
