@@ -3,19 +3,20 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.openshift.cloud</groupId>
+    <parent>
+        <groupId>com.openshift.cloud</groupId>
+        <artifactId>rhoas-operator-parent</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+
     <artifactId>rhoas-operator</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
- 
+    
     <name>rhoas-operator</name>
     <description>rhoas-operator</description>
     <packaging>jar</packaging>
 
     <properties>
-        <operator.sdk.version>1.5.0</operator.sdk.version>
-        <java.version>11</java.version>
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
+        <operator.sdk.version>1.6.1</operator.sdk.version>
     </properties>
 
     <dependencies>
