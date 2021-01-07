@@ -1,36 +1,33 @@
 
-package com.openshift.cloud.v1alpha.models;
+package com.openshift.cloud.models.v1alpha1;
 
-import java.util.HashMap;
-import java.util.Map;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
-
-public class ManagedServiceAccountRequestStatus {
+public class ManagedKafkaConnectionStatus {
 
     private String message;
     private String updated;
+    private BoostrapServer boostrapServer;
     private String serviceAccountSecretName;
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+
 
     /**
      * No args constructor for use in serialization
      * 
      */
-    public ManagedServiceAccountRequestStatus() {
+    public ManagedKafkaConnectionStatus() {
     }
 
     /**
      * 
      * @param serviceAccountSecretName
      * @param message
+     * @param boostrapServer
      * @param updated
      */
-    public ManagedServiceAccountRequestStatus(String message, String updated, String serviceAccountSecretName) {
+    public ManagedKafkaConnectionStatus(String message, String updated, BoostrapServer boostrapServer, String serviceAccountSecretName) {
         super();
         this.message = message;
         this.updated = updated;
+        this.boostrapServer = boostrapServer;
         this.serviceAccountSecretName = serviceAccountSecretName;
     }
 
@@ -50,6 +47,14 @@ public class ManagedServiceAccountRequestStatus {
         this.updated = updated;
     }
 
+    public BoostrapServer getBoostrapServer() {
+        return boostrapServer;
+    }
+
+    public void setBoostrapServer(BoostrapServer boostrapServer) {
+        this.boostrapServer = boostrapServer;
+    }
+
     public String getServiceAccountSecretName() {
         return serviceAccountSecretName;
     }
@@ -58,12 +63,5 @@ public class ManagedServiceAccountRequestStatus {
         this.serviceAccountSecretName = serviceAccountSecretName;
     }
 
-    public Map<String, Object> getAdditionalProperties() {
-        return this.additionalProperties;
-    }
-
-    public void setAdditionalProperty(String name, Object value) {
-        this.additionalProperties.put(name, value);
-    }
 
 }
