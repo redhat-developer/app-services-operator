@@ -3,7 +3,7 @@ package com.openshift.cloud.v1alpha.models;
 
 import java.util.HashMap;
 import java.util.Map;
-mport io.dekorate.crd.annotation.CustomResource;
+import io.dekorate.crd.annotation.CustomResource;
 import io.dekorate.crd.annotation.Status;
 import io.dekorate.crd.config.Scope;
 
