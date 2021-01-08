@@ -34,12 +34,6 @@
             <artifactId>managed-services-api</artifactId>
             <version>${project.version}</version>
         </dependency>
-        <dependency>
-            <groupId>io.dekorate</groupId>
-            <artifactId>crd-annotations</artifactId>
-            <version>1.0.1</version>
-        </dependency>
-
     </dependencies>
 
     <build>

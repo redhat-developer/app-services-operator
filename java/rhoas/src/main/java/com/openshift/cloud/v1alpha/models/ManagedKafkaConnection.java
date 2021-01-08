@@ -3,6 +3,9 @@ package com.openshift.cloud.v1alpha.models;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import io.dekorate.crd.annotation.CustomResource;
+import io.dekorate.crd.config.Scope;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
