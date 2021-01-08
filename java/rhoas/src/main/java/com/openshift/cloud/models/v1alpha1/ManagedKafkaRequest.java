@@ -1,15 +1,17 @@
 
 package com.openshift.cloud.models.v1alpha1;
 
+import io.dekorate.crd.annotation.Status;
+
 //@CustomResource(group = "rhoas.redhat.com", version = "v1alpha1", scope = Scope.Namespaced)
 public class ManagedKafkaRequest {
 
     private ManagedKafkaRequestSpec managedKafkaRequestSpec;
+    @Status
     private ManagedKafkaRequestStatus managedKafkaRequestStatus;
 
     /**
      * No args constructor for use in serialization
-     * 
      */
     public ManagedKafkaRequest() {
     }
