@@ -1,7 +1,7 @@
 
 package com.openshift.cloud.models.v1alpha1;
 
-//@CustomResource(group = "rhoas.redhat.com", version = "v1alpha1", scope = Scope.Namespaced)
+//@CustomResource(group = "rhoas.redhat.com", version = "v1alpha2", scope = Scope.Namespaced)
 public class ManagedServiceAccountRequest {
 
     private ManagedServiceAccountRequestSpec managedServiceAccountRequestSpec;
