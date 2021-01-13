@@ -24,3 +24,7 @@ build
 service-api/docs
 service-api/api
 service-api/java/service-api/src/main/AndroidManifest.xml
+
+#JAVA IDE Files
+*.iml
+.project
