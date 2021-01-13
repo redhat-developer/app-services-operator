@@ -4,17 +4,18 @@ package com.openshift.cloud.v1alpha.models;
 import java.util.HashMap;
 import java.util.Map;
 
-import io.dekorate.crd.annotation.CustomResource;
 import io.dekorate.crd.config.Scope;
+import io.fabric8.kubernetes.client.CustomResource;
+
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
-@CustomResource(group = "rhoas.redhat.com", version = "v1alpha1", scope = Scope.Namespaced)
-public class ManagedKafkaConnection {
+//@CustomResource(group = "rhoas.redhat.com", version = "v1alpha1", scope = Scope.Namespaced)
+public class ManagedKafkaConnection extends CustomResource {
 
-    private ManagedKafkaConnectionSpec managedKafkaConnectionSpec;
-    private ManagedKafkaConnectionStatus managedKafkaConnectionStatus;
+    private ManagedKafkaConnectionSpec spec;
+    private ManagedKafkaConnectionStatus status;
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     /**
@@ -26,29 +27,29 @@ public class ManagedKafkaConnection {
 
     /**
      * 
-     * @param managedKafkaConnectionSpec
-     * @param managedKafkaConnectionStatus
+     * @param spec
+     * @param status
      */
-    public ManagedKafkaConnection(ManagedKafkaConnectionSpec managedKafkaConnectionSpec, ManagedKafkaConnectionStatus managedKafkaConnectionStatus) {
+    public ManagedKafkaConnection(ManagedKafkaConnectionSpec spec, ManagedKafkaConnectionStatus status) {
         super();
-        this.managedKafkaConnectionSpec = managedKafkaConnectionSpec;
-        this.managedKafkaConnectionStatus = managedKafkaConnectionStatus;
+        this.spec = spec;
+        this.status = status;
     }
 
-    public ManagedKafkaConnectionSpec getManagedKafkaConnectionSpec() {
-        return managedKafkaConnectionSpec;
+    public ManagedKafkaConnectionSpec getSpec() {
+        return spec;
     }
 
-    public void setManagedKafkaConnectionSpec(ManagedKafkaConnectionSpec managedKafkaConnectionSpec) {
-        this.managedKafkaConnectionSpec = managedKafkaConnectionSpec;
+    public void setSpec(ManagedKafkaConnectionSpec managedKafkaConnectionSpec) {
+        this.spec = managedKafkaConnectionSpec;
     }
 
-    public ManagedKafkaConnectionStatus getManagedKafkaConnectionStatus() {
-        return managedKafkaConnectionStatus;
+    public ManagedKafkaConnectionStatus getStatus() {
+        return status;
     }
 
-    public void setManagedKafkaConnectionStatus(ManagedKafkaConnectionStatus managedKafkaConnectionStatus) {
-        this.managedKafkaConnectionStatus = managedKafkaConnectionStatus;
+    public void setStatus(ManagedKafkaConnectionStatus managedKafkaConnectionStatus) {
+        this.status = managedKafkaConnectionStatus;
     }
 
     public Map<String, Object> getAdditionalProperties() {
@@ -61,12 +62,12 @@ public class ManagedKafkaConnection {
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this).append("managedKafkaConnectionSpec", managedKafkaConnectionSpec).append("managedKafkaConnectionStatus", managedKafkaConnectionStatus).append("additionalProperties", additionalProperties).toString();
+        return new ToStringBuilder(this).append("managedKafkaConnectionSpec", spec).append("managedKafkaConnectionStatus", status).append("additionalProperties", additionalProperties).toString();
     }
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(managedKafkaConnectionSpec).append(managedKafkaConnectionStatus).append(additionalProperties).toHashCode();
+        return new HashCodeBuilder().append(spec).append(status).append(additionalProperties).toHashCode();
     }
 
     @Override
@@ -78,7 +79,7 @@ public class ManagedKafkaConnection {
             return false;
         }
         ManagedKafkaConnection rhs = ((ManagedKafkaConnection) other);
-        return new EqualsBuilder().append(managedKafkaConnectionSpec, rhs.managedKafkaConnectionSpec).append(managedKafkaConnectionStatus, rhs.managedKafkaConnectionStatus).append(additionalProperties, rhs.additionalProperties).isEquals();
+        return new EqualsBuilder().append(spec, rhs.spec).append(status, rhs.status).append(additionalProperties, rhs.additionalProperties).isEquals();
     }
 
 }
