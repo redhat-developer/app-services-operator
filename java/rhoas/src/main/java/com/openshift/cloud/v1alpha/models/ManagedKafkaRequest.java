@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.Map;
 import io.fabric8.kubernetes.client.CustomResource;
 import io.javaoperatorsdk.operator.api.Controller;
-import io.dekorate.crd.annotation.Status;
-import io.dekorate.crd.config.Scope;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;

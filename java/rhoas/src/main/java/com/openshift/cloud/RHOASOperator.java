@@ -8,8 +8,6 @@ import io.quarkus.runtime.Quarkus;
 import io.quarkus.runtime.QuarkusApplication;
 import io.quarkus.runtime.annotations.QuarkusMain;
 import org.jboss.logging.Logger;
-
-
 import javax.inject.Inject;
 
 @QuarkusMain
@@ -38,7 +36,6 @@ public class RHOASOperator implements QuarkusApplication {
     public int run(String... args) throws Exception {
         final var config = configuration.getConfigurationFor(controller);
         LOG.info("CR class: " + config.getCustomResourceClass());
-        LOG.info("Doneable class = " + config.getDoneableClass());
         Quarkus.waitForExit();
         return 0;
     }

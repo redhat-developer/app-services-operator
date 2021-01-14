@@ -3,14 +3,13 @@ package com.openshift.cloud.v1alpha.models;
 
 import java.util.HashMap;
 import java.util.Map;
-import io.dekorate.crd.annotation.CustomResource;
-import io.dekorate.crd.annotation.Status;
-import io.dekorate.crd.config.Scope;
+
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-@CustomResource(group = "rhoas.redhat.com", version = "v1alpha1", scope = Scope.Namespaced)
+//@CustomResource(group = "rhoas.redhat.com", version = "v1alpha1", scope = Scope.Namespaced)
 public class ManagedServiceAccountRequest {
 
     private ManagedServiceAccountRequestSpec managedServiceAccountRequestSpec;
