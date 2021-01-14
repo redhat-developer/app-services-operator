@@ -36,7 +36,7 @@ public final class ApiClients {
     @Inject
     KubernetesClient client;
 
-    private MixedOperation<ManagedKafkaConnection, ManagedKafkaConnectionList, Resource<ManagedKafkaConnection>> mkcClient;
+    private CustomResourceDefinition mkcCrd;
 
     @PostConstruct
     public void init() {
@@ -44,17 +44,23 @@ public final class ApiClients {
 
         var crds = client.apiextensions().v1beta1();
 
-        this.mkcClient = initManagedKafkaConnectionCRDAndClient(crds);
+        this.mkcCrd = initManagedKafkaConnectionCRDAndClient(crds);
 
         LOG.info("ApiClient bean init ended");
 
     }
 
     public MixedOperation<ManagedKafkaConnection, ManagedKafkaConnectionList, Resource<ManagedKafkaConnection>> managedKafkaConnection() {
-        return mkcClient;
+        KubernetesDeserializer.registerCustomKind(getApiVersion(ManagedKafkaConnection.class), mkcCrd.getKind(),
+                ManagedKafkaConnection.class);
+
+        var mkcCrdContext = CustomResourceDefinitionContext.fromCrd(this.mkcCrd);
+
+        // lets create a client for the CRD
+        return client.customResources(mkcCrdContext, ManagedKafkaConnection.class, ManagedKafkaConnectionList.class);
     }
 
-    private MixedOperation<ManagedKafkaConnection, ManagedKafkaConnectionList, Resource<ManagedKafkaConnection>> initManagedKafkaConnectionCRDAndClient(
+    private CustomResourceDefinition initManagedKafkaConnectionCRDAndClient(
             V1beta1ApiextensionAPIGroupDSL crds) {
 
         CustomResourceDefinition mkcCrd;
@@ -79,14 +85,7 @@ public final class ApiClients {
             mkcCrd = mkcCrdOptional.get();
         }
 
-
-        KubernetesDeserializer.registerCustomKind(getApiVersion(ManagedKafkaConnection.class), mkcCrd.getKind(),
-                ManagedKafkaConnection.class);
-
-        var mkcCrdContext = CustomResourceDefinitionContext.fromCrd(mkcCrd);
-
-        // lets create a client for the CRD
-        return client.customResources(mkcCrdContext, ManagedKafkaConnection.class, ManagedKafkaConnectionList.class);
+        return mkcCrd;
 
     }
 
