@@ -9,7 +9,6 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-//@CustomResource(group = "rhoas.redhat.com", version = "v1alpha1", scope = Scope.Namespaced)
 public class ManagedServiceAccountRequest {
 
     private ManagedServiceAccountRequestSpec managedServiceAccountRequestSpec;

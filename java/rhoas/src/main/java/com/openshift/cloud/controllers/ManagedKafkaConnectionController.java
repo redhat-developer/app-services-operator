@@ -1,8 +1,5 @@
 package com.openshift.cloud.controllers;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import com.openshift.cloud.ApiClient;
 import com.openshift.cloud.ApiException;
 import com.openshift.cloud.Configuration;
@@ -13,21 +10,17 @@ import com.openshift.cloud.v1alpha.models.BoostrapServer;
 import com.openshift.cloud.v1alpha.models.ManagedKafkaConnection;
 import com.openshift.cloud.v1alpha.models.ManagedKafkaConnectionList;
 import com.openshift.cloud.v1alpha.models.ManagedKafkaConnectionStatus;
-
-import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
-import io.javaoperatorsdk.operator.api.Context;
-import io.javaoperatorsdk.operator.api.Controller;
-import io.javaoperatorsdk.operator.api.DeleteControl;
-import io.javaoperatorsdk.operator.api.ResourceController;
-import io.javaoperatorsdk.operator.api.UpdateControl;
+import io.javaoperatorsdk.operator.api.*;
 import io.javaoperatorsdk.operator.processing.event.EventSourceManager;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import javax.annotation.PostConstruct;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @Controller
 public class ManagedKafkaConnectionController implements ResourceController<ManagedKafkaConnection> {
@@ -36,7 +29,7 @@ public class ManagedKafkaConnectionController implements ResourceController<Mana
     private ApiClients k8sClients;
     private DefaultApi controlPanelApiClient;
 
-    @ConfigProperty(name = "client.basePath", defaultValue="https://api.stage.openshift.com")
+    @ConfigProperty(name = "client.basePath", defaultValue = "https://api.stage.openshift.com")
     String clientBasePath;
 
     @ConfigProperty(name = "client.bearerToken")
@@ -45,8 +38,6 @@ public class ManagedKafkaConnectionController implements ResourceController<Mana
 
     public ManagedKafkaConnectionController(ApiClients clients) {
         this.k8sClients = clients;
-
-
     }
 
     @Override
@@ -58,10 +49,9 @@ public class ManagedKafkaConnectionController implements ResourceController<Mana
 
     @Override
     public UpdateControl<ManagedKafkaConnection> createOrUpdateResource(ManagedKafkaConnection resource,
-            Context<ManagedKafkaConnection> context) {
+                                                                        Context<ManagedKafkaConnection> context) {
         LOG.info(String.format("Creating or Updating resource %s", resource.getMetadata().getName()));
 
-        var client = this.k8sClients.managedKafkaConnection();
         var kafkaId = resource.getSpec().getKafkaId();
 
         try {
@@ -75,7 +65,7 @@ public class ManagedKafkaConnectionController implements ResourceController<Mana
             return UpdateControl.updateCustomResourceAndStatus(resource);
         } catch (ApiException e) {
             LOG.log(Level.SEVERE, e.getMessage(), e);
-            return UpdateControl.noUpdate();    
+            return UpdateControl.noUpdate();
         }
 
     }
@@ -107,7 +97,6 @@ public class ManagedKafkaConnectionController implements ResourceController<Mana
     @Override
     public void init(EventSourceManager eventSourceManager) {
         LOG.info("Init! This is where we would add watches for child resources");
-
 
 
     }

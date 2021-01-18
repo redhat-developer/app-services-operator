@@ -13,7 +13,6 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-//@io.dekorate.crd.annotation.CustomResource(group = "rhoas.redhat.com", version = "v1alpha1", scope = Scope.Namespaced, plural = "managedkafkaconnections")
 @Plural("managedkafkaconnections")
 @Group("rhoas.redhat.com")
 @Version("v1alpha1")
