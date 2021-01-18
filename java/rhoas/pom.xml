@@ -11,7 +11,7 @@
   <name>rhoas-operator</name>
   <description>rhoas-operator</description>
   <properties>
-    <operator.sdk.version>1.6.4-SNAPSHOT</operator.sdk.version>
+    <operator.sdk.version>1.7.0</operator.sdk.version>
     <quarkus.version>1.11.0.Final</quarkus.version>
     <fabric8.version>5.0.0</fabric8.version>
   </properties>
@@ -55,7 +55,12 @@
       <artifactId>managed-services-api</artifactId>
       <version>${project.version}</version>
     </dependency>
-    
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter</artifactId>
+      <scope>test</scope>
+    </dependency>
+
 
   </dependencies>
   <build>
