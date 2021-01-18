@@ -41,8 +41,8 @@ public class ManagedKafkaConnectionController implements ResourceController<Mana
         
         // Configure HTTP bearer authorization: Bearer
         HttpBearerAuth Bearer = (HttpBearerAuth) defaultClient.getAuthentication("Bearer");
-        Bearer.setBearerToken("eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICItNGVsY19WZE5fV3NPVVlmMkc0UXhyOEdjd0l4X0t0WFVDaXRhdExLbEx3In0.eyJleHAiOjE2MTA2NjExMTIsImlhdCI6MTYxMDY2MDIxMiwiYXV0aF90aW1lIjoxNjEwNjUyODQ1LCJqdGkiOiI2ZDk0M2JlMy0zZTBiLTRjOWUtYWEwYi0zZmJlMmZlMGI1OGQiLCJpc3MiOiJodHRwczovL3Nzby5yZWRoYXQuY29tL2F1dGgvcmVhbG1zL3JlZGhhdC1leHRlcm5hbCIsImF1ZCI6ImNsb3VkLXNlcnZpY2VzIiwic3ViIjoiZjo1MjhkNzZmZi1mNzA4LTQzZWQtOGNkNS1mZTE2ZjRmZTBjZTY6c3VwaXR0bWFfa2Fma2FfZGV2ZXhwIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoiY2xvdWQtc2VydmljZXMiLCJub25jZSI6IjQ2MDQ2Mjk5LTAwZTAtNDVmYS05N2ExLTQzM2Q4YWVkN2MzMyIsInNlc3Npb25fc3RhdGUiOiJhMmQ3YjgyNC05ZTA2LTRjYmMtYTNjMy1hMjEzZDc4NjVhYmMiLCJhY3IiOiIxIiwiYWxsb3dlZC1vcmlnaW5zIjpbImh0dHBzOi8vcHJvZC5mb28ucmVkaGF0LmNvbToxMzM3IiwiaHR0cHM6Ly9hcGkuY2xvdWQucmVkaGF0LmNvbSIsImh0dHBzOi8vcWFwcm9kYXV0aC5jbG91ZC5yZWRoYXQuY29tIiwiaHR0cHM6Ly9jbG91ZC5vcGVuc2hpZnQuY29tIiwiaHR0cHM6Ly9wcm9kLmZvby5yZWRoYXQuY29tIiwiaHR0cHM6Ly9jbG91ZC5yZWRoYXQuY29tIl0sInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJhdXRoZW50aWNhdGVkIiwiY2FuZGxlcGluX3N5c3RlbV9hY2Nlc3Nfdmlld19lZGl0X3BlcnNvbmFsIl19LCJzY29wZSI6Im9wZW5pZCIsImFjY291bnRfbnVtYmVyIjoiNjk1NDYwOCIsImlzX2ludGVybmFsIjpmYWxzZSwiYWNjb3VudF9pZCI6IjUzODU4NTM1IiwiaXNfYWN0aXZlIjp0cnVlLCJvcmdfaWQiOiIxMzgzODYxNCIsImxhc3RfbmFtZSI6IlBpdG1hbiIsInR5cGUiOiJVc2VyIiwibG9jYWxlIjoiZW5fVVMiLCJmaXJzdF9uYW1lIjoiU3VtbWVycyIsImVtYWlsIjoic3VwaXR0bWFAcmVkaGF0LmNvbSIsInVzZXJuYW1lIjoic3VwaXR0bWFfa2Fma2FfZGV2ZXhwIiwiaXNfb3JnX2FkbWluIjpmYWxzZX0.qeZn_6QUoOrFnTFlPRSEWozyMsiKtgWKMbB-LAQUvwDAjoQGeTMBEjJsTDE_t7E-7HuYMd1UH74k052Ef5K07vT65QlR_9HgyAIppGUFqg1_uZPPH_xQv2wcEp5AbqDaGvKzPrDpNhEvdaQ50H7AegurD7l7XKK5bw5-2876Py_i-lLMeVQbFdpG4UyMcv1v8gTo8TR9okoDYjezRMd5wr3Xxqd1hLD1uH6vCWmKOH4pjp-jegsSdN0dQA4l5CQG4fh9CiWYkB2KhW0C-_g1y-wTdx-Npugjp5RFs6uclViarEzCYZW9gc33DP1bzulHYbbJ_HSbps6p46m2pn1db_-Y0RqwzH28RM6WtutOtfmTULqt1C0zyhZ1ynF_1UaGbNLg8GkUrYbs5hIuP54lAGdMJPWX4qo2iX26IJS3X6nP4lf2xDY4e060LpEreuIUHkQRpXP7yVsnG2-EHPovukeTgtcFqQxt05PUils9oV3EVlAPRYW6hoCg3_AjV99Ztwl8mVlFeL-9mI0xbHL6ZGyU52vaLzlrYAzVVpOfkTbGe8v6AhJEXschtSBE019iBCvhV7byCzssoENMRRVPM5sbzt2mLI7zmgAGEwSva7nSJ3n5oSdYH-qh6YdTxizEPT9ggAZUAgyzF9qe4ts0acL4HPOKtEv4LurswSJetKc");
-        
+        Bearer.setBearerToken("eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICItNGVsY19WZE5fV3NPVVlmMkc0UXhyOEdjd0l4X0t0WFVDaXRhdExLbEx3In0.eyJleHAiOjE2MTA5ODM4MDIsImlhdCI6MTYxMDk4MjkwMiwiYXV0aF90aW1lIjoxNjEwOTgyODg3LCJqdGkiOiI2NTY1MTA2YS1mMTVmLTQ3ZWItOTdkNy0wMWMyOWFkYmJmOGUiLCJpc3MiOiJodHRwczovL3Nzby5yZWRoYXQuY29tL2F1dGgvcmVhbG1zL3JlZGhhdC1leHRlcm5hbCIsImF1ZCI6ImNsb3VkLXNlcnZpY2VzIiwic3ViIjoiZjo1MjhkNzZmZi1mNzA4LTQzZWQtOGNkNS1mZTE2ZjRmZTBjZTY6c3VwaXR0bWFfa2Fma2FfZGV2ZXhwIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoiY2xvdWQtc2VydmljZXMiLCJub25jZSI6ImZiNDRlNzhlLTk2MmEtNDRkMi04MjZkLWRhZDczNmM4MWJmYSIsInNlc3Npb25fc3RhdGUiOiJiOWVhNjdhZC1kN2ExLTQ3MGQtYTRjYi0xMmRlNzMxNjE0OGMiLCJhY3IiOiIxIiwiYWxsb3dlZC1vcmlnaW5zIjpbImh0dHBzOi8vcHJvZC5mb28ucmVkaGF0LmNvbToxMzM3IiwiaHR0cHM6Ly9hcGkuY2xvdWQucmVkaGF0LmNvbSIsImh0dHBzOi8vcWFwcm9kYXV0aC5jbG91ZC5yZWRoYXQuY29tIiwiaHR0cHM6Ly9jbG91ZC5vcGVuc2hpZnQuY29tIiwiaHR0cHM6Ly9wcm9kLmZvby5yZWRoYXQuY29tIiwiaHR0cHM6Ly9jbG91ZC5yZWRoYXQuY29tIl0sInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJhdXRoZW50aWNhdGVkIiwiY2FuZGxlcGluX3N5c3RlbV9hY2Nlc3Nfdmlld19lZGl0X3BlcnNvbmFsIl19LCJzY29wZSI6Im9wZW5pZCIsImFjY291bnRfbnVtYmVyIjoiNjk1NDYwOCIsImlzX2ludGVybmFsIjpmYWxzZSwiYWNjb3VudF9pZCI6IjUzODU4NTM1IiwiaXNfYWN0aXZlIjp0cnVlLCJvcmdfaWQiOiIxMzgzODYxNCIsImxhc3RfbmFtZSI6IlBpdG1hbiIsInR5cGUiOiJVc2VyIiwibG9jYWxlIjoiZW5fVVMiLCJmaXJzdF9uYW1lIjoiU3VtbWVycyIsImVtYWlsIjoic3VwaXR0bWFAcmVkaGF0LmNvbSIsInVzZXJuYW1lIjoic3VwaXR0bWFfa2Fma2FfZGV2ZXhwIiwiaXNfb3JnX2FkbWluIjpmYWxzZX0.u7y6zS-w17hUBDqtfsdVIRKMUk-C5u3eevcknnHxP6YK09WaAlF0MMYjVP-9S1DBCZVxhlfN-kKUf01Nqt0NFPnueOcUHkJpd8GyC8FYN7NGaW-PWp0su3H4KLvHruhy54cSChO59UHTq2oeX4toCUJelvz39DO95JI3a_OkGORfpLV_s9aV12_zLoNnJ_1pNL7VaZvH_uCiPeTk5p0YscY7gtybHtqleOBx7agWVRcnXu9Wg67qAD3_THzzQTrj_aprG0YCMWyePV3gZcV6aAQpmR4POdBUEK36opRITy2_QC-VLeYtAxtv5z0vLaqtvGtSB7yDV3hBGPGWxV6f4D7n2z8377McJUuk-Phnxu0LZW2xqt5B_JfdfBJ67KIQUYBe2SsL39JXTfA0ZM8XTvAaIRsYQXfXDt5o_pE7g4wIx8ddhftCsVSTvWtu0MjZObWj_wnjfU4PJtq1xyhncyjvcn5P8dCAcyk3OFqEYf6W79tz7uZzkjYJoEoqKJkDSc5yRe7guDWXU4l4Mi6MUtveFtULcnoHqkOMq-4RyPjB3Jq4iE770UQv_1pm_RvlBK9wQOh5V1U1eBIZS5Ui7BgNI__iVdmE6e91HWECJNFMihzNE7SiS8vaBIAs5akiI-nP0n2ZG1mSw1zifoS4BBx8ieiDiixfDkjRjzWfXc");
+
         this.controlPanelApiClient = new DefaultApi(defaultClient);
 
     }
@@ -51,11 +51,6 @@ public class ManagedKafkaConnectionController implements ResourceController<Mana
     public DeleteControl deleteResource(ManagedKafkaConnection resource, Context<ManagedKafkaConnection> context) {
         LOG.info(String.format("Deleting resource %s", resource.getMetadata().getName()));
 
-        // client.
-        // .services()
-        // .inNamespace(resource.getMetadata().getNamespace())
-        // .withName(resource.getSpec().getName())
-        // .delete();
         return DeleteControl.DEFAULT_DELETE;
     }
 
@@ -73,32 +68,9 @@ public class ManagedKafkaConnectionController implements ResourceController<Mana
             var bootStrapServer = new BoostrapServer(bootStrapHost);
 
             var status = new ManagedKafkaConnectionStatus("Created", "Updated", bootStrapServer, "sa secretname");
-            
-            // if (client
-            // .inNamespace(resource.getMetadata().getNamespace())
-            // .withName(resource.getMetadata().getName())
-            // .get() != null) {
-            //     client
-            //     .inNamespace(resource.getMetadata().getNamespace())
-            //     .withName(resource.getMetadata().getName())
-            //     .delete();
-            // }
+            resource.setStatus(status);
 
-            var newConnection = new ManagedKafkaConnection(resource.getSpec(), status);
-            
-            var meta = new ObjectMeta();
-            meta.setName(resource.getMetadata().getName());
-            meta.setNamespace(resource.getMetadata().getNamespace());
-            meta.setLabels(resource.getMetadata().getLabels());
-
-            newConnection.setMetadata(meta);
-
-            client
-                .inNamespace(resource.getMetadata().getNamespace())
-                .withName(resource.getMetadata().getName())
-                .createOrReplace(newConnection);
-
-            return UpdateControl.noUpdate();
+            return UpdateControl.updateCustomResourceAndStatus(resource);
         } catch (ApiException e) {
             LOG.log(Level.SEVERE, e.getMessage(), e);
             return UpdateControl.noUpdate();    
