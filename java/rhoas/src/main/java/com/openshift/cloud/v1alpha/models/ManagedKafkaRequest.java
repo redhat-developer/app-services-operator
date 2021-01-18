@@ -1,17 +1,15 @@
 
 package com.openshift.cloud.v1alpha.models;
 
-import java.util.HashMap;
-import java.util.Map;
 import io.fabric8.kubernetes.client.CustomResource;
-import io.javaoperatorsdk.operator.api.Controller;
-import io.dekorate.crd.annotation.Status;
-import io.dekorate.crd.config.Scope;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-//@CustomResource(group = "rhoas.redhat.com", version = "v1alpha1", scope = Scope.Namespaced)
+import java.util.HashMap;
+import java.util.Map;
+
+
 public class ManagedKafkaRequest extends CustomResource {
 
     private ManagedKafkaRequestSpec managedKafkaRequestSpec;

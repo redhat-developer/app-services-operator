@@ -28,3 +28,7 @@ service-api/java/service-api/src/main/AndroidManifest.xml
 #JAVA IDE Files
 *.iml
 .project
+.settings/*
+.vscode/*
+
+*.classpath

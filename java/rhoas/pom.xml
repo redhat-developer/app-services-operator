@@ -11,14 +11,15 @@
   <name>rhoas-operator</name>
   <description>rhoas-operator</description>
   <properties>
-    <operator.sdk.version>1.6.1</operator.sdk.version>
-    <quarkus.version>1.10.5.Final</quarkus.version>
+    <operator.sdk.version>1.7.0</operator.sdk.version>
+    <quarkus.version>1.11.0.Final</quarkus.version>
+    <fabric8.version>5.0.0</fabric8.version>
   </properties>
   <dependencyManagement>
     <dependencies>
       <dependency>
         <groupId>io.quarkus</groupId>
-        <artifactId>quarkus-universe-bom</artifactId>
+        <artifactId>quarkus-bom</artifactId>
         <version>${quarkus.version}</version>
         <type>pom</type>
         <scope>import</scope>
@@ -26,6 +27,13 @@
     </dependencies>
   </dependencyManagement>
   <dependencies>
+
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>kubernetes-client</artifactId>
+      <version>${fabric8.version}</version>
+    </dependency>
+
     <dependency>
       <groupId>io.javaoperatorsdk</groupId>
       <artifactId>operator-framework</artifactId>
@@ -36,25 +44,24 @@
       <artifactId>operator-framework-quarkus-extension</artifactId>
       <version>${operator.sdk.version}</version>
     </dependency>
-    <!-- <dependency>
-      <groupId>io.javaoperatorsdk</groupId>
-      <artifactId>operator-framework-samples-common</artifactId>
-      <version>${operator.sdk.version}</version>
-    </dependency> -->
+<!-- 
     <dependency>
       <groupId>io.dekorate</groupId>
       <artifactId>crd-annotations</artifactId>
-      <version>0.15.0</version>
-    </dependency>
+      <version>2.0.0-alpha-1</version>
+    </dependency> -->
     <dependency>
       <groupId>com.openshift.cloud</groupId>
       <artifactId>managed-services-api</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>io.quarkus</groupId>
-      <artifactId>quarkus-openshift</artifactId>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter</artifactId>
+      <scope>test</scope>
     </dependency>
+
+
   </dependencies>
   <build>
     <plugins>
