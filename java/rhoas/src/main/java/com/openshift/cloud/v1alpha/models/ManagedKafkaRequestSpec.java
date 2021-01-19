@@ -9,7 +9,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class ManagedKafkaRequestSpec {
 
-    private String accessTokenSecretName;
+    private String accessTokenSecretName = "rhoas_binding_operator_token";//Default as per ADR_00022
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     /**

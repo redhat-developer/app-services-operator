@@ -26,7 +26,6 @@ import java.util.logging.Logger;
 public class ManagedKafkaConnectionController implements ResourceController<ManagedKafkaConnection> {
 
     private static final Logger LOG = Logger.getLogger(ManagedKafkaConnectionController.class.getName());
-    private ApiClients k8sClients;
     private DefaultApi controlPanelApiClient;
 
     @ConfigProperty(name = "client.basePath", defaultValue = "https://api.stage.openshift.com")
@@ -36,8 +35,7 @@ public class ManagedKafkaConnectionController implements ResourceController<Mana
     String clientBearerToken;
 
 
-    public ManagedKafkaConnectionController(ApiClients clients) {
-        this.k8sClients = clients;
+    public ManagedKafkaConnectionController() {
     }
 
     @Override

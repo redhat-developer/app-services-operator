@@ -16,45 +16,9 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 @Plural("managedkafkaconnections")
 @Group("rhoas.redhat.com")
 @Version("v1alpha1")
-public class ManagedKafkaConnection extends CustomResource {
-    
-    private ManagedKafkaConnectionSpec spec;
-    private ManagedKafkaConnectionStatus status;
+public class ManagedKafkaConnection extends CustomResource<ManagedKafkaConnectionSpec, ManagedKafkaConnectionStatus> {
+
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
-
-    /**
-     * No args constructor for use in serialization
-     * 
-     */
-    public ManagedKafkaConnection() {
-    }
-
-    /**
-     * 
-     * @param spec
-     * @param status
-     */
-    public ManagedKafkaConnection(ManagedKafkaConnectionSpec spec, ManagedKafkaConnectionStatus status) {
-        super();
-        this.spec = spec;
-        this.status = status;
-    }
-
-    public ManagedKafkaConnectionSpec getSpec() {
-        return spec;
-    }
-
-    public void setSpec(ManagedKafkaConnectionSpec managedKafkaConnectionSpec) {
-        this.spec = managedKafkaConnectionSpec;
-    }
-
-    public ManagedKafkaConnectionStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(ManagedKafkaConnectionStatus managedKafkaConnectionStatus) {
-        this.status = managedKafkaConnectionStatus;
-    }
 
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
@@ -66,12 +30,12 @@ public class ManagedKafkaConnection extends CustomResource {
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this).append("managedKafkaConnectionSpec", spec).append("managedKafkaConnectionStatus", status).append("additionalProperties", additionalProperties).toString();
+        return new ToStringBuilder(this).append("managedKafkaConnectionSpec", getSpec()).append("managedKafkaConnectionStatus", getStatus()).append("additionalProperties", additionalProperties).toString();
     }
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(spec).append(status).append(additionalProperties).toHashCode();
+        return new HashCodeBuilder().append(getSpec()).append(getStatus()).append(additionalProperties).toHashCode();
     }
 
     @Override
@@ -83,7 +47,7 @@ public class ManagedKafkaConnection extends CustomResource {
             return false;
         }
         ManagedKafkaConnection rhs = ((ManagedKafkaConnection) other);
-        return new EqualsBuilder().append(spec, rhs.spec).append(status, rhs.status).append(additionalProperties, rhs.additionalProperties).isEquals();
+        return new EqualsBuilder().append(getSpec(), rhs.getSpec()).append(getStatus(), rhs.getStatus()).append(additionalProperties, rhs.additionalProperties).isEquals();
     }
 
 }

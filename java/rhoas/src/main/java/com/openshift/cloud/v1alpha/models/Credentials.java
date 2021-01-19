@@ -9,7 +9,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class Credentials {
 
-    private String serviceAccountSecretName;
+    private String serviceAccountSecretName = "rhoas_binding_operator_token";//Default as per ADR_00022
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     /**
