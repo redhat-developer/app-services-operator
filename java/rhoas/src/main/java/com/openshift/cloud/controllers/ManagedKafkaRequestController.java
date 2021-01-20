@@ -5,6 +5,7 @@ import com.openshift.cloud.ApiException;
 import com.openshift.cloud.Configuration;
 import com.openshift.cloud.api.DefaultApi;
 import com.openshift.cloud.auth.HttpBearerAuth;
+import com.openshift.cloud.beans.ApiClients;
 import com.openshift.cloud.v1alpha.models.*;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
@@ -18,14 +19,21 @@ import org.eclipse.microprofile.config.inject.ConfigProperty;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.logging.Logger;
+
+import javax.inject.Inject;
 
 @Controller
 public class ManagedKafkaRequestController  implements ResourceController<ManagedKafkaRequest> {
 
     private static final Logger LOG = Logger.getLogger(ManagedKafkaRequestController.class.getName());
     private final KubernetesClient k8sClient;
+
+    @Inject
+    ApiClients managedKafkaClientFactory;
+
 
     @ConfigProperty(name = "client.basePath", defaultValue = "https://api.stage.openshift.com")
     String clientBasePath;
@@ -47,8 +55,10 @@ public class ManagedKafkaRequestController  implements ResourceController<Manage
 
         try {
             updateManagedKafkaRequest(resource);
-
-            return UpdateControl.updateCustomResourceAndStatus(resource);
+            var mkClient = managedKafkaClientFactory.managedKafkaRequest();
+            mkClient.createOrReplace(resource);
+    
+            return UpdateControl.noUpdate();
         } catch (ApiException e) {
             e.printStackTrace();
         }
@@ -59,7 +69,10 @@ public class ManagedKafkaRequestController  implements ResourceController<Manage
     private void updateManagedKafkaRequest(ManagedKafkaRequest resource) throws ApiException {
         var saSecretName = resource.getSpec().getAccessTokenSecretName();
         var namespace = resource.getMetadata().getNamespace();
-        var saSecret = k8sClient.secrets().inNamespace(namespace).withName(saSecretName).get().getStringData().get("token");//TODO: what is the secret format?
+        var saSecret = k8sClient.secrets().inNamespace(namespace).withName(saSecretName).get().getData().get("token");//TODO: what is the secret format?
+        saSecret = new String(Base64.getDecoder().decode(saSecret));
+        
+        LOG.info(String.format("Secret %s", saSecret));
         var kafkaList = createClient(saSecret).listKafkas(null, null, null, null);
 
         var userKafkas = new HashMap<String, UserKafka>();
@@ -82,11 +95,13 @@ public class ManagedKafkaRequestController  implements ResourceController<Manage
     @Scheduled(every="60s")
     void reloadUserKafkas() {
         LOG.info("Refreshing user kafkas");
-        var mkClient = getManagedKafkaRequestClient(k8sClient);
-        mkClient.list().getItems().forEach(request -> {
+        
+        var mkClient = managedKafkaClientFactory.managedKafkaRequest();
+
+        mkClient.list().getItems().forEach(resource -> {
             try {
-                updateManagedKafkaRequest(request);
-                mkClient.createOrReplace(request);
+                updateManagedKafkaRequest(resource);
+                mkClient.createOrReplace(resource);
             } catch (ApiException e) {
                 e.printStackTrace();
             }
@@ -112,13 +127,5 @@ public class ManagedKafkaRequestController  implements ResourceController<Manage
         LOG.info("Init! This is where we would add watches for child resources");
     }
 
-
-    private MixedOperation<ManagedKafkaRequest, ManagedKafkaRequestList, Resource<ManagedKafkaRequest>> getManagedKafkaRequestClient(
-            KubernetesClient client) {
-        // Create Custom Resource Context
-        var context = CustomResourceDefinitionContext.fromCrd(CustomResourceDefinitionContext.v1beta1CRDFromCustomResourceType(ManagedKafkaRequest.class).build());
-        return client.customResources(context, ManagedKafkaRequest.class, ManagedKafkaRequestList.class);
-
-    }
 
 }

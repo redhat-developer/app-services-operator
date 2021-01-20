@@ -18,6 +18,7 @@ import io.javaoperatorsdk.operator.processing.event.EventSourceManager;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import java.text.SimpleDateFormat;
+import java.util.Base64;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -53,7 +54,9 @@ public class ManagedKafkaConnectionController implements ResourceController<Mana
             var kafkaId = resource.getSpec().getKafkaId();
             var saSecretName = resource.getSpec().getCredentials().getServiceAccountSecretName();
             var namespace = resource.getMetadata().getNamespace();
-            var saSecret = k8sClient.secrets().inNamespace(namespace).withName(saSecretName).get().getStringData().get("token");//TODO: what is the secret format?
+            var saSecret = k8sClient.secrets().inNamespace(namespace).withName(saSecretName).get().getData().get("token");//TODO: what is the secret format?
+            saSecret = new String(Base64.getDecoder().decode(saSecret));
+
             var kafkaServiceInfo = createClient(saSecret).getKafkaById(kafkaId);
 
             var bootStrapHost = kafkaServiceInfo.getBootstrapServerHost();
