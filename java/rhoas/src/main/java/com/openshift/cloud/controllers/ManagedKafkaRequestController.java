@@ -12,6 +12,7 @@ import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.javaoperatorsdk.operator.api.*;
 import io.javaoperatorsdk.operator.processing.event.EventSourceManager;
+import io.quarkus.scheduler.Scheduled;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import java.text.SimpleDateFormat;
@@ -45,26 +46,7 @@ public class ManagedKafkaRequestController  implements ResourceController<Manage
         LOG.info(String.format("Update or create resource %s", resource.getMetadata().getName()));
 
         try {
-            var saSecretName = resource.getSpec().getAccessTokenSecretName();
-            var namespace = resource.getMetadata().getNamespace();
-            var saSecret = k8sClient.secrets().inNamespace(namespace).withName(saSecretName).get().getStringData().get("token");//TODO: what is the secret format?
-            var kafkaList = createClient(saSecret).listKafkas(null, null, null, null);
-
-            var userKafkas = new HashMap<String, UserKafka>();
-
-            kafkaList.getItems().stream().forEach(listItem -> {
-                var userKafka = new UserKafka();
-                userKafka.setId(listItem.getId());
-                userKafka.setCreated(listItem.getCreatedAt().format(DateTimeFormatter.ISO_DATE_TIME));
-                userKafka.setOwner(listItem.getOwner());
-                userKafka.setProvider(listItem.getCloudProvider());
-                userKafka.setRegion(listItem.getRegion());
-
-                userKafkas.put(listItem.getName(), userKafka);
-            });
-
-            var status = new ManagedKafkaRequestStatus(LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME), userKafkas);
-            resource.setStatus(status);
+            updateManagedKafkaRequest(resource);
 
             return UpdateControl.updateCustomResourceAndStatus(resource);
         } catch (ApiException e) {
@@ -74,6 +56,42 @@ public class ManagedKafkaRequestController  implements ResourceController<Manage
 
     }
 
+    private void updateManagedKafkaRequest(ManagedKafkaRequest resource) throws ApiException {
+        var saSecretName = resource.getSpec().getAccessTokenSecretName();
+        var namespace = resource.getMetadata().getNamespace();
+        var saSecret = k8sClient.secrets().inNamespace(namespace).withName(saSecretName).get().getStringData().get("token");//TODO: what is the secret format?
+        var kafkaList = createClient(saSecret).listKafkas(null, null, null, null);
+
+        var userKafkas = new HashMap<String, UserKafka>();
+
+        kafkaList.getItems().stream().forEach(listItem -> {
+            var userKafka = new UserKafka();
+            userKafka.setId(listItem.getId());
+            userKafka.setCreated(listItem.getCreatedAt().format(DateTimeFormatter.ISO_DATE_TIME));
+            userKafka.setOwner(listItem.getOwner());
+            userKafka.setProvider(listItem.getCloudProvider());
+            userKafka.setRegion(listItem.getRegion());
+
+            userKafkas.put(listItem.getName(), userKafka);
+        });
+
+        var status = new ManagedKafkaRequestStatus(LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME), userKafkas);
+        resource.setStatus(status);
+    }
+
+    @Scheduled(every="60s")
+    void reloadUserKafkas() {
+        LOG.info("Refreshing user kafkas");
+        var mkClient = getManagedKafkaRequestClient(k8sClient);
+        mkClient.list().getItems().forEach(request -> {
+            try {
+                updateManagedKafkaRequest(request);
+                mkClient.createOrReplace(request);
+            } catch (ApiException e) {
+                e.printStackTrace();
+            }
+        });
+    }
 
     private DefaultApi createClient(String bearerToken) {
 
