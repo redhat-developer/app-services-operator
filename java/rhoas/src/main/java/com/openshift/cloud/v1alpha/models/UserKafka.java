@@ -6,7 +6,6 @@ import java.util.Map;
 
 public class UserKafka {
 
-    private Object mykafka1;
     private String id;
     private String created;
     private String provider;
@@ -26,26 +25,16 @@ public class UserKafka {
      * @param owner
      * @param provider
      * @param created
-     * @param mykafka1
      * @param id
      * @param region
      */
-    public UserKafka(Object mykafka1, String id, String created, String provider, String region, String owner) {
+    public UserKafka(String id, String created, String provider, String region, String owner) {
         super();
-        this.mykafka1 = mykafka1;
         this.id = id;
         this.created = created;
         this.provider = provider;
         this.region = region;
         this.owner = owner;
-    }
-
-    public Object getMykafka1() {
-        return mykafka1;
-    }
-
-    public void setMykafka1(Object mykafka1) {
-        this.mykafka1 = mykafka1;
     }
 
     public String getId() {

@@ -5,7 +5,6 @@ import com.openshift.cloud.ApiException;
 import com.openshift.cloud.Configuration;
 import com.openshift.cloud.api.DefaultApi;
 import com.openshift.cloud.auth.HttpBearerAuth;
-import com.openshift.cloud.beans.ApiClients;
 import com.openshift.cloud.v1alpha.models.BoostrapServer;
 import com.openshift.cloud.v1alpha.models.ManagedKafkaConnection;
 import com.openshift.cloud.v1alpha.models.ManagedKafkaConnectionList;
@@ -18,24 +17,24 @@ import io.javaoperatorsdk.operator.api.*;
 import io.javaoperatorsdk.operator.processing.event.EventSourceManager;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
-import javax.annotation.PostConstruct;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @Controller
 public class ManagedKafkaConnectionController implements ResourceController<ManagedKafkaConnection> {
 
+    private static final String DATE_PATTERN = "yyyy-MM-dd'T'HH:mm:ssZ";
+    private static final SimpleDateFormat DATE_FORMATTER = new SimpleDateFormat(DATE_PATTERN);
     private static final Logger LOG = Logger.getLogger(ManagedKafkaConnectionController.class.getName());
-    private DefaultApi controlPanelApiClient;
+    private final KubernetesClient k8sClient;
 
     @ConfigProperty(name = "client.basePath", defaultValue = "https://api.stage.openshift.com")
     String clientBasePath;
 
-    @ConfigProperty(name = "client.bearerToken")
-    String clientBearerToken;
-
-
-    public ManagedKafkaConnectionController() {
+    public ManagedKafkaConnectionController(KubernetesClient k8sClient) {
+        this.k8sClient = k8sClient;
     }
 
     @Override
@@ -50,14 +49,17 @@ public class ManagedKafkaConnectionController implements ResourceController<Mana
                                                                         Context<ManagedKafkaConnection> context) {
         LOG.info(String.format("Creating or Updating resource %s", resource.getMetadata().getName()));
 
-        var kafkaId = resource.getSpec().getKafkaId();
-
         try {
-            var kafkaServiceInfo = controlPanelApiClient.getKafkaById(kafkaId);
+            var kafkaId = resource.getSpec().getKafkaId();
+            var saSecretName = resource.getSpec().getCredentials().getServiceAccountSecretName();
+            var namespace = resource.getMetadata().getNamespace();
+            var saSecret = k8sClient.secrets().inNamespace(namespace).withName(saSecretName).get().getStringData().get("token");//TODO: what is the secret format?
+            var kafkaServiceInfo = createClient(saSecret).getKafkaById(kafkaId);
+
             var bootStrapHost = kafkaServiceInfo.getBootstrapServerHost();
             var bootStrapServer = new BoostrapServer(bootStrapHost);
 
-            var status = new ManagedKafkaConnectionStatus("Created", "Updated", bootStrapServer, "sa secretname");
+            var status = new ManagedKafkaConnectionStatus("Created", DATE_FORMATTER.format(new Date()), bootStrapServer, saSecretName);
             resource.setStatus(status);
 
             return UpdateControl.updateCustomResourceAndStatus(resource);
@@ -68,21 +70,16 @@ public class ManagedKafkaConnectionController implements ResourceController<Mana
 
     }
 
-    /**
-     * client creation is handled after object construction because the
-     * client depends on injected values. This method is called by quarkus.
-     */
-    @PostConstruct
-    public void createClient() {
+    private DefaultApi createClient(String bearerToken) {
 
         ApiClient defaultClient = Configuration.getDefaultApiClient();
         defaultClient.setBasePath(clientBasePath);
 
         // Configure HTTP bearer authorization: Bearer
         HttpBearerAuth Bearer = (HttpBearerAuth) defaultClient.getAuthentication("Bearer");
-        Bearer.setBearerToken(clientBearerToken);
+        Bearer.setBearerToken(bearerToken);
 
-        this.controlPanelApiClient = new DefaultApi(defaultClient);
+        return new DefaultApi(defaultClient);
 
     }
 
@@ -95,16 +92,6 @@ public class ManagedKafkaConnectionController implements ResourceController<Mana
     @Override
     public void init(EventSourceManager eventSourceManager) {
         LOG.info("Init! This is where we would add watches for child resources");
-
-
     }
 
-    private MixedOperation<ManagedKafkaConnection, ManagedKafkaConnectionList, Resource<ManagedKafkaConnection>> getKafkaUserClient(
-            KubernetesClient client) {
-        // Create Custom Resource Context
-        var context = CustomResourceDefinitionContext.v1beta1CRDFromCustomResourceType(ManagedKafkaConnection.class).build();
-
-        return client.customResources(context, ManagedKafkaConnection.class, ManagedKafkaConnectionList.class);
-
-    }
 }

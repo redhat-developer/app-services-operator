@@ -11,7 +11,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 public class ManagedKafkaRequestStatus {
 
     private String lastUpdate;
-    private List<UserKafka> userKafkas = null;
+    private Map<String, UserKafka> userKafkas = null;
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     /**
@@ -26,7 +26,7 @@ public class ManagedKafkaRequestStatus {
      * @param userKafkas
      * @param lastUpdate
      */
-    public ManagedKafkaRequestStatus(String lastUpdate, List<UserKafka> userKafkas) {
+    public ManagedKafkaRequestStatus(String lastUpdate, Map<String, UserKafka> userKafkas) {
         super();
         this.lastUpdate = lastUpdate;
         this.userKafkas = userKafkas;
@@ -40,11 +40,11 @@ public class ManagedKafkaRequestStatus {
         this.lastUpdate = lastUpdate;
     }
 
-    public List<UserKafka> getUserKafkas() {
+    public  Map<String, UserKafka> getUserKafkas() {
         return userKafkas;
     }
 
-    public void setUserKafkas(List<UserKafka> userKafkas) {
+    public void setUserKafkas( Map<String, UserKafka> userKafkas) {
         this.userKafkas = userKafkas;
     }
 
