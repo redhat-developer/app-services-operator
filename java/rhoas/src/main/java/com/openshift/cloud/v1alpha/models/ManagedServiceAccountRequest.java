@@ -9,45 +9,18 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-public class ManagedServiceAccountRequest {
+import io.fabric8.kubernetes.client.CustomResource;
+import io.fabric8.kubernetes.model.annotation.Group;
+import io.fabric8.kubernetes.model.annotation.Plural;
+import io.fabric8.kubernetes.model.annotation.Version;
 
-    private ManagedServiceAccountRequestSpec managedServiceAccountRequestSpec;
-    private ManagedServiceAccountRequestStatus managedServiceAccountRequestStatus;
+@Plural("managedkafkaserviceaccountrequests")
+@Group("rhoas.redhat.com")
+@Version("v1alpha1")
+public class ManagedServiceAccountRequest  extends CustomResource<ManagedServiceAccountRequestSpec, ManagedServiceAccountRequestStatus> {
+
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
-    /**
-     * No args constructor for use in serialization
-     * 
-     */
-    public ManagedServiceAccountRequest() {
-    }
-
-    /**
-     * 
-     * @param managedServiceAccountRequestSpec
-     * @param managedServiceAccountRequestStatus
-     */
-    public ManagedServiceAccountRequest(ManagedServiceAccountRequestSpec managedServiceAccountRequestSpec, ManagedServiceAccountRequestStatus managedServiceAccountRequestStatus) {
-        super();
-        this.managedServiceAccountRequestSpec = managedServiceAccountRequestSpec;
-        this.managedServiceAccountRequestStatus = managedServiceAccountRequestStatus;
-    }
-
-    public ManagedServiceAccountRequestSpec getManagedServiceAccountRequestSpec() {
-        return managedServiceAccountRequestSpec;
-    }
-
-    public void setManagedServiceAccountRequestSpec(ManagedServiceAccountRequestSpec managedServiceAccountRequestSpec) {
-        this.managedServiceAccountRequestSpec = managedServiceAccountRequestSpec;
-    }
-
-    public ManagedServiceAccountRequestStatus getManagedServiceAccountRequestStatus() {
-        return managedServiceAccountRequestStatus;
-    }
-
-    public void setManagedServiceAccountRequestStatus(ManagedServiceAccountRequestStatus managedServiceAccountRequestStatus) {
-        this.managedServiceAccountRequestStatus = managedServiceAccountRequestStatus;
-    }
 
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
@@ -59,12 +32,12 @@ public class ManagedServiceAccountRequest {
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this).append("managedServiceAccountRequestSpec", managedServiceAccountRequestSpec).append("managedServiceAccountRequestStatus", managedServiceAccountRequestStatus).append("additionalProperties", additionalProperties).toString();
+        return new ToStringBuilder(this).append("managedServiceAccountRequestSpec", getSpec()).append("managedServiceAccountRequestStatus", getStatus()).append("additionalProperties", additionalProperties).toString();
     }
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(managedServiceAccountRequestSpec).append(additionalProperties).append(managedServiceAccountRequestStatus).toHashCode();
+        return new HashCodeBuilder().append(getSpec()).append(additionalProperties).append(getStatus()).toHashCode();
     }
 
     @Override
@@ -76,7 +49,7 @@ public class ManagedServiceAccountRequest {
             return false;
         }
         ManagedServiceAccountRequest rhs = ((ManagedServiceAccountRequest) other);
-        return new EqualsBuilder().append(managedServiceAccountRequestSpec, rhs.managedServiceAccountRequestSpec).append(additionalProperties, rhs.additionalProperties).append(managedServiceAccountRequestStatus, rhs.managedServiceAccountRequestStatus).isEquals();
+        return new EqualsBuilder().append(getSpec(), rhs.getSpec()).append(additionalProperties, rhs.additionalProperties).append(getStatus(), rhs.getStatus()).isEquals();
     }
 
 }

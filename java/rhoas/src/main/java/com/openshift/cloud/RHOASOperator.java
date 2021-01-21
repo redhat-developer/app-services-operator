@@ -2,6 +2,7 @@ package com.openshift.cloud;
 
 import com.openshift.cloud.controllers.ManagedKafkaConnectionController;
 import com.openshift.cloud.controllers.ManagedKafkaRequestController;
+import com.openshift.cloud.controllers.ManagedServiceAccountController;
 import com.openshift.cloud.v1alpha.models.ManagedKafkaRequest;
 
 import io.fabric8.kubernetes.client.KubernetesClient;
@@ -31,6 +32,9 @@ public class RHOASOperator implements QuarkusApplication {
 
     @Inject
     ManagedKafkaRequestController requestController;
+    
+    @Inject
+    ManagedServiceAccountController serviceAccountRequestController;
 
     private static final Logger LOG = Logger.getLogger(RHOASOperator.class);
 
@@ -45,6 +49,9 @@ public class RHOASOperator implements QuarkusApplication {
         LOG.info("CR class: " + config.getCustomResourceClass());
         
         config = configuration.getConfigurationFor(requestController);
+        LOG.info("CR class: " + config.getCustomResourceClass());
+
+        config = configuration.getConfigurationFor(serviceAccountRequestController);
         LOG.info("CR class: " + config.getCustomResourceClass());
 
         Quarkus.waitForExit();

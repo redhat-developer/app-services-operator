@@ -27,7 +27,9 @@ import java.util.logging.Logger;
 public class ManagedKafkaRequestController implements ResourceController<ManagedKafkaRequest> {
 
     private static final Logger LOG = Logger.getLogger(ManagedKafkaRequestController.class.getName());
-    private final KubernetesClient k8sClient;
+    
+    @Inject
+    KubernetesClient k8sClient;
 
     @Inject
     TokenExchanger tokenExchanger;
@@ -40,8 +42,7 @@ public class ManagedKafkaRequestController implements ResourceController<Managed
     @ConfigProperty(name = "client.basePath", defaultValue = "https://api.stage.openshift.com")
     String clientBasePath;
 
-    public ManagedKafkaRequestController(KubernetesClient k8sClient) {
-        this.k8sClient = k8sClient;
+    public ManagedKafkaRequestController() {
     }
 
     @Override

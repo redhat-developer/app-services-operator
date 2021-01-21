@@ -7,7 +7,7 @@ import java.util.Map;
 public class ManagedServiceAccountRequestSpec {
 
     private String serviceAccountName;
-    private String reset;
+    private Boolean reset;
     private String description;
     private String serviceAccountSecretName;
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
@@ -26,7 +26,7 @@ public class ManagedServiceAccountRequestSpec {
      * @param reset
      * @param description
      */
-    public ManagedServiceAccountRequestSpec(String serviceAccountName, String reset, String description, String serviceAccountSecretName) {
+    public ManagedServiceAccountRequestSpec(String serviceAccountName, Boolean reset, String description, String serviceAccountSecretName) {
         super();
         this.serviceAccountName = serviceAccountName;
         this.reset = reset;
@@ -42,11 +42,11 @@ public class ManagedServiceAccountRequestSpec {
         this.serviceAccountName = serviceAccountName;
     }
 
-    public String getReset() {
+    public Boolean getReset() {
         return reset;
     }
 
-    public void setReset(String reset) {
+    public void setReset(Boolean reset) {
         this.reset = reset;
     }
 
