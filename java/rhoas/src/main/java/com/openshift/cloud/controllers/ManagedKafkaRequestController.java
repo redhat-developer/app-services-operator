@@ -5,34 +5,36 @@ import com.openshift.cloud.ApiException;
 import com.openshift.cloud.Configuration;
 import com.openshift.cloud.api.DefaultApi;
 import com.openshift.cloud.auth.HttpBearerAuth;
-import com.openshift.cloud.beans.ApiClients;
-import com.openshift.cloud.v1alpha.models.*;
+import com.openshift.cloud.beans.ManagedKafkaK8sClients;
+import com.openshift.cloud.beans.TokenExchanger;
+import com.openshift.cloud.v1alpha.models.ManagedKafkaRequest;
+import com.openshift.cloud.v1alpha.models.ManagedKafkaRequestStatus;
+import com.openshift.cloud.v1alpha.models.UserKafka;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.kubernetes.client.dsl.MixedOperation;
-import io.fabric8.kubernetes.client.dsl.Resource;
-import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.javaoperatorsdk.operator.api.*;
 import io.javaoperatorsdk.operator.processing.event.EventSourceManager;
 import io.quarkus.scheduler.Scheduled;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
-import java.text.SimpleDateFormat;
+import javax.inject.Inject;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.logging.Logger;
 
-import javax.inject.Inject;
-
 @Controller
-public class ManagedKafkaRequestController  implements ResourceController<ManagedKafkaRequest> {
+public class ManagedKafkaRequestController implements ResourceController<ManagedKafkaRequest> {
 
     private static final Logger LOG = Logger.getLogger(ManagedKafkaRequestController.class.getName());
     private final KubernetesClient k8sClient;
 
     @Inject
-    ApiClients managedKafkaClientFactory;
+    TokenExchanger tokenExchanger;
+
+
+    @Inject
+    ManagedKafkaK8sClients managedKafkaClientFactory;
 
 
     @ConfigProperty(name = "client.basePath", defaultValue = "https://api.stage.openshift.com")
@@ -57,7 +59,7 @@ public class ManagedKafkaRequestController  implements ResourceController<Manage
             updateManagedKafkaRequest(resource);
             var mkClient = managedKafkaClientFactory.managedKafkaRequest();
             mkClient.createOrReplace(resource);
-    
+
             return UpdateControl.noUpdate();
         } catch (ApiException e) {
             e.printStackTrace();
@@ -66,13 +68,18 @@ public class ManagedKafkaRequestController  implements ResourceController<Manage
 
     }
 
-    private void updateManagedKafkaRequest(ManagedKafkaRequest resource) throws ApiException {
+    /**
+     * @param resource the resource to check for new kafkas
+     * @return true if there were changes, false otherwise
+     * @throws ApiException if something goes wrong connecting to services
+     */
+    private boolean updateManagedKafkaRequest(ManagedKafkaRequest resource) throws ApiException {
         var saSecretName = resource.getSpec().getAccessTokenSecretName();
         var namespace = resource.getMetadata().getNamespace();
         var saSecret = k8sClient.secrets().inNamespace(namespace).withName(saSecretName).get().getData().get("token");//TODO: what is the secret format?
         saSecret = new String(Base64.getDecoder().decode(saSecret));
+        saSecret = tokenExchanger.getToken(saSecret);
         
-        LOG.info(String.format("Secret %s", saSecret));
         var kafkaList = createClient(saSecret).listKafkas(null, null, null, null);
 
         var userKafkas = new HashMap<String, UserKafka>();
@@ -88,14 +95,19 @@ public class ManagedKafkaRequestController  implements ResourceController<Manage
             userKafkas.put(listItem.getName(), userKafka);
         });
 
+        if (resource.getStatus() != null && userKafkas.equals(resource.getStatus().getUserKafkas())) {
+            return false;
+        }
+
         var status = new ManagedKafkaRequestStatus(LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME), userKafkas);
         resource.setStatus(status);
+        return true;
     }
 
-    @Scheduled(every="60s")
+    @Scheduled(every = "60s")
     void reloadUserKafkas() {
         LOG.info("Refreshing user kafkas");
-        
+
         var mkClient = managedKafkaClientFactory.managedKafkaRequest();
 
         mkClient.list().getItems().forEach(resource -> {

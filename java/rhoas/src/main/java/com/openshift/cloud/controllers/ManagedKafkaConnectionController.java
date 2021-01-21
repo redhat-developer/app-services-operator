@@ -5,6 +5,7 @@ import com.openshift.cloud.ApiException;
 import com.openshift.cloud.Configuration;
 import com.openshift.cloud.api.DefaultApi;
 import com.openshift.cloud.auth.HttpBearerAuth;
+import com.openshift.cloud.beans.TokenExchanger;
 import com.openshift.cloud.v1alpha.models.BoostrapServer;
 import com.openshift.cloud.v1alpha.models.ManagedKafkaConnection;
 import com.openshift.cloud.v1alpha.models.ManagedKafkaConnectionList;
@@ -17,6 +18,7 @@ import io.javaoperatorsdk.operator.api.*;
 import io.javaoperatorsdk.operator.processing.event.EventSourceManager;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
+import javax.inject.Inject;
 import java.text.SimpleDateFormat;
 import java.util.Base64;
 import java.util.Date;
@@ -33,6 +35,9 @@ public class ManagedKafkaConnectionController implements ResourceController<Mana
 
     @ConfigProperty(name = "client.basePath", defaultValue = "https://api.stage.openshift.com")
     String clientBasePath;
+
+    @Inject
+    TokenExchanger tokenExchanger;
 
     public ManagedKafkaConnectionController(KubernetesClient k8sClient) {
         this.k8sClient = k8sClient;
@@ -56,6 +61,7 @@ public class ManagedKafkaConnectionController implements ResourceController<Mana
             var namespace = resource.getMetadata().getNamespace();
             var saSecret = k8sClient.secrets().inNamespace(namespace).withName(saSecretName).get().getData().get("token");//TODO: what is the secret format?
             saSecret = new String(Base64.getDecoder().decode(saSecret));
+            saSecret = tokenExchanger.getToken(saSecret);
 
             var kafkaServiceInfo = createClient(saSecret).getKafkaById(kafkaId);
 

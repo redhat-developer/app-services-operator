@@ -12,7 +12,6 @@ This operator creates and manages custom resources used by the RHOAS Managed Kaf
 ## TL;DR;
 
 ```sh
-export CLIENT_BEARERTOKEN=$YOUR_SERVICE_API_TOKEN;
 mvn clean install;
 cd rhoas;
 mvn quarkus:dev;
@@ -28,13 +27,9 @@ mvn clean install;
 
 ## Running in dev mode
 
-The operator uses [quarkus](https://quarkus.io) and the [java-operator-sdk](https://github.com/java-operator-sdk/java-operator-sdk). Before you can run the operator you need to set a `CLIENT_BEARERTOKEN` environment variable, or set the `client.bearertoken` system variable.
+The operator uses [quarkus](https://quarkus.io) and the [java-operator-sdk](https://github.com/java-operator-sdk/java-operator-sdk).
 
-```sh
-export CLIENT_BEARERTOKEN=$YOUR_SERVICE_API_TOKEN;
-```
-
-Once the bearer token is set you can start the operator in dev mode.
+You can start the operator in dev mode.
 
 ```sh
 mvn quarkus:dev

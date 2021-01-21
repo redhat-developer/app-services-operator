@@ -1,9 +1,6 @@
 package com.openshift.cloud.beans;
 
-import java.util.Optional;
-
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -31,9 +28,9 @@ import io.fabric8.kubernetes.internal.KubernetesDeserializer;
  * provides apiClients for use
  */
 @Singleton
-public final class ApiClients {
+public final class ManagedKafkaK8sClients {
 
-    private static final Logger LOG = Logger.getLogger(ApiClients.class.getName());
+    private static final Logger LOG = Logger.getLogger(ManagedKafkaK8sClients.class.getName());
 
     @Inject
     KubernetesClient client;
