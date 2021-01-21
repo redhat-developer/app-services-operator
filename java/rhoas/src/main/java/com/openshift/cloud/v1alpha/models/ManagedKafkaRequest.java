@@ -2,6 +2,9 @@
 package com.openshift.cloud.v1alpha.models;
 
 import io.fabric8.kubernetes.client.CustomResource;
+import io.fabric8.kubernetes.model.annotation.Group;
+import io.fabric8.kubernetes.model.annotation.Plural;
+import io.fabric8.kubernetes.model.annotation.Version;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -9,46 +12,12 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import java.util.HashMap;
 import java.util.Map;
 
+@Plural("managedkafkarequests")
+@Group("rhoas.redhat.com")
+@Version("v1alpha1")
+public class ManagedKafkaRequest extends CustomResource<ManagedKafkaRequestSpec, ManagedKafkaRequestStatus> {
 
-public class ManagedKafkaRequest extends CustomResource {
-
-    private ManagedKafkaRequestSpec managedKafkaRequestSpec;
-    private ManagedKafkaRequestStatus managedKafkaRequestStatus;
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
-
-    /**
-     * No args constructor for use in serialization
-     * 
-     */
-    public ManagedKafkaRequest() {
-    }
-
-    /**
-     * 
-     * @param managedKafkaRequestSpec
-     * @param managedKafkaRequestStatus
-     */
-    public ManagedKafkaRequest(ManagedKafkaRequestSpec managedKafkaRequestSpec, ManagedKafkaRequestStatus managedKafkaRequestStatus) {
-        super();
-        this.managedKafkaRequestSpec = managedKafkaRequestSpec;
-        this.managedKafkaRequestStatus = managedKafkaRequestStatus;
-    }
-
-    public ManagedKafkaRequestSpec getManagedKafkaRequestSpec() {
-        return managedKafkaRequestSpec;
-    }
-
-    public void setManagedKafkaRequestSpec(ManagedKafkaRequestSpec managedKafkaRequestSpec) {
-        this.managedKafkaRequestSpec = managedKafkaRequestSpec;
-    }
-
-    public ManagedKafkaRequestStatus getManagedKafkaRequestStatus() {
-        return managedKafkaRequestStatus;
-    }
-
-    public void setManagedKafkaRequestStatus(ManagedKafkaRequestStatus managedKafkaRequestStatus) {
-        this.managedKafkaRequestStatus = managedKafkaRequestStatus;
-    }
 
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
@@ -60,12 +29,12 @@ public class ManagedKafkaRequest extends CustomResource {
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this).append("managedKafkaRequestSpec", managedKafkaRequestSpec).append("managedKafkaRequestStatus", managedKafkaRequestStatus).append("additionalProperties", additionalProperties).toString();
+        return new ToStringBuilder(this).append("managedKafkaRequestSpec", getSpec()).append("managedKafkaRequestStatus", getStatus()).append("additionalProperties", additionalProperties).toString();
     }
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(managedKafkaRequestSpec).append(additionalProperties).append(managedKafkaRequestStatus).toHashCode();
+        return new HashCodeBuilder().append(getSpec()).append(additionalProperties).append(getStatus()).toHashCode();
     }
 
     @Override
@@ -77,7 +46,7 @@ public class ManagedKafkaRequest extends CustomResource {
             return false;
         }
         ManagedKafkaRequest rhs = ((ManagedKafkaRequest) other);
-        return new EqualsBuilder().append(managedKafkaRequestSpec, rhs.managedKafkaRequestSpec).append(additionalProperties, rhs.additionalProperties).append(managedKafkaRequestStatus, rhs.managedKafkaRequestStatus).isEquals();
+        return new EqualsBuilder().append(getSpec(), rhs.getSpec()).append(additionalProperties, rhs.additionalProperties).append(getStatus(), rhs.getStatus()).isEquals();
     }
 
 }

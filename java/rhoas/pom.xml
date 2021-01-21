@@ -11,9 +11,9 @@
   <name>rhoas-operator</name>
   <description>rhoas-operator</description>
   <properties>
+    <fabric8.version>5.0.0</fabric8.version>
     <operator.sdk.version>1.7.0</operator.sdk.version>
     <quarkus.version>1.11.0.Final</quarkus.version>
-    <fabric8.version>5.0.0</fabric8.version>
   </properties>
   <dependencyManagement>
     <dependencies>
@@ -27,13 +27,11 @@
     </dependencies>
   </dependencyManagement>
   <dependencies>
-
     <dependency>
       <groupId>io.fabric8</groupId>
       <artifactId>kubernetes-client</artifactId>
       <version>${fabric8.version}</version>
     </dependency>
-
     <dependency>
       <groupId>io.javaoperatorsdk</groupId>
       <artifactId>operator-framework</artifactId>
@@ -44,12 +42,6 @@
       <artifactId>operator-framework-quarkus-extension</artifactId>
       <version>${operator.sdk.version}</version>
     </dependency>
-<!-- 
-    <dependency>
-      <groupId>io.dekorate</groupId>
-      <artifactId>crd-annotations</artifactId>
-      <version>2.0.0-alpha-1</version>
-    </dependency> -->
     <dependency>
       <groupId>com.openshift.cloud</groupId>
       <artifactId>managed-services-api</artifactId>
@@ -60,8 +52,18 @@
       <artifactId>junit-jupiter</artifactId>
       <scope>test</scope>
     </dependency>
-
-
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-scheduler</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-smallrye-jwt-build</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-smallrye-jwt</artifactId>
+    </dependency>
   </dependencies>
   <build>
     <plugins>
