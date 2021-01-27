@@ -1,4 +1,3 @@
-
 package com.openshift.cloud.v1alpha.models;
 
 import java.util.HashMap;
@@ -6,97 +5,92 @@ import java.util.Map;
 
 public class UserKafka {
 
-    private String id;
-    private String created;
-    private String provider;
-    private String region;
-    private String owner;
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+  private String id;
+  private String created;
+  private String provider;
+  private String region;
+  private String owner;
+  private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
-    /**
-     * No args constructor for use in serialization
-     * 
-     */
-    public UserKafka() {
-    }
+  /** No args constructor for use in serialization */
+  public UserKafka() {}
 
-    /**
-     * 
-     * @param owner
-     * @param provider
-     * @param created
-     * @param id
-     * @param region
-     */
-    public UserKafka(String id, String created, String provider, String region, String owner) {
-        super();
-        this.id = id;
-        this.created = created;
-        this.provider = provider;
-        this.region = region;
-        this.owner = owner;
-    }
+  /**
+   * @param owner
+   * @param provider
+   * @param created
+   * @param id
+   * @param region
+   */
+  public UserKafka(String id, String created, String provider, String region, String owner) {
+    super();
+    this.id = id;
+    this.created = created;
+    this.provider = provider;
+    this.region = region;
+    this.owner = owner;
+  }
 
-    public String getId() {
-        return id;
-    }
+  public String getId() {
+    return id;
+  }
 
-    public void setId(String id) {
-        this.id = id;
-    }
+  public void setId(String id) {
+    this.id = id;
+  }
 
-    public String getCreated() {
-        return created;
-    }
+  public String getCreated() {
+    return created;
+  }
 
-    public void setCreated(String created) {
-        this.created = created;
-    }
+  public void setCreated(String created) {
+    this.created = created;
+  }
 
-    public String getProvider() {
-        return provider;
-    }
+  public String getProvider() {
+    return provider;
+  }
 
-    public void setProvider(String provider) {
-        this.provider = provider;
-    }
+  public void setProvider(String provider) {
+    this.provider = provider;
+  }
 
-    public String getRegion() {
-        return region;
-    }
+  public String getRegion() {
+    return region;
+  }
 
-    public void setRegion(String region) {
-        this.region = region;
-    }
+  public void setRegion(String region) {
+    this.region = region;
+  }
 
-    public String getOwner() {
-        return owner;
-    }
+  public String getOwner() {
+    return owner;
+  }
 
-    public void setOwner(String owner) {
-        this.owner = owner;
-    }
+  public void setOwner(String owner) {
+    this.owner = owner;
+  }
 
-    public Map<String, Object> getAdditionalProperties() {
-        return this.additionalProperties;
-    }
+  public Map<String, Object> getAdditionalProperties() {
+    return this.additionalProperties;
+  }
 
-    public void setAdditionalProperty(String name, Object value) {
-        this.additionalProperties.put(name, value);
-    }
+  public void setAdditionalProperty(String name, Object value) {
+    this.additionalProperties.put(name, value);
+  }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
 
-        UserKafka userKafka = (UserKafka) o;
+    UserKafka userKafka = (UserKafka) o;
 
-        return id.equals(userKafka.id);
-    }
+    return id.equals(userKafka.id);
+  }
 
-    @Override
-    public int hashCode() {
-        return id.hashCode();
-    }
+  @Override
+  public int hashCode() {
+    return id.hashCode();
+  }
 }
