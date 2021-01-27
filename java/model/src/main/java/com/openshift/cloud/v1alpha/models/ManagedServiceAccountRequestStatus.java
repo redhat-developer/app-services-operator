@@ -3,15 +3,12 @@ package com.openshift.cloud.v1alpha.models;
 
 import java.util.HashMap;
 import java.util.Map;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.apache.commons.lang3.builder.ToStringBuilder;
 
-public class ManagedKafkaConnectionStatus {
+
+public class ManagedServiceAccountRequestStatus {
 
     private String message;
     private String updated;
-    private BoostrapServer boostrapServer;
     private String serviceAccountSecretName;
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -19,21 +16,19 @@ public class ManagedKafkaConnectionStatus {
      * No args constructor for use in serialization
      * 
      */
-    public ManagedKafkaConnectionStatus() {
+    public ManagedServiceAccountRequestStatus() {
     }
 
     /**
      * 
      * @param serviceAccountSecretName
      * @param message
-     * @param boostrapServer
      * @param updated
      */
-    public ManagedKafkaConnectionStatus(String message, String updated, BoostrapServer boostrapServer, String serviceAccountSecretName) {
+    public ManagedServiceAccountRequestStatus(String message, String updated, String serviceAccountSecretName) {
         super();
         this.message = message;
         this.updated = updated;
-        this.boostrapServer = boostrapServer;
         this.serviceAccountSecretName = serviceAccountSecretName;
     }
 
@@ -53,14 +48,6 @@ public class ManagedKafkaConnectionStatus {
         this.updated = updated;
     }
 
-    public BoostrapServer getBoostrapServer() {
-        return boostrapServer;
-    }
-
-    public void setBoostrapServer(BoostrapServer boostrapServer) {
-        this.boostrapServer = boostrapServer;
-    }
-
     public String getServiceAccountSecretName() {
         return serviceAccountSecretName;
     }
@@ -76,6 +63,5 @@ public class ManagedKafkaConnectionStatus {
     public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
-
 
 }

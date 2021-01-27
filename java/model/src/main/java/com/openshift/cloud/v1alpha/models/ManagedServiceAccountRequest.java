@@ -5,19 +5,25 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
 
+import io.dekorate.crd.annotation.Crd;
+import io.dekorate.crd.annotation.Status;
 import io.fabric8.kubernetes.client.CustomResource;
 import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Plural;
 import io.fabric8.kubernetes.model.annotation.Version;
 
-@Plural("managedkafkaserviceaccountrequests")
+@Plural("managedserviceaccountrequests")
 @Group("rhoas.redhat.com")
 @Version("v1alpha1")
+@Crd(group = "rhoas.redhat.com", version = "v1alpha1")
 public class ManagedServiceAccountRequest  extends CustomResource<ManagedServiceAccountRequestSpec, ManagedServiceAccountRequestStatus> {
+
+@Status
+private ManagedServiceAccountRequestStatus status;
 
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -50,6 +56,16 @@ public class ManagedServiceAccountRequest  extends CustomResource<ManagedService
         }
         ManagedServiceAccountRequest rhs = ((ManagedServiceAccountRequest) other);
         return new EqualsBuilder().append(getSpec(), rhs.getSpec()).append(additionalProperties, rhs.additionalProperties).append(getStatus(), rhs.getStatus()).isEquals();
+    }
+
+    @Override
+    public ManagedServiceAccountRequestStatus getStatus() {
+        return this.status;
+    }
+
+    @Override
+    public void setStatus(ManagedServiceAccountRequestStatus status) {
+        this.status = status;
     }
 
 }
