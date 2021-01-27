@@ -1,6 +1,6 @@
-# OpenShift Application Services Operator (RHOAS)
+# OpenShift Application Services Connection Operator (RHOAS-Operator)
 
-> Work in Progress - Kafka Operator POC
+> Work in Progress 
 
 ## Resources
 
