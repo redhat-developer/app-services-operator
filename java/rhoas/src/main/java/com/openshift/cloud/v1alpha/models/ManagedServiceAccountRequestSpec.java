@@ -10,6 +10,8 @@ public class ManagedServiceAccountRequestSpec {
     private Boolean reset;
     private String description;
     private String serviceAccountSecretName;
+    private String accessTokenSecretName = "rhoas_binding_operator_token";
+
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     /**
@@ -17,6 +19,14 @@ public class ManagedServiceAccountRequestSpec {
      * 
      */
     public ManagedServiceAccountRequestSpec() {
+    }
+
+    public String getAccessTokenSecretName() {
+        return accessTokenSecretName;
+    }
+
+    public void setAccessTokenSecretName(String accessTokenSecretName) {
+        this.accessTokenSecretName = accessTokenSecretName;
     }
 
     /**
