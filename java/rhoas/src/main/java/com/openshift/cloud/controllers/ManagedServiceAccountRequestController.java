@@ -54,9 +54,6 @@ public class ManagedServiceAccountRequestController implements ResourceControlle
     @ConfigProperty(name = "client.basePath", defaultValue = "https://api.stage.openshift.com")
     String clientBasePath;
 
-    @ConfigProperty(name = "client.token")
-    String clientToken;
-
     @Override
     public DeleteControl deleteResource(ManagedServiceAccountRequest resource,
             Context<ManagedServiceAccountRequest> context) {
@@ -75,7 +72,7 @@ public class ManagedServiceAccountRequestController implements ResourceControlle
         if (resource.getSpec().getReset()) {
             throw new NotImplementedException("Reset is not implemented");
         } else {
-            var managedServiceClient = createClient();
+            var managedServiceClient = createClient(resource.getSpec().getAccessTokenSecretName());
             var serviceAccountRequest = new ServiceAccountRequest();
             serviceAccountRequest.setDescription(resource.getSpec().getDescription());
             serviceAccountRequest.setName(resource.getSpec().getServiceAccountName());
@@ -119,13 +116,15 @@ public class ManagedServiceAccountRequestController implements ResourceControlle
     }
 
 
-    private DefaultApi createClient() {
+    private DefaultApi createClient(String clientToken) {
 
         ApiClient defaultClient = Configuration.getDefaultApiClient();
         defaultClient.setBasePath(clientBasePath);
 
         // Configure HTTP bearer authorization: Bearer
         HttpBearerAuth Bearer = (HttpBearerAuth) defaultClient.getAuthentication("Bearer");
+        
+        clientToken = tokenExchanger.getToken(clientToken);
         Bearer.setBearerToken(clientToken);
 
         return new DefaultApi(defaultClient);

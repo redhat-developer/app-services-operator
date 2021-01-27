@@ -28,13 +28,19 @@ public class TokenExchanger {
     @ConfigProperty(name = "auth.tokenPath", defaultValue = "protocol/openid-connect/token")
     String tokenPath;
 
-    public String getToken(String secret) {
+    /**
+     * This method exchanges an offline token for a new refresh token
+     * 
+     * @param offlineToken the token from ss.redhat.com
+     * @return a token to be used as a bearer token to authorize the user
+     */
+    public String getToken(String offlineToken) {
         try {
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(authServerUrl + "/" + tokenPath))
                     .header("content-type", "application/x-www-form-urlencoded")
                     .timeout(Duration.ofMinutes(2))
-                    .POST(ofFormData("grant_type","refresh_token", "client_id","cloud-services", "refresh_token", secret))
+                    .POST(ofFormData("grant_type","refresh_token", "client_id","cloud-services", "refresh_token", offlineToken))
                     .build();
 
             HttpClient client = HttpClient.newBuilder().build();
