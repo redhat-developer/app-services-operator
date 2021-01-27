@@ -8,6 +8,8 @@ import com.openshift.cloud.v1alpha.models.ManagedKafkaConnection;
 import com.openshift.cloud.v1alpha.models.ManagedKafkaConnectionList;
 import com.openshift.cloud.v1alpha.models.ManagedKafkaRequest;
 import com.openshift.cloud.v1alpha.models.ManagedKafkaRequestList;
+import com.openshift.cloud.v1alpha.models.ManagedServiceAccountRequest;
+import com.openshift.cloud.v1alpha.models.ManagedServiceAccountRequestList;
 
 import org.jboss.logging.Logger;
 
@@ -36,8 +38,8 @@ public final class ManagedKafkaK8sClients {
     KubernetesClient client;
 
     private CustomResourceDefinition mkcCrd;
-
     private CustomResourceDefinition mkrCrd;
+    private CustomResourceDefinition msarCrd;
 
     @PostConstruct
     public void init() {
@@ -47,6 +49,7 @@ public final class ManagedKafkaK8sClients {
 
         this.mkcCrd = initManagedKafkaConnectionCRDAndClient(crds);
         this.mkrCrd = initManagedKafkaRequestCRDAndClient(crds);
+        this.msarCrd = initManagedServiceAccountRequestCRDAndClient(crds);
         LOG.info("ApiClient bean init ended");
 
     }
@@ -69,6 +72,46 @@ public final class ManagedKafkaK8sClients {
 
         // lets create a client for the CRD
         return client.customResources(mkcCrdContext, ManagedKafkaRequest.class, ManagedKafkaRequestList.class);
+    }
+
+    public MixedOperation<ManagedServiceAccountRequest, ManagedServiceAccountRequestList, Resource<ManagedServiceAccountRequest>> managedServiceAccountRequest() {
+        KubernetesDeserializer.registerCustomKind(getApiVersion(ManagedServiceAccountRequest.class), msarCrd.getKind(),
+        ManagedServiceAccountRequest.class);
+
+        var mkcCrdContext = CustomResourceDefinitionContext.fromCrd(this.msarCrd);
+
+        // lets create a client for the CRD
+        return client.customResources(mkcCrdContext, ManagedServiceAccountRequest.class, ManagedServiceAccountRequestList.class);
+    }
+
+
+    private CustomResourceDefinition initManagedServiceAccountRequestCRDAndClient(
+            V1beta1ApiextensionAPIGroupDSL crds) {
+
+        CustomResourceDefinition mkcCrd;
+
+        var crdsItems = crds.customResourceDefinitions().list().getItems();
+        var managedKafkaConnectionCRDName = CustomResource.getCRDName(ManagedServiceAccountRequest.class);
+        
+        var mkcCrdOptional = crdsItems.stream()
+               .filter(
+                   crd -> managedKafkaConnectionCRDName.equals(crd.getMetadata().getName())
+                )
+               .findFirst();
+
+        if (mkcCrdOptional.isEmpty()) {
+            LOG.info("Creating ManagedServiceAccountRequest CRD");
+            mkcCrd = CustomResourceDefinitionContext.v1beta1CRDFromCustomResourceType(ManagedServiceAccountRequest.class)
+                    .build();
+            client.apiextensions().v1beta1().customResourceDefinitions().create(mkcCrd);
+            LOG.info("ManagedServiceAccountRequest CRD Created");
+        } else {
+            LOG.info("Found ManagedServiceAccountRequest CRD");
+            mkcCrd = mkcCrdOptional.get();
+        }
+
+        return mkcCrd;
+
     }
 
 
