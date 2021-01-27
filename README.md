@@ -2,14 +2,6 @@
 
 > Work in Progress 
 
-## Resources
-
-### ManagedKafkaConnection Example
-
-ManagedKafka Connection is being created by RHOAS CLI or manually by developer along with secret 
-for purpose of making Managed Kafka appear
-
-
 ### Documentation
 
 [Documentation](./docs)
