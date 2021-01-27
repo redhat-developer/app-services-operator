@@ -28,6 +28,7 @@
 
     <modules>
         <module>openapi</module>
+        <module>model</module>
         <module>rhoas</module>
     </modules>
 

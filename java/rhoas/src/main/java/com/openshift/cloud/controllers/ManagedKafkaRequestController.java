@@ -59,7 +59,7 @@ public class ManagedKafkaRequestController implements ResourceController<Managed
         try {
             updateManagedKafkaRequest(resource);
             var mkClient = managedKafkaClientFactory.managedKafkaRequest();
-            mkClient.createOrReplace(resource);
+            mkClient.inNamespace(resource.getMetadata().getNamespace()).createOrReplace(resource);
 
             return UpdateControl.noUpdate();
         } catch (ApiException e) {
@@ -77,7 +77,7 @@ public class ManagedKafkaRequestController implements ResourceController<Managed
     private boolean updateManagedKafkaRequest(ManagedKafkaRequest resource) throws ApiException {
         var saSecretName = resource.getSpec().getAccessTokenSecretName();
         var namespace = resource.getMetadata().getNamespace();
-        var saSecret = k8sClient.secrets().inNamespace(namespace).withName(saSecretName).get().getData().get("token");//TODO: what is the secret format?
+        var saSecret = k8sClient.secrets().inNamespace(namespace).withName(saSecretName).get().getData().get("value");//TODO: what is the secret format?
         saSecret = new String(Base64.getDecoder().decode(saSecret));
         saSecret = tokenExchanger.getToken(saSecret);
         

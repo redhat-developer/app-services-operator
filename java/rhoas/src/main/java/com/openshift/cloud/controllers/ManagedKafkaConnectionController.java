@@ -59,7 +59,7 @@ public class ManagedKafkaConnectionController implements ResourceController<Mana
             var kafkaId = resource.getSpec().getKafkaId();
             var saSecretName = resource.getSpec().getCredentials().getServiceAccountSecretName();
             var namespace = resource.getMetadata().getNamespace();
-            var saSecret = k8sClient.secrets().inNamespace(namespace).withName(saSecretName).get().getData().get("token");//TODO: what is the secret format?
+            var saSecret = k8sClient.secrets().inNamespace(namespace).withName(saSecretName).get().getData().get("value");//TODO: what is the secret format?
             saSecret = new String(Base64.getDecoder().decode(saSecret));
             saSecret = tokenExchanger.getToken(saSecret);
 

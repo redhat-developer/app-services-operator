@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.openshift.cloud</groupId>
+    <artifactId>rhoas-operator-parent</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+  </parent>
+  <artifactId>rhoas-model</artifactId>
+  <name>rhoas-model</name>
+  <description>rhoas-model</description>
+  <properties>
+    <fabric8.version>5.0.0</fabric8.version>
+    <operator.sdk.version>1.7.0</operator.sdk.version>
+    <quarkus.version>1.11.0.Final</quarkus.version>
+    <dekorate.version>2.0.0.beta3</dekorate.version>
+    <sundrio.version>0.24.1</sundrio.version>
+
+  </properties>
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>io.dekorate</groupId>
+        <artifactId>crd-annotations</artifactId>
+        <version>${dekorate.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.sundr</groupId>
+        <artifactId>builder-annotations</artifactId>
+        <version>${sundrio.version}</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+  <dependencies>
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>kubernetes-client</artifactId>
+      <version>${fabric8.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.dekorate</groupId>
+      <artifactId>crd-annotations</artifactId>
+      <optional>true</optional> <!-- we need to keep this optional to avoid conflicts with quarkus-kubernetes -->
+    </dependency>
+    <dependency>
+      <groupId>io.sundr</groupId>
+      <artifactId>builder-annotations</artifactId>
+    </dependency>
+
+  </dependencies>
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-deploy-plugin</artifactId>
+        <version>2.8.2</version>
+        <configuration>
+          <skip>true</skip>
+        </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.8.1</version>
+        <configuration>
+          <parameters>true</parameters>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>
