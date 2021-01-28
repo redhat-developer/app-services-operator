@@ -15,7 +15,7 @@ spec:
       name: managedserviceaccountrequests.rhoas.redhat.com
       version: v1alpha1
     - description: Managed Kafka Request
-      displayName: Service Account
+      displayName:  Managed Kafka Request
       kind: ManagedKafkaRequest
       name: managedkafkarequests.rhoas.redhat.com
       version: v1alpha1
