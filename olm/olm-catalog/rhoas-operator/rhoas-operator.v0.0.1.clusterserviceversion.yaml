@@ -10,7 +10,7 @@ spec:
   customresourcedefinitions:
     owned:
     - description: Creates RHOAS Service Accounts
-      displayName: Service Account
+      displayName: Service Account Request
       kind: ManagedServiceAccountRequest
       name: managedserviceaccountrequests.rhoas.redhat.com
       version: v1alpha1

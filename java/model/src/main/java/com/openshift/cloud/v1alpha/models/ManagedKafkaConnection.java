@@ -1,7 +1,6 @@
 package com.openshift.cloud.v1alpha.models;
 
 import io.dekorate.crd.annotation.Crd;
-import io.dekorate.crd.annotation.Status;
 import io.fabric8.kubernetes.api.model.Namespaced;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.client.CustomResource;
@@ -21,12 +20,6 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 public class ManagedKafkaConnection
     extends CustomResource<ManagedKafkaConnectionSpec, ManagedKafkaConnectionStatus>
     implements Namespaced {
-
-  private ObjectMeta metadata = new ObjectMeta();
-
-  private ManagedKafkaConnectionSpec spec;
-
-  @Status private ManagedKafkaConnectionStatus status;
 
   /** */
   private static final long serialVersionUID = 7721054567486507997L;

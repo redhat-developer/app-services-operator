@@ -1,9 +1,7 @@
 package com.openshift.cloud.v1alpha.models;
 
 import io.dekorate.crd.annotation.Crd;
-import io.dekorate.crd.annotation.Status;
 import io.fabric8.kubernetes.api.model.Namespaced;
-import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.client.CustomResource;
 import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Plural;
@@ -21,12 +19,6 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 public class ManagedServiceAccountRequest
     extends CustomResource<ManagedServiceAccountRequestSpec, ManagedServiceAccountRequestStatus>
     implements Namespaced {
-
-  private ObjectMeta metadata = new ObjectMeta();
-
-  private ManagedServiceAccountRequestSpec spec;
-
-  @Status private ManagedServiceAccountRequestStatus status;
 
   private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
