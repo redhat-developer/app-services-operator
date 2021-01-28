@@ -11,6 +11,7 @@ import com.openshift.cloud.v1alpha.models.ManagedKafkaConnection;
 import com.openshift.cloud.v1alpha.models.ManagedKafkaConnectionStatus;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.javaoperatorsdk.operator.api.*;
+import io.javaoperatorsdk.operator.api.config.ControllerConfiguration;
 import io.javaoperatorsdk.operator.processing.event.EventSourceManager;
 import java.text.SimpleDateFormat;
 import java.util.Base64;
@@ -20,7 +21,7 @@ import java.util.logging.Logger;
 import javax.inject.Inject;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
-@Controller
+@Controller(namespaces = ControllerConfiguration.WATCH_ALL_NAMESPACES_MARKER)
 public class ManagedKafkaConnectionController
     implements ResourceController<ManagedKafkaConnection> {
 
@@ -29,6 +30,7 @@ public class ManagedKafkaConnectionController
   private static final Logger LOG =
       Logger.getLogger(ManagedKafkaConnectionController.class.getName());
   private final KubernetesClient k8sClient;
+  public final String ACCESS_TOKEN_SECRET_KEY = "value";
 
   @ConfigProperty(name = "client.basePath", defaultValue = "https://api.stage.openshift.com")
   String clientBasePath;
@@ -56,6 +58,9 @@ public class ManagedKafkaConnectionController
       var kafkaId = resource.getSpec().getKafkaId();
       var saSecretName = resource.getSpec().getCredentials().getServiceAccountSecretName();
       var namespace = resource.getMetadata().getNamespace();
+
+      LOG.log(Level.INFO, String.format("secretname : %s namespace : %s", saSecretName, namespace));
+
       var saSecret =
           k8sClient
               .secrets()
@@ -63,7 +68,7 @@ public class ManagedKafkaConnectionController
               .withName(saSecretName)
               .get()
               .getData()
-              .get("value"); // TODO: what is the secret format?
+              .get(ACCESS_TOKEN_SECRET_KEY); // TODO: what is the secret format?
       saSecret = new String(Base64.getDecoder().decode(saSecret));
       saSecret = tokenExchanger.getToken(saSecret);
 
