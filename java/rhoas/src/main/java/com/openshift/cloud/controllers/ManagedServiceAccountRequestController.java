@@ -18,6 +18,7 @@ import io.javaoperatorsdk.operator.api.Controller;
 import io.javaoperatorsdk.operator.api.DeleteControl;
 import io.javaoperatorsdk.operator.api.ResourceController;
 import io.javaoperatorsdk.operator.api.UpdateControl;
+import io.javaoperatorsdk.operator.api.config.ControllerConfiguration;
 import java.nio.charset.Charset;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -30,9 +31,10 @@ import javax.inject.Inject;
 import org.apache.commons.lang3.NotImplementedException;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
-@Controller
+@Controller(namespaces = ControllerConfiguration.WATCH_ALL_NAMESPACES_MARKER)
 public class ManagedServiceAccountRequestController
     implements ResourceController<ManagedServiceAccountRequest> {
+      public final String ACCESS_TOKEN_SECRET_KEY = "value";
 
   private static final Logger LOG =
       Logger.getLogger(ManagedKafkaConnectionController.class.getName());
@@ -64,7 +66,22 @@ public class ManagedServiceAccountRequestController
     if (resource.getSpec().getReset()) {
       throw new NotImplementedException("Reset is not implemented");
     } else {
-      var managedServiceClient = createClient(resource.getSpec().getAccessTokenSecretName());
+
+      var saSecretName = resource.getSpec().getAccessTokenSecretName();
+      var namespace = resource.getMetadata().getNamespace();
+      LOG.log(Level.INFO, String.format("secretname : %s namespace : %s", saSecretName, namespace));
+      var saSecret =
+        k8sClient
+            .secrets()
+            .inNamespace(namespace)
+            .withName(saSecretName)
+            .get()
+            .getData()
+            .get(ACCESS_TOKEN_SECRET_KEY);
+      saSecret = new String(Base64.getDecoder().decode(saSecret));
+      saSecret = tokenExchanger.getToken(saSecret);
+
+      var managedServiceClient = createClient(saSecret);
       var serviceAccountRequest = new ServiceAccountRequest();
       serviceAccountRequest.setDescription(resource.getSpec().getDescription());
       serviceAccountRequest.setName(resource.getSpec().getServiceAccountName());
@@ -108,9 +125,14 @@ public class ManagedServiceAccountRequestController
                                 serviceAccount.getClientID().getBytes(Charset.defaultCharset()))))
                 .build();
 
-        k8sClient.secrets().create(secret);
-        managedKafkaClientFactory.managedServiceAccountRequest().createOrReplace(resource);
-        return UpdateControl.noUpdate();
+        k8sClient.secrets().inNamespace(secret.getMetadata().getNamespace()).create(secret);
+        
+        managedKafkaClientFactory
+            .managedServiceAccountRequest()
+            .inNamespace(resource.getMetadata().getNamespace())
+            .createOrReplace(resource);
+        
+            return UpdateControl.noUpdate();
 
       } catch (ApiException e) {
         LOG.log(Level.SEVERE, e.getMessage(), e);
