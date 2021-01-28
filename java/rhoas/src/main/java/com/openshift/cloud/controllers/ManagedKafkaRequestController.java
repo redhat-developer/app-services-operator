@@ -79,7 +79,7 @@ public class ManagedKafkaRequestController implements ResourceController<Managed
         .get(ACCESS_TOKEN_SECRET_KEY);
     saSecret = new String(Base64.getDecoder().decode(saSecret));
     saSecret = tokenExchanger.getToken(saSecret);
-    LOG.info("ManagedKafkaRequest: " + resource.getCRDName() + " n:" + namespace + "s: " + saSecret)
+    LOG.info("ManagedKafkaRequest: " + resource.getCRDName() + " n:" + namespace + "s: " + saSecret);
     var kafkaList = createClient(saSecret).listKafkas(null, null, null, null);
 
     var userKafkas = new HashMap<String, UserKafka>();
@@ -110,12 +110,12 @@ public class ManagedKafkaRequestController implements ResourceController<Managed
     LOG.info("Refreshing user kafkas");
 
     var mkClient = managedKafkaClientFactory.managedKafkaRequest();
-    var items = mkClient.list().getItems();
+    var items = mkClient.inAnyNamespace().list().getItems();
     LOG.info("Items to refresh" + items.size());
     items.forEach(resource -> {
       try {
         updateManagedKafkaRequest(resource);
-        mkClient.createOrReplace(resource);
+        mkClient.inNamespace(resource.getMetadata().getNamespace()).createOrReplace(resource);
         LOG.info("refreshed kafka" + resource.getCRDName());
       } catch (ApiException e) {
         e.printStackTrace();
