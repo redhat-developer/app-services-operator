@@ -18,14 +18,6 @@ spec:
       properties:
         spec:
           properties:
-            serviceAccountName:
-              type: string
-            reset:
-              type: boolean
-            description:
-              type: string
-            serviceAccountSecretName:
-              type: string
             accessTokenSecretName:
               type: string
             additionalProperties:
@@ -38,9 +30,24 @@ spec:
             message:
               type: string
             updated:
+              type: string          
+            lastUpdate:
               type: string
-            serviceAccountSecretName:
-              type: string
+            userKafkas:
+              type: object
+              additionalProperties: 
+                type: object
+                properties:
+                  id:
+                    type: string
+                  created:
+                    type: string
+                  provider:
+                    type: string
+                  region:
+                    type: string
+                  owner:
+                    type: string
             additionalProperties:
               type: object
           type: object

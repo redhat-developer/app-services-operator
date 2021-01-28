@@ -56,10 +56,8 @@ public class ManagedKafkaConnectionController
 
     try {
       var kafkaId = resource.getSpec().getKafkaId();
-      var saSecretName = resource.getSpec().getCredentials().getServiceAccountSecretName();
+      var saSecretName = resource.getSpec().getAccessTokenSecretName();
       var namespace = resource.getMetadata().getNamespace();
-
-      LOG.log(Level.INFO, String.format("secretname : %s namespace : %s", saSecretName, namespace));
 
       var saSecret =
           k8sClient
@@ -68,7 +66,7 @@ public class ManagedKafkaConnectionController
               .withName(saSecretName)
               .get()
               .getData()
-              .get(ACCESS_TOKEN_SECRET_KEY); // TODO: what is the secret format?
+              .get(ACCESS_TOKEN_SECRET_KEY);
       saSecret = new String(Base64.getDecoder().decode(saSecret));
       saSecret = tokenExchanger.getToken(saSecret);
 

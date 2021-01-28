@@ -56,7 +56,7 @@ public class ManagedKafkaRequestController implements ResourceController<Managed
     try {
       updateManagedKafkaRequest(resource);
       var mkClient = managedKafkaClientFactory.managedKafkaRequest();
-      mkClient.inNamespace(resource.getMetadata().getNamespace()).createOrReplace(resource);
+      mkClient.inNamespace(resource.getMetadata().getNamespace()).updateStatus(resource);
 
       return UpdateControl.noUpdate();
     } catch (ApiException e) {

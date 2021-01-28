@@ -6,11 +6,20 @@ import java.util.Map;
 public class ManagedKafkaConnectionSpec {
 
   private String kafkaId;
+  private String accessTokenSecretName;
   private Credentials credentials;
   private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
   /** No args constructor for use in serialization */
   public ManagedKafkaConnectionSpec() {}
+
+  public String getAccessTokenSecretName() {
+    return accessTokenSecretName;
+  }
+
+  public void setAccessTokenSecretName(String accessTokenSecretName) {
+    this.accessTokenSecretName = accessTokenSecretName;
+  }
 
   /**
    * @param kafkaId

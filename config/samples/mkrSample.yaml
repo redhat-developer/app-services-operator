@@ -1,8 +1,6 @@
 apiVersion: rhoas.redhat.com/v1alpha1
 kind: ManagedKafkaRequest
 metadata:
-  namespace: mas
   name: rhosak-demo
-
 spec:
-  accessTokenSecretName: rhoas-binding-operator-token
+  accessTokenSecretName: rhoas-secret
