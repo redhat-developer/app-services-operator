@@ -17,9 +17,25 @@ rules:
   - update
   - watch
 - apiGroups:
+    - "apiextensions.k8s.io"
+  resources:
+    - 'customresourcedefinitions'  
+  verbs:
+    - get
+    - list
+    - watch  
+- apiGroups:
   - rhoas.redhat.com
   resources:
-  - '*'
+  - 'managedkafkaconnections'
+  - 'managedkafkaconnections/status'
+  - 'managedkafkaconnections/finalizers'
+  - 'managedkafkarequests'
+  - 'managedkafkarequests/status'
+  - 'managedkafkarequests/finalizers'
+  - 'managedserviceaccountrequests'
+  - 'managedserviceaccountrequests/status'
+  - 'managedserviceaccountrequests/finalizers'
   verbs:
   - create
   - delete
