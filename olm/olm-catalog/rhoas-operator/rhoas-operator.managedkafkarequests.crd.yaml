@@ -1,0 +1,51 @@
+apiVersion: apiextensions.k8s.io/v1beta1
+kind: CustomResourceDefinition
+metadata:
+  name: managedkafkarequests.rhoas.redhat.com
+spec:
+  group: rhoas.redhat.com
+  names:
+    kind: ManagedKafkaRequest
+    plural: managedkafkarequests
+    shortNames:
+    - mkr
+    singular: managedkafkarequest
+  scope: Namespaced
+  subresources:
+    status: {}
+  validation:
+    openAPIV3Schema:
+      properties:
+        spec:
+          properties:
+            serviceAccountName:
+              type: string
+            reset:
+              type: boolean
+            description:
+              type: string
+            serviceAccountSecretName:
+              type: string
+            accessTokenSecretName:
+              type: string
+            additionalProperties:
+              type: object
+          type: object
+        additionalProperties:
+          type: object
+        status:
+          properties:
+            message:
+              type: string
+            updated:
+              type: string
+            serviceAccountSecretName:
+              type: string
+            additionalProperties:
+              type: object
+          type: object
+      type: object
+  versions:
+  - name: v1alpha1
+    served: true
+    storage: true

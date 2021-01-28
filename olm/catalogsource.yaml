@@ -1,0 +1,17 @@
+apiVersion: operators.coreos.com/v1alpha1
+kind: CatalogSource
+metadata:
+  name: rhoas-operators
+  namespace: openshift-marketplace
+spec:
+  displayName: RHOAS Operators
+  icon:
+    base64data: ""
+    mediatype: ""
+  image: quay.io/secondsun/rhoas-registry:v0.0.1
+  priority: -400
+  publisher: b2F ORG
+  sourceType: grpc
+  updateStrategy:
+    registryPoll:
+      interval: 5m10s

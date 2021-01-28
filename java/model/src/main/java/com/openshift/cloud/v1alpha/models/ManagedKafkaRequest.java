@@ -2,6 +2,8 @@ package com.openshift.cloud.v1alpha.models;
 
 import io.dekorate.crd.annotation.Crd;
 import io.dekorate.crd.annotation.Status;
+import io.fabric8.kubernetes.api.model.Namespaced;
+import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.client.CustomResource;
 import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Plural;
@@ -17,9 +19,14 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 @Version("v1alpha1")
 @Crd(group = "rhoas.redhat.com", version = "v1alpha1")
 public class ManagedKafkaRequest
-    extends CustomResource<ManagedKafkaRequestSpec, ManagedKafkaRequestStatus> {
+    extends CustomResource<ManagedKafkaRequestSpec, ManagedKafkaRequestStatus>
+    implements Namespaced {
 
-  @Status private ManagedKafkaRequestStatus status;
+  private ObjectMeta metadata = new ObjectMeta();
+
+  private ManagedServiceAccountRequestSpec spec;
+
+  @Status private ManagedServiceAccountRequestStatus status;
 
   private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -63,15 +70,5 @@ public class ManagedKafkaRequest
         .append(additionalProperties, rhs.additionalProperties)
         .append(getStatus(), rhs.getStatus())
         .isEquals();
-  }
-
-  @Override
-  public ManagedKafkaRequestStatus getStatus() {
-    return this.status;
-  }
-
-  @Override
-  public void setStatus(ManagedKafkaRequestStatus managedKafkaRequestStatus) {
-    this.status = managedKafkaRequestStatus;
   }
 }
