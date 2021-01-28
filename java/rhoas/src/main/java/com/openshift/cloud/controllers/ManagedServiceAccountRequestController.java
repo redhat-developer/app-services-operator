@@ -34,7 +34,7 @@ import org.eclipse.microprofile.config.inject.ConfigProperty;
 @Controller(namespaces = ControllerConfiguration.WATCH_ALL_NAMESPACES_MARKER)
 public class ManagedServiceAccountRequestController
     implements ResourceController<ManagedServiceAccountRequest> {
-      public final String ACCESS_TOKEN_SECRET_KEY = "value";
+  public final String ACCESS_TOKEN_SECRET_KEY = "value";
 
   private static final Logger LOG =
       Logger.getLogger(ManagedKafkaConnectionController.class.getName());
@@ -69,15 +69,15 @@ public class ManagedServiceAccountRequestController
 
       var saSecretName = resource.getSpec().getAccessTokenSecretName();
       var namespace = resource.getMetadata().getNamespace();
-      LOG.log(Level.INFO, String.format("secretname : %s namespace : %s", saSecretName, namespace));
+
       var saSecret =
-        k8sClient
-            .secrets()
-            .inNamespace(namespace)
-            .withName(saSecretName)
-            .get()
-            .getData()
-            .get(ACCESS_TOKEN_SECRET_KEY);
+          k8sClient
+              .secrets()
+              .inNamespace(namespace)
+              .withName(saSecretName)
+              .get()
+              .getData()
+              .get(ACCESS_TOKEN_SECRET_KEY);
       saSecret = new String(Base64.getDecoder().decode(saSecret));
       saSecret = tokenExchanger.getToken(saSecret);
 
@@ -126,13 +126,13 @@ public class ManagedServiceAccountRequestController
                 .build();
 
         k8sClient.secrets().inNamespace(secret.getMetadata().getNamespace()).create(secret);
-        
+
         managedKafkaClientFactory
             .managedServiceAccountRequest()
             .inNamespace(resource.getMetadata().getNamespace())
-            .createOrReplace(resource);
-        
-            return UpdateControl.noUpdate();
+            .updateStatus(resource);
+
+        return UpdateControl.noUpdate();
 
       } catch (ApiException e) {
         LOG.log(Level.SEVERE, e.getMessage(), e);
@@ -148,8 +148,6 @@ public class ManagedServiceAccountRequestController
 
     // Configure HTTP bearer authorization: Bearer
     HttpBearerAuth Bearer = (HttpBearerAuth) defaultClient.getAuthentication("Bearer");
-
-    clientToken = tokenExchanger.getToken(clientToken);
     Bearer.setBearerToken(clientToken);
 
     return new DefaultApi(defaultClient);
