@@ -22,10 +22,13 @@ import java.util.logging.Logger;
 import javax.inject.Inject;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
+
 @Controller
 public class ManagedKafkaRequestController implements ResourceController<ManagedKafkaRequest> {
 
   private static final Logger LOG = Logger.getLogger(ManagedKafkaRequestController.class.getName());
+  public final String ACCESS_TOKEN_SECRET_KEY =  "value";
+
 
   @Inject KubernetesClient k8sClient;
 
@@ -78,7 +81,7 @@ public class ManagedKafkaRequestController implements ResourceController<Managed
             .withName(saSecretName)
             .get()
             .getData()
-            .get("value"); // TODO: what is the secret format?
+            .get(ACCESS_TOKEN_SECRET_KEY);
     saSecret = new String(Base64.getDecoder().decode(saSecret));
     saSecret = tokenExchanger.getToken(saSecret);
 
