@@ -2,6 +2,8 @@ package com.openshift.cloud.v1alpha.models;
 
 import io.dekorate.crd.annotation.Crd;
 import io.dekorate.crd.annotation.Status;
+import io.fabric8.kubernetes.api.model.Namespaced;
+import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.client.CustomResource;
 import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Plural;
@@ -17,14 +19,19 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 @Version("v1alpha1")
 @Crd(group = "rhoas.redhat.com", version = "v1alpha1")
 public class ManagedKafkaConnection
-    extends CustomResource<ManagedKafkaConnectionSpec, ManagedKafkaConnectionStatus> {
+    extends CustomResource<ManagedKafkaConnectionSpec, ManagedKafkaConnectionStatus>
+    implements Namespaced {
+
+  private ObjectMeta metadata = new ObjectMeta();
+
+  private ManagedKafkaConnectionSpec spec;
+
+  @Status private ManagedKafkaConnectionStatus status;
 
   /** */
   private static final long serialVersionUID = 7721054567486507997L;
 
   private Map<String, Object> additionalProperties = new HashMap<String, Object>();
-
-  @Status private ManagedKafkaConnectionStatus status;
 
   public Map<String, Object> getAdditionalProperties() {
     return this.additionalProperties;
@@ -69,12 +76,32 @@ public class ManagedKafkaConnection
   }
 
   @Override
-  public ManagedKafkaConnectionStatus getStatus() {
-    return this.status;
+  public ManagedKafkaConnectionSpec getSpec() {
+    return super.getSpec();
   }
 
   @Override
-  public void setStatus(ManagedKafkaConnectionStatus managedKafkaConnectionStatus) {
-    this.status = managedKafkaConnectionStatus;
+  public void setSpec(ManagedKafkaConnectionSpec spec) {
+    super.setSpec(spec);
+  }
+
+  @Override
+  public ManagedKafkaConnectionStatus getStatus() {
+    return super.getStatus();
+  }
+
+  @Override
+  public void setStatus(ManagedKafkaConnectionStatus status) {
+    super.setStatus(status);
+  }
+
+  @Override
+  public ObjectMeta getMetadata() {
+    return super.getMetadata();
+  }
+
+  @Override
+  public void setMetadata(ObjectMeta metadata) {
+    super.setMetadata(metadata);
   }
 }

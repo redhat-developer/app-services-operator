@@ -2,6 +2,8 @@ package com.openshift.cloud.v1alpha.models;
 
 import io.dekorate.crd.annotation.Crd;
 import io.dekorate.crd.annotation.Status;
+import io.fabric8.kubernetes.api.model.Namespaced;
+import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.client.CustomResource;
 import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Plural;
@@ -17,7 +19,12 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 @Version("v1alpha1")
 @Crd(group = "rhoas.redhat.com", version = "v1alpha1")
 public class ManagedServiceAccountRequest
-    extends CustomResource<ManagedServiceAccountRequestSpec, ManagedServiceAccountRequestStatus> {
+    extends CustomResource<ManagedServiceAccountRequestSpec, ManagedServiceAccountRequestStatus>
+    implements Namespaced {
+
+  private ObjectMeta metadata = new ObjectMeta();
+
+  private ManagedServiceAccountRequestSpec spec;
 
   @Status private ManagedServiceAccountRequestStatus status;
 
@@ -63,15 +70,5 @@ public class ManagedServiceAccountRequest
         .append(additionalProperties, rhs.additionalProperties)
         .append(getStatus(), rhs.getStatus())
         .isEquals();
-  }
-
-  @Override
-  public ManagedServiceAccountRequestStatus getStatus() {
-    return this.status;
-  }
-
-  @Override
-  public void setStatus(ManagedServiceAccountRequestStatus status) {
-    this.status = status;
   }
 }

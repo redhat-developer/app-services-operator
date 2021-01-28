@@ -1,43 +1,80 @@
-apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
+apiVersion: apiextensions.k8s.io/v1
 metadata:
   name: managedkafkaconnections.rhoas.redhat.com
+  selfLink: >-
+    /apis/apiextensions.k8s.io/v1/customresourcedefinitions/managedkafkaconnections.rhoas.redhat.com
+  uid: 6286b78b-ea86-4c4d-b53a-393556efcc81
+  resourceVersion: '824833'
+  generation: 1
+  creationTimestamp: '2021-01-27T21:25:41Z'
+  managedFields:
+    - manager: kube-apiserver
+      operation: Update
+      apiVersion: apiextensions.k8s.io/v1
+      time: '2021-01-27T21:25:41Z'
+      fieldsType: FieldsV1
+      fieldsV1:
+        'f:status':
+          'f:acceptedNames':
+            'f:kind': {}
+            'f:listKind': {}
+            'f:plural': {}
+            'f:singular': {}
+          'f:conditions': {}
+    - manager: okhttp
+      operation: Update
+      apiVersion: apiextensions.k8s.io/v1beta1
+      time: '2021-01-27T21:25:41Z'
+      fieldsType: FieldsV1
+      fieldsV1:
+        'f:spec':
+          'f:conversion':
+            .: {}
+            'f:strategy': {}
+          'f:group': {}
+          'f:names':
+            'f:kind': {}
+            'f:listKind': {}
+            'f:plural': {}
+            'f:singular': {}
+          'f:preserveUnknownFields': {}
+          'f:scope': {}
+          'f:version': {}
+          'f:versions': {}
+        'f:status':
+          'f:storedVersions': {}
 spec:
   group: rhoas.redhat.com
   names:
-    kind: ManagedKafkaConnection
     plural: managedkafkaconnections
-    shortNames:
-    - mkc
     singular: managedkafkaconnection
+    kind: ManagedKafkaConnection
+    listKind: ManagedKafkaConnectionList
   scope: Namespaced
-  subresources:
-    status: {}
-  validation:
-    openAPIV3Schema:
-      properties:
-        additionalProperties:
-          type: object
-        status:
-          properties:
-            message:
-              type: string
-            updated:
-              type: string
-            boostrapServer:
-              properties:
-                host:
-                  type: string
-                additionalProperties:
-                  type: object
-              type: object
-            serviceAccountSecretName:
-              type: string
-            additionalProperties:
-              type: object
-          type: object
-      type: object
   versions:
-  - name: v1alpha1
-    served: true
-    storage: true
+    - name: v1alpha1
+      served: true
+      storage: true
+  conversion:
+    strategy: None
+  preserveUnknownFields: true
+status:
+  conditions:
+    - type: NamesAccepted
+      status: 'True'
+      lastTransitionTime: '2021-01-27T21:25:41Z'
+      reason: NoConflicts
+      message: no conflicts found
+    - type: Established
+      status: 'True'
+      lastTransitionTime: '2021-01-27T21:25:41Z'
+      reason: InitialNamesAccepted
+      message: the initial names have been accepted
+  acceptedNames:
+    plural: managedkafkaconnections
+    singular: managedkafkaconnection
+    kind: ManagedKafkaConnection
+    listKind: ManagedKafkaConnectionList
+  storedVersions:
+    - v1alpha1
