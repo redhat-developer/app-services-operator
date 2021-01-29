@@ -7,7 +7,12 @@ public class ManagedServiceAccountRequestSpec {
 
   private String serviceAccountName;
   private Boolean reset;
-  private String description;
+
+  public void setAdditionalProperties(Map<String, Object> additionalProperties) {
+    this.additionalProperties = additionalProperties;
+  }
+
+  private String serviceAccountDescription;
   private String serviceAccountSecretName;
   private String accessTokenSecretName = "rhoas_binding_operator_token";
 
@@ -28,17 +33,17 @@ public class ManagedServiceAccountRequestSpec {
    * @param serviceAccountSecretName
    * @param serviceAccountName
    * @param reset
-   * @param description
+   * @param serviceAccountDescription
    */
   public ManagedServiceAccountRequestSpec(
       String serviceAccountName,
+      String serviceAccountDescription,
       Boolean reset,
-      String description,
       String serviceAccountSecretName) {
     super();
     this.serviceAccountName = serviceAccountName;
     this.reset = reset;
-    this.description = description;
+    this.serviceAccountDescription = serviceAccountDescription;
     this.serviceAccountSecretName = serviceAccountSecretName;
   }
 
@@ -58,14 +63,13 @@ public class ManagedServiceAccountRequestSpec {
     this.reset = reset;
   }
 
-  public String getDescription() {
-    return description;
+  public String getServiceAccountDescription() {
+    return serviceAccountDescription;
   }
 
-  public void setDescription(String description) {
-    this.description = description;
+  public void setServiceAccountDescription(String serviceAccountDescription) {
+    this.serviceAccountDescription = serviceAccountDescription;
   }
-
   public String getServiceAccountSecretName() {
     return serviceAccountSecretName;
   }
