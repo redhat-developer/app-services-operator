@@ -13,12 +13,12 @@ import com.openshift.cloud.v1alpha.models.ManagedServiceAccountRequestStatus;
 import io.fabric8.kubernetes.api.model.OwnerReferenceBuilder;
 import io.fabric8.kubernetes.api.model.SecretBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import io.javaoperatorsdk.operator.api.Context;
-import io.javaoperatorsdk.operator.api.Controller;
-import io.javaoperatorsdk.operator.api.DeleteControl;
-import io.javaoperatorsdk.operator.api.ResourceController;
-import io.javaoperatorsdk.operator.api.UpdateControl;
+import io.javaoperatorsdk.operator.api.*;
 import io.javaoperatorsdk.operator.api.config.ControllerConfiguration;
+import org.apache.commons.lang3.NotImplementedException;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
+
+import javax.inject.Inject;
 import java.nio.charset.Charset;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -27,9 +27,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.inject.Inject;
-import org.apache.commons.lang3.NotImplementedException;
-import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 @Controller(namespaces = ControllerConfiguration.WATCH_ALL_NAMESPACES_MARKER)
 public class ManagedServiceAccountRequestController
@@ -83,7 +80,7 @@ public class ManagedServiceAccountRequestController
 
       var managedServiceClient = createClient(saSecret);
       var serviceAccountRequest = new ServiceAccountRequest();
-      serviceAccountRequest.setDescription(resource.getSpec().getDescription());
+      serviceAccountRequest.setDescription(resource.getSpec().getServiceAccountDescription());
       serviceAccountRequest.setName(resource.getSpec().getServiceAccountName());
 
       try {
