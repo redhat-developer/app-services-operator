@@ -15,10 +15,6 @@ import io.fabric8.kubernetes.api.model.SecretBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.javaoperatorsdk.operator.api.*;
 import io.javaoperatorsdk.operator.api.config.ControllerConfiguration;
-import org.apache.commons.lang3.NotImplementedException;
-import org.eclipse.microprofile.config.inject.ConfigProperty;
-
-import javax.inject.Inject;
 import java.nio.charset.Charset;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -27,6 +23,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.inject.Inject;
+import org.apache.commons.lang3.NotImplementedException;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 @Controller(namespaces = ControllerConfiguration.WATCH_ALL_NAMESPACES_MARKER)
 public class ManagedServiceAccountRequestController

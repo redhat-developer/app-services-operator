@@ -70,6 +70,7 @@ public class ManagedServiceAccountRequestSpec {
   public void setServiceAccountDescription(String serviceAccountDescription) {
     this.serviceAccountDescription = serviceAccountDescription;
   }
+
   public String getServiceAccountSecretName() {
     return serviceAccountSecretName;
   }
