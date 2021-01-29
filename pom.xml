@@ -27,9 +27,9 @@
   <url>http://cloud.redhat.com</url>
 
     <modules>
-        <module>openapi</module>
-        <module>model</module>
-        <module>rhoas</module>
+        <module>modules/openapi</module>
+        <module>modules/model</module>
+        <module>modules/rhoas</module>
     </modules>
 
     <properties>

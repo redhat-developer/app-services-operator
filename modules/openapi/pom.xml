@@ -6,6 +6,7 @@
         <groupId>com.openshift.cloud</groupId>
         <artifactId>rhoas-operator-parent</artifactId>
         <version>1.0.0-SNAPSHOT</version>
+        <relativePath>../../pom.xml</relativePath>
     </parent>
 
     <artifactId>managed-services-api</artifactId>
