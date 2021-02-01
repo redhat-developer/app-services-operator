@@ -16,8 +16,7 @@ import io.fabric8.kubernetes.client.KubernetesClient;
 import io.javaoperatorsdk.operator.api.*;
 import io.javaoperatorsdk.operator.api.config.ControllerConfiguration;
 import java.nio.charset.Charset;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.time.Instant;
 import java.util.Base64;
 import java.util.List;
 import java.util.Map;
@@ -88,7 +87,7 @@ public class ManagedServiceAccountRequestController
         var status =
             new ManagedServiceAccountRequestStatus(
                 "Created",
-                LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME),
+                Instant.now().toString(),
                 resource.getSpec().getServiceAccountSecretName());
         resource.setStatus(status);
 

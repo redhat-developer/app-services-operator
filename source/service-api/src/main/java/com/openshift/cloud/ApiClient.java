@@ -66,13 +66,6 @@ public class ApiClient {
     json = new JSON();
     httpClient = buildHttpClient(debugging);
 
-    this.dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX", Locale.ROOT);
-
-    // Use UTC as the default time zone.
-    this.dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-
-    this.json.setDateFormat((DateFormat) dateFormat.clone());
-
     // Set default User-Agent.
     setUserAgent("OpenAPI-Generator/0.0.1/java");
 
@@ -257,48 +250,6 @@ public class ApiClient {
   public ApiClient setTempFolderPath(String tempFolderPath) {
     this.tempFolderPath = tempFolderPath;
     return this;
-  }
-
-  /**
-   * Get the date format used to parse/format date parameters.
-   * @return the date format used to parse/format date parameters
-   */
-  public DateFormat getDateFormat() {
-    return dateFormat;
-  }
-
-  /**
-   * Set the date format used to parse/format date parameters.
-   * @param dateFormat a date format used to parse/format date parameters
-   * @return this {@code ApiClient}
-   */
-  public ApiClient setDateFormat(DateFormat dateFormat) {
-    this.dateFormat = dateFormat;
-    // also set the date format for model (de)serialization with Date properties
-    this.json.setDateFormat((DateFormat) dateFormat.clone());
-    return this;
-  }
-
-  /**
-   * Parse the given string into Date object.
-   * @param str a string to parse
-   * @return a {@code Date} object
-   */
-  public Date parseDate(String str) {
-    try {
-      return dateFormat.parse(str);
-    } catch (java.text.ParseException e) {
-      throw new RuntimeException(e);
-    }
-  }
-
-  /**
-   * Format the given Date object into string.
-   * @param date a {@code Date} object to format
-   * @return the {@code String} version of the {@code Date} object
-   */
-  public String formatDate(Date date) {
-    return dateFormat.format(date);
   }
 
   /**
