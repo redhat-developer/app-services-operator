@@ -1,19 +1,19 @@
 package com.openshift.cloud.v1alpha.models;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class UserKafka {
 
   private String id;
-  private String created;
   private String provider;
   private String region;
   private String owner;
-  private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+  private String bootstrapServerHost;
+  private String updatedAt;
+  private String createdAt;
+  private String status;
 
   /** No args constructor for use in serialization */
-  public UserKafka() {}
+  public UserKafka() {
+  }
 
   /**
    * @param owner
@@ -22,10 +22,9 @@ public class UserKafka {
    * @param id
    * @param region
    */
-  public UserKafka(String id, String created, String provider, String region, String owner) {
+  public UserKafka(String id, String provider, String region, String owner) {
     super();
     this.id = id;
-    this.created = created;
     this.provider = provider;
     this.region = region;
     this.owner = owner;
@@ -37,14 +36,6 @@ public class UserKafka {
 
   public void setId(String id) {
     this.id = id;
-  }
-
-  public String getCreated() {
-    return created;
-  }
-
-  public void setCreated(String created) {
-    this.created = created;
   }
 
   public String getProvider() {
@@ -71,18 +62,32 @@ public class UserKafka {
     this.owner = owner;
   }
 
-  public Map<String, Object> getAdditionalProperties() {
-    return this.additionalProperties;
+  public String getBootstrapServerHost() {
+    return bootstrapServerHost;
   }
 
-  public void setAdditionalProperty(String name, Object value) {
-    this.additionalProperties.put(name, value);
+  public void setBootstrapServerHost(String bootstrapServerHost) {
+    this.bootstrapServerHost = bootstrapServerHost;
+  }
+
+  public void setStatus(String status) {
+    this.status = status;
+  }
+
+  public void setCreatedAt(String createdAt) {
+    this.createdAt = createdAt;
+  }
+
+  public void setUpdatedAt(String updatedAt) {
+    this.updatedAt = updatedAt;
   }
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
+    if (this == o)
+      return true;
+    if (o == null || getClass() != o.getClass())
+      return false;
 
     UserKafka userKafka = (UserKafka) o;
 
@@ -92,5 +97,17 @@ public class UserKafka {
   @Override
   public int hashCode() {
     return id.hashCode();
+  }
+
+  public String getUpdatedAt() {
+    return updatedAt;
+  }
+
+  public String getCreatedAt() {
+    return createdAt;
+  }
+
+  public String getStatus() {
+    return status;
   }
 }

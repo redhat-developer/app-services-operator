@@ -15,10 +15,10 @@ import io.javaoperatorsdk.operator.api.*;
 import io.javaoperatorsdk.operator.api.config.ControllerConfiguration;
 import io.javaoperatorsdk.operator.processing.event.EventSourceManager;
 import io.quarkus.scheduler.Scheduled;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+
+import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Base64;
-import java.util.HashMap;
 import java.util.logging.Logger;
 import javax.inject.Inject;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
@@ -87,19 +87,22 @@ public class ManagedKafkaRequestController implements ResourceController<Managed
         "ManagedKafkaRequest: " + resource.getCRDName() + " n:" + namespace + "s: " + saSecret);
     var kafkaList = createClient(saSecret).listKafkas(null, null, null, null);
 
-    var userKafkas = new HashMap<String, UserKafka>();
+    var userKafkas = new ArrayList<UserKafka>();
 
     kafkaList.getItems().stream()
         .forEach(
             listItem -> {
               var userKafka = new UserKafka();
               userKafka.setId(listItem.getId());
-              userKafka.setCreated(listItem.getCreatedAt().format(DateTimeFormatter.ISO_DATE_TIME));
               userKafka.setOwner(listItem.getOwner());
+              userKafka.setBootstrapServerHost(listItem.getBootstrapServerHost());
+              userKafka.setStatus(listItem.getStatus());
+              userKafka.setCreatedAt(listItem.getCreatedAt().toInstant().toString());
+              userKafka.setUpdatedAt(listItem.getUpdatedAt().toInstant().toString());
               userKafka.setProvider(listItem.getCloudProvider());
               userKafka.setRegion(listItem.getRegion());
 
-              userKafkas.put(listItem.getName(), userKafka);
+              userKafkas.add(userKafka);
             });
 
     if (resource.getStatus() != null && userKafkas.equals(resource.getStatus().getUserKafkas())) {
@@ -108,7 +111,7 @@ public class ManagedKafkaRequestController implements ResourceController<Managed
 
     var status =
         new ManagedKafkaRequestStatus(
-            LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME), userKafkas);
+            Instant.now().toString(), userKafkas);
     resource.setStatus(status);
     return true;
   }
