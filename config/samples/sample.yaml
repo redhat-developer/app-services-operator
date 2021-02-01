@@ -1,7 +1,0 @@
-apiVersion: rhoas.redhat.com/v1alpha1
-kind: ManagedKafkaConnection
-metadata:
-  name: rhosak-demo
-
-spec:
-  kafkaId: 1mk2CcqHByUJCg0sZxiGv8f53Pz

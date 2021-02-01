@@ -13,9 +13,8 @@ import io.fabric8.kubernetes.client.KubernetesClient;
 import io.javaoperatorsdk.operator.api.*;
 import io.javaoperatorsdk.operator.api.config.ControllerConfiguration;
 import io.javaoperatorsdk.operator.processing.event.EventSourceManager;
-import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.util.Base64;
-import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.inject.Inject;
@@ -25,8 +24,6 @@ import org.eclipse.microprofile.config.inject.ConfigProperty;
 public class ManagedKafkaConnectionController
     implements ResourceController<ManagedKafkaConnection> {
 
-  private static final String DATE_PATTERN = "yyyy-MM-dd'T'HH:mm:ssZ";
-  private static final SimpleDateFormat DATE_FORMATTER = new SimpleDateFormat(DATE_PATTERN);
   private static final Logger LOG =
       Logger.getLogger(ManagedKafkaConnectionController.class.getName());
   private final KubernetesClient k8sClient;
@@ -77,7 +74,7 @@ public class ManagedKafkaConnectionController
 
       var status =
           new ManagedKafkaConnectionStatus(
-              "Created", DATE_FORMATTER.format(new Date()), bootStrapServer, saSecretName);
+              "Created", Instant.now().toString(), bootStrapServer, saSecretName);
       resource.setStatus(status);
 
       return UpdateControl.updateCustomResourceAndStatus(resource);

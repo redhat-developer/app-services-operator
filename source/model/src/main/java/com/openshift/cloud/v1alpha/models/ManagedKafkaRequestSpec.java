@@ -1,7 +1,5 @@
 package com.openshift.cloud.v1alpha.models;
 
-import java.util.HashMap;
-import java.util.Map;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
@@ -9,7 +7,6 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 public class ManagedKafkaRequestSpec {
 
   private String accessTokenSecretName = "rhoas_binding_operator_token"; // Default as per ADR_00022
-  private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
   /** No args constructor for use in serialization */
   public ManagedKafkaRequestSpec() {}
@@ -28,28 +25,16 @@ public class ManagedKafkaRequestSpec {
     this.accessTokenSecretName = accessTokenSecretName;
   }
 
-  public Map<String, Object> getAdditionalProperties() {
-    return this.additionalProperties;
-  }
-
-  public void setAdditionalProperty(String name, Object value) {
-    this.additionalProperties.put(name, value);
-  }
-
   @Override
   public String toString() {
     return new ToStringBuilder(this)
         .append("accessTokenSecretName", accessTokenSecretName)
-        .append("additionalProperties", additionalProperties)
         .toString();
   }
 
   @Override
   public int hashCode() {
-    return new HashCodeBuilder()
-        .append(accessTokenSecretName)
-        .append(additionalProperties)
-        .toHashCode();
+    return new HashCodeBuilder().append(accessTokenSecretName).toHashCode();
   }
 
   @Override
@@ -61,9 +46,6 @@ public class ManagedKafkaRequestSpec {
       return false;
     }
     ManagedKafkaRequestSpec rhs = ((ManagedKafkaRequestSpec) other);
-    return new EqualsBuilder()
-        .append(accessTokenSecretName, rhs.accessTokenSecretName)
-        .append(additionalProperties, rhs.additionalProperties)
-        .isEquals();
+    return new EqualsBuilder().append(accessTokenSecretName, rhs.accessTokenSecretName).isEquals();
   }
 }
