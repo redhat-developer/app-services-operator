@@ -6,9 +6,6 @@ import java.util.Map;
 public class ManagedServiceAccountRequestSpec {
 
   private String serviceAccountName;
-  private Boolean reset;
-
-
   private String serviceAccountDescription;
   private String serviceAccountSecretName;
   private String accessTokenSecretName = "rhoas_binding_operator_token";
@@ -27,17 +24,14 @@ public class ManagedServiceAccountRequestSpec {
   /**
    * @param serviceAccountSecretName
    * @param serviceAccountName
-   * @param reset
    * @param serviceAccountDescription
    */
   public ManagedServiceAccountRequestSpec(
       String serviceAccountName,
       String serviceAccountDescription,
-      Boolean reset,
       String serviceAccountSecretName) {
     super();
     this.serviceAccountName = serviceAccountName;
-    this.reset = reset;
     this.serviceAccountDescription = serviceAccountDescription;
     this.serviceAccountSecretName = serviceAccountSecretName;
   }
@@ -48,14 +42,6 @@ public class ManagedServiceAccountRequestSpec {
 
   public void setServiceAccountName(String serviceAccountName) {
     this.serviceAccountName = serviceAccountName;
-  }
-
-  public Boolean getReset() {
-    return reset;
-  }
-
-  public void setReset(Boolean reset) {
-    this.reset = reset;
   }
 
   public String getServiceAccountDescription() {

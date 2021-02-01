@@ -27,112 +27,82 @@ import org.apache.commons.lang3.NotImplementedException;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 @Controller(namespaces = ControllerConfiguration.WATCH_ALL_NAMESPACES_MARKER)
-public class ManagedServiceAccountRequestController
-    implements ResourceController<ManagedServiceAccountRequest> {
+public class ManagedServiceAccountRequestController implements ResourceController<ManagedServiceAccountRequest> {
   public final String ACCESS_TOKEN_SECRET_KEY = "value";
 
-  private static final Logger LOG =
-      Logger.getLogger(ManagedKafkaConnectionController.class.getName());
+  private static final Logger LOG = Logger.getLogger(ManagedKafkaConnectionController.class.getName());
 
-  @Inject KubernetesClient k8sClient;
+  @Inject
+  KubernetesClient k8sClient;
 
-  @Inject TokenExchanger tokenExchanger;
+  @Inject
+  TokenExchanger tokenExchanger;
 
-  @Inject ManagedKafkaK8sClients managedKafkaClientFactory;
+  @Inject
+  ManagedKafkaK8sClients managedKafkaClientFactory;
 
   @ConfigProperty(name = "client.basePath", defaultValue = "https://api.stage.openshift.com")
   String clientBasePath;
 
   @Override
-  public DeleteControl deleteResource(
-      ManagedServiceAccountRequest resource, Context<ManagedServiceAccountRequest> context) {
+  public DeleteControl deleteResource(ManagedServiceAccountRequest resource,
+      Context<ManagedServiceAccountRequest> context) {
 
     return DeleteControl.DEFAULT_DELETE;
   }
 
   @Override
-  public UpdateControl<ManagedServiceAccountRequest> createOrUpdateResource(
-      ManagedServiceAccountRequest resource, Context<ManagedServiceAccountRequest> context) {
+  public UpdateControl<ManagedServiceAccountRequest> createOrUpdateResource(ManagedServiceAccountRequest resource,
+      Context<ManagedServiceAccountRequest> context) {
 
     if (resource.getStatus() != null) {
       return UpdateControl.noUpdate();
     }
 
-    if (resource.getSpec().getReset()) {
-      throw new NotImplementedException("Reset is not implemented");
-    } else {
+    var saSecretName = resource.getSpec().getAccessTokenSecretName();
+    var namespace = resource.getMetadata().getNamespace();
 
-      var saSecretName = resource.getSpec().getAccessTokenSecretName();
-      var namespace = resource.getMetadata().getNamespace();
+    var saSecret = k8sClient.secrets().inNamespace(namespace).withName(saSecretName).get().getData()
+        .get(ACCESS_TOKEN_SECRET_KEY);
+    saSecret = new String(Base64.getDecoder().decode(saSecret));
+    saSecret = tokenExchanger.getToken(saSecret);
 
-      var saSecret =
-          k8sClient
-              .secrets()
-              .inNamespace(namespace)
-              .withName(saSecretName)
-              .get()
-              .getData()
-              .get(ACCESS_TOKEN_SECRET_KEY);
-      saSecret = new String(Base64.getDecoder().decode(saSecret));
-      saSecret = tokenExchanger.getToken(saSecret);
+    var managedServiceClient = createClient(saSecret);
+    var serviceAccountRequest = new ServiceAccountRequest();
+    serviceAccountRequest.setDescription(resource.getSpec().getServiceAccountDescription());
+    serviceAccountRequest.setName(resource.getSpec().getServiceAccountName());
 
-      var managedServiceClient = createClient(saSecret);
-      var serviceAccountRequest = new ServiceAccountRequest();
-      serviceAccountRequest.setDescription(resource.getSpec().getServiceAccountDescription());
-      serviceAccountRequest.setName(resource.getSpec().getServiceAccountName());
+    try {
+      var serviceAccount = managedServiceClient.createServiceAccount(serviceAccountRequest);
+      serviceAccount.getClientSecret();
+      var status = new ManagedServiceAccountRequestStatus("Created", Instant.now().toString(),
+          resource.getSpec().getServiceAccountSecretName());
+      resource.setStatus(status);
 
-      try {
-        var serviceAccount = managedServiceClient.createServiceAccount(serviceAccountRequest);
-        serviceAccount.getClientSecret();
-        var status =
-            new ManagedServiceAccountRequestStatus(
-                "Created",
-                Instant.now().toString(),
-                resource.getSpec().getServiceAccountSecretName());
-        resource.setStatus(status);
+      var secret = new SecretBuilder().editOrNewMetadata().withName(resource.getSpec().getServiceAccountSecretName())
+          .withNamespace(resource.getMetadata().getNamespace())
+          .withOwnerReferences(List.of(new OwnerReferenceBuilder()
+              .withApiVersion(resource.getApiVersion()).withController(true).withKind(resource.getKind())
+              .withName(resource.getMetadata().getName()).withUid(resource.getMetadata().getUid()).build()))
+          .endMetadata()
+          .withData(
+              Map.of("client-secret",
+                  Base64.getEncoder()
+                      .encodeToString(serviceAccount.getClientSecret().getBytes(Charset.defaultCharset())),
+                  "client-id",
+                  Base64.getEncoder().encodeToString(serviceAccount.getClientID().getBytes(Charset.defaultCharset()))))
+          .build();
 
-        var secret =
-            new SecretBuilder()
-                .editOrNewMetadata()
-                .withName(resource.getSpec().getServiceAccountSecretName())
-                .withNamespace(resource.getMetadata().getNamespace())
-                .withOwnerReferences(
-                    List.of(
-                        new OwnerReferenceBuilder()
-                            .withApiVersion(resource.getApiVersion())
-                            .withController(true)
-                            .withKind(resource.getKind())
-                            .withName(resource.getMetadata().getName())
-                            .withUid(resource.getMetadata().getUid())
-                            .build()))
-                .endMetadata()
-                .withData(
-                    Map.of(
-                        "client-secret",
-                        Base64.getEncoder()
-                            .encodeToString(
-                                serviceAccount
-                                    .getClientSecret()
-                                    .getBytes(Charset.defaultCharset())),
-                        "client-id",
-                        Base64.getEncoder()
-                            .encodeToString(
-                                serviceAccount.getClientID().getBytes(Charset.defaultCharset()))))
-                .build();
+      k8sClient.secrets().inNamespace(secret.getMetadata().getNamespace()).create(secret);
 
-        k8sClient.secrets().inNamespace(secret.getMetadata().getNamespace()).create(secret);
+      managedKafkaClientFactory.managedServiceAccountRequest().inNamespace(resource.getMetadata().getNamespace())
+          .updateStatus(resource);
 
-        managedKafkaClientFactory
-            .managedServiceAccountRequest()
-            .inNamespace(resource.getMetadata().getNamespace())
-            .updateStatus(resource);
+      return UpdateControl.noUpdate();
 
-        return UpdateControl.noUpdate();
-
-      } catch (ApiException e) {
-        LOG.log(Level.SEVERE, e.getMessage(), e);
-        throw new RuntimeException(e.getMessage(), e);
-      }
+    } catch (ApiException e) {
+      LOG.log(Level.SEVERE, e.getMessage(), e);
+      throw new RuntimeException(e.getMessage(), e);
     }
   }
 
