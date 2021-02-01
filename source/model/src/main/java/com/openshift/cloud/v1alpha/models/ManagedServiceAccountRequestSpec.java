@@ -1,7 +1,5 @@
 package com.openshift.cloud.v1alpha.models;
 
-import java.util.HashMap;
-import java.util.Map;
 
 public class ManagedServiceAccountRequestSpec {
 

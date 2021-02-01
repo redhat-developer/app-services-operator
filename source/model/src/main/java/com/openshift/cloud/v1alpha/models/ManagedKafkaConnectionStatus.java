@@ -1,7 +1,5 @@
 package com.openshift.cloud.v1alpha.models;
 
-import java.util.HashMap;
-import java.util.Map;
 
 public class ManagedKafkaConnectionStatus {
 
@@ -62,5 +60,4 @@ public class ManagedKafkaConnectionStatus {
   public void setServiceAccountSecretName(String serviceAccountSecretName) {
     this.serviceAccountSecretName = serviceAccountSecretName;
   }
-
 }

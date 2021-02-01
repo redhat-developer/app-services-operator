@@ -15,7 +15,6 @@ import io.javaoperatorsdk.operator.api.*;
 import io.javaoperatorsdk.operator.api.config.ControllerConfiguration;
 import io.javaoperatorsdk.operator.processing.event.EventSourceManager;
 import io.quarkus.scheduler.Scheduled;
-
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Base64;
@@ -109,9 +108,7 @@ public class ManagedKafkaRequestController implements ResourceController<Managed
       return false;
     }
 
-    var status =
-        new ManagedKafkaRequestStatus(
-            Instant.now().toString(), userKafkas);
+    var status = new ManagedKafkaRequestStatus(Instant.now().toString(), userKafkas);
     resource.setStatus(status);
     return true;
   }

@@ -6,8 +6,6 @@ import io.fabric8.kubernetes.client.CustomResource;
 import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Plural;
 import io.fabric8.kubernetes.model.annotation.Version;
-import java.util.HashMap;
-import java.util.Map;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
@@ -30,10 +28,7 @@ public class ManagedServiceAccountRequest
 
   @Override
   public int hashCode() {
-    return new HashCodeBuilder()
-        .append(getSpec())
-        .append(getStatus())
-        .toHashCode();
+    return new HashCodeBuilder().append(getSpec()).append(getStatus()).toHashCode();
   }
 
   @Override
