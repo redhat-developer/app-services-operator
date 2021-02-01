@@ -20,22 +20,12 @@ public class ManagedKafkaRequest
     extends CustomResource<ManagedKafkaRequestSpec, ManagedKafkaRequestStatus>
     implements Namespaced {
 
-  private Map<String, Object> additionalProperties = new HashMap<String, Object>();
-
-  public Map<String, Object> getAdditionalProperties() {
-    return this.additionalProperties;
-  }
-
-  public void setAdditionalProperty(String name, Object value) {
-    this.additionalProperties.put(name, value);
-  }
 
   @Override
   public String toString() {
     return new ToStringBuilder(this)
         .append("managedKafkaRequestSpec", getSpec())
         .append("managedKafkaRequestStatus", getStatus())
-        .append("additionalProperties", additionalProperties)
         .toString();
   }
 
@@ -43,7 +33,6 @@ public class ManagedKafkaRequest
   public int hashCode() {
     return new HashCodeBuilder()
         .append(getSpec())
-        .append(additionalProperties)
         .append(getStatus())
         .toHashCode();
   }
@@ -59,7 +48,6 @@ public class ManagedKafkaRequest
     ManagedKafkaRequest rhs = ((ManagedKafkaRequest) other);
     return new EqualsBuilder()
         .append(getSpec(), rhs.getSpec())
-        .append(additionalProperties, rhs.additionalProperties)
         .append(getStatus(), rhs.getStatus())
         .isEquals();
   }

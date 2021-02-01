@@ -8,15 +8,10 @@ public class ManagedServiceAccountRequestSpec {
   private String serviceAccountName;
   private Boolean reset;
 
-  public void setAdditionalProperties(Map<String, Object> additionalProperties) {
-    this.additionalProperties = additionalProperties;
-  }
 
   private String serviceAccountDescription;
   private String serviceAccountSecretName;
   private String accessTokenSecretName = "rhoas_binding_operator_token";
-
-  private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
   /** No args constructor for use in serialization */
   public ManagedServiceAccountRequestSpec() {}
@@ -77,13 +72,5 @@ public class ManagedServiceAccountRequestSpec {
 
   public void setServiceAccountSecretName(String serviceAccountSecretName) {
     this.serviceAccountSecretName = serviceAccountSecretName;
-  }
-
-  public Map<String, Object> getAdditionalProperties() {
-    return this.additionalProperties;
-  }
-
-  public void setAdditionalProperty(String name, Object value) {
-    this.additionalProperties.put(name, value);
   }
 }

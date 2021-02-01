@@ -26,13 +26,7 @@ spec:
               properties:
                 serviceAccountSecretName:
                   type: string
-                additionalProperties:
-                  type: object
               type: object
-            additionalProperties:
-              type: object
-          type: object
-        additionalProperties:
           type: object
         status:
           properties:
@@ -44,13 +38,9 @@ spec:
               properties:
                 host:
                   type: string
-                additionalProperties:
-                  type: object
               type: object
             serviceAccountSecretName:
               type: string
-            additionalProperties:
-              type: object
           type: object
       type: object
   versions:

@@ -8,7 +8,6 @@ public class ManagedServiceAccountRequestStatus {
   private String message;
   private String updated;
   private String serviceAccountSecretName;
-  private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
   /** No args constructor for use in serialization */
   public ManagedServiceAccountRequestStatus() {}
@@ -48,13 +47,5 @@ public class ManagedServiceAccountRequestStatus {
 
   public void setServiceAccountSecretName(String serviceAccountSecretName) {
     this.serviceAccountSecretName = serviceAccountSecretName;
-  }
-
-  public Map<String, Object> getAdditionalProperties() {
-    return this.additionalProperties;
-  }
-
-  public void setAdditionalProperty(String name, Object value) {
-    this.additionalProperties.put(name, value);
   }
 }

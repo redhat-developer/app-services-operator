@@ -6,8 +6,7 @@ import java.util.Map;
 public class Credentials {
 
   private String serviceAccountSecretName;
-  private Map<String, Object> additionalProperties = new HashMap<String, Object>();
-
+ 
   /** No args constructor for use in serialization */
   public Credentials() {}
 
@@ -25,11 +24,4 @@ public class Credentials {
     this.serviceAccountSecretName = serviceAccountSecretName;
   }
 
-  public Map<String, Object> getAdditionalProperties() {
-    return this.additionalProperties;
-  }
-
-  public void setAdditionalProperty(String name, Object value) {
-    this.additionalProperties.put(name, value);
-  }
 }

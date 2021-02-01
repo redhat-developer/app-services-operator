@@ -9,7 +9,6 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 public class ManagedKafkaRequestSpec {
 
   private String accessTokenSecretName = "rhoas_binding_operator_token"; // Default as per ADR_00022
-  private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
   /** No args constructor for use in serialization */
   public ManagedKafkaRequestSpec() {}
@@ -28,19 +27,10 @@ public class ManagedKafkaRequestSpec {
     this.accessTokenSecretName = accessTokenSecretName;
   }
 
-  public Map<String, Object> getAdditionalProperties() {
-    return this.additionalProperties;
-  }
-
-  public void setAdditionalProperty(String name, Object value) {
-    this.additionalProperties.put(name, value);
-  }
-
   @Override
   public String toString() {
     return new ToStringBuilder(this)
         .append("accessTokenSecretName", accessTokenSecretName)
-        .append("additionalProperties", additionalProperties)
         .toString();
   }
 
@@ -48,7 +38,6 @@ public class ManagedKafkaRequestSpec {
   public int hashCode() {
     return new HashCodeBuilder()
         .append(accessTokenSecretName)
-        .append(additionalProperties)
         .toHashCode();
   }
 
@@ -63,7 +52,6 @@ public class ManagedKafkaRequestSpec {
     ManagedKafkaRequestSpec rhs = ((ManagedKafkaRequestSpec) other);
     return new EqualsBuilder()
         .append(accessTokenSecretName, rhs.accessTokenSecretName)
-        .append(additionalProperties, rhs.additionalProperties)
         .isEquals();
   }
 }
