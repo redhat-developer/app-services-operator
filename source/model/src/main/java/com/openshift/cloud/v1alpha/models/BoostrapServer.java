@@ -1,6 +1,5 @@
 package com.openshift.cloud.v1alpha.models;
 
-
 public class BoostrapServer {
 
   private String host;

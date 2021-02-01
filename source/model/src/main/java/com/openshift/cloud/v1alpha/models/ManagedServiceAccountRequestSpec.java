@@ -1,6 +1,5 @@
 package com.openshift.cloud.v1alpha.models;
 
-
 public class ManagedServiceAccountRequestSpec {
 
   private String serviceAccountName;
