@@ -37,6 +37,8 @@ spec:
                 properties:
                   id:
                     type: string
+                  name:
+                    type: string
                   created:
                     type: string
                   provider:
@@ -60,3 +62,4 @@ spec:
     - name: v1alpha1
       served: true
       storage: true
+  preserveUnknownFields: false

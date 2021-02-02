@@ -1,8 +1,5 @@
 package com.openshift.cloud.v1alpha.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class ManagedServiceAccountRequestSpec {
 
   private String serviceAccountName;
