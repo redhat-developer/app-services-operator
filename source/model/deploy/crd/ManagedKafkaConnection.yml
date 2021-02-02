@@ -58,7 +58,7 @@ spec:
       storage: true
   conversion:
     strategy: None
-  preserveUnknownFields: true
+  preserveUnknownFields: false
 status:
   conditions:
     - type: NamesAccepted
