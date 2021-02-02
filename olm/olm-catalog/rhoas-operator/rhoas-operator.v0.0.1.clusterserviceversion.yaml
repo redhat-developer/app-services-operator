@@ -112,4 +112,4 @@ spec:
   provider:
     name: Red Hat
     url: https://github.com/bf2fc6cc711aee1a0c2a/operator
-  version: v0.0.2
+  version: v0.0.3
