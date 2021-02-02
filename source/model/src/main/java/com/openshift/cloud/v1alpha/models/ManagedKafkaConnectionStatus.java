@@ -28,7 +28,7 @@ public class ManagedKafkaConnectionStatus {
     this.updated = updated;
     this.boostrapServer = boostrapServer;
     this.serviceAccountSecretName = serviceAccountSecretName;
-    this.saslMechanism = "OAUTHBEARER";
+    this.saslMechanism = "PLAIN";
     this.securityProtocol = "SSL";
   }
 
