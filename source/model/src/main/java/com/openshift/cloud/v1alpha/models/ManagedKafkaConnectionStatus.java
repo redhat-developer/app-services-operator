@@ -10,8 +10,7 @@ public class ManagedKafkaConnectionStatus {
   private String securityProtocol;
 
   /** No args constructor for use in serialization */
-  public ManagedKafkaConnectionStatus() {
-  }
+  public ManagedKafkaConnectionStatus() {}
 
   /**
    * @param serviceAccountSecretName
@@ -19,7 +18,10 @@ public class ManagedKafkaConnectionStatus {
    * @param boostrapServer
    * @param updated
    */
-  public ManagedKafkaConnectionStatus(String message, String updated, BoostrapServer boostrapServer,
+  public ManagedKafkaConnectionStatus(
+      String message,
+      String updated,
+      BoostrapServer boostrapServer,
       String serviceAccountSecretName) {
     super();
     this.message = message;
