@@ -2,6 +2,11 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   name: managedkafkaconnections.rhoas.redhat.com
+  annotations:
+    service.binding/host: 'path={.status.bootstrapServer.host}'
+    service.binding/credentials: 'path={.status.serviceAccountSecretName},objectType=Secret'
+    service.binding/saslMechanism: 'path={.status.saslMechanism}'
+    service.binding/securityProtocol: 'path={.status.securityProtocol}'
 spec:
   group: rhoas.redhat.com
   names:
@@ -41,9 +46,14 @@ spec:
               type: object
             serviceAccountSecretName:
               type: string
+            saslMechanism:
+              type: string
+            securityProtocol:
+              type: string
           type: object
       type: object
   versions:
   - name: v1alpha1
     served: true
     storage: true
+  preserveUnknownFields: false

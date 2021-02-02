@@ -93,6 +93,7 @@ public class ManagedKafkaRequestController implements ResourceController<Managed
             listItem -> {
               var userKafka = new UserKafka();
               userKafka.setId(listItem.getId());
+              userKafka.setName(listItem.getName());
               userKafka.setOwner(listItem.getOwner());
               userKafka.setBootstrapServerHost(listItem.getBootstrapServerHost());
               userKafka.setStatus(listItem.getStatus());

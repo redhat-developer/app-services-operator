@@ -10,6 +10,7 @@ public class UserKafka {
   private String updatedAt;
   private String createdAt;
   private String status;
+  private String name;
 
   /** No args constructor for use in serialization */
   public UserKafka() {}
@@ -106,5 +107,13 @@ public class UserKafka {
 
   public String getStatus() {
     return status;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public String getName() {
+    return name;
   }
 }
