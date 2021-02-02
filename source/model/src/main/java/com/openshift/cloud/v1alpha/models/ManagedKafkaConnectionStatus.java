@@ -6,9 +6,12 @@ public class ManagedKafkaConnectionStatus {
   private String updated;
   private BoostrapServer boostrapServer;
   private String serviceAccountSecretName;
+  private String saslMechanism;
+  private String securityProtocol;
 
   /** No args constructor for use in serialization */
-  public ManagedKafkaConnectionStatus() {}
+  public ManagedKafkaConnectionStatus() {
+  }
 
   /**
    * @param serviceAccountSecretName
@@ -16,16 +19,15 @@ public class ManagedKafkaConnectionStatus {
    * @param boostrapServer
    * @param updated
    */
-  public ManagedKafkaConnectionStatus(
-      String message,
-      String updated,
-      BoostrapServer boostrapServer,
+  public ManagedKafkaConnectionStatus(String message, String updated, BoostrapServer boostrapServer,
       String serviceAccountSecretName) {
     super();
     this.message = message;
     this.updated = updated;
     this.boostrapServer = boostrapServer;
     this.serviceAccountSecretName = serviceAccountSecretName;
+    this.saslMechanism = "OAUTHBEARER";
+    this.securityProtocol = "SSL";
   }
 
   public String getMessage() {
@@ -58,5 +60,21 @@ public class ManagedKafkaConnectionStatus {
 
   public void setServiceAccountSecretName(String serviceAccountSecretName) {
     this.serviceAccountSecretName = serviceAccountSecretName;
+  }
+
+  public String getSecurityProtocol() {
+    return securityProtocol;
+  }
+
+  public void setSecurityProtocol(String securityProtocol) {
+    this.securityProtocol = securityProtocol;
+  }
+
+  public String getSaslMechanism() {
+    return saslMechanism;
+  }
+
+  public void setSaslMechanism(String saslMechanism) {
+    this.saslMechanism = saslMechanism;
   }
 }
