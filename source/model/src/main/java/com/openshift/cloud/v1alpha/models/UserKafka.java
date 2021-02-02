@@ -10,9 +10,11 @@ public class UserKafka {
   private String updatedAt;
   private String createdAt;
   private String status;
+  private String name;
 
   /** No args constructor for use in serialization */
-  public UserKafka() {}
+  public UserKafka() {
+  }
 
   /**
    * @param owner
@@ -83,8 +85,10 @@ public class UserKafka {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
+    if (this == o)
+      return true;
+    if (o == null || getClass() != o.getClass())
+      return false;
 
     UserKafka userKafka = (UserKafka) o;
 
@@ -106,5 +110,13 @@ public class UserKafka {
 
   public String getStatus() {
     return status;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public String getName() {
+    return name;
   }
 }
