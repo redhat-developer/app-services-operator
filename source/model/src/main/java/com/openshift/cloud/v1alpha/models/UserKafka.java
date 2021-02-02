@@ -13,8 +13,7 @@ public class UserKafka {
   private String name;
 
   /** No args constructor for use in serialization */
-  public UserKafka() {
-  }
+  public UserKafka() {}
 
   /**
    * @param owner
@@ -85,10 +84,8 @@ public class UserKafka {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o)
-      return true;
-    if (o == null || getClass() != o.getClass())
-      return false;
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
 
     UserKafka userKafka = (UserKafka) o;
 
