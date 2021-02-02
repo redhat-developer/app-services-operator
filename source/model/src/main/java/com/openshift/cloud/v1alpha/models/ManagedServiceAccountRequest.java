@@ -1,5 +1,6 @@
 package com.openshift.cloud.v1alpha.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.dekorate.crd.annotation.Crd;
 import io.fabric8.kubernetes.api.model.Namespaced;
 import io.fabric8.kubernetes.client.CustomResource;
@@ -14,6 +15,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 @Group("rhoas.redhat.com")
 @Version("v1alpha1")
 @Crd(group = "rhoas.redhat.com", version = "v1alpha1")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ManagedServiceAccountRequest
     extends CustomResource<ManagedServiceAccountRequestSpec, ManagedServiceAccountRequestStatus>
     implements Namespaced {
