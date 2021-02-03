@@ -31,7 +31,7 @@ public class RHOASOperator implements QuarkusApplication {
   private static final Logger LOG = Logger.getLogger(RHOASOperator.class);
 
   public static void main(String... args) {
-    LOG.info("RHOAS Operator starting");
+    LOG.info("Autoupdating RHOAS Operator starting");
     Quarkus.run(RHOASOperator.class, args);
   }
 

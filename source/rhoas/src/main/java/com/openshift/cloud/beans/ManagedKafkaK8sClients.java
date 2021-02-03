@@ -39,14 +39,14 @@ public final class ManagedKafkaK8sClients {
 
   @PostConstruct
   public void init() {
-    LOG.info("ApiClient bean init begun");
+    LOG.info("Init");
 
     var crds = client.apiextensions().v1beta1();
 
     this.mkcCrd = initManagedKafkaConnectionCRDAndClient(crds);
     this.mkrCrd = initManagedKafkaRequestCRDAndClient(crds);
     this.msarCrd = initManagedServiceAccountRequestCRDAndClient(crds);
-    LOG.info("ApiClient bean init ended");
+    
   }
 
   public MixedOperation<

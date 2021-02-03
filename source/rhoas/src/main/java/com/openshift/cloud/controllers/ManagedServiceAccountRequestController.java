@@ -25,6 +25,9 @@ import java.util.logging.Logger;
 import javax.inject.Inject;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
+/**
+ * Controller for ManagedServiceAccountRequest CRs
+ */
 @Controller(namespaces = ControllerConfiguration.WATCH_ALL_NAMESPACES_MARKER)
 public class ManagedServiceAccountRequestController
     implements ResourceController<ManagedServiceAccountRequest> {
