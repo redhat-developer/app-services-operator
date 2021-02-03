@@ -8,7 +8,7 @@ spec:
   icon:
     base64data: ""
     mediatype: ""
-  image: quay.io/secondsun/rhoas-registry:latest
+  image: quay.io/secondsun/rhoas-registry:0.0.10
   priority: -400
   publisher: b2F ORG
   sourceType: grpc

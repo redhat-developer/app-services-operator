@@ -96,7 +96,7 @@ spec:
                 name: rhoas-operator
             spec:
               containers:
-              - image: quay.io/secondsun/rhoas-operator:v0.0.2
+              - image: quay.io/secondsun/rhoas-operator:v0.0.10
                 imagePullPolicy: Always
                 name: rhoas-operator
               serviceAccountName: rhoas-operator
