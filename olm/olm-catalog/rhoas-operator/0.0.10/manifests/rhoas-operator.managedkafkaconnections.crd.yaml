@@ -3,8 +3,9 @@ kind: CustomResourceDefinition
 metadata:
   name: managedkafkaconnections.rhoas.redhat.com
   annotations:
-    service.binding/host: 'path={.status.bootstrapServer.host}'
-    service.binding/credentials: 'path={.status.serviceAccountSecretName},objectType=Secret'
+    service.binding/bootstrapServer: 'path={.status.bootstrapServer.host}'
+    service.binding/user: 'path={.status.serviceAccountSecretName},objectType=Secret,sourceKey=clientID'
+    service.binding/password: 'path={.status.serviceAccountSecretName},objectType=Secret,sourceKey=clientSecret'
     service.binding/saslMechanism: 'path={.status.saslMechanism}'
     service.binding/securityProtocol: 'path={.status.securityProtocol}'
 spec:
