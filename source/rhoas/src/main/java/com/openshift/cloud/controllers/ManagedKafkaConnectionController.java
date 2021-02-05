@@ -53,7 +53,7 @@ public class ManagedKafkaConnectionController
 
     try {
       var kafkaId = resource.getSpec().getKafkaId();
-      var saSecretName = resource.getSpec().getAccessTokenSecretName();
+      var saSecretName = resource.getSpec().getCredentials().getServiceAccountSecretName();
       var namespace = resource.getMetadata().getNamespace();
 
       var saSecret =
