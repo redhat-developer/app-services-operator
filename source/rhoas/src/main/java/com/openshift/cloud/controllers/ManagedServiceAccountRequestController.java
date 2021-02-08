@@ -60,21 +60,21 @@ public class ManagedServiceAccountRequestController
       return UpdateControl.noUpdate();
     }
 
-    var saSecretName = resource.getSpec().getAccessTokenSecretName();
+    var apiTokenSecretName = resource.getSpec().getAccessTokenSecretName();
     var namespace = resource.getMetadata().getNamespace();
 
-    var saSecret =
+    var accessToken =
         k8sClient
             .secrets()
             .inNamespace(namespace)
-            .withName(saSecretName)
+            .withName(apiTokenSecretName)
             .get()
             .getData()
             .get(ACCESS_TOKEN_SECRET_KEY);
-    saSecret = new String(Base64.getDecoder().decode(saSecret));
-    saSecret = tokenExchanger.getToken(saSecret);
+    accessToken = new String(Base64.getDecoder().decode(accessToken));
+    accessToken = tokenExchanger.getToken(accessToken);
 
-    var managedServiceClient = createClient(saSecret);
+    var managedServiceClient = createClient(accessToken);
     var serviceAccountRequest = new ServiceAccountRequest();
     serviceAccountRequest.setDescription(resource.getSpec().getServiceAccountDescription());
     serviceAccountRequest.setName(resource.getSpec().getServiceAccountName());

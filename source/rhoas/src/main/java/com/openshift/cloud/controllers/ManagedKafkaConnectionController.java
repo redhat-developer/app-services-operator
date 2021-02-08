@@ -53,28 +53,29 @@ public class ManagedKafkaConnectionController
 
     try {
       var kafkaId = resource.getSpec().getKafkaId();
-      var saSecretName = resource.getSpec().getCredentials().getServiceAccountSecretName();
+      var accessTokenSecret = resource.getSpec().getAccessTokenSecretName();
+      var serviceAccountSecret = resource.getSpec().getCredentials().getServiceAccountSecretName();
       var namespace = resource.getMetadata().getNamespace();
 
-      var saSecret =
+      var accessToken =
           k8sClient
               .secrets()
               .inNamespace(namespace)
-              .withName(saSecretName)
+              .withName(accessTokenSecret)
               .get()
               .getData()
               .get(ACCESS_TOKEN_SECRET_KEY);
-      saSecret = new String(Base64.getDecoder().decode(saSecret));
-      saSecret = tokenExchanger.getToken(saSecret);
+      accessToken = new String(Base64.getDecoder().decode(accessToken));
+      accessToken = tokenExchanger.getToken(accessToken);
 
-      var kafkaServiceInfo = createClient(saSecret).getKafkaById(kafkaId);
+      var kafkaServiceInfo = createClient(accessToken).getKafkaById(kafkaId);
 
       var bootStrapHost = kafkaServiceInfo.getBootstrapServerHost();
       var bootStrapServer = new BoostrapServer(bootStrapHost);
 
       var status =
           new ManagedKafkaConnectionStatus(
-              "Created", Instant.now().toString(), bootStrapServer, saSecretName);
+              "Created", Instant.now().toString(), bootStrapServer, serviceAccountSecret);
       resource.setStatus(status);
 
       return UpdateControl.updateCustomResourceAndStatus(resource);
