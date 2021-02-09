@@ -1,0 +1,115 @@
+apiVersion: operators.coreos.com/v1alpha1
+kind: ClusterServiceVersion
+metadata:
+  annotations: 
+    alm-examples: '[]'
+    capabilities: Basic Install
+  name: rhoas-operator.0.1.2
+spec:
+  apiservicedefinitions: {}
+  customresourcedefinitions:
+    owned:
+    - description: Creates RHOAS Service Accounts
+      displayName: Service Account Request
+      kind: ManagedServiceAccountRequest
+      name: managedserviceaccountrequests.rhoas.redhat.com
+      version: v1alpha1
+    - description: Managed Kafka Request
+      displayName:  Managed Kafka Request
+      kind: ManagedKafkaRequest
+      name: managedkafkarequests.rhoas.redhat.com
+      version: v1alpha1
+    - description: Binds Managed Kafka
+      displayName: Managed Kafka Connection
+      kind: ManagedKafkaConnection
+      name: managedkafkaconnections.rhoas.redhat.com
+      version: v1alpha1            
+  icon:
+  - base64data: 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
+    mediatype: image/png
+  installModes:
+  - supported: true
+    type: OwnNamespace
+  - supported: true
+    type: SingleNamespace
+  - supported: false
+    type: MultiNamespace
+  - supported: true
+    type: AllNamespaces
+  install:
+    strategy: deployment
+    spec: 
+      permissions:
+      - serviceAccountName: rhoas-operator 
+        rules:
+        - apiGroups:
+            - "apiextensions.k8s.io"
+          resources:
+            - 'customresourcedefinitions'  
+          verbs:
+            - get
+            - list
+            - watch
+        - apiGroups:
+            - ""
+          resources:
+            - secrets
+          verbs:
+            - create
+            - delete
+            - get
+            - list
+            - patch
+            - update
+            - watch
+        - apiGroups:
+            - rhoas.redhat.com
+          resources:
+            - 'managedkafkaconnections'
+            - 'managedkafkaconnections/status'
+            - 'managedkafkaconnections/finalizers'
+            - 'managedkafkarequests'
+            - 'managedkafkarequests/status'
+            - 'managedkafkarequests/finalizers'
+            - 'managedserviceaccountrequests'
+            - 'managedserviceaccountrequests/status'
+            - 'managedserviceaccountrequests/finalizers'
+          verbs:
+            - create
+            - delete
+            - get
+            - list
+            - patch
+            - update
+            - watch
+      deployments:
+      - name: rhoas-operator
+        spec:
+          replicas: 1
+          selector:
+            matchLabels:
+              name: rhoas-operator
+          strategy: {}
+          template:
+            metadata:
+              labels:
+                name: rhoas-operator
+            spec:
+              containers:
+              - image: quay.io/secondsun/rhoas-operator:0.1.2
+                imagePullPolicy: Always
+                name: rhoas-operator
+              serviceAccountName: rhoas-operator
+  description: Operator connects your Red Hat Managed Services into your Cluster
+  displayName: Red Hat Managed Services Connection operator
+  keywords:
+  - managed
+  - kafka
+  maintainers:
+  - email: help@redhat.com
+    name: RedHat
+  maturity: alpha
+  provider:
+    name: Red Hat
+    url: https://github.com/bf2fc6cc711aee1a0c2a/operator
+  version: 0.1.2
