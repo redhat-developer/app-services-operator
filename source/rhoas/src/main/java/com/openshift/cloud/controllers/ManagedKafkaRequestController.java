@@ -114,7 +114,7 @@ public class ManagedKafkaRequestController implements ResourceController<Managed
     return true;
   }
 
-  @Scheduled(every = "10s")
+  @Scheduled(every = "150s")
   void reloadUserKafkas() {
     LOG.info("Refreshing user kafkas");
 
