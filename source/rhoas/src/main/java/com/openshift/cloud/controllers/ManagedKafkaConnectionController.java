@@ -1,11 +1,7 @@
 package com.openshift.cloud.controllers;
 
-import com.openshift.cloud.ApiClient;
-import com.openshift.cloud.ApiException;
-import com.openshift.cloud.Configuration;
-import com.openshift.cloud.api.DefaultApi;
-import com.openshift.cloud.auth.HttpBearerAuth;
-import com.openshift.cloud.beans.TokenExchanger;
+import com.openshift.cloud.beans.AccessTokenSecretTool;
+import com.openshift.cloud.beans.ManagedKafkaApiClient;
 import com.openshift.cloud.v1alpha.models.BoostrapServer;
 import com.openshift.cloud.v1alpha.models.ManagedKafkaConnection;
 import com.openshift.cloud.v1alpha.models.ManagedKafkaConnectionStatus;
@@ -14,11 +10,9 @@ import io.javaoperatorsdk.operator.api.*;
 import io.javaoperatorsdk.operator.api.config.ControllerConfiguration;
 import io.javaoperatorsdk.operator.processing.event.EventSourceManager;
 import java.time.Instant;
-import java.util.Base64;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.inject.Inject;
-import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 @Controller(namespaces = ControllerConfiguration.WATCH_ALL_NAMESPACES_MARKER)
 public class ManagedKafkaConnectionController
@@ -26,17 +20,12 @@ public class ManagedKafkaConnectionController
 
   private static final Logger LOG =
       Logger.getLogger(ManagedKafkaConnectionController.class.getName());
-  private final KubernetesClient k8sClient;
-  public final String ACCESS_TOKEN_SECRET_KEY = "value";
 
-  @ConfigProperty(name = "client.basePath", defaultValue = "https://api.stage.openshift.com")
-  String clientBasePath;
+  @Inject KubernetesClient k8sClient;
 
-  @Inject TokenExchanger tokenExchanger;
+  @Inject ManagedKafkaApiClient apiClient;
 
-  public ManagedKafkaConnectionController(KubernetesClient k8sClient) {
-    this.k8sClient = k8sClient;
-  }
+  @Inject AccessTokenSecretTool accessTokenSecretTool;
 
   @Override
   public DeleteControl deleteResource(
@@ -51,50 +40,32 @@ public class ManagedKafkaConnectionController
       ManagedKafkaConnection resource, Context<ManagedKafkaConnection> context) {
     LOG.info(String.format("Creating or Updating resource %s", resource.getMetadata().getName()));
 
+    var kafkaId = resource.getSpec().getKafkaId();
+    var accessTokenSecretName = resource.getSpec().getAccessTokenSecretName();
+    var serviceAccountSecretName =
+        resource.getSpec().getCredentials().getServiceAccountSecretName();
+    var namespace = resource.getMetadata().getNamespace();
+
+    String accessToken = null;
     try {
-      var kafkaId = resource.getSpec().getKafkaId();
-      var accessTokenSecret = resource.getSpec().getAccessTokenSecretName();
-      var serviceAccountSecret = resource.getSpec().getCredentials().getServiceAccountSecretName();
-      var namespace = resource.getMetadata().getNamespace();
-
-      var accessToken =
-          k8sClient
-              .secrets()
-              .inNamespace(namespace)
-              .withName(accessTokenSecret)
-              .get()
-              .getData()
-              .get(ACCESS_TOKEN_SECRET_KEY);
-      accessToken = new String(Base64.getDecoder().decode(accessToken));
-      accessToken = tokenExchanger.getToken(accessToken);
-
-      var kafkaServiceInfo = createClient(accessToken).getKafkaById(kafkaId);
-
-      var bootStrapHost = kafkaServiceInfo.getBootstrapServerHost();
-      var bootStrapServer = new BoostrapServer(bootStrapHost);
-
-      var status =
-          new ManagedKafkaConnectionStatus(
-              "Created", Instant.now().toString(), bootStrapServer, serviceAccountSecret);
-      resource.setStatus(status);
-
-      return UpdateControl.updateCustomResourceAndStatus(resource);
-    } catch (ApiException e) {
+      accessToken = accessTokenSecretTool.getAccessToken(accessTokenSecretName, namespace);
+    } catch (ConditionAwareException e) {
       LOG.log(Level.SEVERE, e.getMessage(), e);
+      // TODO Conditionize this
       return UpdateControl.noUpdate();
     }
-  }
 
-  private DefaultApi createClient(String bearerToken) {
+    var kafkaServiceInfo = apiClient.getKafkaById(kafkaId, accessToken);
 
-    ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath(clientBasePath);
+    var bootStrapHost = kafkaServiceInfo.getBootstrapServerHost();
+    var bootStrapServer = new BoostrapServer(bootStrapHost);
 
-    // Configure HTTP bearer authorization: Bearer
-    HttpBearerAuth Bearer = (HttpBearerAuth) defaultClient.getAuthentication("Bearer");
-    Bearer.setBearerToken(bearerToken);
+    var status =
+        new ManagedKafkaConnectionStatus(
+            "Created", Instant.now().toString(), bootStrapServer, serviceAccountSecretName);
+    resource.setStatus(status);
 
-    return new DefaultApi(defaultClient);
+    return UpdateControl.updateCustomResourceAndStatus(resource);
   }
 
   /**

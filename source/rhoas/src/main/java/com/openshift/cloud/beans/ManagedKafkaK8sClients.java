@@ -46,7 +46,6 @@ public final class ManagedKafkaK8sClients {
     this.mkcCrd = initManagedKafkaConnectionCRDAndClient(crds);
     this.mkrCrd = initManagedKafkaRequestCRDAndClient(crds);
     this.msarCrd = initManagedServiceAccountRequestCRDAndClient(crds);
-    
   }
 
   public MixedOperation<

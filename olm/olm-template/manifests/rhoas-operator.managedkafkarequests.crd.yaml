@@ -30,6 +30,21 @@ spec:
               type: string
             lastUpdate:
               type: string
+            conditions:
+              type: array
+              items:
+                type: object
+                properties:
+                    type:
+                      type: string
+                    reason:
+                      type: string
+                    message:
+                      type: string
+                    status:
+                      type: string
+                    lastTransitionTime:
+                      type: string
             userKafkas:
               type: array
               items:
