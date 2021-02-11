@@ -1,7 +1,6 @@
 package com.openshift.cloud.v1alpha.models;
 
 import io.sundr.builder.annotations.Buildable;
-
 import java.util.List;
 
 @Buildable
