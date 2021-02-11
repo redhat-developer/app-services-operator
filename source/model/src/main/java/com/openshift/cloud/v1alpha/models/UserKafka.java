@@ -34,52 +34,60 @@ public class UserKafka {
     return id;
   }
 
-  public void setId(String id) {
+  public UserKafka setId(String id) {
     this.id = id;
+    return this;
   }
 
   public String getProvider() {
     return provider;
   }
 
-  public void setProvider(String provider) {
+  public UserKafka setProvider(String provider) {
     this.provider = provider;
+    return this;
   }
 
   public String getRegion() {
     return region;
   }
 
-  public void setRegion(String region) {
+  public UserKafka setRegion(String region) {
     this.region = region;
+    return this;
   }
 
   public String getOwner() {
     return owner;
   }
 
-  public void setOwner(String owner) {
+  public UserKafka setOwner(String owner) {
     this.owner = owner;
+    return this;
   }
 
   public String getBootstrapServerHost() {
     return bootstrapServerHost;
   }
 
-  public void setBootstrapServerHost(String bootstrapServerHost) {
+  public UserKafka setBootstrapServerHost(String bootstrapServerHost) {
     this.bootstrapServerHost = bootstrapServerHost;
+    return this;
   }
 
-  public void setStatus(String status) {
-    this.status = status;
-  }
-
-  public void setCreatedAt(String createdAt) {
-    this.createdAt = createdAt;
-  }
-
-  public void setUpdatedAt(String updatedAt) {
+  public UserKafka setUpdatedAt(String updatedAt) {
     this.updatedAt = updatedAt;
+    return this;
+  }
+
+  public UserKafka setCreatedAt(String createdAt) {
+    this.createdAt = createdAt;
+    return this;
+  }
+
+  public UserKafka setStatus(String status) {
+    this.status = status;
+    return this;
   }
 
   @Override
@@ -109,8 +117,9 @@ public class UserKafka {
     return status;
   }
 
-  public void setName(String name) {
+  public UserKafka setName(String name) {
     this.name = name;
+    return this;
   }
 
   public String getName() {

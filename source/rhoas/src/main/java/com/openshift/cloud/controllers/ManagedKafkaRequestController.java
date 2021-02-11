@@ -1,41 +1,30 @@
 package com.openshift.cloud.controllers;
 
-import com.openshift.cloud.ApiClient;
 import com.openshift.cloud.ApiException;
-import com.openshift.cloud.Configuration;
-import com.openshift.cloud.api.DefaultApi;
-import com.openshift.cloud.auth.HttpBearerAuth;
+import com.openshift.cloud.beans.AccessTokenSecretTool;
+import com.openshift.cloud.beans.ManagedKafkaApiClient;
 import com.openshift.cloud.beans.ManagedKafkaK8sClients;
-import com.openshift.cloud.beans.TokenExchanger;
 import com.openshift.cloud.v1alpha.models.ManagedKafkaRequest;
-import com.openshift.cloud.v1alpha.models.ManagedKafkaRequestStatus;
 import com.openshift.cloud.v1alpha.models.UserKafka;
-import io.fabric8.kubernetes.client.KubernetesClient;
 import io.javaoperatorsdk.operator.api.*;
 import io.javaoperatorsdk.operator.api.config.ControllerConfiguration;
 import io.javaoperatorsdk.operator.processing.event.EventSourceManager;
 import io.quarkus.scheduler.Scheduled;
-import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Base64;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.inject.Inject;
-import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 @Controller(namespaces = ControllerConfiguration.WATCH_ALL_NAMESPACES_MARKER)
 public class ManagedKafkaRequestController implements ResourceController<ManagedKafkaRequest> {
 
   private static final Logger LOG = Logger.getLogger(ManagedKafkaRequestController.class.getName());
-  public final String ACCESS_TOKEN_SECRET_KEY = "value";
 
-  @Inject KubernetesClient k8sClient;
-
-  @Inject TokenExchanger tokenExchanger;
+  @Inject AccessTokenSecretTool accessTokenSecretTool;
 
   @Inject ManagedKafkaK8sClients managedKafkaClientFactory;
 
-  @ConfigProperty(name = "client.basePath", defaultValue = "https://api.stage.openshift.com")
-  String clientBasePath;
+  @Inject ManagedKafkaApiClient apiClient;
 
   public ManagedKafkaRequestController() {}
 
@@ -50,6 +39,7 @@ public class ManagedKafkaRequestController implements ResourceController<Managed
   @Override
   public UpdateControl<ManagedKafkaRequest> createOrUpdateResource(
       ManagedKafkaRequest resource, Context<ManagedKafkaRequest> context) {
+
     LOG.info(String.format("Update or create resource %s", resource.getMetadata().getName()));
 
     try {
@@ -70,48 +60,67 @@ public class ManagedKafkaRequestController implements ResourceController<Managed
    * @throws ApiException if something goes wrong connecting to services
    */
   private boolean updateManagedKafkaRequest(ManagedKafkaRequest resource) throws ApiException {
-    var saSecretName = resource.getSpec().getAccessTokenSecretName();
-    var namespace = resource.getMetadata().getNamespace();
-    var saSecret =
-        k8sClient
-            .secrets()
-            .inNamespace(namespace)
-            .withName(saSecretName)
-            .get()
-            .getData()
-            .get(ACCESS_TOKEN_SECRET_KEY);
-    saSecret = new String(Base64.getDecoder().decode(saSecret));
-    saSecret = tokenExchanger.getToken(saSecret);
-    LOG.info(
-        "ManagedKafkaRequest: " + resource.getCRDName() + " n:" + namespace + "s: " + saSecret);
-    var kafkaList = createClient(saSecret).listKafkas(null, null, null, null);
 
-    var userKafkas = new ArrayList<UserKafka>();
+    ConditionUtil.initializeConditions(resource);
+    try {
+      var accessTokenSecretName = resource.getSpec().getAccessTokenSecretName();
+      var namespace = resource.getMetadata().getNamespace();
+      String accessToken = null;
+      accessToken = accessTokenSecretTool.getAccessToken(accessTokenSecretName, namespace);
+      ConditionUtil.setConditionStatusTrue(
+          resource, ManagedKafkaRequestCondition.Type.AcccesTokenSecretAvailable);
 
-    kafkaList.getItems().stream()
-        .forEach(
-            listItem -> {
-              var userKafka = new UserKafka();
-              userKafka.setId(listItem.getId());
-              userKafka.setName(listItem.getName());
-              userKafka.setOwner(listItem.getOwner());
-              userKafka.setBootstrapServerHost(listItem.getBootstrapServerHost());
-              userKafka.setStatus(listItem.getStatus());
-              userKafka.setCreatedAt(listItem.getCreatedAt().toInstant().toString());
-              userKafka.setUpdatedAt(listItem.getUpdatedAt().toInstant().toString());
-              userKafka.setProvider(listItem.getCloudProvider());
-              userKafka.setRegion(listItem.getRegion());
+      LOG.info(
+          "ManagedKafkaRequest: "
+              + resource.getCRDName()
+              + " n:"
+              + namespace
+              + "s: "
+              + accessToken);
 
-              userKafkas.add(userKafka);
-            });
+      var kafkaList = apiClient.listKafkas(accessToken);
 
-    if (resource.getStatus() != null && userKafkas.equals(resource.getStatus().getUserKafkas())) {
-      return false;
+      var userKafkas = new ArrayList<UserKafka>();
+
+      kafkaList.getItems().stream()
+          .forEach(
+              listItem -> {
+                var userKafka =
+                    new UserKafka()
+                        .setId(listItem.getId())
+                        .setName(listItem.getName())
+                        .setOwner(listItem.getOwner())
+                        .setBootstrapServerHost(listItem.getBootstrapServerHost())
+                        .setStatus(listItem.getStatus())
+                        .setCreatedAt(listItem.getCreatedAt().toInstant().toString())
+                        .setUpdatedAt(listItem.getUpdatedAt().toInstant().toString())
+                        .setProvider(listItem.getCloudProvider())
+                        .setRegion(listItem.getRegion());
+
+                userKafkas.add(userKafka);
+              });
+
+      ConditionUtil.setConditionStatusTrue(
+          resource, ManagedKafkaRequestCondition.Type.UserKafkasUpToDate);
+      if (userKafkas.equals(resource.getStatus().getUserKafkas())) {
+        return false;
+      } else {
+        var status = resource.getStatus();
+        status.setUserKafkas(userKafkas);
+        ConditionUtil.setConditionStatusTrue(resource, ManagedKafkaRequestCondition.Type.Finished);
+        resource.setStatus(status);
+      }
+
+      return true;
+    } catch (ConditionAwareException e) {
+      LOG.log(Level.SEVERE, "Setting condition for exception " + e.getReason());
+      ConditionUtil.setConditionFromException(resource, e);
+      return true;
+    } catch (Exception e) {
+//      LOG.log(Level.SEVERE, "Setting condition for exception " + e.getReason());
+//      ConditionUtil.setConditionFromException(resource, e);
+      return true;
     }
-
-    var status = new ManagedKafkaRequestStatus(Instant.now().toString(), userKafkas);
-    resource.setStatus(status);
-    return true;
   }
 
   @Scheduled(every = "150s")
@@ -131,18 +140,6 @@ public class ManagedKafkaRequestController implements ResourceController<Managed
             e.printStackTrace();
           }
         });
-  }
-
-  private DefaultApi createClient(String bearerToken) {
-
-    ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath(clientBasePath);
-
-    // Configure HTTP bearer authorization: Bearer
-    HttpBearerAuth Bearer = (HttpBearerAuth) defaultClient.getAuthentication("Bearer");
-    Bearer.setBearerToken(bearerToken);
-
-    return new DefaultApi(defaultClient);
   }
 
   @Override
