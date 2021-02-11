@@ -4,8 +4,6 @@ import com.openshift.cloud.beans.AccessTokenSecretTool;
 import com.openshift.cloud.beans.ManagedKafkaApiClient;
 import com.openshift.cloud.v1alpha.models.BoostrapServer;
 import com.openshift.cloud.v1alpha.models.ManagedKafkaConnection;
-import com.openshift.cloud.v1alpha.models.ManagedKafkaConnectionStatus;
-import io.fabric8.kubernetes.client.KubernetesClient;
 import io.javaoperatorsdk.operator.api.*;
 import io.javaoperatorsdk.operator.api.config.ControllerConfiguration;
 import io.javaoperatorsdk.operator.processing.event.EventSourceManager;
@@ -20,8 +18,6 @@ public class ManagedKafkaConnectionController
 
   private static final Logger LOG =
       Logger.getLogger(ManagedKafkaConnectionController.class.getName());
-
-  @Inject KubernetesClient k8sClient;
 
   @Inject ManagedKafkaApiClient apiClient;
 
@@ -38,34 +34,38 @@ public class ManagedKafkaConnectionController
   @Override
   public UpdateControl<ManagedKafkaConnection> createOrUpdateResource(
       ManagedKafkaConnection resource, Context<ManagedKafkaConnection> context) {
-    LOG.info(String.format("Creating or Updating resource %s", resource.getMetadata().getName()));
-
-    var kafkaId = resource.getSpec().getKafkaId();
-    var accessTokenSecretName = resource.getSpec().getAccessTokenSecretName();
-    var serviceAccountSecretName =
-        resource.getSpec().getCredentials().getServiceAccountSecretName();
-    var namespace = resource.getMetadata().getNamespace();
-
-    String accessToken = null;
+    ConditionUtil.initializeConditions(resource);
     try {
-      accessToken = accessTokenSecretTool.getAccessToken(accessTokenSecretName, namespace);
+      LOG.info(String.format("Creating or Updating resource %s", resource.getMetadata().getName()));
+
+      var kafkaId = resource.getSpec().getKafkaId();
+      var accessTokenSecretName = resource.getSpec().getAccessTokenSecretName();
+      var serviceAccountSecretName =
+          resource.getSpec().getCredentials().getServiceAccountSecretName();
+      var namespace = resource.getMetadata().getNamespace();
+
+      String accessToken =
+          accessToken = accessTokenSecretTool.getAccessToken(accessTokenSecretName, namespace);
+
+      var kafkaServiceInfo = apiClient.getKafkaById(kafkaId, accessToken);
+
+      var bootStrapHost = kafkaServiceInfo.getBootstrapServerHost();
+      var bootStrapServer = new BoostrapServer(bootStrapHost);
+
+      var status = resource.getStatus();
+      status.setMessage("Created");
+      status.setUpdated(Instant.now().toString());
+      status.setBoostrapServer(bootStrapServer);
+      status.setServiceAccountSecretName(serviceAccountSecretName);
+      status.setSaslMechanism("SASL_SSL");
+      status.setSecurityProtocol("PLAINTEXT");
+
+      ConditionUtil.setAllConditionsTrue(resource.getStatus().getConditions());
     } catch (ConditionAwareException e) {
-      LOG.log(Level.SEVERE, e.getMessage(), e);
-      // TODO Conditionize this
-      return UpdateControl.noUpdate();
+      LOG.log(Level.SEVERE, "Setting condition for exception " + e.getReason(), e);
+      ConditionUtil.setConditionFromException(resource.getStatus().getConditions(), e);
     }
-
-    var kafkaServiceInfo = apiClient.getKafkaById(kafkaId, accessToken);
-
-    var bootStrapHost = kafkaServiceInfo.getBootstrapServerHost();
-    var bootStrapServer = new BoostrapServer(bootStrapHost);
-
-    var status =
-        new ManagedKafkaConnectionStatus(
-            "Created", Instant.now().toString(), bootStrapServer, serviceAccountSecretName);
-    resource.setStatus(status);
-
-    return UpdateControl.updateCustomResourceAndStatus(resource);
+    return UpdateControl.updateStatusSubResource(resource);
   }
 
   /**

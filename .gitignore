@@ -30,4 +30,4 @@ postgresql-operator
 .DS_Store
 .vscode/settings.json
 # Old folder that vscode likes to keep
-java/
+#java/

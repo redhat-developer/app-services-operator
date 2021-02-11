@@ -67,16 +67,6 @@ public class ManagedKafkaRequestController implements ResourceController<Managed
       var namespace = resource.getMetadata().getNamespace();
       String accessToken = null;
       accessToken = accessTokenSecretTool.getAccessToken(accessTokenSecretName, namespace);
-      ConditionUtil.setConditionStatusTrue(
-          resource, ManagedKafkaRequestCondition.Type.AcccesTokenSecretAvailable);
-
-      LOG.info(
-          "ManagedKafkaRequest: "
-              + resource.getCRDName()
-              + " n:"
-              + namespace
-              + "s: "
-              + accessToken);
 
       var kafkaList = apiClient.listKafkas(accessToken);
 
@@ -100,25 +90,17 @@ public class ManagedKafkaRequestController implements ResourceController<Managed
                 userKafkas.add(userKafka);
               });
 
-      ConditionUtil.setConditionStatusTrue(
-          resource, ManagedKafkaRequestCondition.Type.UserKafkasUpToDate);
+      ConditionUtil.setAllConditionsTrue(resource.getStatus().getConditions());
       if (userKafkas.equals(resource.getStatus().getUserKafkas())) {
         return false;
       } else {
-        var status = resource.getStatus();
-        status.setUserKafkas(userKafkas);
-        ConditionUtil.setConditionStatusTrue(resource, ManagedKafkaRequestCondition.Type.Finished);
-        resource.setStatus(status);
+        resource.getStatus().setUserKafkas(userKafkas);
       }
 
       return true;
     } catch (ConditionAwareException e) {
-      LOG.log(Level.SEVERE, "Setting condition for exception " + e.getReason());
-      ConditionUtil.setConditionFromException(resource, e);
-      return true;
-    } catch (Exception e) {
-//      LOG.log(Level.SEVERE, "Setting condition for exception " + e.getReason());
-//      ConditionUtil.setConditionFromException(resource, e);
+      LOG.log(Level.SEVERE, "Setting condition for exception " + e.getReason(), e);
+      ConditionUtil.setConditionFromException(resource.getStatus().getConditions(), e);
       return true;
     }
   }
@@ -133,9 +115,14 @@ public class ManagedKafkaRequestController implements ResourceController<Managed
     items.forEach(
         resource -> {
           try {
-            updateManagedKafkaRequest(resource);
-            mkClient.inNamespace(resource.getMetadata().getNamespace()).createOrReplace(resource);
-            LOG.info("refreshed kafka" + resource.getCRDName());
+
+            // If there are untrue conditions, always update the status
+            if (!ConditionUtil.allTrue(resource.getStatus().getConditions())
+                || updateManagedKafkaRequest(resource)) {
+              mkClient.inNamespace(resource.getMetadata().getNamespace()).updateStatus(resource);
+              LOG.info("refreshed kafka" + resource.getMetadata().getName());
+            }
+
           } catch (ApiException e) {
             e.printStackTrace();
           }

@@ -1,5 +1,9 @@
 package com.openshift.cloud.v1alpha.models;
 
+import io.sundr.builder.annotations.Buildable;
+import java.util.List;
+
+@Buildable
 public class ManagedKafkaConnectionStatus {
 
   private String message;
@@ -8,6 +12,7 @@ public class ManagedKafkaConnectionStatus {
   private String serviceAccountSecretName;
   private String saslMechanism;
   private String securityProtocol;
+  private List<ManagedKafkaCondition> conditions;
 
   /** No args constructor for use in serialization */
   public ManagedKafkaConnectionStatus() {}
@@ -78,5 +83,13 @@ public class ManagedKafkaConnectionStatus {
 
   public void setSaslMechanism(String saslMechanism) {
     this.saslMechanism = saslMechanism;
+  }
+
+  public List<ManagedKafkaCondition> getConditions() {
+    return conditions;
+  }
+
+  public void setConditions(List<ManagedKafkaCondition> conditions) {
+    this.conditions = conditions;
   }
 }

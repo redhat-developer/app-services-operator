@@ -4,10 +4,10 @@ import com.openshift.cloud.beans.AccessTokenSecretTool;
 import com.openshift.cloud.beans.ManagedKafkaApiClient;
 import com.openshift.cloud.beans.ManagedKafkaK8sClients;
 import com.openshift.cloud.v1alpha.models.ManagedServiceAccountRequest;
-import com.openshift.cloud.v1alpha.models.ManagedServiceAccountRequestStatus;
 import io.javaoperatorsdk.operator.api.*;
 import io.javaoperatorsdk.operator.api.config.ControllerConfiguration;
 import java.time.Instant;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.inject.Inject;
 
@@ -35,29 +35,37 @@ public class ManagedServiceAccountRequestController
   @Override
   public UpdateControl<ManagedServiceAccountRequest> createOrUpdateResource(
       ManagedServiceAccountRequest resource, Context<ManagedServiceAccountRequest> context) {
+    ConditionUtil.initializeConditions(resource);
+    try {
 
-    if (resource.getStatus() != null) {
-      return UpdateControl.noUpdate();
+      var accessTokenSecretName = resource.getSpec().getAccessTokenSecretName();
+      var namespace = resource.getMetadata().getNamespace();
+
+      String accessToken = null;
+
+      accessToken = accessTokenSecretTool.getAccessToken(accessTokenSecretName, namespace);
+
+      var serviceAccount = apiClient.createServiceAccount(resource.getSpec(), accessToken);
+
+      apiClient.createSecretForServiceAccount(resource, serviceAccount);
+
+      var status = resource.getStatus();
+      status.setMessage("Created");
+      status.setUpdated(Instant.now().toString());
+      status.setServiceAccountSecretName(resource.getSpec().getServiceAccountSecretName());
+
+      resource.setStatus(status);
+      ConditionUtil.setAllConditionsTrue(resource.getStatus().getConditions());
+
+      managedKafkaClientFactory
+          .managedServiceAccountRequest()
+          .inNamespace(resource.getMetadata().getNamespace())
+          .updateStatus(resource);
+    } catch (ConditionAwareException e) {
+      LOG.log(Level.SEVERE, e.getMessage(), e);
+      ConditionUtil.setConditionFromException(resource.getStatus().getConditions(), e);
+      return UpdateControl.updateCustomResourceAndStatus(resource);
     }
-
-    var accessTokenSecretName = resource.getSpec().getAccessTokenSecretName();
-    var namespace = resource.getMetadata().getNamespace();
-
-    var accessToken = accessTokenSecretTool.getAccessToken(accessTokenSecretName, namespace);
-
-    var serviceAccount = apiClient.createServiceAccount(resource.getSpec(), accessToken);
-
-    apiClient.createSecretForServiceAccount(resource, serviceAccount);
-
-    var status =
-        new ManagedServiceAccountRequestStatus(
-            "Created", Instant.now().toString(), resource.getSpec().getServiceAccountSecretName());
-    resource.setStatus(status);
-
-    managedKafkaClientFactory
-        .managedServiceAccountRequest()
-        .inNamespace(resource.getMetadata().getNamespace())
-        .updateStatus(resource);
 
     return UpdateControl.noUpdate();
   }
