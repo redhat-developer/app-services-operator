@@ -53,6 +53,21 @@ spec:
               type: string
             securityProtocol:
               type: string
+            conditions:
+              type: array
+              items:
+                type: object
+                properties:
+                  type:
+                    type: string
+                  reason:
+                    type: string
+                  message:
+                    type: string
+                  status:
+                    type: string
+                  lastTransitionTime:
+                    type: string
           type: object
       type: object
   versions:

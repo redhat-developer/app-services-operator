@@ -1,24 +1,16 @@
 package com.openshift.cloud.controllers;
 
-import com.openshift.cloud.ApiClient;
-import com.openshift.cloud.ApiException;
-import com.openshift.cloud.Configuration;
-import com.openshift.cloud.api.DefaultApi;
-import com.openshift.cloud.auth.HttpBearerAuth;
-import com.openshift.cloud.beans.TokenExchanger;
+import com.openshift.cloud.beans.AccessTokenSecretTool;
+import com.openshift.cloud.beans.ManagedKafkaApiClient;
 import com.openshift.cloud.v1alpha.models.BoostrapServer;
 import com.openshift.cloud.v1alpha.models.ManagedKafkaConnection;
-import com.openshift.cloud.v1alpha.models.ManagedKafkaConnectionStatus;
-import io.fabric8.kubernetes.client.KubernetesClient;
 import io.javaoperatorsdk.operator.api.*;
 import io.javaoperatorsdk.operator.api.config.ControllerConfiguration;
 import io.javaoperatorsdk.operator.processing.event.EventSourceManager;
 import java.time.Instant;
-import java.util.Base64;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.inject.Inject;
-import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 @Controller(namespaces = ControllerConfiguration.WATCH_ALL_NAMESPACES_MARKER)
 public class ManagedKafkaConnectionController
@@ -26,17 +18,10 @@ public class ManagedKafkaConnectionController
 
   private static final Logger LOG =
       Logger.getLogger(ManagedKafkaConnectionController.class.getName());
-  private final KubernetesClient k8sClient;
-  public final String ACCESS_TOKEN_SECRET_KEY = "value";
 
-  @ConfigProperty(name = "client.basePath", defaultValue = "https://api.stage.openshift.com")
-  String clientBasePath;
+  @Inject ManagedKafkaApiClient apiClient;
 
-  @Inject TokenExchanger tokenExchanger;
-
-  public ManagedKafkaConnectionController(KubernetesClient k8sClient) {
-    this.k8sClient = k8sClient;
-  }
+  @Inject AccessTokenSecretTool accessTokenSecretTool;
 
   @Override
   public DeleteControl deleteResource(
@@ -49,52 +34,38 @@ public class ManagedKafkaConnectionController
   @Override
   public UpdateControl<ManagedKafkaConnection> createOrUpdateResource(
       ManagedKafkaConnection resource, Context<ManagedKafkaConnection> context) {
-    LOG.info(String.format("Creating or Updating resource %s", resource.getMetadata().getName()));
-
+    ConditionUtil.initializeConditions(resource);
     try {
+      LOG.info(String.format("Creating or Updating resource %s", resource.getMetadata().getName()));
+
       var kafkaId = resource.getSpec().getKafkaId();
-      var accessTokenSecret = resource.getSpec().getAccessTokenSecretName();
-      var serviceAccountSecret = resource.getSpec().getCredentials().getServiceAccountSecretName();
+      var accessTokenSecretName = resource.getSpec().getAccessTokenSecretName();
+      var serviceAccountSecretName =
+          resource.getSpec().getCredentials().getServiceAccountSecretName();
       var namespace = resource.getMetadata().getNamespace();
 
-      var accessToken =
-          k8sClient
-              .secrets()
-              .inNamespace(namespace)
-              .withName(accessTokenSecret)
-              .get()
-              .getData()
-              .get(ACCESS_TOKEN_SECRET_KEY);
-      accessToken = new String(Base64.getDecoder().decode(accessToken));
-      accessToken = tokenExchanger.getToken(accessToken);
+      String accessToken =
+          accessToken = accessTokenSecretTool.getAccessToken(accessTokenSecretName, namespace);
 
-      var kafkaServiceInfo = createClient(accessToken).getKafkaById(kafkaId);
+      var kafkaServiceInfo = apiClient.getKafkaById(kafkaId, accessToken);
 
       var bootStrapHost = kafkaServiceInfo.getBootstrapServerHost();
       var bootStrapServer = new BoostrapServer(bootStrapHost);
 
-      var status =
-          new ManagedKafkaConnectionStatus(
-              "Created", Instant.now().toString(), bootStrapServer, serviceAccountSecret);
-      resource.setStatus(status);
+      var status = resource.getStatus();
+      status.setMessage("Created");
+      status.setUpdated(Instant.now().toString());
+      status.setBoostrapServer(bootStrapServer);
+      status.setServiceAccountSecretName(serviceAccountSecretName);
+      status.setSaslMechanism("SASL_SSL");
+      status.setSecurityProtocol("PLAINTEXT");
 
-      return UpdateControl.updateCustomResourceAndStatus(resource);
-    } catch (ApiException e) {
-      LOG.log(Level.SEVERE, e.getMessage(), e);
-      return UpdateControl.noUpdate();
+      ConditionUtil.setAllConditionsTrue(resource.getStatus().getConditions());
+    } catch (ConditionAwareException e) {
+      LOG.log(Level.SEVERE, "Setting condition for exception " + e.getReason(), e);
+      ConditionUtil.setConditionFromException(resource.getStatus().getConditions(), e);
     }
-  }
-
-  private DefaultApi createClient(String bearerToken) {
-
-    ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath(clientBasePath);
-
-    // Configure HTTP bearer authorization: Bearer
-    HttpBearerAuth Bearer = (HttpBearerAuth) defaultClient.getAuthentication("Bearer");
-    Bearer.setBearerToken(bearerToken);
-
-    return new DefaultApi(defaultClient);
+    return UpdateControl.updateStatusSubResource(resource);
   }
 
   /**

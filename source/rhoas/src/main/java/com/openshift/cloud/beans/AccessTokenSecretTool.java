@@ -1,5 +1,8 @@
 package com.openshift.cloud.beans;
 
+import com.openshift.cloud.controllers.ConditionAwareException;
+import com.openshift.cloud.v1alpha.models.ManagedKafkaCondition;
+import io.fabric8.kubernetes.client.KubernetesClient;
 import io.vertx.core.json.JsonObject;
 import java.io.IOException;
 import java.net.URI;
@@ -9,12 +12,19 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
+import java.util.Base64;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.inject.Inject;
 import javax.inject.Singleton;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 /** Utility bean to exchange offline tokens for access tokens */
 @Singleton
-public class TokenExchanger {
+public class AccessTokenSecretTool {
+  private static final Logger LOG = Logger.getLogger(AccessTokenSecretTool.class.getName());
+
+  private static final String ACCESS_TOKEN_SECRET_KEY = "value";
 
   @ConfigProperty(
       name = "auth.serverUrl",
@@ -27,13 +37,54 @@ public class TokenExchanger {
   @ConfigProperty(name = "auth.tokenPath", defaultValue = "protocol/openid-connect/token")
   String tokenPath;
 
+  @Inject KubernetesClient k8sClient;
+
+  /**
+   * This method exchanges secret values for an access token.
+   *
+   * @param accessTokenSecretName the secret which contains an offline token on the "value" key
+   * @param namespace namespace of secret
+   * @return a valid access token
+   */
+  public String getAccessToken(String accessTokenSecretName, String namespace)
+      throws ConditionAwareException {
+    try {
+      var offlineToken = getOfflineTokenFromSecret(accessTokenSecretName, namespace);
+      var accessToken = exchangeToken(offlineToken);
+      return accessToken;
+    } catch (Exception ex) {
+      LOG.log(Level.SEVERE, ex.getMessage(), ex);
+      throw new ConditionAwareException(
+          ex.getMessage(),
+          ex,
+          ManagedKafkaCondition.Type.AcccesTokenSecretAvailable,
+          ManagedKafkaCondition.Status.False,
+          ex.getClass().getName(),
+          ex.getMessage());
+    }
+  }
+
+  private String getOfflineTokenFromSecret(String secretName, String namespace) {
+    var offlineToken =
+        k8sClient
+            .secrets()
+            .inNamespace(namespace)
+            .withName(secretName)
+            .get()
+            .getData()
+            .get(ACCESS_TOKEN_SECRET_KEY);
+    offlineToken = new String(Base64.getDecoder().decode(offlineToken));
+
+    return offlineToken;
+  }
+
   /**
    * This method exchanges an offline token for a new refresh token
    *
    * @param offlineToken the token from ss.redhat.com
    * @return a token to be used as a bearer token to authorize the user
    */
-  public String getToken(String offlineToken) {
+  private String exchangeToken(String offlineToken) {
     try {
       HttpRequest request =
           HttpRequest.newBuilder()
@@ -64,8 +115,7 @@ public class TokenExchanger {
     }
   }
 
-  public static HttpRequest.BodyPublisher ofFormData(String... data) {
-
+  private static HttpRequest.BodyPublisher ofFormData(String... data) {
     var builder = new StringBuilder();
     if (data.length % 2 == 1) {
       throw new IllegalArgumentException(

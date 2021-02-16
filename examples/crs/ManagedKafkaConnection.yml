@@ -4,7 +4,8 @@ metadata:
   name: test453-serviceapi
   namespace: rhoas-operator-testing
 spec:
-  kafkaId: "fgdsff443ghjdsffrds"
+  accessTokenSecretName: rh-managed-services-api-accesstoken
+  kafkaId: "1oLRVYm5q1Zx43mA0eIhsumYQ27"
   credentials:
     serviceAccountSecretName: service-account-credentials
 # status:

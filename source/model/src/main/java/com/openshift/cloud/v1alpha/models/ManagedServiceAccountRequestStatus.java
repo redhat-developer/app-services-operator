@@ -1,10 +1,16 @@
 package com.openshift.cloud.v1alpha.models;
 
+import io.sundr.builder.annotations.Buildable;
+import java.util.ArrayList;
+import java.util.List;
+
+@Buildable
 public class ManagedServiceAccountRequestStatus {
 
-  private String message;
-  private String updated;
-  private String serviceAccountSecretName;
+  private String message = "";
+  private String updated = "";
+  private String serviceAccountSecretName = "";
+  private List<ManagedKafkaCondition> conditions = new ArrayList<>();
 
   /** No args constructor for use in serialization */
   public ManagedServiceAccountRequestStatus() {}
@@ -44,5 +50,13 @@ public class ManagedServiceAccountRequestStatus {
 
   public void setServiceAccountSecretName(String serviceAccountSecretName) {
     this.serviceAccountSecretName = serviceAccountSecretName;
+  }
+
+  public List<ManagedKafkaCondition> getConditions() {
+    return conditions;
+  }
+
+  public void setConditions(List<ManagedKafkaCondition> conditions) {
+    this.conditions = conditions;
   }
 }
