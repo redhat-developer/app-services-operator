@@ -14,7 +14,7 @@
   <description>rhoas-operator</description>
   <properties>
     <fabric8.version>5.0.0</fabric8.version>
-    <operator.sdk.version>1.7.1</operator.sdk.version>
+    <operator.sdk.version>1.7.0</operator.sdk.version>
     <quarkus.version>1.11.0.Final</quarkus.version>
   </properties>
   <dependencyManagement>
