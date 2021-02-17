@@ -2,10 +2,10 @@ package com.openshift.cloud.beans;
 
 import com.openshift.cloud.v1alpha.models.ManagedKafkaConnection;
 import com.openshift.cloud.v1alpha.models.ManagedKafkaConnectionList;
-import com.openshift.cloud.v1alpha.models.ManagedKafkaRequest;
-import com.openshift.cloud.v1alpha.models.ManagedKafkaRequestList;
 import com.openshift.cloud.v1alpha.models.ManagedServiceAccountRequest;
 import com.openshift.cloud.v1alpha.models.ManagedServiceAccountRequestList;
+import com.openshift.cloud.v1alpha.models.ManagedServicesRequest;
+import com.openshift.cloud.v1alpha.models.ManagedServicesRequestList;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinition;
 import io.fabric8.kubernetes.client.CustomResource;
@@ -44,7 +44,7 @@ public final class ManagedKafkaK8sClients {
     var crds = client.apiextensions().v1beta1();
 
     this.mkcCrd = initManagedKafkaConnectionCRDAndClient(crds);
-    this.mkrCrd = initManagedKafkaRequestCRDAndClient(crds);
+    this.mkrCrd = initManagedServicesRequestCRDAndClient(crds);
     this.msarCrd = initManagedServiceAccountRequestCRDAndClient(crds);
   }
 
@@ -63,16 +63,19 @@ public final class ManagedKafkaK8sClients {
         mkcCrdContext, ManagedKafkaConnection.class, ManagedKafkaConnectionList.class);
   }
 
-  public MixedOperation<ManagedKafkaRequest, ManagedKafkaRequestList, Resource<ManagedKafkaRequest>>
-      managedKafkaRequest() {
+  public MixedOperation<
+          ManagedServicesRequest, ManagedServicesRequestList, Resource<ManagedServicesRequest>>
+      managedServicesRequest() {
     KubernetesDeserializer.registerCustomKind(
-        getApiVersion(ManagedKafkaRequest.class), mkrCrd.getKind(), ManagedKafkaRequest.class);
+        getApiVersion(ManagedServicesRequest.class),
+        mkrCrd.getKind(),
+        ManagedServicesRequest.class);
 
     var mkcCrdContext = CustomResourceDefinitionContext.fromCrd(this.mkrCrd);
 
     // lets create a client for the CRD
     return client.customResources(
-        mkcCrdContext, ManagedKafkaRequest.class, ManagedKafkaRequestList.class);
+        mkcCrdContext, ManagedServicesRequest.class, ManagedServicesRequestList.class);
   }
 
   public MixedOperation<
@@ -151,29 +154,29 @@ public final class ManagedKafkaK8sClients {
     return mkcCrd;
   }
 
-  private CustomResourceDefinition initManagedKafkaRequestCRDAndClient(
+  private CustomResourceDefinition initManagedServicesRequestCRDAndClient(
       V1beta1ApiextensionAPIGroupDSL crds) {
 
     CustomResourceDefinition mkcCrd;
 
     var crdsItems = crds.customResourceDefinitions().list().getItems();
-    var managedKafkaRequestCRDName = CustomResource.getCRDName(ManagedKafkaRequest.class);
+    var managedServicesRequestCRDName = CustomResource.getCRDName(ManagedServicesRequest.class);
 
     var mkcCrdOptional =
         crdsItems.stream()
-            .filter(crd -> managedKafkaRequestCRDName.equals(crd.getMetadata().getName()))
+            .filter(crd -> managedServicesRequestCRDName.equals(crd.getMetadata().getName()))
             .findFirst();
 
     if (mkcCrdOptional.isEmpty()) {
-      LOG.info("Creating ManagedKafkaRequest CRD");
+      LOG.info("Creating ManagedServicesRequest CRD");
       mkcCrd =
           CustomResourceDefinitionContext.v1beta1CRDFromCustomResourceType(
-                  ManagedKafkaRequest.class)
+                  ManagedServicesRequest.class)
               .build();
       client.apiextensions().v1beta1().customResourceDefinitions().create(mkcCrd);
-      LOG.info("ManagedKafkaRequest CRD Created");
+      LOG.info("ManagedServicesRequest CRD Created");
     } else {
-      LOG.info("Found ManagedKafkaRequest CRD");
+      LOG.info("Found ManagedServicesRequest CRD");
       mkcCrd = mkcCrdOptional.get();
     }
 

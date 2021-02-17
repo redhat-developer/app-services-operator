@@ -19,7 +19,7 @@ oc apply -f ./secrets/api-token.yml
 ```
 2. Create managed kafka connection 
 ```
-oc apply -f ./crs/ManagedKafkaRequest.yml
+oc apply -f ./crs/ManagedServicesRequest.yml
 ```
 3. Create Managed Service Account request
 ```
@@ -28,10 +28,10 @@ oc apply -f ./crs/ManagedServiceAccountRequest.yml
 
 4. Create connection
 
-Go and edit `kafkaId` based on status from `ManagedKafkaRequest` object
+Go and edit `kafkaId` based on status from `ManagedServicesRequest` object
 
 ```
-oc get ManagedKafkaRequest -o yaml
+oc get ManagedServicesRequest -o yaml
 ```
 
 Edit connection and create it

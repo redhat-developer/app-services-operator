@@ -14,10 +14,10 @@ spec:
       kind: ManagedServiceAccountRequest
       name: managedserviceaccountrequests.rhoas.redhat.com
       version: v1alpha1
-    - description: Managed Kafka Request
-      displayName:  Managed Kafka Request
-      kind: ManagedKafkaRequest
-      name: managedkafkarequests.rhoas.redhat.com
+    - description: Managed Services Request
+      displayName:  Managed Services Request
+      kind: ManagedServicesRequest
+      name: managedservicesrequests.rhoas.redhat.com
       version: v1alpha1
     - description: Binds Managed Kafka
       displayName: Managed Kafka Connection
@@ -68,9 +68,9 @@ spec:
             - 'managedkafkaconnections'
             - 'managedkafkaconnections/status'
             - 'managedkafkaconnections/finalizers'
-            - 'managedkafkarequests'
-            - 'managedkafkarequests/status'
-            - 'managedkafkarequests/finalizers'
+            - 'managedservicesrequests'
+            - 'managedservicesrequests/status'
+            - 'managedservicesrequests/finalizers'
             - 'managedserviceaccountrequests'
             - 'managedserviceaccountrequests/status'
             - 'managedserviceaccountrequests/finalizers'

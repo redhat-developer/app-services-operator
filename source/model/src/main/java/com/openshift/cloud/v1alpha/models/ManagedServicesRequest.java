@@ -10,19 +10,19 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
-@Plural("managedkafkarequests")
+@Plural("managedservicesrequests")
 @Group("rhoas.redhat.com")
 @Version("v1alpha1")
 @Crd(group = "rhoas.redhat.com", version = "v1alpha1")
-public class ManagedKafkaRequest
-    extends CustomResource<ManagedKafkaRequestSpec, ManagedKafkaRequestStatus>
+public class ManagedServicesRequest
+    extends CustomResource<ManagedServicesRequestSpec, ManagedServicesRequestStatus>
     implements Namespaced {
 
   @Override
   public String toString() {
     return new ToStringBuilder(this)
-        .append("managedKafkaRequestSpec", getSpec())
-        .append("managedKafkaRequestStatus", getStatus())
+        .append("managedServicesRequestSpec", getSpec())
+        .append("managedServicesRequestStatus", getStatus())
         .toString();
   }
 
@@ -36,10 +36,10 @@ public class ManagedKafkaRequest
     if (other == this) {
       return true;
     }
-    if ((other instanceof ManagedKafkaRequest) == false) {
+    if ((other instanceof ManagedServicesRequest) == false) {
       return false;
     }
-    ManagedKafkaRequest rhs = ((ManagedKafkaRequest) other);
+    ManagedServicesRequest rhs = ((ManagedServicesRequest) other);
     return new EqualsBuilder()
         .append(getSpec(), rhs.getSpec())
         .append(getStatus(), rhs.getStatus())

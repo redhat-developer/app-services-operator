@@ -4,15 +4,15 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
-public class ManagedKafkaRequestSpec {
+public class ManagedServicesRequestSpec {
 
   private String accessTokenSecretName = "rhoas_binding_operator_token"; // Default as per ADR_00022
 
   /** No args constructor for use in serialization */
-  public ManagedKafkaRequestSpec() {}
+  public ManagedServicesRequestSpec() {}
 
   /** @param accessTokenSecretName */
-  public ManagedKafkaRequestSpec(String accessTokenSecretName) {
+  public ManagedServicesRequestSpec(String accessTokenSecretName) {
     super();
     this.accessTokenSecretName = accessTokenSecretName;
   }
@@ -42,10 +42,10 @@ public class ManagedKafkaRequestSpec {
     if (other == this) {
       return true;
     }
-    if ((other instanceof ManagedKafkaRequestSpec) == false) {
+    if ((other instanceof ManagedServicesRequestSpec) == false) {
       return false;
     }
-    ManagedKafkaRequestSpec rhs = ((ManagedKafkaRequestSpec) other);
+    ManagedServicesRequestSpec rhs = ((ManagedServicesRequestSpec) other);
     return new EqualsBuilder().append(accessTokenSecretName, rhs.accessTokenSecretName).isEquals();
   }
 }
