@@ -1,7 +1,5 @@
 # OpenShift Application Services Connection Operator (RHOAS-Operator)
 
-> Work in Progress 
-
 ### Documentation
 
 [Documentation](./docs)
