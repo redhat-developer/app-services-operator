@@ -8,7 +8,7 @@ spec:
     kind: ManagedServicesRequest
     plural: managedservicesrequests
     shortNames:
-      - mkr
+      - mscr
     singular: managedservicesrequest
   scope: Namespaced
   subresources:

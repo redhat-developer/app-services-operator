@@ -12,7 +12,7 @@ public class ManagedServicesRequestTests {
    * account has access to.
    */
   @Test
-  public void operatorCreatesMKRStatus() {
+  public void operatorCreatesMSRStatus() {
     fail();
   }
 

@@ -34,7 +34,7 @@ public final class ManagedKafkaK8sClients {
   @Inject KubernetesClient client;
 
   private CustomResourceDefinition mkcCrd;
-  private CustomResourceDefinition mkrCrd;
+  private CustomResourceDefinition mscrCrd;
   private CustomResourceDefinition msarCrd;
 
   @PostConstruct
@@ -44,7 +44,7 @@ public final class ManagedKafkaK8sClients {
     var crds = client.apiextensions().v1beta1();
 
     this.mkcCrd = initManagedKafkaConnectionCRDAndClient(crds);
-    this.mkrCrd = initManagedServicesRequestCRDAndClient(crds);
+    this.mscrCrd = initManagedServicesRequestCRDAndClient(crds);
     this.msarCrd = initManagedServiceAccountRequestCRDAndClient(crds);
   }
 
@@ -68,10 +68,10 @@ public final class ManagedKafkaK8sClients {
       managedServicesRequest() {
     KubernetesDeserializer.registerCustomKind(
         getApiVersion(ManagedServicesRequest.class),
-        mkrCrd.getKind(),
+        mscrCrd.getKind(),
         ManagedServicesRequest.class);
 
-    var mkcCrdContext = CustomResourceDefinitionContext.fromCrd(this.mkrCrd);
+    var mkcCrdContext = CustomResourceDefinitionContext.fromCrd(this.mscrCrd);
 
     // lets create a client for the CRD
     return client.customResources(
