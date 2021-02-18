@@ -4,15 +4,15 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import org.junit.jupiter.api.Test;
 
-/** This tests that we have all the features for managed kafka request objects */
-public class ManagedKafkaRequestTests {
+/** This tests that we have all the features for managed Services request objects */
+public class ManagedServicesRequestTests {
 
   /**
    * The operator should create a managed kfaka request cr that contains all kafkas the service
    * account has access to.
    */
   @Test
-  public void operatorCreatesMKRStatus() {
+  public void operatorCreatesMSRStatus() {
     fail();
   }
 

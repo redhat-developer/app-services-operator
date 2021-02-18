@@ -1,8 +1,8 @@
 package com.openshift.cloud;
 
 import com.openshift.cloud.controllers.ManagedKafkaConnectionController;
-import com.openshift.cloud.controllers.ManagedKafkaRequestController;
 import com.openshift.cloud.controllers.ManagedServiceAccountRequestController;
+import com.openshift.cloud.controllers.ManagedServicesRequestController;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.javaoperatorsdk.operator.Operator;
 import io.javaoperatorsdk.operator.api.config.ConfigurationService;
@@ -24,7 +24,7 @@ public class RHOASOperator implements QuarkusApplication {
 
   @Inject ManagedKafkaConnectionController connectionController;
 
-  @Inject ManagedKafkaRequestController requestController;
+  @Inject ManagedServicesRequestController requestController;
 
   @Inject ManagedServiceAccountRequestController serviceAccountRequestController;
 

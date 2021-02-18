@@ -12,7 +12,7 @@ public class CRDCreationTests {
   }
 
   @Test
-  public void createManagedKafkaRequestCRDOnInit() {
+  public void createManagedServicesRequestCRDOnInit() {
     fail();
   }
 

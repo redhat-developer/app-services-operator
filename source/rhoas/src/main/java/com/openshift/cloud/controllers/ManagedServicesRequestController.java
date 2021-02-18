@@ -4,7 +4,7 @@ import com.openshift.cloud.ApiException;
 import com.openshift.cloud.beans.AccessTokenSecretTool;
 import com.openshift.cloud.beans.ManagedKafkaApiClient;
 import com.openshift.cloud.beans.ManagedKafkaK8sClients;
-import com.openshift.cloud.v1alpha.models.ManagedKafkaRequest;
+import com.openshift.cloud.v1alpha.models.ManagedServicesRequest;
 import com.openshift.cloud.v1alpha.models.UserKafka;
 import io.javaoperatorsdk.operator.api.*;
 import io.javaoperatorsdk.operator.api.config.ControllerConfiguration;
@@ -16,9 +16,11 @@ import java.util.logging.Logger;
 import javax.inject.Inject;
 
 @Controller(namespaces = ControllerConfiguration.WATCH_ALL_NAMESPACES_MARKER)
-public class ManagedKafkaRequestController implements ResourceController<ManagedKafkaRequest> {
+public class ManagedServicesRequestController
+    implements ResourceController<ManagedServicesRequest> {
 
-  private static final Logger LOG = Logger.getLogger(ManagedKafkaRequestController.class.getName());
+  private static final Logger LOG =
+      Logger.getLogger(ManagedServicesRequestController.class.getName());
 
   @Inject AccessTokenSecretTool accessTokenSecretTool;
 
@@ -26,25 +28,25 @@ public class ManagedKafkaRequestController implements ResourceController<Managed
 
   @Inject ManagedKafkaApiClient apiClient;
 
-  public ManagedKafkaRequestController() {}
+  public ManagedServicesRequestController() {}
 
   @Override
   public DeleteControl deleteResource(
-      ManagedKafkaRequest managedKafkaRequest, Context<ManagedKafkaRequest> context) {
-    LOG.info(String.format("Deleting resource %s", managedKafkaRequest.getMetadata().getName()));
+      ManagedServicesRequest managedServicesRequest, Context<ManagedServicesRequest> context) {
+    LOG.info(String.format("Deleting resource %s", managedServicesRequest.getMetadata().getName()));
 
     return DeleteControl.DEFAULT_DELETE;
   }
 
   @Override
-  public UpdateControl<ManagedKafkaRequest> createOrUpdateResource(
-      ManagedKafkaRequest resource, Context<ManagedKafkaRequest> context) {
+  public UpdateControl<ManagedServicesRequest> createOrUpdateResource(
+      ManagedServicesRequest resource, Context<ManagedServicesRequest> context) {
 
     LOG.info(String.format("Update or create resource %s", resource.getMetadata().getName()));
 
     try {
-      updateManagedKafkaRequest(resource);
-      var mkClient = managedKafkaClientFactory.managedKafkaRequest();
+      updateManagedServicesRequest(resource);
+      var mkClient = managedKafkaClientFactory.managedServicesRequest();
       mkClient.inNamespace(resource.getMetadata().getNamespace()).updateStatus(resource);
 
       return UpdateControl.noUpdate();
@@ -59,7 +61,8 @@ public class ManagedKafkaRequestController implements ResourceController<Managed
    * @return true if there were changes, false otherwise
    * @throws ApiException if something goes wrong connecting to services
    */
-  private boolean updateManagedKafkaRequest(ManagedKafkaRequest resource) throws ApiException {
+  private boolean updateManagedServicesRequest(ManagedServicesRequest resource)
+      throws ApiException {
 
     ConditionUtil.initializeConditions(resource);
     try {
@@ -109,7 +112,7 @@ public class ManagedKafkaRequestController implements ResourceController<Managed
   void reloadUserKafkas() {
     LOG.info("Refreshing user kafkas");
 
-    var mkClient = managedKafkaClientFactory.managedKafkaRequest();
+    var mkClient = managedKafkaClientFactory.managedServicesRequest();
     var items = mkClient.inAnyNamespace().list().getItems();
     LOG.info("Items to refresh" + items.size());
     items.forEach(
@@ -118,7 +121,7 @@ public class ManagedKafkaRequestController implements ResourceController<Managed
 
             // If there are untrue conditions, always update the status
             if (!ConditionUtil.allTrue(resource.getStatus().getConditions())
-                || updateManagedKafkaRequest(resource)) {
+                || updateManagedServicesRequest(resource)) {
               mkClient.inNamespace(resource.getMetadata().getNamespace()).updateStatus(resource);
               LOG.info("refreshed kafka" + resource.getMetadata().getName());
             }

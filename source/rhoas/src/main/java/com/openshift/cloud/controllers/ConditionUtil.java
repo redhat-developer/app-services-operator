@@ -12,21 +12,21 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 public class ConditionUtil {
-  public static void initializeConditions(ManagedKafkaRequest resource) {
+  public static void initializeConditions(ManagedServicesRequest resource) {
     var status = resource.getStatus();
     if (status == null) {
       resource.setStatus(
-          new ManagedKafkaRequestStatusBuilder()
+          new ManagedServicesRequestStatusBuilder()
               .withLastUpdate(isoNow())
               .withUserKafkas(new ArrayList<>())
-              .withConditions(managedKafkaRequestDefaultConditions())
+              .withConditions(managedServicesRequestDefaultConditions())
               .build());
     } else {
-      status.setConditions(managedKafkaRequestDefaultConditions());
+      status.setConditions(managedServicesRequestDefaultConditions());
     }
   }
 
-  private static List<ManagedKafkaCondition> managedKafkaRequestDefaultConditions() {
+  private static List<ManagedKafkaCondition> managedServicesRequestDefaultConditions() {
     return List.of(
         new ManagedKafkaCondition()
             .setLastTransitionTime(isoNow())
@@ -83,7 +83,7 @@ public class ConditionUtil {
               .withConditions(managedKafkaServiceAccountRequestDefaultConditions())
               .build());
     } else {
-      status.setConditions(managedKafkaRequestDefaultConditions());
+      status.setConditions(managedServicesRequestDefaultConditions());
     }
   }
 
