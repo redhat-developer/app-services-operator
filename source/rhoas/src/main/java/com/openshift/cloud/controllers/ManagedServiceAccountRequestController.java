@@ -64,7 +64,12 @@ public class ManagedServiceAccountRequestController
     } catch (ConditionAwareException e) {
       LOG.log(Level.SEVERE, e.getMessage(), e);
       ConditionUtil.setConditionFromException(resource.getStatus().getConditions(), e);
-      return UpdateControl.updateCustomResourceAndStatus(resource);
+      
+      managedKafkaClientFactory
+          .managedServiceAccountRequest()
+          .inNamespace(resource.getMetadata().getNamespace())
+          .updateStatus(resource);
+      
     }
 
     return UpdateControl.noUpdate();
