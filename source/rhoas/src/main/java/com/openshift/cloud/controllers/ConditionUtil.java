@@ -4,6 +4,7 @@ import static com.openshift.cloud.v1alpha.models.ManagedKafkaCondition.Status.Fa
 import static com.openshift.cloud.v1alpha.models.ManagedKafkaCondition.Status.True;
 
 import com.openshift.cloud.v1alpha.models.*;
+import com.openshift.cloud.v1alpha.models.ManagedKafkaCondition.Status;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -59,7 +60,7 @@ public class ConditionUtil {
             .setReason("")
             .setMessage("")
             .setType(ManagedKafkaCondition.Type.Finished)
-            .setStatus(ManagedKafkaCondition.Status.False),
+            .setStatus(ManagedKafkaCondition.Status.Unknown),
         new ManagedKafkaCondition()
             .setLastTransitionTime(isoNow())
             .setReason("")
@@ -150,7 +151,7 @@ public class ConditionUtil {
             .setReason("")
             .setMessage("")
             .setType(ManagedKafkaCondition.Type.Finished)
-            .setStatus(ManagedKafkaCondition.Status.False));
+            .setStatus(Status.Unknown));
   }
 
   public static void setAllConditionsTrue(List<ManagedKafkaCondition> conditions) {
@@ -194,7 +195,7 @@ public class ConditionUtil {
             .setReason("")
             .setMessage("")
             .setType(ManagedKafkaCondition.Type.Finished)
-            .setStatus(False));
+            .setStatus(Status.Unknown));
   }
 
   public static boolean allTrue(List<ManagedKafkaCondition> conditions) {

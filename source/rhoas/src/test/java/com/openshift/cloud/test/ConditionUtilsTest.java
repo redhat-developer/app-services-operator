@@ -10,14 +10,14 @@ import org.junit.jupiter.api.Test;
 public class ConditionUtilsTest {
 
   @Test
-  public void finishedInitializedToFalse() {
+  public void finishedInitializedToUnknown() {
     var resource = new ManagedKafkaConnection();
     ConditionUtil.initializeConditions(resource);
 
     var resourceConditions = resource.getStatus().getConditions();
 
     Assertions.assertEquals(
-        ManagedKafkaCondition.Status.False,
+        ManagedKafkaCondition.Status.Unknown,
         ConditionUtil.getCondition(resourceConditions, ManagedKafkaCondition.Type.Finished)
             .getStatus());
   }
