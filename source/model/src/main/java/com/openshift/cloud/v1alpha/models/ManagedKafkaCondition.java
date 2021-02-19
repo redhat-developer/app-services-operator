@@ -2,7 +2,7 @@ package com.openshift.cloud.v1alpha.models;
 
 public class ManagedKafkaCondition {
   public enum Type {
-    AcccesTokenSecretAvailable,
+    AcccesTokenSecretValid,
     UserKafkasUpToDate,
     ServiceAccountCreated,
     ServiceAccountSecretCreated,
