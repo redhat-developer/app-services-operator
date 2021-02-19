@@ -46,6 +46,8 @@ public class RHOASOperator implements QuarkusApplication {
     config = configuration.getConfigurationFor(serviceAccountRequestController);
     LOG.info("CR class: " + config.getCustomResourceClass());
 
+    operator.start();
+
     Quarkus.waitForExit();
     return 0;
   }
