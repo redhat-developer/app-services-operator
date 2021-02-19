@@ -57,7 +57,7 @@ public class AccessTokenSecretTool {
       throw new ConditionAwareException(
           ex.getMessage(),
           ex,
-          ManagedKafkaCondition.Type.AcccesTokenSecretAvailable,
+          ManagedKafkaCondition.Type.AcccesTokenSecretValid,
           ManagedKafkaCondition.Status.False,
           ex.getClass().getName(),
           ex.getMessage());
