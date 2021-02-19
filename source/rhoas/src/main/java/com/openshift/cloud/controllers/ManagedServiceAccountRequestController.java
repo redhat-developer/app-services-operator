@@ -12,7 +12,7 @@ import java.util.logging.Logger;
 import javax.inject.Inject;
 
 /** Controller for ManagedServiceAccountRequest CRs */
-@Controller(namespaces = ControllerConfiguration.WATCH_ALL_NAMESPACES_MARKER)
+@Controller
 public class ManagedServiceAccountRequestController
     implements ResourceController<ManagedServiceAccountRequest> {
 

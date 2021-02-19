@@ -12,7 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.inject.Inject;
 
-@Controller(namespaces = ControllerConfiguration.WATCH_ALL_NAMESPACES_MARKER)
+@Controller
 public class ManagedKafkaConnectionController
     implements ResourceController<ManagedKafkaConnection> {
 
@@ -45,7 +45,7 @@ public class ManagedKafkaConnectionController
       var namespace = resource.getMetadata().getNamespace();
 
       String accessToken =
-          accessToken = accessTokenSecretTool.getAccessToken(accessTokenSecretName, namespace);
+          accessTokenSecretTool.getAccessToken(accessTokenSecretName, namespace);
 
       var kafkaServiceInfo = apiClient.getKafkaById(kafkaId, accessToken);
 

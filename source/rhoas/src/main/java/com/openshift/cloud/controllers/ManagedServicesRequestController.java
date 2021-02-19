@@ -15,7 +15,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.inject.Inject;
 
-@Controller(namespaces = ControllerConfiguration.WATCH_ALL_NAMESPACES_MARKER)
+@Controller
 public class ManagedServicesRequestController
     implements ResourceController<ManagedServicesRequest> {
 
@@ -106,30 +106,6 @@ public class ManagedServicesRequestController
       ConditionUtil.setConditionFromException(resource.getStatus().getConditions(), e);
       return true;
     }
-  }
-
-  @Scheduled(every = "150s")
-  void reloadUserKafkas() {
-    LOG.info("Refreshing user kafkas");
-
-    var mkClient = managedKafkaClientFactory.managedServicesRequest();
-    var items = mkClient.inAnyNamespace().list().getItems();
-    LOG.info("Items to refresh" + items.size());
-    items.forEach(
-        resource -> {
-          try {
-
-            // If there are untrue conditions, always update the status
-            if (!ConditionUtil.allTrue(resource.getStatus().getConditions())
-                || updateManagedServicesRequest(resource)) {
-              mkClient.inNamespace(resource.getMetadata().getNamespace()).updateStatus(resource);
-              LOG.info("refreshed kafka" + resource.getMetadata().getName());
-            }
-
-          } catch (ApiException e) {
-            e.printStackTrace();
-          }
-        });
   }
 
   @Override
