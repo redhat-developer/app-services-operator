@@ -43,6 +43,11 @@ public class ManagedKafkaCondition {
   }
 
   public ManagedKafkaCondition setType(String type) {
+    if ("AcccesTokenSecretAvailable".equalsIgnoreCase(type)) {
+      //Old value from before release, keeping for migration from 0.1.x
+      this.type = Type.AcccesTokenSecretValid;
+      return this;
+    }
     this.type = Type.valueOf(type);
     return this;
   }
