@@ -4,9 +4,8 @@
 name: Secondsun Bump, Build, Push
 
 on:
-  push:
-    branches:  
-    - main 
+  create:
+    ref_type: tag 
 
 jobs:
   build:
