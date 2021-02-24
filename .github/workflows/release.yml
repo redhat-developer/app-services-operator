@@ -1,11 +1,9 @@
-## Prereleases - detectining github releases
-
+# This workflow publish release versions of images.
 name: Bump, Build, Push
 
-## Currently disabled. We need to organize this to do prereleases
-# on:
-#   create:
-#     ref_type: tag 
+on:
+  create:
+    ref_type: tag 
 
 jobs:
   build:
@@ -13,8 +11,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Bump version
-      run: 'olm/autoupdate.sh ${{ secrets.quay_robotaccount }} ${{ secrets.quay_robottoken }}'
-
+      run: 'FORCE_VERSION=${GITHUB_REF##*/} olm/autoupdate.sh ${{ secrets.quay_robotaccount }} ${{ secrets.quay_robottoken }}'
     - name: Load version number
       id: version-number
       run: echo "::set-output name=version::$(cat olm/version)"
