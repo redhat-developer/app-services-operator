@@ -8,10 +8,10 @@ spec:
   icon:
     base64data: ""
     mediatype: ""
-  image: quay.io/secondsun/rhoas-registry:autolatest
+  image: quay.io/rhoas/service-operator-registry:autolatest
   priority: -400
-  publisher: b2F ORG
+  publisher: RHOAS
   sourceType: grpc
   updateStrategy:
     registryPoll:
-      interval: 60s
+      interval: 260s
