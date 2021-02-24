@@ -5,7 +5,6 @@ import com.openshift.cloud.beans.ManagedKafkaApiClient;
 import com.openshift.cloud.v1alpha.models.BoostrapServer;
 import com.openshift.cloud.v1alpha.models.ManagedKafkaConnection;
 import io.javaoperatorsdk.operator.api.*;
-import io.javaoperatorsdk.operator.api.config.ControllerConfiguration;
 import io.javaoperatorsdk.operator.processing.event.EventSourceManager;
 import java.time.Instant;
 import java.util.logging.Level;
@@ -44,8 +43,7 @@ public class ManagedKafkaConnectionController
           resource.getSpec().getCredentials().getServiceAccountSecretName();
       var namespace = resource.getMetadata().getNamespace();
 
-      String accessToken =
-          accessTokenSecretTool.getAccessToken(accessTokenSecretName, namespace);
+      String accessToken = accessTokenSecretTool.getAccessToken(accessTokenSecretName, namespace);
 
       var kafkaServiceInfo = apiClient.getKafkaById(kafkaId, accessToken);
 
