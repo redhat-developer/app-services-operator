@@ -41,11 +41,10 @@ jobs:
         file: ./olm/index.Dockerfile
         platforms: linux/amd64
         push: true
-        tags: quay.io/rhoas/service-operator:autolatest
+        tags: quay.io/rhoas/service-operator-registry:autolatest
         build-args: |
             QUAY_USER=${{ secrets.quay_robotaccount }}
             QUAY_PASSWORD=${{ secrets.quay_robottoken }}
             VERSION=${{ steps.version-number.outputs.version }}
             
       
-
