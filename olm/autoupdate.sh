@@ -6,8 +6,10 @@ cd olm
 echo "Quay Login"
 podman login quay.io -u=$1 -p=$2
 
+echo "Version updates ${FORCE_VERSION}"
+
 ## Uses existing version from variable or tries to autobump
-if [[ -z "${FORCE_VERSION}" ]]; then
+if [ -z "${FORCE_VERSION}" ] then
   oldnum=`cut -d '.' -f3 version`  
   sed -i "s/$oldnum\$/$FORCE_VERSION/g" version
   version=`cat version`  
@@ -32,5 +34,5 @@ echo "Pushing updates back to github"
 git config --local user.email "supittma.bot@redhat.com"
 git config --local user.name "github-actions[bot]"
 git add olm-catalog/rhoas-operator/$version
-git commit -m "Autobump version" -a
+git commit -m "chore: Autobump version done by release bot" -a
 
