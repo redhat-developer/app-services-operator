@@ -1,6 +1,5 @@
 # This workflow publish release versions of images.
-name: Bump, Build, Push
-
+name: Release workflow
 on:
   create:
     ref_type: tag 
