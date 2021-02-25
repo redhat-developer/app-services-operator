@@ -4,7 +4,7 @@ ARG QUAY_PASSWORD
 ARG QUAY_USER
 ARG VERSION
 
-RUN opm index add --bundles quay.io/secondsun/rhoas-operator-bundle:$VERSION  --mode=semver --generate -f quay.io/secondsun/rhoas-registry:autolatest
+RUN opm index add --bundles quay.io/rhoas/service-operator-bundle:$VERSION  --mode=semver --generate -f quay.io/rhoas/service-operator-registry:autolatest
 
 FROM scratch
 LABEL operators.operatorframework.io.index.database.v1=/database/index.db

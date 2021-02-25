@@ -5,7 +5,6 @@ import com.openshift.cloud.beans.ManagedKafkaApiClient;
 import com.openshift.cloud.beans.ManagedKafkaK8sClients;
 import com.openshift.cloud.v1alpha.models.ManagedServiceAccountRequest;
 import io.javaoperatorsdk.operator.api.*;
-import io.javaoperatorsdk.operator.api.config.ControllerConfiguration;
 import java.time.Instant;
 import java.util.logging.Level;
 import java.util.logging.Logger;
