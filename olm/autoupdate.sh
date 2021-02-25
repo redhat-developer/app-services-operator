@@ -10,9 +10,9 @@ echo "Version updates ${FORCE_VERSION}"
 
 ## Uses existing version from variable or tries to autobump
 if [ ! -z "${FORCE_VERSION}" ]; then
-  oldnum=`cut -d '.' -f3 version`  
+  oldnum=`cat version`  
   sed -i "s/$oldnum\$/$FORCE_VERSION/g" version
-  version=`cat version`  
+  version=$FORCE_VERSION  
 else
   echo "Updating version number"
   oldnum=`cut -d '.' -f3 version`  
@@ -31,8 +31,8 @@ podman build -f olm-catalog/rhoas-operator/$version/Dockerfile olm-catalog/rhoas
 podman push quay.io/rhoas/service-operator-bundle:$version
 
 echo "Pushing updates back to github"
-git config --local user.email "supittma.bot@redhat.com"
+git config --local user.email "supittma+bot@redhat.com"
 git config --local user.name "github-actions[bot]"
 git add olm-catalog/rhoas-operator/$version
-git commit -m "chore: Autobump version done by release bot" -a
+git commit -m "chore: Autobump version done by action" -a
 
