@@ -9,7 +9,7 @@ podman login quay.io -u=$1 -p=$2
 echo "Version updates ${FORCE_VERSION}"
 
 ## Uses existing version from variable or tries to autobump
-if [ -z ${FORCE_VERSION} ]; then
+if [ -z "${FORCE_VERSION}" ] then
   oldnum=`cut -d '.' -f3 version`  
   sed -i "s/$oldnum\$/$FORCE_VERSION/g" version
   version=`cat version`  
