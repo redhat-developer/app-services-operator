@@ -6,10 +6,10 @@ metadata:
     service.binding/host: 'path={.status.bootstrapServerHost}'
     service.binding/password: >-
       path={.status.serviceAccountSecretName},objectType=Secret,sourceKey=client-secret
+    service.binding/user: >-
+      path={.status.serviceAccountSecretName},objectType=Secret,sourceKey=client-id
     service.binding/saslMechanism: 'path={.status.saslMechanism}'
     service.binding/securityProtocol: 'path={.status.securityProtocol}'
-    service.binding/user: >-
-      path={.status.serviceAccountSecretName,objectType=Secret,sourceKey=client-id
 spec:
   group: rhoas.redhat.com
   names:
