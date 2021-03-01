@@ -51,7 +51,7 @@ public class ManagedKafkaConnectionController
       var status = resource.getStatus();
       status.setMessage("Created");
       status.setUpdated(Instant.now().toString());
-      status.setBoostrapServerHost(bootStrapHost);
+      status.setBootstrapServerHost(bootStrapHost);
       status.setServiceAccountSecretName(serviceAccountSecretName);
       status.setSaslMechanism("SASL_SSL");
       status.setSecurityProtocol("PLAINTEXT");
