@@ -8,14 +8,15 @@ public class ManagedKafkaConnectionStatus {
 
   private String message;
   private String updated;
-  private BoostrapServer boostrapServer;
+  private String boostrapServerHost;
   private String serviceAccountSecretName;
   private String saslMechanism;
   private String securityProtocol;
   private List<ManagedKafkaCondition> conditions;
 
   /** No args constructor for use in serialization */
-  public ManagedKafkaConnectionStatus() {}
+  public ManagedKafkaConnectionStatus() {
+  }
 
   /**
    * @param serviceAccountSecretName
@@ -23,15 +24,12 @@ public class ManagedKafkaConnectionStatus {
    * @param boostrapServer
    * @param updated
    */
-  public ManagedKafkaConnectionStatus(
-      String message,
-      String updated,
-      BoostrapServer boostrapServer,
+  public ManagedKafkaConnectionStatus(String message, String updated, String boostrapServerHost,
       String serviceAccountSecretName) {
     super();
     this.message = message;
     this.updated = updated;
-    this.boostrapServer = boostrapServer;
+    this.boostrapServerHost = boostrapServerHost;
     this.serviceAccountSecretName = serviceAccountSecretName;
     this.saslMechanism = "PLAIN";
     this.securityProtocol = "SSL";
@@ -51,14 +49,6 @@ public class ManagedKafkaConnectionStatus {
 
   public void setUpdated(String updated) {
     this.updated = updated;
-  }
-
-  public BoostrapServer getBoostrapServer() {
-    return boostrapServer;
-  }
-
-  public void setBoostrapServer(BoostrapServer boostrapServer) {
-    this.boostrapServer = boostrapServer;
   }
 
   public String getServiceAccountSecretName() {
@@ -91,5 +81,13 @@ public class ManagedKafkaConnectionStatus {
 
   public void setConditions(List<ManagedKafkaCondition> conditions) {
     this.conditions = conditions;
+  }
+  
+  public String getBoostrapServerHost() {
+    return boostrapServerHost;
+  }
+
+  public void setBoostrapServerHost(String boostrapServerHost) {
+    this.boostrapServerHost = boostrapServerHost;
   }
 }
