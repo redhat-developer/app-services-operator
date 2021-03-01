@@ -5,7 +5,7 @@ ARG QUAY_USER
 ARG VERSION
 
 ADD run_opm.sh .
-RUN ./run_opm.sh
+RUN sh ./run_opm.sh
 
 FROM scratch
 LABEL operators.operatorframework.io.index.database.v1=/database/index.db
