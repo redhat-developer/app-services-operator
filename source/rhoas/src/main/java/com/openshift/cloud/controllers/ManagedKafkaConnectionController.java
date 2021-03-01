@@ -2,7 +2,6 @@ package com.openshift.cloud.controllers;
 
 import com.openshift.cloud.beans.AccessTokenSecretTool;
 import com.openshift.cloud.beans.ManagedKafkaApiClient;
-import com.openshift.cloud.v1alpha.models.BoostrapServer;
 import com.openshift.cloud.v1alpha.models.ManagedKafkaConnection;
 import io.javaoperatorsdk.operator.api.*;
 import io.javaoperatorsdk.operator.processing.event.EventSourceManager;
@@ -48,12 +47,11 @@ public class ManagedKafkaConnectionController
       var kafkaServiceInfo = apiClient.getKafkaById(kafkaId, accessToken);
 
       var bootStrapHost = kafkaServiceInfo.getBootstrapServerHost();
-      var bootStrapServer = new BoostrapServer(bootStrapHost);
-
+     
       var status = resource.getStatus();
       status.setMessage("Created");
       status.setUpdated(Instant.now().toString());
-      status.setBoostrapServer(bootStrapServer);
+      status.setBoostrapServerHost(bootStrapHost);
       status.setServiceAccountSecretName(serviceAccountSecretName);
       status.setSaslMechanism("SASL_SSL");
       status.setSecurityProtocol("PLAINTEXT");

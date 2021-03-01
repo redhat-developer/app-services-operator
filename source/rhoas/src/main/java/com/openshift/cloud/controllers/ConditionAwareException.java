@@ -3,6 +3,9 @@ package com.openshift.cloud.controllers;
 import com.openshift.cloud.v1alpha.models.ManagedKafkaCondition;
 
 public class ConditionAwareException extends Exception {
+
+  private static final long serialVersionUID = 18383451L;
+
   private final ManagedKafkaCondition.Type type;
   private final ManagedKafkaCondition.Status status;
   private String reason, conditionMessage;
