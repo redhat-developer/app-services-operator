@@ -48,7 +48,7 @@ spec:
               updated:
                 nullable: true
                 type: string
-              boostrapServerHost:
+              bootstrapServerHost:
                 nullable: true
                 type: string
               serviceAccountSecretName:
