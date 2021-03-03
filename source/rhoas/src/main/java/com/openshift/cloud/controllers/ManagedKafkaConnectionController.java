@@ -53,7 +53,7 @@ public class ManagedKafkaConnectionController
       status.setUpdated(Instant.now().toString());
       status.setBootstrapServerHost(bootStrapHost);
       status.setServiceAccountSecretName(serviceAccountSecretName);
-      status.setSaslMechanism("PLAINTEXT");
+      status.setSaslMechanism("PLAIN");
       status.setSecurityProtocol("SASL_SSL");
 
       ConditionUtil.setAllConditionsTrue(resource.getStatus().getConditions());
