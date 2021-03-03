@@ -108,7 +108,7 @@ public class ManagedKafkaConnectionStatus {
    * <p>The template is
    * "https://cloud.redhat.com/beta/application-services/openshift-streams/kafkas/%s"
    *
-   * @param kafkaId thje value to replace
+   * @param kafkaId the value to replace
    */
   public void setUiRefForKafkaId(String kafkaId) {
     this.uiRef = String.format(UI_REF_TEMPLATE, kafkaId);

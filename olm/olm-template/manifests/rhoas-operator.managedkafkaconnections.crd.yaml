@@ -45,6 +45,9 @@ spec:
               message:
                 nullable: true
                 type: string
+              uiRef:
+                nullable: true
+                type: string
               updated:
                 nullable: true
                 type: string
