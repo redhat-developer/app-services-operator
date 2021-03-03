@@ -108,7 +108,7 @@ spec:
   maintainers:
   - email: help@redhat.com
     name: RedHat
-  maturity: alpha
+  maturity: beta
   provider:
     name: Red Hat
     url: https://github.com/bf2fc6cc711aee1a0c2a/operator
