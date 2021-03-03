@@ -47,12 +47,13 @@ public class ManagedKafkaConnectionController
       var kafkaServiceInfo = apiClient.getKafkaById(kafkaId, accessToken);
 
       var bootStrapHost = kafkaServiceInfo.getBootstrapServerHost();
-     
+
       var status = resource.getStatus();
       status.setMessage("Created");
       status.setUpdated(Instant.now().toString());
       status.setBootstrapServerHost(bootStrapHost);
       status.setServiceAccountSecretName(serviceAccountSecretName);
+      status.setUiRefForKafkaId(kafkaId);
       status.setSaslMechanism("PLAIN");
       status.setSecurityProtocol("SASL_SSL");
 
