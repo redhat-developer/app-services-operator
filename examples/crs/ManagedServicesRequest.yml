@@ -3,7 +3,10 @@ apiVersion: rhoas.redhat.com/v1alpha1
 kind: ManagedServicesRequest
 metadata:
   name: namespace-name-managed-kafkas
-  namespace: rhoas-operator-testing
+  namespace: rhoas-operator
+  labels:
+    app.kubernetes.io/component: external-service
+    app.kubernetes.io/managed-by: rhoas
 spec:
   ## Name of the secret that stores the offline token used by the    
   ## operator to access the MAS API; defaults to 

@@ -3,9 +3,12 @@ kind: ManagedKafkaConnection
 metadata:
   name: test453-serviceapi
   namespace: rhoas-operator-testing
+  labels:
+    app.kubernetes.io/component: external-service
+    app.kubernetes.io/managed-by: rhoas
 spec:
   accessTokenSecretName: rh-managed-services-api-accesstoken
-  kafkaId: "1oLRVYm5q1Zx43mA0eIhsumYQ27"
+  kafkaId: "1oqTpT7vPuJbXBBFyIrGHK7Ygny"
   credentials:
     serviceAccountSecretName: service-account-credentials
 # status:

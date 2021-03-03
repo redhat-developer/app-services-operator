@@ -20,19 +20,23 @@ kubectl apply -f - << EOD
 apiVersion: operators.coreos.com/v1alpha1
 kind: CatalogSource
 metadata:
-    name: managed-kafka-operator-deployment
-    namespace: openshift-marketplace
+  name: rhoas-operators
+  namespace: openshift-marketplace
 spec:
-    sourceType: grpc
-    image: quay.io/wtrocki/cdd59c7-index:latest
-    displayName: Mananaged Kafka Operator deployment
-    updateStrategy:
-      registryPoll:
-        interval: 20m
+  displayName: RHOAS Operators
+  icon:
+    base64data: ""
+    mediatype: ""
+  image: quay.io/rhoas/service-operator-registry:autolatest
+  priority: -400
+  publisher: RHOAS
+  sourceType: grpc
+  updateStrategy:
+    registryPoll:
+      interval: 260s
 EOD
 ----
-2. Once catalog source is added we need to wait around 
-5 minutes for it appear in our catalog. 
+2. Once catalog source is added we need to wait around 5 minutes for it appear in our catalog. 
 
 3. Go to your OpenShift operator hub (you will need to be admin to be able to perform operator installation)
 

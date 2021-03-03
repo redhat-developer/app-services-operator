@@ -1,0 +1,247 @@
+= Managed Service Operator Custom Resources
+
+The operator manages the following resources:
+ - `ManagedServicesRequest`
+ - `ManagedKafkaConnection`
+ - `ManagedServiceAccountRequest`.
+ 
+All resources are namespace scoped and include operator-managed conditions. 
+
+== ManagedServicesRequest
+
+This custom resource is populated with managed services available to the provided access token. These services are listed under the status object. This resource is used to get a list of available services. For instance, the id of a Managed Kafka service is used by `ManagedKafkaConnection`.
+
+== Example
+.example.yaml
+[source,yaml]
+----
+## Namespaced
+apiVersion: rhoas.redhat.com/v1alpha1
+kind: ManagedServicesRequest
+metadata:
+  name: namespace-name-managed-kafkas
+  namespace: rhoas-operator-testing
+  labels:
+    app.kubernetes.io/component: external-service
+    app.kubernetes.io/managed-by: rhoas
+spec:
+  accessTokenSecretName: rh-managed-services-api-accesstoken # see `AcccesTokenSecretValid Condition`
+# status:
+  ## conditions:
+  ## - lastTransitionTime: "2021-03-04T00:41:25.745120Z"
+  ##   message: ""
+  ##   reason: ""
+  ##   status: "True"
+  ##   type: AcccesTokenSecretValid
+  ##- lastTransitionTime: "2021-03-04T00:41:25.745179Z"
+  ##  message: ""
+  ##  reason: ""
+  ##  status: "True"
+  ##  type: Finished
+  ##- lastTransitionTime: "2021-03-04T00:41:25.745209Z"
+  ##  message: ""
+  ##  reason: ""
+  ##  status: "True"
+  ##  type: UserKafkasUpToDate
+  ##lastUpdate: "2021-03-03T22:11:57.691906Z"
+  ##userKafkas:
+  ##- bootstrapServerHost: example.com
+  ##  createdAt: "2021-02-25T10:01:40.888639Z"
+  ##  id: 484udj72378YIsdfsdI8378
+  ##  name: test-kafka
+  ##  owner: elephant_rose
+  ##  provider: aws
+  ##  region: us-east-1
+  ##  status: ready
+  ##  updatedAt: "2021-02-25T10:06:03.417238Z"
+
+----
+
+=== Spec
+ 
+ * `accessTokenSecretName` see `AcccesTokenSecretValid Condition`
+
+==== Status
+ 
+ The status subresource has the following properties 
+
+ * lastUpdate - The last update of the status object in ISO format
+ * userKafkas - a list of managed kafka services.
+
+
+===== UserKafka's Format
+ 
+ The `userKafkas` status field is a list of `userKafka` objects. These object have the following properties:
+ 
+  * `id` - the id field used to reference this managed service. See `ManagedKafkaConnection`
+  * `bootstrapServerHost` - the URL for the managed service instance
+  * `name` - a human readable name
+  * `provider` - the cloud provider hosting the service
+  * `region` - georgraphic region service is hosted in
+  * `owner` - the human or organization who owns this resource
+  * `updatedAt` - an ISO formatted date when the resource was updated
+  * `createdAt` - an ISO formatted date when the resource was created
+  * `status` - a human or machine readable status
+  
+
+===== Conditions
+
+ * UserKafkasUpToDate - If `status` is true then the userKafkas property is up to date as of `lastTransitionTime`
+ * Finished - see `Finished Condition`
+ * AcccesTokenSecretValid - see `AcccesTokenSecretValid Condition`
+
+== ManagedKafkaConnection
+
+This resource represents a binding between a service account and a managed kafka instance. The service account is referenced using the `serviceAccountSecretName` created by `ManagedServiceAccountRequest` and the `kafkaId` for a `userKafka` instance provided by `ManagedServicesRequest`.
+
+=== Example
+
+[source,yml]
+----
+apiVersion: rhoas.redhat.com/v1alpha1
+kind: ManagedKafkaConnection
+metadata:
+  name: test-connection
+  namespace: rhoas-operator
+spec:
+  accessTokenSecretName: rh-managed-services-api-accesstoken
+  kafkaId: "valid-kafka-id"
+  credentials:
+    serviceAccountSecretName: service-account-secret
+#status:
+#  bootstrapServerHost: kafka.example.com:443
+#  conditions:
+#  - lastTransitionTime: "2021-03-05T02:02:34.828265Z"
+#    message: ""
+#    reason: ""
+#    status: "True"
+#    type: AcccesTokenSecretValid
+#  - lastTransitionTime: "2021-03-05T02:02:34.828304Z"
+#    message: ""
+#    reason: ""
+#    status: "True"
+#    type: FoundKafkaById
+#  - lastTransitionTime: "2021-03-05T02:02:34.828329Z"
+#    message: ""
+#    reason: ""
+#    status: "True"
+#    type: Finished
+#  message: Created
+#  saslMechanism: PLAIN
+#  securityProtocol: SASL_SSL
+#  serviceAccountSecretName: service-account-credentials
+#  uiRef: https://cloud.redhat.com/beta/application-services/openshift-streams/kafkas/valid-kafka-id
+----
+
+
+=== Spec
+
+ * kafkaId - the id of the Managed Kafka instance. See ``
+ * credentials - the credentials object to be used when accessing the `kafkaId` instance. See `ManagedServicesRequest`
+ * `accessTokenSecretName` see `AcccesTokenSecretValid Condition`
+
+==== Credentials Format
+
+ * `serviceAccountSecretName` - secret containing service account credentials.
+
+=== Status
+
+ * `bootstrapServerHost` - The url of the `kafkaId`
+ * `uiRef` - The url of the ui for `kafkaId`
+ * `serviceAccountSecretName` - The secret which contains the service account credentials used to connect to the managed service
+ * `saslMechanism` - The security mechanism used to perform a connection with this resource. Default *PLAIN*
+ * `securityProtocol` - The security protocol used to perform a connection with this resource. Default *SSL*
+
+==== Conditions
+ 
+ * FoundKafkaById - If `status` is `True` then the `kafkaId` field matched a Managed Kafka instance id.
+ * Finished - see `Finished Condition`
+ * AcccesTokenSecretValid - see `AcccesTokenSecretValid Condition`
+
+
+== ManagedServiceAccountRequest
+
+This resource creates a service account per its spec. Credentials for the service account will be stored in a secret with the name provided by `serviceAccountSecretName`. This service account is used to connect to managed kafka instances. See `ManagedKafkaConnection` for details on connecting to the instances.
+
+== Example
+
+[source,yaml]
+----
+apiVersion: rhoas.redhat.com/v1alpha1
+kind: ManagedServiceAccountRequest
+metadata:
+  name: service-account-1
+  namespace: rhoas-operator
+spec:
+  serviceAccountName: "RhoasOperatorServiceAccount"
+  serviceAccountDescription: "Operator created service account"
+  
+  serviceAccountSecretName: service-account-credentials
+  accessTokenSecretName: rh-managed-services-api-accesstoken    
+status:
+  conditions:
+  - lastTransitionTime: "2021-03-05T02:06:49.407299Z"
+    message: ""
+    reason: ""
+    status: "True"
+    type: AcccesTokenSecretValid
+  - lastTransitionTime: "2021-03-05T02:06:49.407330Z"
+    message: ""
+    reason: ""
+    status: "True"
+    type: ServiceAccountCreated
+  - lastTransitionTime: "2021-03-05T02:06:49.407346Z"
+    message: ""
+    reason: ""
+    status: "True"
+    type: ServiceAccountSecretCreated
+  - lastTransitionTime: "2021-03-05T02:06:49.407384Z"
+    message: ""
+    reason: ""
+    status: "True"
+    type: Finished
+  message: Created
+  serviceAccountSecretName: service-account-credentials
+  updated: "2021-03-05T02:06:49.407249Z"
+----
+
+
+=== Credentials Secret Format
+ 
+The operator will create and manage a secret for the account created by this resource. The credentials secret is an opaque secret with the following keys : 
+
+ * `client-id` - an identifier provided by the managed service API for this client
+ * `client-secret` - a secret provided by the managed service API for this client
+
+
+=== Spec
+  * `serviceAccountName` - the name of the account that is to be created by the operator
+  * `serviceAccountDescription` - the description of the account that is to be created by the operator
+  * `serviceAccountSecretName` - the name of the secret to be created. See `Credentials Secret Format`
+  * `accessTokenSecretName` - see `AcccesTokenSecretValid Condition`
+
+=== Status
+
+ * `updated` - an ISO timestamp of when the status was created
+ * `serviceAccountSecretName` - the secret name contained the credentials for the service account.
+
+
+==== Conditions
+ 
+ * ServiceAccountCreated - When status is `True` then the service account was created successfully.
+ * ServiceAccountSecretCreated - When status is `True` then the credentials secret was created successfully.
+ * Finished - see `Finished Condition`
+ * AcccesTokenSecretValid - see `AcccesTokenSecretValid Condition`
+
+
+== Conditions Common to RHOAS Custom Resources
+
+Each custom resource type has several conditions on their status subresource. Some conditions are shared by multiple types and some are type specific. All types have the status of `True`, `False`, and `Unknown`. When the operator begins running on the resource, it will set all conditions to `Unknown`. The operator then sets each condition to `True` as they are checked. If a conditions fails to check, it and the `Finished` conditions will be set to `False` as well as have their `reason` and `message` fields set.  Additionally, processing is halted abd subsequent conditions are not checked and they will remain `Unknown`. In order to resume processing, the errors must be corrected and a new custom resource submitted.
+
+=== Finished Condition
+
+This condition's `status` is set to `True` if processing has been completed sucessfully, or `False` if it was not. The `reason` and `message` fields are set on the condition with more information. This condition is on all resources.
+
+=== AcccesTokenSecretValid Condition
+
+All custom resources require an `accessTokenSecretName` to be set. This is the name of an opaque secret with the `value` key set to an offline access token. The operator exchanges this token with a authentication service to get an acess token. It then uses the token to perform operations. If this condition has a `True` status then the token was available and exchanged. If the status is `False` then there was an error with the `accessTokenSecretName` property. The `reason` and `message` fields will contain more informaiton.

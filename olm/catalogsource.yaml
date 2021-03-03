@@ -2,7 +2,7 @@ apiVersion: operators.coreos.com/v1alpha1
 kind: CatalogSource
 metadata:
   name: rhoas-operators
-  namespace: openshift-marketplace
+  namespace: rhoas-operator
 spec:
   displayName: RHOAS Operators
   icon:
