@@ -1,4 +1,4 @@
-= Managed Service Operator Custom Resources
+= RHOAS Operator Custom Resources
 
 The operator manages the following resources:
  - `ManagedServicesRequest`
@@ -11,7 +11,7 @@ All resources are namespace scoped and include operator-managed conditions.
 
 This custom resource is populated with managed services available to the provided access token. These services are listed under the status object. This resource is used to get a list of available services. For instance, the id of a Managed Kafka service is used by `ManagedKafkaConnection`.
 
-== Example
+=== Example
 .example.yaml
 [source,yaml]
 ----
@@ -57,11 +57,11 @@ spec:
 
 ----
 
-=== Spec
+== Spec
  
  * `accessTokenSecretName` see `AcccesTokenSecretValid Condition`
 
-==== Status
+=== Status
  
  The status subresource has the following properties 
 
@@ -69,7 +69,7 @@ spec:
  * userKafkas - a list of managed kafka services.
 
 
-===== UserKafka's Format
+==== UserKafka's Format
  
  The `userKafkas` status field is a list of `userKafka` objects. These object have the following properties:
  
@@ -77,14 +77,14 @@ spec:
   * `bootstrapServerHost` - the URL for the managed service instance
   * `name` - a human readable name
   * `provider` - the cloud provider hosting the service
-  * `region` - georgraphic region service is hosted in
+  * `region` - geographic region service is hosted in
   * `owner` - the human or organization who owns this resource
   * `updatedAt` - an ISO formatted date when the resource was updated
   * `createdAt` - an ISO formatted date when the resource was created
   * `status` - a human or machine readable status
   
 
-===== Conditions
+==== Conditions
 
  * UserKafkasUpToDate - If `status` is true then the userKafkas property is up to date as of `lastTransitionTime`
  * Finished - see `Finished Condition`
@@ -136,7 +136,7 @@ spec:
 
 === Spec
 
- * kafkaId - the id of the Managed Kafka instance. See ``
+ * kafkaId - the id of the Managed Kafka instance. See `ManagedServicesRequest.status.userKafkas`
  * credentials - the credentials object to be used when accessing the `kafkaId` instance. See `ManagedServicesRequest`
  * `accessTokenSecretName` see `AcccesTokenSecretValid Condition`
 
@@ -236,12 +236,12 @@ The operator will create and manage a secret for the account created by this res
 
 == Conditions Common to RHOAS Custom Resources
 
-Each custom resource type has several conditions on their status subresource. Some conditions are shared by multiple types and some are type specific. All types have the status of `True`, `False`, and `Unknown`. When the operator begins running on the resource, it will set all conditions to `Unknown`. The operator then sets each condition to `True` as they are checked. If a conditions fails to check, it and the `Finished` conditions will be set to `False` as well as have their `reason` and `message` fields set.  Additionally, processing is halted abd subsequent conditions are not checked and they will remain `Unknown`. In order to resume processing, the errors must be corrected and a new custom resource submitted.
+Each custom resource type has several conditions on their status subresource. Some conditions are shared by multiple types and some are type specific. All types have the status of `True`, `False`, and `Unknown`. When the operator begins running on the resource, it will set all conditions to `Unknown`. The operator then sets each condition to `True` as they are checked. If a condition fails to check, it and the `Finished` conditions will be set to `False` as well as have their `reason` and `message` fields set.  Additionally, processing is halted and subsequent conditions are not checked and they will remain `Unknown`. In order to resume processing, the errors must be corrected and a new custom resource submitted.
 
 === Finished Condition
 
-This condition's `status` is set to `True` if processing has been completed sucessfully, or `False` if it was not. The `reason` and `message` fields are set on the condition with more information. This condition is on all resources.
+This condition's `status` is set to `True` if processing has been completed successfully, or `False` if it was not. The `reason` and `message` fields are set on the condition with more information. This condition is on all resources.
 
 === AcccesTokenSecretValid Condition
 
-All custom resources require an `accessTokenSecretName` to be set. This is the name of an opaque secret with the `value` key set to an offline access token. The operator exchanges this token with a authentication service to get an acess token. It then uses the token to perform operations. If this condition has a `True` status then the token was available and exchanged. If the status is `False` then there was an error with the `accessTokenSecretName` property. The `reason` and `message` fields will contain more informaiton.
+All custom resources require an `accessTokenSecretName` to be set. This is the name of an opaque secret with the `value` key set to an offline access token. The operator exchanges this token with an authentication service to get an access token. It then uses the token to perform operations. If this condition has a `True` status then the token was available and exchanged. If the status is `False` then there was an error with the `accessTokenSecretName` property. The `reason` and `message` fields will contain more information.

@@ -6,4 +6,4 @@
 
 ## Contributing
 
-Check out the [Contributing Guide](./CONTRIBUTING.md) to learn more about the repository and how you can contribute.
+Check out the [Contributing Guide](./CONTRIBUTING.adoc) to learn more about the repository and how you can contribute.

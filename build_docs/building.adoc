@@ -1,3 +1,9 @@
+=== Prerequisites
+
+ - Java 11+
+ - mvn
+ - OpenShift Client (or kubernetes)
+
 = Building and Devloping
 
 The operator is written in Java as a multi module Maven project. The easiest way to build and run the operator locally is 
@@ -9,7 +15,7 @@ The operator is written in Java as a multi module Maven project. The easiest way
  mvn quarkus:dev
 ----
 
-This will compile the operator and run it in development mode using link:quarkus.io[Quarkus]. Please note, it will connect to whichever kubernetes cluster you are connected to with your local kube context.
+This will compile the operator and run it in development mode using link:quarkus.io[Quarkus]. Please note, it will connect to whichever OpenShift cluster you are logged into with `oc login`.
 
 == Updating Custom Resource Definitions
 

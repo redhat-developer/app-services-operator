@@ -1,10 +1,8 @@
-== Welcome to Managed Service Operator
+== Welcome to RHOAS Operator
 
-Managed Service Operator (RHOAS) is a link:https://kubernetes.io/docs/concepts/extend-kubernetes/operator/[Kubernetes Operator] meant to be used to interact with Red Hat Managed services. Operator can be installed on any Kubernetes cluster using link:https://docs.openshift.com/container-platform/4.7/operators/understanding/olm/olm-understanding-olm.html[OLM] catalog source.
+The RHOAS Operator is a link:https://kubernetes.io/docs/concepts/extend-kubernetes/operator/[Kubernetes Operator] meant to be used to interact with Red Hat Managed services. The Operator can be installed on any Kubernetes cluster using link:https://docs.openshift.com/container-platform/4.7/operators/understanding/olm/olm-understanding-olm.html[OLM] catalog source.
 
-The Managed Service Operator operator watches the link:./custom_resources.adoc[Managed Service Operator custom resources] and updates their link:https://book-v1.book.kubebuilder.io/basics/status_subresource.html[Status subresource]. The status subresource is consumed by link:https://github.com/redhat-developer/service-binding-operator[Service Binding Operator] which makes the custom resources available to you applications.
+The RHOAS Operator watches its link:./custom_resources.adoc[custom resources] and updates their link:https://book-v1.book.kubebuilder.io/basics/status_subresource.html[Status subresource]. The status subresource is consumed the by link:https://github.com/redhat-developer/service-binding-operator[Service Binding Operator] which makes the custom resources available to you applications.
 
 * link:./installation.adoc[Installation process]
 * link:./custom_resources.adoc[Custom Resources]
-* link:./building.adoc[Developing and Building]
-* link:./release.adoc[GitHub Release Workflow]

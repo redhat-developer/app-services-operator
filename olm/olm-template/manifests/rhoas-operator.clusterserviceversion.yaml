@@ -101,7 +101,7 @@ spec:
                 name: rhoas-operator
               serviceAccountName: rhoas-operator
   description: Operator connects your Red Hat Managed Services into your Cluster
-  displayName: Red Hat Managed Services Connection operator
+  displayName: RHOAS operator
   keywords:
   - managed
   - kafka
