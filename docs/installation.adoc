@@ -1,43 +1,107 @@
 == Installation of Operator
 
-> NOTE: Operator is currently in Alpha state and not available on operator hub
+> NOTE: Operator is currently in Beta state and not available on operator hub
 
-=== Installing Operator
+=== Installing the Operator
 
 ==== Prerequisites
 
 - OpenShift (kubernetes cluster)
 - OperatorHub/OLM installed
 
-==== Instruction
+==== OperatorHub Instructions
 
-Operator can be installed by adding Catalog Source
+RHOAS Operator can be installed by adding this Catalog Source. 
 
-1. Create catalog source
 ----
 kubectl apply -f - << EOD
 ---
 apiVersion: operators.coreos.com/v1alpha1
 kind: CatalogSource
 metadata:
-    name: managed-kafka-operator-deployment
-    namespace: openshift-marketplace
+  name: rhoas-operators
+  namespace: openshift-marketplace
 spec:
-    sourceType: grpc
-    image: quay.io/wtrocki/cdd59c7-index:latest
-    displayName: Mananaged Kafka Operator deployment
-    updateStrategy:
-      registryPoll:
-        interval: 20m
+  displayName: RHOAS Operators
+  icon:
+    base64data: ""
+    mediatype: ""
+  image: quay.io/rhoas/service-operator-registry:autolatest
+  priority: -400
+  publisher: Red Hat
+  sourceType: grpc
+  updateStrategy:
+    registryPoll:
+      interval: 260s
 EOD
 ----
-2. Once catalog source is added we need to wait around 
-5 minutes for it appear in our catalog. 
 
-3. Go to your OpenShift operator hub (you will need to be admin to be able to perform operator installation)
+The catalog source will be loaded and sync'd with your OpenShift operator hub. This process takes about five minutes.
 
-2. In filter type rhoas
+As admin, open your OpenShift cluster's operator hub.
 
-3. Install operator
+In filter type rhoas, and select the RHOAS Operator.
 
-4. Operator should be installed and functional
+Follow the on screen wizard to install the operator. Once the operator is installed, you may begin using it.
+
+==== YAML Installation
+
+Add the RHOAS Operator CatalogSource.
+
+----
+kubectl apply -f - << EOD
+---
+apiVersion: operators.coreos.com/v1alpha1
+kind: CatalogSource
+metadata:
+  name: rhoas-operators
+  namespace: openshift-marketplace
+spec:
+  displayName: RHOAS Operators
+  icon:
+    base64data: ""
+    mediatype: ""
+  image: quay.io/rhoas/service-operator-registry:autolatest
+  priority: -400
+  publisher: Red Hat
+  sourceType: grpc
+  updateStrategy:
+    registryPoll:
+      interval: 260s
+EOD
+----
+
+Add you RHOAS Operator Subscription
+
+----
+kubectl apply -f - << EOD
+---
+apiVersion: operators.coreos.com/v1alpha1
+kind: Subscription
+metadata:
+  labels:
+    operators.coreos.com/rhoas-operator.openshift-operators: ""
+  name: rhoas-operator
+spec:
+  channel: beta
+  installPlanApproval: Manual
+  name: rhoas-operator
+  source: rhoas-operators
+  sourceNamespace: rhoas-operator
+  startingCSV: rhoas-operator.0.2.1
+EOD
+----
+
+If your operator is installed in a namespace instead of the entire cluster, add your Operator Group 
+
+----
+kubectl apply -f - << EOD
+---
+apiVersion: operators.coreos.com/v1
+kind: OperatorGroup
+metadata:
+  name: rhoas-group
+  namespace: rhoas-operator
+EOD
+----
+

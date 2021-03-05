@@ -1,0 +1,26 @@
+= RHOAS Operator
+
+
+== Folder structure
+
+```
+├── api-mock   contains service api mocks
+├── docs       documentation
+├── examples   CR examples for testing
+├── olm        OLM configuration for deployment
+└── source     Java packages
+```
+
+== Java Source packages
+```
+    ├── model           CR model files used to call kubernetes api
+    ├── openapi         Contains POJOS that conform to OpenAPI spec
+    ├── rhoas           API controllers
+```
+
+These guides are for developers who wish to edit the RHOAS codebase. If you wish to use the operator, please look in our `docs` folder.
+
+== Build & Release Guides
+
+* link:./build_docs/building.adoc[Developing and Building]
+* link:./build_docs/release.adoc[GitHub Release Workflow]
