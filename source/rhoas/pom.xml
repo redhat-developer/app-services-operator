@@ -14,8 +14,8 @@
   <description>rhoas-operator</description>
   <properties>
     <fabric8.version>5.0.0</fabric8.version>
-    <operator.sdk.version>1.7.1</operator.sdk.version>
-    <quarkus.version>1.11.0.Final</quarkus.version>
+    <operator.sdk.version>1.7.4</operator.sdk.version>
+    <quarkus.version>1.12.1.Final</quarkus.version>
   </properties>
   <dependencyManagement>
     <dependencies>
@@ -58,10 +58,6 @@
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter</artifactId>
       <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>io.quarkus</groupId>
-      <artifactId>quarkus-scheduler</artifactId>
     </dependency>
     <dependency>
       <groupId>io.quarkus</groupId>

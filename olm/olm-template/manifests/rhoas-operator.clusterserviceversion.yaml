@@ -99,6 +99,13 @@ spec:
               - image: quay.io/rhoas/service-operator:{{version}}
                 imagePullPolicy: Always
                 name: rhoas-operator
+                resources:
+                  limits:
+                    cpu: 60m
+                    memory: 128Mi
+                  requests:
+                    cpu: 30m
+                    memory: 64Mi                
               serviceAccountName: rhoas-operator
   description: Operator connects your Red Hat Managed Services into your Cluster
   displayName: RHOAS operator
