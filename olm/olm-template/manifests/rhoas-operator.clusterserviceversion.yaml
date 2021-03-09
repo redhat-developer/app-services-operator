@@ -102,10 +102,10 @@ spec:
                 resources:
                   limits:
                     cpu: 60m
-                    memory: 128Mi
+                    memory: 512Mi
                   requests:
                     cpu: 30m
-                    memory: 64Mi                
+                    memory: 128Mi                
               serviceAccountName: rhoas-operator
   description: Operator connects your Red Hat Managed Services into your Cluster
   displayName: RHOAS operator
