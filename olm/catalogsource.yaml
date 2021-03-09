@@ -8,7 +8,7 @@ spec:
   icon:
     base64data: ""
     mediatype: ""
-  image: quay.io/rhoas/service-operator-registry:autolatest
+  image: quay.io/secondsun/service-operator-registry:autolatest
   priority: -400
   publisher: RHOAS
   sourceType: grpc
