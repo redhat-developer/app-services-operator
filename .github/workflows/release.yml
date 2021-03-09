@@ -10,7 +10,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Bump version
-      run: 'FORCE_VERSION=${GITHUB_REF##*/} olm/autoupdate.sh ${{ secrets.quay_robotaccount }} ${{ secrets.quay_robottoken }}'
+      run: 'FORCE_VERSION=${GITHUB_REF##*/} olm/autoupdate.sh ${{ secrets.quay_robotaccount }} ${{ secrets.quay_robottoken }} ${{ secrets.quay_organization }}'
     - name: Load version number
       id: version-number
       run: echo "::set-output name=version::$(cat olm/version)"
@@ -29,7 +29,7 @@ jobs:
       with:
         java-version: 11
     - name: Build and run Unit tests
-      run: mvn install --file pom.xml --no-transfer-progress -Dquarkus.container-image.username=${{ secrets.quay_robotaccount }} -Dquarkus.container-image.password=${{ secrets.quay_robottoken }} -Dquarkus.container-image.build=true -Dquarkus.container-image.tag=${{ steps.version-number.outputs.version }} -Dquarkus.container-image.push=true -Dquarkus.container-image.username=${{ secrets.quay_robotaccount}} -Dquarkus.container-image.password=${{ secrets.quay_robottoken}}
+      run: mvn install --file pom.xml --no-transfer-progress -Dquarkus.container-image.username=${{ secrets.quay_robotaccount }} -Dquarkus.container-image.password=${{ secrets.quay_robottoken }} -Dquarkus.container-image.build=true -Dquarkus.container-image.tag=${{ steps.version-number.outputs.version }} -Dquarkus.container-image.push=true -Dquarkus.container-image.username=${{ secrets.quay_robotaccount}} -Dquarkus.container-image.password=${{ secrets.quay_robottoken}} -Dquarkus.container-image.group=${{ secrets.quay_organization }}
     - name: Build and push
       uses: docker/build-push-action@v2
       with:
@@ -37,10 +37,11 @@ jobs:
         file: ./olm/index.Dockerfile
         platforms: linux/amd64
         push: true
-        tags: quay.io/rhoas/service-operator-registry:autolatest
+        tags: quay.io/${{ secrets.quay_organization }}/service-operator-registry:autolatest
         build-args: |
             QUAY_USER=${{ secrets.quay_robotaccount }}
             QUAY_PASSWORD=${{ secrets.quay_robottoken }}
+            QUAY_ORGANIZATION=${{ secrets.quay_organization }}
             VERSION=${{ steps.version-number.outputs.version }}
             
       

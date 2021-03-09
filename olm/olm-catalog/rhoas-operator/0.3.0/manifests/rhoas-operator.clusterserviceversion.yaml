@@ -4,7 +4,7 @@ metadata:
   annotations: 
     alm-examples: '[]'
     capabilities: Basic Install
-  name: rhoas-operator.{{version}}
+  name: rhoas-operator.0.3.0
 spec:
   apiservicedefinitions: {}
   customresourcedefinitions:
@@ -96,7 +96,7 @@ spec:
                 name: rhoas-operator
             spec:
               containers:
-              - image: quay.io/{{organization}}/service-operator:{{version}}
+              - image: quay.io/secondsun/service-operator:0.3.0
                 imagePullPolicy: Always
                 name: rhoas-operator
                 resources:
@@ -119,4 +119,4 @@ spec:
   provider:
     name: Red Hat
     url: https://github.com/bf2fc6cc711aee1a0c2a/operator
-  version: {{version}}
+  version: 0.3.0
