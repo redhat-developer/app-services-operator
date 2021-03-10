@@ -1,11 +1,12 @@
 # RHOAS Service-Binding Operator
-This operator creates and manages custom resources used by the RHOAS Managed Kafka Service.
+
+This operator creates and manages custom resources used by the RHOAS Kafka Service.
 
 # Prerequesites
  * Java 11+
  * Maven
  * A service-api token from cloud.redhat.com (Talk to Pete)
- * Access to a managed-services instance.
+ * Access to a RHOAS services .
 
 # Building and Running
 
