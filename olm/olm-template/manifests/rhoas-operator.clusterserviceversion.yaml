@@ -4,7 +4,7 @@ metadata:
   annotations: 
     alm-examples: '[]'
     capabilities: Basic Install
-  name: rhoas-operator.{{version}}
+  name: rhoas-operator.0.2.1
 spec:
   apiservicedefinitions: {}
   customresourcedefinitions:
@@ -96,12 +96,12 @@ spec:
                 name: rhoas-operator
             spec:
               containers:
-              - image: quay.io/rhoas/service-operator:{{version}}
+              - image: quay.io/rhoas/service-operator:0.2.1
                 imagePullPolicy: Always
                 name: rhoas-operator
               serviceAccountName: rhoas-operator
   description: Operator connects your Red Hat Managed Services into your Cluster
-  displayName: RHOAS operator
+  displayName: Red Hat Managed Services Connection operator
   keywords:
   - managed
   - kafka
@@ -112,4 +112,4 @@ spec:
   provider:
     name: Red Hat
     url: https://github.com/bf2fc6cc711aee1a0c2a/operator
-  version: {{version}}
+  version: 0.2.1
