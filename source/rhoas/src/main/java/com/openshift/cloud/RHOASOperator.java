@@ -3,7 +3,6 @@ package com.openshift.cloud;
 import com.openshift.cloud.controllers.CloudServiceAccountRequestController;
 import com.openshift.cloud.controllers.CloudServicesRequestController;
 import com.openshift.cloud.controllers.KafkaConnectionController;
-import io.fabric8.kubernetes.client.KubernetesClient;
 import io.javaoperatorsdk.operator.Operator;
 import io.javaoperatorsdk.operator.api.config.ConfigurationService;
 import io.javaoperatorsdk.operator.api.config.ControllerConfiguration;
@@ -15,8 +14,6 @@ import org.jboss.logging.Logger;
 
 @QuarkusMain
 public class RHOASOperator implements QuarkusApplication {
-
-  @Inject KubernetesClient client;
 
   @Inject Operator operator;
 

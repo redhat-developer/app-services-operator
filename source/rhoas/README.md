@@ -1,5 +1,4 @@
 # RHOAS Service-Binding Operator
-
 This operator creates and manages custom resources used by the RHOAS Kafka Service.
 
 # Prerequesites
