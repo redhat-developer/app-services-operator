@@ -8,7 +8,7 @@ public class CloudServicesRequestStatus {
 
   private List<UserKafka> userKafkas;
   private String lastUpdate;
-  private List<ManagedKafkaCondition> conditions;
+  private List<KafkaCondition> conditions;
 
   /** No args constructor for use in serialization */
   public CloudServicesRequestStatus() {}
@@ -39,11 +39,11 @@ public class CloudServicesRequestStatus {
     this.userKafkas = userKafkas;
   }
 
-  public List<ManagedKafkaCondition> getConditions() {
+  public List<KafkaCondition> getConditions() {
     return conditions;
   }
 
-  public void setConditions(List<ManagedKafkaCondition> conditions) {
+  public void setConditions(List<KafkaCondition> conditions) {
     this.conditions = conditions;
   }
 }

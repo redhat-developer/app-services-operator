@@ -10,7 +10,7 @@ import com.openshift.cloud.api.models.ServiceAccount;
 import com.openshift.cloud.api.models.ServiceAccountRequest;
 import com.openshift.cloud.auth.HttpBearerAuth;
 import com.openshift.cloud.controllers.ConditionAwareException;
-import com.openshift.cloud.v1alpha.models.ManagedKafkaCondition;
+import com.openshift.cloud.v1alpha.models.KafkaCondition;
 import com.openshift.cloud.v1alpha.models.CloudServiceAccountRequest;
 import com.openshift.cloud.v1alpha.models.CloudServiceAccountRequestSpec;
 import io.fabric8.kubernetes.api.model.OwnerReferenceBuilder;
@@ -25,7 +25,7 @@ import javax.inject.Inject;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 @ApplicationScoped
-public class ManagedKafkaApiClient {
+public class KafkaApiClient {
 
   @Inject KubernetesClient k8sClient;
 
@@ -52,8 +52,8 @@ public class ManagedKafkaApiClient {
       throw new ConditionAwareException(
           e.getMessage(),
           e,
-          ManagedKafkaCondition.Type.FoundKafkaById,
-          ManagedKafkaCondition.Status.False,
+          KafkaCondition.Type.FoundKafkaById,
+          KafkaCondition.Status.False,
           e.getClass().getName(),
           e.getMessage());
     }
@@ -66,8 +66,8 @@ public class ManagedKafkaApiClient {
       throw new ConditionAwareException(
           e.getMessage(),
           e,
-          ManagedKafkaCondition.Type.UserKafkasUpToDate,
-          ManagedKafkaCondition.Status.False,
+          KafkaCondition.Type.UserKafkasUpToDate,
+          KafkaCondition.Status.False,
           e.getClass().getName(),
           e.getMessage());
     }
@@ -84,8 +84,8 @@ public class ManagedKafkaApiClient {
       throw new ConditionAwareException(
           e.getMessage(),
           e,
-          ManagedKafkaCondition.Type.ServiceAccountCreated,
-          ManagedKafkaCondition.Status.False,
+          KafkaCondition.Type.ServiceAccountCreated,
+          KafkaCondition.Status.False,
           e.getClass().getName(),
           e.getMessage());
     }
@@ -127,8 +127,8 @@ public class ManagedKafkaApiClient {
       throw new ConditionAwareException(
           e.getMessage(),
           e,
-          ManagedKafkaCondition.Type.ServiceAccountSecretCreated,
-          ManagedKafkaCondition.Status.False,
+          KafkaCondition.Type.ServiceAccountSecretCreated,
+          KafkaCondition.Status.False,
           e.getClass().getName(),
           e.getMessage());
     }

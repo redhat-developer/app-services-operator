@@ -16,7 +16,7 @@ public class KafkaConnectionStatus {
   private String saslMechanism;
   private String securityProtocol;
   private String uiRef;
-  private List<ManagedKafkaCondition> conditions;
+  private List<KafkaCondition> conditions;
 
   /** No args constructor for use in serialization */
   public KafkaConnectionStatus() {}
@@ -78,11 +78,11 @@ public class KafkaConnectionStatus {
     this.saslMechanism = saslMechanism;
   }
 
-  public List<ManagedKafkaCondition> getConditions() {
+  public List<KafkaCondition> getConditions() {
     return conditions;
   }
 
-  public void setConditions(List<ManagedKafkaCondition> conditions) {
+  public void setConditions(List<KafkaCondition> conditions) {
     this.conditions = conditions;
   }
 

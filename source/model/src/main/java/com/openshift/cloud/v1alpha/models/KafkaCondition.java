@@ -1,6 +1,6 @@
 package com.openshift.cloud.v1alpha.models;
 
-public class ManagedKafkaCondition {
+public class KafkaCondition {
   public enum Type {
     AcccesTokenSecretValid,
     UserKafkasUpToDate,
@@ -42,7 +42,7 @@ public class ManagedKafkaCondition {
     return lastTransitionTime;
   }
 
-  public ManagedKafkaCondition setType(String type) {
+  public KafkaCondition setType(String type) {
     if ("AcccesTokenSecretAvailable".equalsIgnoreCase(type)) {
       // Old value from before release, keeping for migration from 0.1.x
       this.type = Type.AcccesTokenSecretValid;
@@ -52,32 +52,32 @@ public class ManagedKafkaCondition {
     return this;
   }
 
-  public ManagedKafkaCondition setType(Type type) {
+  public KafkaCondition setType(Type type) {
     this.type = type;
     return this;
   }
 
-  public ManagedKafkaCondition setReason(String reason) {
+  public KafkaCondition setReason(String reason) {
     this.reason = reason;
     return this;
   }
 
-  public ManagedKafkaCondition setMessage(String message) {
+  public KafkaCondition setMessage(String message) {
     this.message = message;
     return this;
   }
 
-  public ManagedKafkaCondition setStatus(Status status) {
+  public KafkaCondition setStatus(Status status) {
     this.status = status;
     return this;
   }
 
-  public ManagedKafkaCondition setStatus(String status) {
+  public KafkaCondition setStatus(String status) {
     this.status = Status.valueOf(status);
     return this;
   }
 
-  public ManagedKafkaCondition setLastTransitionTime(String lastTransitionTime) {
+  public KafkaCondition setLastTransitionTime(String lastTransitionTime) {
     this.lastTransitionTime = lastTransitionTime;
     return this;
   }

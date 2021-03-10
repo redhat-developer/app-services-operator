@@ -1,8 +1,8 @@
 package com.openshift.cloud.controllers;
 
 import com.openshift.cloud.beans.AccessTokenSecretTool;
-import com.openshift.cloud.beans.ManagedKafkaApiClient;
-import com.openshift.cloud.beans.ManagedKafkaK8sClients;
+import com.openshift.cloud.beans.KafkaApiClient;
+import com.openshift.cloud.beans.KafkaK8sClients;
 import com.openshift.cloud.v1alpha.models.CloudServiceAccountRequest;
 import io.javaoperatorsdk.operator.api.*;
 import java.time.Instant;
@@ -20,9 +20,9 @@ public class CloudServiceAccountRequestController
 
   @Inject AccessTokenSecretTool accessTokenSecretTool;
 
-  @Inject ManagedKafkaK8sClients managedKafkaClientFactory;
+  @Inject KafkaK8sClients kafkaClientFactory;
 
-  @Inject ManagedKafkaApiClient apiClient;
+  @Inject KafkaApiClient apiClient;
 
   @Override
   public DeleteControl deleteResource(
@@ -56,7 +56,7 @@ public class CloudServiceAccountRequestController
       resource.setStatus(status);
       ConditionUtil.setAllConditionsTrue(resource.getStatus().getConditions());
 
-      managedKafkaClientFactory
+      kafkaClientFactory
           .cloudServiceAccountRequest()
           .inNamespace(resource.getMetadata().getNamespace())
           .updateStatus(resource);
@@ -64,7 +64,7 @@ public class CloudServiceAccountRequestController
       LOG.log(Level.SEVERE, e.getMessage(), e);
       ConditionUtil.setConditionFromException(resource.getStatus().getConditions(), e);
 
-      managedKafkaClientFactory
+      kafkaClientFactory
           .cloudServiceAccountRequest()
           .inNamespace(resource.getMetadata().getNamespace())
           .updateStatus(resource);

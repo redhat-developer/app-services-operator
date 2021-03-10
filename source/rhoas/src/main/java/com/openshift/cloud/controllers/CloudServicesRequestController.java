@@ -2,8 +2,8 @@ package com.openshift.cloud.controllers;
 
 import com.openshift.cloud.ApiException;
 import com.openshift.cloud.beans.AccessTokenSecretTool;
-import com.openshift.cloud.beans.ManagedKafkaApiClient;
-import com.openshift.cloud.beans.ManagedKafkaK8sClients;
+import com.openshift.cloud.beans.KafkaApiClient;
+import com.openshift.cloud.beans.KafkaK8sClients;
 import com.openshift.cloud.v1alpha.models.CloudServicesRequest;
 import com.openshift.cloud.v1alpha.models.UserKafka;
 import io.javaoperatorsdk.operator.api.*;
@@ -22,9 +22,9 @@ public class CloudServicesRequestController
 
   @Inject AccessTokenSecretTool accessTokenSecretTool;
 
-  @Inject ManagedKafkaK8sClients managedKafkaClientFactory;
+  @Inject KafkaK8sClients kafkaClientFactory;
 
-  @Inject ManagedKafkaApiClient apiClient;
+  @Inject KafkaApiClient apiClient;
 
   public CloudServicesRequestController() {}
 
@@ -44,7 +44,7 @@ public class CloudServicesRequestController
 
     try {
       updateCloudServicesRequest(resource);
-      var mkClient = managedKafkaClientFactory.cloudServicesRequest();
+      var mkClient = kafkaClientFactory.cloudServicesRequest();
       mkClient.inNamespace(resource.getMetadata().getNamespace()).updateStatus(resource);
 
       return UpdateControl.noUpdate();

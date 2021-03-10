@@ -21,7 +21,7 @@ public class CRDCreationTests {
 
   @Test
   @Disabled
-  public void createManagedKafkaServiceAccountCRDOnInit() {
+  public void createKafkaServiceAccountCRDOnInit() {
     fail();
   }
 }

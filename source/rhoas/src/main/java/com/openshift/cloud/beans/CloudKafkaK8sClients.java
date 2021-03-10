@@ -27,9 +27,9 @@ import org.jboss.logging.Logger;
  * use
  */
 @Singleton
-public final class ManagedKafkaK8sClients {
+public final class KafkaK8sClients {
 
-  private static final Logger LOG = Logger.getLogger(ManagedKafkaK8sClients.class.getName());
+  private static final Logger LOG = Logger.getLogger(KafkaK8sClients.class.getName());
 
   @Inject KubernetesClient client;
 

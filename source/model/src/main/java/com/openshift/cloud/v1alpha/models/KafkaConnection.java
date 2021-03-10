@@ -15,8 +15,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 @Group("rhoas.redhat.com")
 @Version("v1alpha1")
 @Crd(group = "rhoas.redhat.com", version = "v1alpha1")
-public class KafkaConnection
-    extends CustomResource<KafkaConnectionSpec, KafkaConnectionStatus>
+public class KafkaConnection extends CustomResource<KafkaConnectionSpec, KafkaConnectionStatus>
     implements Namespaced {
 
   /** */

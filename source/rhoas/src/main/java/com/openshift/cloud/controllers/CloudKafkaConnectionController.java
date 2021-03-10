@@ -1,7 +1,7 @@
 package com.openshift.cloud.controllers;
 
 import com.openshift.cloud.beans.AccessTokenSecretTool;
-import com.openshift.cloud.beans.ManagedKafkaApiClient;
+import com.openshift.cloud.beans.KafkaApiClient;
 import com.openshift.cloud.v1alpha.models.KafkaConnection;
 import io.javaoperatorsdk.operator.api.*;
 import io.javaoperatorsdk.operator.processing.event.EventSourceManager;
@@ -17,7 +17,7 @@ public class KafkaConnectionController
   private static final Logger LOG =
       Logger.getLogger(KafkaConnectionController.class.getName());
 
-  @Inject ManagedKafkaApiClient apiClient;
+  @Inject KafkaApiClient apiClient;
 
   @Inject AccessTokenSecretTool accessTokenSecretTool;
 
