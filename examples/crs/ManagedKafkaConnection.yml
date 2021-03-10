@@ -1,5 +1,5 @@
 apiVersion: rhoas.redhat.com/v1alpha1
-kind: ManagedKafkaConnection
+kind: KafkaConnection
 metadata:
   name: test453-serviceapi
   namespace: rhoas-operator-testing

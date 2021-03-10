@@ -1,15 +1,15 @@
 = RHOAS Operator Custom Resources
 
 The operator manages the following resources:
- - `ManagedServicesRequest`
- - `ManagedKafkaConnection`
- - `ManagedServiceAccountRequest`.
+ - `CloudServicesRequest`
+ - `KafkaConnection`
+ - `CloudServiceAccountRequest`.
  
 All resources are namespace scoped and include operator-managed conditions. 
 
-== ManagedServicesRequest
+== CloudServicesRequest
 
-This custom resource is populated with managed services available to the provided access token. These services are listed under the status object. This resource is used to get a list of available services. For instance, the id of a Managed Kafka service is used by `ManagedKafkaConnection`.
+This custom resource is populated with managed services available to the provided access token. These services are listed under the status object. This resource is used to get a list of available services. For instance, the id of a Kafka service is used by `KafkaConnection`.
 
 === Example
 .example.yaml
@@ -17,7 +17,7 @@ This custom resource is populated with managed services available to the provide
 ----
 ## Namespaced
 apiVersion: rhoas.redhat.com/v1alpha1
-kind: ManagedServicesRequest
+kind: CloudServicesRequest
 metadata:
   name: namespace-name-managed-kafkas
   namespace: rhoas-operator-testing
@@ -73,7 +73,7 @@ spec:
  
  The `userKafkas` status field is a list of `userKafka` objects. These object have the following properties:
  
-  * `id` - the id field used to reference this managed service. See `ManagedKafkaConnection`
+  * `id` - the id field used to reference this managed service. See `KafkaConnection`
   * `bootstrapServerHost` - the URL for the managed service instance
   * `name` - a human readable name
   * `provider` - the cloud provider hosting the service
@@ -90,16 +90,16 @@ spec:
  * Finished - see `Finished Condition`
  * AcccesTokenSecretValid - see `AcccesTokenSecretValid Condition`
 
-== ManagedKafkaConnection
+== KafkaConnection
 
-This resource represents a binding between a service account and a managed kafka instance. The service account is referenced using the `serviceAccountSecretName` created by `ManagedServiceAccountRequest` and the `kafkaId` for a `userKafka` instance provided by `ManagedServicesRequest`.
+This resource represents a binding between a service account and a managed kafka instance. The service account is referenced using the `serviceAccountSecretName` created by `CloudServiceAccountRequest` and the `kafkaId` for a `userKafka` instance provided by `CloudServicesRequest`.
 
 === Example
 
 [source,yml]
 ----
 apiVersion: rhoas.redhat.com/v1alpha1
-kind: ManagedKafkaConnection
+kind: KafkaConnection
 metadata:
   name: test-connection
   namespace: rhoas-operator
@@ -136,8 +136,8 @@ spec:
 
 === Spec
 
- * kafkaId - the id of the Managed Kafka instance. See `ManagedServicesRequest.status.userKafkas`
- * credentials - the credentials object to be used when accessing the `kafkaId` instance. See `ManagedServicesRequest`
+ * kafkaId - the id of the Kafka instance. See `CloudServicesRequest.status.userKafkas`
+ * credentials - the credentials object to be used when accessing the `kafkaId` instance. See `CloudServicesRequest`
  * `accessTokenSecretName` see `AcccesTokenSecretValid Condition`
 
 ==== Credentials Format
@@ -154,21 +154,21 @@ spec:
 
 ==== Conditions
  
- * FoundKafkaById - If `status` is `True` then the `kafkaId` field matched a Managed Kafka instance id.
+ * FoundKafkaById - If `status` is `True` then the `kafkaId` field matched a Kafka instance id.
  * Finished - see `Finished Condition`
  * AcccesTokenSecretValid - see `AcccesTokenSecretValid Condition`
 
 
-== ManagedServiceAccountRequest
+== CloudServiceAccountRequest
 
-This resource creates a service account per its spec. Credentials for the service account will be stored in a secret with the name provided by `serviceAccountSecretName`. This service account is used to connect to managed kafka instances. See `ManagedKafkaConnection` for details on connecting to the instances.
+This resource creates a service account per its spec. Credentials for the service account will be stored in a secret with the name provided by `serviceAccountSecretName`. This service account is used to connect to managed kafka instances. See `KafkaConnection` for details on connecting to the instances.
 
 == Example
 
 [source,yaml]
 ----
 apiVersion: rhoas.redhat.com/v1alpha1
-kind: ManagedServiceAccountRequest
+kind: CloudServiceAccountRequest
 metadata:
   name: service-account-1
   namespace: rhoas-operator

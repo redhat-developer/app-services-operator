@@ -2,7 +2,7 @@ package com.openshift.cloud.controllers;
 
 import com.openshift.cloud.beans.AccessTokenSecretTool;
 import com.openshift.cloud.beans.ManagedKafkaApiClient;
-import com.openshift.cloud.v1alpha.models.ManagedKafkaConnection;
+import com.openshift.cloud.v1alpha.models.KafkaConnection;
 import io.javaoperatorsdk.operator.api.*;
 import io.javaoperatorsdk.operator.processing.event.EventSourceManager;
 import java.time.Instant;
@@ -11,11 +11,11 @@ import java.util.logging.Logger;
 import javax.inject.Inject;
 
 @Controller
-public class ManagedKafkaConnectionController
-    implements ResourceController<ManagedKafkaConnection> {
+public class KafkaConnectionController
+    implements ResourceController<KafkaConnection> {
 
   private static final Logger LOG =
-      Logger.getLogger(ManagedKafkaConnectionController.class.getName());
+      Logger.getLogger(KafkaConnectionController.class.getName());
 
   @Inject ManagedKafkaApiClient apiClient;
 
@@ -23,15 +23,15 @@ public class ManagedKafkaConnectionController
 
   @Override
   public DeleteControl deleteResource(
-      ManagedKafkaConnection resource, Context<ManagedKafkaConnection> context) {
+      KafkaConnection resource, Context<KafkaConnection> context) {
     LOG.info(String.format("Deleting resource %s", resource.getMetadata().getName()));
 
     return DeleteControl.DEFAULT_DELETE;
   }
 
   @Override
-  public UpdateControl<ManagedKafkaConnection> createOrUpdateResource(
-      ManagedKafkaConnection resource, Context<ManagedKafkaConnection> context) {
+  public UpdateControl<KafkaConnection> createOrUpdateResource(
+      KafkaConnection resource, Context<KafkaConnection> context) {
     ConditionUtil.initializeConditions(resource);
     try {
       LOG.info(String.format("Creating or Updating resource %s", resource.getMetadata().getName()));

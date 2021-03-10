@@ -1,13 +1,13 @@
 package com.openshift.cloud.v1alpha.models;
 
-public class ManagedKafkaConnectionSpec {
+public class KafkaConnectionSpec {
 
   private String kafkaId;
   private String accessTokenSecretName;
   private Credentials credentials;
 
   /** No args constructor for use in serialization */
-  public ManagedKafkaConnectionSpec() {}
+  public KafkaConnectionSpec() {}
 
   public String getAccessTokenSecretName() {
     return accessTokenSecretName;
@@ -21,7 +21,7 @@ public class ManagedKafkaConnectionSpec {
    * @param kafkaId
    * @param credentials
    */
-  public ManagedKafkaConnectionSpec(String kafkaId, Credentials credentials) {
+  public KafkaConnectionSpec(String kafkaId, Credentials credentials) {
     super();
     this.kafkaId = kafkaId;
     this.credentials = credentials;

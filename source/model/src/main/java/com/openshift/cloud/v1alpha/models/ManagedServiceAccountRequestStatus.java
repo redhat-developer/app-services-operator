@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Buildable
-public class ManagedServiceAccountRequestStatus {
+public class CloudServiceAccountRequestStatus {
 
   private String message = "";
   private String updated = "";
@@ -13,14 +13,14 @@ public class ManagedServiceAccountRequestStatus {
   private List<ManagedKafkaCondition> conditions = new ArrayList<>();
 
   /** No args constructor for use in serialization */
-  public ManagedServiceAccountRequestStatus() {}
+  public CloudServiceAccountRequestStatus() {}
 
   /**
    * @param serviceAccountSecretName
    * @param message
    * @param updated
    */
-  public ManagedServiceAccountRequestStatus(
+  public CloudServiceAccountRequestStatus(
       String message, String updated, String serviceAccountSecretName) {
     super();
     this.message = message;

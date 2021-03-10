@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 /** This tests that we have all the features for managed Services request objects */
-public class ManagedServicesRequestTests {
+public class CloudServicesRequestTests {
 
   /**
    * The operator should create a managed kfaka request cr that contains all kafkas the service

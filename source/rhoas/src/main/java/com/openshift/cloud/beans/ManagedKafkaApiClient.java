@@ -11,8 +11,8 @@ import com.openshift.cloud.api.models.ServiceAccountRequest;
 import com.openshift.cloud.auth.HttpBearerAuth;
 import com.openshift.cloud.controllers.ConditionAwareException;
 import com.openshift.cloud.v1alpha.models.ManagedKafkaCondition;
-import com.openshift.cloud.v1alpha.models.ManagedServiceAccountRequest;
-import com.openshift.cloud.v1alpha.models.ManagedServiceAccountRequestSpec;
+import com.openshift.cloud.v1alpha.models.CloudServiceAccountRequest;
+import com.openshift.cloud.v1alpha.models.CloudServiceAccountRequestSpec;
 import io.fabric8.kubernetes.api.model.OwnerReferenceBuilder;
 import io.fabric8.kubernetes.api.model.SecretBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
@@ -74,7 +74,7 @@ public class ManagedKafkaApiClient {
   }
 
   public ServiceAccount createServiceAccount(
-      ManagedServiceAccountRequestSpec spec, String accessToken) throws ConditionAwareException {
+      CloudServiceAccountRequestSpec spec, String accessToken) throws ConditionAwareException {
     try {
       var serviceAccountRequest = new ServiceAccountRequest();
       serviceAccountRequest.setDescription(spec.getServiceAccountDescription());
@@ -92,7 +92,7 @@ public class ManagedKafkaApiClient {
   }
 
   public void createSecretForServiceAccount(
-      ManagedServiceAccountRequest resource, ServiceAccount serviceAccount)
+      CloudServiceAccountRequest resource, ServiceAccount serviceAccount)
       throws ConditionAwareException {
     try {
       var secret =

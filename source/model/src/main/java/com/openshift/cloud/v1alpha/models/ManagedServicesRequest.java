@@ -10,19 +10,19 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
-@Plural("managedservicesrequests")
+@Plural("cloudservicesrequests")
 @Group("rhoas.redhat.com")
 @Version("v1alpha1")
 @Crd(group = "rhoas.redhat.com", version = "v1alpha1")
-public class ManagedServicesRequest
-    extends CustomResource<ManagedServicesRequestSpec, ManagedServicesRequestStatus>
+public class CloudServicesRequest
+    extends CustomResource<CloudServicesRequestSpec, CloudServicesRequestStatus>
     implements Namespaced {
 
   @Override
   public String toString() {
     return new ToStringBuilder(this)
-        .append("managedServicesRequestSpec", getSpec())
-        .append("managedServicesRequestStatus", getStatus())
+        .append("cloudServicesRequestSpec", getSpec())
+        .append("cloudServicesRequestStatus", getStatus())
         .toString();
   }
 
@@ -36,10 +36,10 @@ public class ManagedServicesRequest
     if (other == this) {
       return true;
     }
-    if ((other instanceof ManagedServicesRequest) == false) {
+    if ((other instanceof CloudServicesRequest) == false) {
       return false;
     }
-    ManagedServicesRequest rhs = ((ManagedServicesRequest) other);
+    CloudServicesRequest rhs = ((CloudServicesRequest) other);
     return new EqualsBuilder()
         .append(getSpec(), rhs.getSpec())
         .append(getStatus(), rhs.getStatus())

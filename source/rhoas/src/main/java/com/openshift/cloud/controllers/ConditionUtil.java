@@ -16,8 +16,8 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 /**
- * This class contains utility methods to set conditions on {@link ManagedServicesRequest}, {@link
- * ManagedKafkaConnection}, and {@link ManagedServiceAccountRequest}.
+ * This class contains utility methods to set conditions on {@link CloudServicesRequest}, {@link
+ * KafkaConnection}, and {@link CloudServiceAccountRequest}.
  *
  * <p>When you receive one of these objects in an operator, you should call initializeConditions
  * with that object. Operations on that object inside of a controller should be wrapped in a try
@@ -33,21 +33,21 @@ public class ConditionUtil {
 
   private static final Logger LOG = Logger.getLogger(ConditionUtil.class.getName());
 
-  public static void initializeConditions(ManagedServicesRequest resource) {
+  public static void initializeConditions(CloudServicesRequest resource) {
     var status = resource.getStatus();
     if (status == null) {
       resource.setStatus(
-          new ManagedServicesRequestStatusBuilder()
+          new CloudServicesRequestStatusBuilder()
               .withLastUpdate(isoNow())
               .withUserKafkas(new ArrayList<>())
-              .withConditions(managedServicesRequestDefaultConditions())
+              .withConditions(cloudServicesRequestDefaultConditions())
               .build());
     } else {
-      status.setConditions(managedServicesRequestDefaultConditions());
+      status.setConditions(cloudServicesRequestDefaultConditions());
     }
   }
 
-  private static List<ManagedKafkaCondition> managedServicesRequestDefaultConditions() {
+  private static List<ManagedKafkaCondition> cloudServicesRequestDefaultConditions() {
     return List.of(
         new ManagedKafkaCondition()
             .setLastTransitionTime(isoNow())
@@ -114,11 +114,11 @@ public class ConditionUtil {
     return ZonedDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.ISO_INSTANT);
   }
 
-  public static void initializeConditions(ManagedServiceAccountRequest resource) {
+  public static void initializeConditions(CloudServiceAccountRequest resource) {
     var status = resource.getStatus();
     if (status == null) {
       resource.setStatus(
-          new ManagedServiceAccountRequestStatusBuilder()
+          new CloudServiceAccountRequestStatusBuilder()
               .withConditions(managedKafkaServiceAccountRequestDefaultConditions())
               .build());
     } else {
@@ -164,19 +164,19 @@ public class ConditionUtil {
         });
   }
 
-  public static void initializeConditions(ManagedKafkaConnection resource) {
+  public static void initializeConditions(KafkaConnection resource) {
     var status = resource.getStatus();
     if (status == null) {
       resource.setStatus(
-          new ManagedKafkaConnectionStatusBuilder()
-              .withConditions(managedKafkaConnectionDefaultConditions())
+          new KafkaConnectionStatusBuilder()
+              .withConditions(kafkaConnectionDefaultConditions())
               .build());
     } else {
-      status.setConditions(managedKafkaConnectionDefaultConditions());
+      status.setConditions(kafkaConnectionDefaultConditions());
     }
   }
 
-  private static List<ManagedKafkaCondition> managedKafkaConnectionDefaultConditions() {
+  private static List<ManagedKafkaCondition> kafkaConnectionDefaultConditions() {
     return List.of(
         new ManagedKafkaCondition()
             .setLastTransitionTime(isoNow())

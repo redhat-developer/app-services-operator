@@ -4,7 +4,7 @@ import io.sundr.builder.annotations.Buildable;
 import java.util.List;
 
 @Buildable
-public class ManagedKafkaConnectionStatus {
+public class KafkaConnectionStatus {
 
   private static final String UI_REF_TEMPLATE =
       "https://cloud.redhat.com/beta/application-services/openshift-streams/kafkas/%s";
@@ -19,7 +19,7 @@ public class ManagedKafkaConnectionStatus {
   private List<ManagedKafkaCondition> conditions;
 
   /** No args constructor for use in serialization */
-  public ManagedKafkaConnectionStatus() {}
+  public KafkaConnectionStatus() {}
 
   /**
    * @param serviceAccountSecretName
@@ -27,7 +27,7 @@ public class ManagedKafkaConnectionStatus {
    * @param boostrapServer
    * @param updated
    */
-  public ManagedKafkaConnectionStatus(
+  public KafkaConnectionStatus(
       String message, String updated, String bootstrapServerHost, String serviceAccountSecretName) {
     super();
     this.message = message;

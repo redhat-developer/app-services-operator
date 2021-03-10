@@ -3,20 +3,20 @@ package com.openshift.cloud.controllers;
 import com.openshift.cloud.beans.AccessTokenSecretTool;
 import com.openshift.cloud.beans.ManagedKafkaApiClient;
 import com.openshift.cloud.beans.ManagedKafkaK8sClients;
-import com.openshift.cloud.v1alpha.models.ManagedServiceAccountRequest;
+import com.openshift.cloud.v1alpha.models.CloudServiceAccountRequest;
 import io.javaoperatorsdk.operator.api.*;
 import java.time.Instant;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.inject.Inject;
 
-/** Controller for ManagedServiceAccountRequest CRs */
+/** Controller for CloudServiceAccountRequest CRs */
 @Controller
-public class ManagedServiceAccountRequestController
-    implements ResourceController<ManagedServiceAccountRequest> {
+public class CloudServiceAccountRequestController
+    implements ResourceController<CloudServiceAccountRequest> {
 
   private static final Logger LOG =
-      Logger.getLogger(ManagedKafkaConnectionController.class.getName());
+      Logger.getLogger(KafkaConnectionController.class.getName());
 
   @Inject AccessTokenSecretTool accessTokenSecretTool;
 
@@ -26,14 +26,14 @@ public class ManagedServiceAccountRequestController
 
   @Override
   public DeleteControl deleteResource(
-      ManagedServiceAccountRequest resource, Context<ManagedServiceAccountRequest> context) {
+      CloudServiceAccountRequest resource, Context<CloudServiceAccountRequest> context) {
 
     return DeleteControl.DEFAULT_DELETE;
   }
 
   @Override
-  public UpdateControl<ManagedServiceAccountRequest> createOrUpdateResource(
-      ManagedServiceAccountRequest resource, Context<ManagedServiceAccountRequest> context) {
+  public UpdateControl<CloudServiceAccountRequest> createOrUpdateResource(
+      CloudServiceAccountRequest resource, Context<CloudServiceAccountRequest> context) {
     ConditionUtil.initializeConditions(resource);
     try {
 
@@ -57,7 +57,7 @@ public class ManagedServiceAccountRequestController
       ConditionUtil.setAllConditionsTrue(resource.getStatus().getConditions());
 
       managedKafkaClientFactory
-          .managedServiceAccountRequest()
+          .cloudServiceAccountRequest()
           .inNamespace(resource.getMetadata().getNamespace())
           .updateStatus(resource);
     } catch (ConditionAwareException e) {
@@ -65,7 +65,7 @@ public class ManagedServiceAccountRequestController
       ConditionUtil.setConditionFromException(resource.getStatus().getConditions(), e);
 
       managedKafkaClientFactory
-          .managedServiceAccountRequest()
+          .cloudServiceAccountRequest()
           .inNamespace(resource.getMetadata().getNamespace())
           .updateStatus(resource);
     }

@@ -9,13 +9,13 @@ import org.junit.jupiter.api.Test;
 public class CRDCreationTests {
   @Test
   @Disabled
-  public void createManagedKafkaConnectionCRDOnInit() {
+  public void createKafkaConnectionCRDOnInit() {
     fail();
   }
 
   @Test
   @Disabled
-  public void createManagedServicesRequestCRDOnInit() {
+  public void createCloudServicesRequestCRDOnInit() {
     fail();
   }
 

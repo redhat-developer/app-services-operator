@@ -1,6 +1,6 @@
 package com.openshift.cloud.v1alpha.models;
 
-public class ManagedServiceAccountRequestSpec {
+public class CloudServiceAccountRequestSpec {
 
   private String serviceAccountName;
   private String serviceAccountDescription;
@@ -8,7 +8,7 @@ public class ManagedServiceAccountRequestSpec {
   private String accessTokenSecretName = "rhoas_binding_operator_token";
 
   /** No args constructor for use in serialization */
-  public ManagedServiceAccountRequestSpec() {}
+  public CloudServiceAccountRequestSpec() {}
 
   public String getAccessTokenSecretName() {
     return accessTokenSecretName;
@@ -23,7 +23,7 @@ public class ManagedServiceAccountRequestSpec {
    * @param serviceAccountName
    * @param serviceAccountDescription
    */
-  public ManagedServiceAccountRequestSpec(
+  public CloudServiceAccountRequestSpec(
       String serviceAccountName,
       String serviceAccountDescription,
       String serviceAccountSecretName) {

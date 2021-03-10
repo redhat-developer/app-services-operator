@@ -120,7 +120,7 @@
                         </goals>
                         <configuration>
                             <!-- specify the swagger yaml -->
-                            <inputSpec>${project.basedir}/managed-services-api.yaml</inputSpec>
+                            <inputSpec>${project.basedir}/kas-fleet-manager.yaml</inputSpec>
 
                             <!-- target to generate java client code -->
                             <generatorName>java</generatorName>

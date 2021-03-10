@@ -1,6 +1,6 @@
 ## Namespaced
 apiVersion: rhoas.redhat.com/v1alpha1
-kind: ManagedServicesRequest
+kind: CloudServicesRequest
 metadata:
   name: namespace-name-managed-kafkas
   namespace: rhoas-operator

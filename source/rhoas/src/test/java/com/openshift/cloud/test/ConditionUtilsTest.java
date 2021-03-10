@@ -3,7 +3,7 @@ package com.openshift.cloud.test;
 import com.openshift.cloud.controllers.ConditionAwareException;
 import com.openshift.cloud.controllers.ConditionUtil;
 import com.openshift.cloud.v1alpha.models.ManagedKafkaCondition;
-import com.openshift.cloud.v1alpha.models.ManagedKafkaConnection;
+import com.openshift.cloud.v1alpha.models.KafkaConnection;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -11,7 +11,7 @@ public class ConditionUtilsTest {
 
   @Test
   public void finishedInitializedToUnknown() {
-    var resource = new ManagedKafkaConnection();
+    var resource = new KafkaConnection();
     ConditionUtil.initializeConditions(resource);
 
     var resourceConditions = resource.getStatus().getConditions();
@@ -24,7 +24,7 @@ public class ConditionUtilsTest {
 
   @Test
   public void settingExceptionSetsFinishedToFalse() {
-    var resource = new ManagedKafkaConnection();
+    var resource = new KafkaConnection();
     ConditionUtil.initializeConditions(resource);
 
     var resourceConditions = resource.getStatus().getConditions();

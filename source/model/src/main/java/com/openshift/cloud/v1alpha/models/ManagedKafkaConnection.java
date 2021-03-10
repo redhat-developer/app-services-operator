@@ -11,12 +11,12 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
-@Plural("managedkafkaconnections")
+@Plural("kafkaconnections")
 @Group("rhoas.redhat.com")
 @Version("v1alpha1")
 @Crd(group = "rhoas.redhat.com", version = "v1alpha1")
-public class ManagedKafkaConnection
-    extends CustomResource<ManagedKafkaConnectionSpec, ManagedKafkaConnectionStatus>
+public class KafkaConnection
+    extends CustomResource<KafkaConnectionSpec, KafkaConnectionStatus>
     implements Namespaced {
 
   /** */
@@ -25,8 +25,8 @@ public class ManagedKafkaConnection
   @Override
   public String toString() {
     return new ToStringBuilder(this)
-        .append("managedKafkaConnectionSpec", getSpec())
-        .append("managedKafkaConnectionStatus", getStatus())
+        .append("kafkaConnectionSpec", getSpec())
+        .append("kafkaConnectionStatus", getStatus())
         .toString();
   }
 
@@ -40,10 +40,10 @@ public class ManagedKafkaConnection
     if (other == this) {
       return true;
     }
-    if ((other instanceof ManagedKafkaConnection) == false) {
+    if ((other instanceof KafkaConnection) == false) {
       return false;
     }
-    ManagedKafkaConnection rhs = ((ManagedKafkaConnection) other);
+    KafkaConnection rhs = ((KafkaConnection) other);
     return new EqualsBuilder()
         .append(getSpec(), rhs.getSpec())
         .append(getStatus(), rhs.getStatus())
@@ -51,22 +51,22 @@ public class ManagedKafkaConnection
   }
 
   @Override
-  public ManagedKafkaConnectionSpec getSpec() {
+  public KafkaConnectionSpec getSpec() {
     return super.getSpec();
   }
 
   @Override
-  public void setSpec(ManagedKafkaConnectionSpec spec) {
+  public void setSpec(KafkaConnectionSpec spec) {
     super.setSpec(spec);
   }
 
   @Override
-  public ManagedKafkaConnectionStatus getStatus() {
+  public KafkaConnectionStatus getStatus() {
     return super.getStatus();
   }
 
   @Override
-  public void setStatus(ManagedKafkaConnectionStatus status) {
+  public void setStatus(KafkaConnectionStatus status) {
     super.setStatus(status);
   }
 

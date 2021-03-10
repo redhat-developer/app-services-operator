@@ -4,7 +4,7 @@ import com.openshift.cloud.ApiException;
 import com.openshift.cloud.beans.AccessTokenSecretTool;
 import com.openshift.cloud.beans.ManagedKafkaApiClient;
 import com.openshift.cloud.beans.ManagedKafkaK8sClients;
-import com.openshift.cloud.v1alpha.models.ManagedServicesRequest;
+import com.openshift.cloud.v1alpha.models.CloudServicesRequest;
 import com.openshift.cloud.v1alpha.models.UserKafka;
 import io.javaoperatorsdk.operator.api.*;
 import io.javaoperatorsdk.operator.processing.event.EventSourceManager;
@@ -14,11 +14,11 @@ import java.util.logging.Logger;
 import javax.inject.Inject;
 
 @Controller
-public class ManagedServicesRequestController
-    implements ResourceController<ManagedServicesRequest> {
+public class CloudServicesRequestController
+    implements ResourceController<CloudServicesRequest> {
 
   private static final Logger LOG =
-      Logger.getLogger(ManagedServicesRequestController.class.getName());
+      Logger.getLogger(CloudServicesRequestController.class.getName());
 
   @Inject AccessTokenSecretTool accessTokenSecretTool;
 
@@ -26,25 +26,25 @@ public class ManagedServicesRequestController
 
   @Inject ManagedKafkaApiClient apiClient;
 
-  public ManagedServicesRequestController() {}
+  public CloudServicesRequestController() {}
 
   @Override
   public DeleteControl deleteResource(
-      ManagedServicesRequest managedServicesRequest, Context<ManagedServicesRequest> context) {
-    LOG.info(String.format("Deleting resource %s", managedServicesRequest.getMetadata().getName()));
+      CloudServicesRequest cloudServicesRequest, Context<CloudServicesRequest> context) {
+    LOG.info(String.format("Deleting resource %s", cloudServicesRequest.getMetadata().getName()));
 
     return DeleteControl.DEFAULT_DELETE;
   }
 
   @Override
-  public UpdateControl<ManagedServicesRequest> createOrUpdateResource(
-      ManagedServicesRequest resource, Context<ManagedServicesRequest> context) {
+  public UpdateControl<CloudServicesRequest> createOrUpdateResource(
+      CloudServicesRequest resource, Context<CloudServicesRequest> context) {
 
     LOG.info(String.format("Update or create resource %s", resource.getMetadata().getName()));
 
     try {
-      updateManagedServicesRequest(resource);
-      var mkClient = managedKafkaClientFactory.managedServicesRequest();
+      updateCloudServicesRequest(resource);
+      var mkClient = managedKafkaClientFactory.cloudServicesRequest();
       mkClient.inNamespace(resource.getMetadata().getNamespace()).updateStatus(resource);
 
       return UpdateControl.noUpdate();
@@ -59,7 +59,7 @@ public class ManagedServicesRequestController
    * @return true if there were changes, false otherwise
    * @throws ApiException if something goes wrong connecting to services
    */
-  private boolean updateManagedServicesRequest(ManagedServicesRequest resource)
+  private boolean updateCloudServicesRequest(CloudServicesRequest resource)
       throws ApiException {
 
     ConditionUtil.initializeConditions(resource);

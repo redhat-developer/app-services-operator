@@ -4,15 +4,15 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
-public class ManagedServicesRequestSpec {
+public class CloudServicesRequestSpec {
 
   private String accessTokenSecretName = "rhoas_binding_operator_token"; // Default as per ADR_00022
 
   /** No args constructor for use in serialization */
-  public ManagedServicesRequestSpec() {}
+  public CloudServicesRequestSpec() {}
 
   /** @param accessTokenSecretName */
-  public ManagedServicesRequestSpec(String accessTokenSecretName) {
+  public CloudServicesRequestSpec(String accessTokenSecretName) {
     super();
     this.accessTokenSecretName = accessTokenSecretName;
   }
@@ -42,10 +42,10 @@ public class ManagedServicesRequestSpec {
     if (other == this) {
       return true;
     }
-    if ((other instanceof ManagedServicesRequestSpec) == false) {
+    if ((other instanceof CloudServicesRequestSpec) == false) {
       return false;
     }
-    ManagedServicesRequestSpec rhs = ((ManagedServicesRequestSpec) other);
+    CloudServicesRequestSpec rhs = ((CloudServicesRequestSpec) other);
     return new EqualsBuilder().append(accessTokenSecretName, rhs.accessTokenSecretName).isEquals();
   }
 }
