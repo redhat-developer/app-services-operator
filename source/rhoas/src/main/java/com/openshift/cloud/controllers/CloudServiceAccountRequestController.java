@@ -15,8 +15,7 @@ import javax.inject.Inject;
 public class CloudServiceAccountRequestController
     implements ResourceController<CloudServiceAccountRequest> {
 
-  private static final Logger LOG =
-      Logger.getLogger(KafkaConnectionController.class.getName());
+  private static final Logger LOG = Logger.getLogger(KafkaConnectionController.class.getName());
 
   @Inject AccessTokenSecretTool accessTokenSecretTool;
 

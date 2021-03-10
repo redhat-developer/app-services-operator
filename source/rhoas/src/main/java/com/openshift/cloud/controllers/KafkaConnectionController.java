@@ -11,19 +11,16 @@ import java.util.logging.Logger;
 import javax.inject.Inject;
 
 @Controller
-public class KafkaConnectionController
-    implements ResourceController<KafkaConnection> {
+public class KafkaConnectionController implements ResourceController<KafkaConnection> {
 
-  private static final Logger LOG =
-      Logger.getLogger(KafkaConnectionController.class.getName());
+  private static final Logger LOG = Logger.getLogger(KafkaConnectionController.class.getName());
 
   @Inject KafkaApiClient apiClient;
 
   @Inject AccessTokenSecretTool accessTokenSecretTool;
 
   @Override
-  public DeleteControl deleteResource(
-      KafkaConnection resource, Context<KafkaConnection> context) {
+  public DeleteControl deleteResource(KafkaConnection resource, Context<KafkaConnection> context) {
     LOG.info(String.format("Deleting resource %s", resource.getMetadata().getName()));
 
     return DeleteControl.DEFAULT_DELETE;

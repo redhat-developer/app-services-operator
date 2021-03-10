@@ -9,8 +9,8 @@ import org.junit.jupiter.api.Test;
 public class CloudServicesRequestTests {
 
   /**
-   * The operator should create a Kafka request cr that contains all kafkas the service
-   * account has access to.
+   * The operator should create a Kafka request cr that contains all kafkas the service account has
+   * access to.
    */
   @Test
   @Disabled

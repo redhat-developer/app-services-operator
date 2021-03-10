@@ -14,8 +14,7 @@ import java.util.logging.Logger;
 import javax.inject.Inject;
 
 @Controller
-public class CloudServicesRequestController
-    implements ResourceController<CloudServicesRequest> {
+public class CloudServicesRequestController implements ResourceController<CloudServicesRequest> {
 
   private static final Logger LOG =
       Logger.getLogger(CloudServicesRequestController.class.getName());
@@ -59,8 +58,7 @@ public class CloudServicesRequestController
    * @return true if there were changes, false otherwise
    * @throws ApiException if something goes wrong connecting to services
    */
-  private boolean updateCloudServicesRequest(CloudServicesRequest resource)
-      throws ApiException {
+  private boolean updateCloudServicesRequest(CloudServicesRequest resource) throws ApiException {
 
     ConditionUtil.initializeConditions(resource);
     try {

@@ -1,11 +1,11 @@
 package com.openshift.cloud.beans;
 
-import com.openshift.cloud.v1alpha.models.KafkaConnection;
-import com.openshift.cloud.v1alpha.models.KafkaConnectionList;
 import com.openshift.cloud.v1alpha.models.CloudServiceAccountRequest;
 import com.openshift.cloud.v1alpha.models.CloudServiceAccountRequestList;
 import com.openshift.cloud.v1alpha.models.CloudServicesRequest;
 import com.openshift.cloud.v1alpha.models.CloudServicesRequestList;
+import com.openshift.cloud.v1alpha.models.KafkaConnection;
+import com.openshift.cloud.v1alpha.models.KafkaConnectionList;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinition;
 import io.fabric8.kubernetes.client.CustomResource;
@@ -48,28 +48,22 @@ public final class KafkaK8sClients {
     this.msarCrd = initCloudServiceAccountRequestCRDAndClient(crds);
   }
 
-  public MixedOperation<
-          KafkaConnection, KafkaConnectionList, Resource<KafkaConnection>>
+  public MixedOperation<KafkaConnection, KafkaConnectionList, Resource<KafkaConnection>>
       kafkaConnection() {
     KubernetesDeserializer.registerCustomKind(
-        getApiVersion(KafkaConnection.class),
-        mkcCrd.getKind(),
-        KafkaConnection.class);
+        getApiVersion(KafkaConnection.class), mkcCrd.getKind(), KafkaConnection.class);
 
     var mkcCrdContext = CustomResourceDefinitionContext.fromCrd(this.mkcCrd);
 
     // lets create a client for the CRD
-    return client.customResources(
-        mkcCrdContext, KafkaConnection.class, KafkaConnectionList.class);
+    return client.customResources(mkcCrdContext, KafkaConnection.class, KafkaConnectionList.class);
   }
 
   public MixedOperation<
           CloudServicesRequest, CloudServicesRequestList, Resource<CloudServicesRequest>>
       cloudServicesRequest() {
     KubernetesDeserializer.registerCustomKind(
-        getApiVersion(CloudServicesRequest.class),
-        mscrCrd.getKind(),
-        CloudServicesRequest.class);
+        getApiVersion(CloudServicesRequest.class), mscrCrd.getKind(), CloudServicesRequest.class);
 
     var mkcCrdContext = CustomResourceDefinitionContext.fromCrd(this.mscrCrd);
 
@@ -101,8 +95,7 @@ public final class KafkaK8sClients {
     CustomResourceDefinition mkcCrd;
 
     var crdsItems = crds.customResourceDefinitions().list().getItems();
-    var kafkaConnectionCRDName =
-        CustomResource.getCRDName(CloudServiceAccountRequest.class);
+    var kafkaConnectionCRDName = CustomResource.getCRDName(CloudServiceAccountRequest.class);
 
     var mkcCrdOptional =
         crdsItems.stream()
@@ -141,8 +134,7 @@ public final class KafkaK8sClients {
     if (mkcCrdOptional.isEmpty()) {
       LOG.info("Creating KafkaConnection CRD");
       mkcCrd =
-          CustomResourceDefinitionContext.v1beta1CRDFromCustomResourceType(
-                  KafkaConnection.class)
+          CustomResourceDefinitionContext.v1beta1CRDFromCustomResourceType(KafkaConnection.class)
               .build();
       client.apiextensions().v1beta1().customResourceDefinitions().create(mkcCrd);
       LOG.info("KafkaConnection CRD Created");

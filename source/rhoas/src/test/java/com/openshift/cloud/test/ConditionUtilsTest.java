@@ -18,8 +18,7 @@ public class ConditionUtilsTest {
 
     Assertions.assertEquals(
         KafkaCondition.Status.Unknown,
-        ConditionUtil.getCondition(resourceConditions, KafkaCondition.Type.Finished)
-            .getStatus());
+        ConditionUtil.getCondition(resourceConditions, KafkaCondition.Type.Finished).getStatus());
   }
 
   @Test
@@ -41,7 +40,6 @@ public class ConditionUtilsTest {
 
     Assertions.assertEquals(
         KafkaCondition.Status.False,
-        ConditionUtil.getCondition(resourceConditions, KafkaCondition.Type.Finished)
-            .getStatus());
+        ConditionUtil.getCondition(resourceConditions, KafkaCondition.Type.Finished).getStatus());
   }
 }
