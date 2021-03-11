@@ -96,9 +96,16 @@ spec:
                 name: rhoas-operator
             spec:
               containers:
-              - image: quay.io/rhoas/service-operator:{{version}}
+              - image: quay.io/{{organization}}/service-operator:{{version}}
                 imagePullPolicy: Always
                 name: rhoas-operator
+                resources:
+                  limits:
+                    cpu: 60m
+                    memory: 512Mi
+                  requests:
+                    cpu: 30m
+                    memory: 128Mi                
               serviceAccountName: rhoas-operator
   description: Operator connects your Red Hat Managed Services into your Cluster
   displayName: Red Hat Managed Services Connection operator

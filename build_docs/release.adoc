@@ -17,7 +17,7 @@ The link:https://github.com/bf2fc6cc711aee1a0c2a/operator/blob/main/olm/index.Do
 
 == Customizing the release
 
-The OLM metadata, release scripts, and container build files are in the `/olm` directory. These are executed by a link:https://github.com/bf2fc6cc711aee1a0c2a/operator/blob/main/.github/workflows/release.yml[GitHub action]. Currently, they release  to the rhoas Quay organization. If you wish to deploy to your own repository for testing continue reading. If you are trying to make a release to the quay organization, push the tag, in semver format, to the link:https://github.com/bf2fc6cc711aee1a0c2a/operator[bf2/operator] repository and the release will happen automatically.
+You can set the `QUAY_ORGANIZATION` variable in github secrets. This will define where to publish and what to tag your containers as. Edit `catalogsource.yaml` to use the new bundle repository. 
 
 === OLM Directory Structure
 
