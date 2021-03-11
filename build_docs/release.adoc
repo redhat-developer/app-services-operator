@@ -17,7 +17,8 @@ The link:https://github.com/bf2fc6cc711aee1a0c2a/operator/blob/main/olm/index.Do
 
 == Customizing the release
 
-You can set the `QUAY_ORGANIZATION` variable in github secrets. This will define where to publish and what to tag your containers as. Edit `catalogsource.yaml` to use the new bundle repository. 
+You can set the `QUAY_ORGANIZATION` variable in github secrets. This will define where to publish and what to tag your containers as. Edit `catalogsource.yaml` to use the new bundle repository. Within this organization, you need to create three repositories `service-operator-bundle`, `service-operator`, and `service-operator-registry`. These repositories will need a user with read and write permissions, and this user will be used by the GitHub action and authenticate with the `QUAY_ROBOTTOKEN` and `QUAY_ROBOTACCOUNT` secrets.
+
 
 === OLM Directory Structure
 
