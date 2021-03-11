@@ -1,9 +1,8 @@
 package com.openshift.cloud;
 
-import com.openshift.cloud.controllers.ManagedKafkaConnectionController;
-import com.openshift.cloud.controllers.ManagedServiceAccountRequestController;
-import com.openshift.cloud.controllers.ManagedServicesRequestController;
-import io.fabric8.kubernetes.client.KubernetesClient;
+import com.openshift.cloud.controllers.CloudServiceAccountRequestController;
+import com.openshift.cloud.controllers.CloudServicesRequestController;
+import com.openshift.cloud.controllers.KafkaConnectionController;
 import io.javaoperatorsdk.operator.Operator;
 import io.javaoperatorsdk.operator.api.config.ConfigurationService;
 import io.javaoperatorsdk.operator.api.config.ControllerConfiguration;
@@ -16,17 +15,15 @@ import org.jboss.logging.Logger;
 @QuarkusMain
 public class RHOASOperator implements QuarkusApplication {
 
-  @Inject KubernetesClient client;
-
   @Inject Operator operator;
 
   @Inject ConfigurationService configuration;
 
-  @Inject ManagedKafkaConnectionController connectionController;
+  @Inject KafkaConnectionController connectionController;
 
-  @Inject ManagedServicesRequestController requestController;
+  @Inject CloudServicesRequestController requestController;
 
-  @Inject ManagedServiceAccountRequestController serviceAccountRequestController;
+  @Inject CloudServiceAccountRequestController serviceAccountRequestController;
 
   private static final Logger LOG = Logger.getLogger(RHOASOperator.class);
 

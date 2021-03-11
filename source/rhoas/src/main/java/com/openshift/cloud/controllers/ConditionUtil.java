@@ -1,10 +1,10 @@
 package com.openshift.cloud.controllers;
 
-import static com.openshift.cloud.v1alpha.models.ManagedKafkaCondition.Status.False;
-import static com.openshift.cloud.v1alpha.models.ManagedKafkaCondition.Status.True;
+import static com.openshift.cloud.v1alpha.models.KafkaCondition.Status.False;
+import static com.openshift.cloud.v1alpha.models.KafkaCondition.Status.True;
 
 import com.openshift.cloud.v1alpha.models.*;
-import com.openshift.cloud.v1alpha.models.ManagedKafkaCondition.Status;
+import com.openshift.cloud.v1alpha.models.KafkaCondition.Status;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -16,8 +16,8 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 /**
- * This class contains utility methods to set conditions on {@link ManagedServicesRequest}, {@link
- * ManagedKafkaConnection}, and {@link ManagedServiceAccountRequest}.
+ * This class contains utility methods to set conditions on {@link CloudServicesRequest}, {@link
+ * KafkaConnection}, and {@link CloudServiceAccountRequest}.
  *
  * <p>When you receive one of these objects in an operator, you should call initializeConditions
  * with that object. Operations on that object inside of a controller should be wrapped in a try
@@ -33,40 +33,40 @@ public class ConditionUtil {
 
   private static final Logger LOG = Logger.getLogger(ConditionUtil.class.getName());
 
-  public static void initializeConditions(ManagedServicesRequest resource) {
+  public static void initializeConditions(CloudServicesRequest resource) {
     var status = resource.getStatus();
     if (status == null) {
       resource.setStatus(
-          new ManagedServicesRequestStatusBuilder()
+          new CloudServicesRequestStatusBuilder()
               .withLastUpdate(isoNow())
               .withUserKafkas(new ArrayList<>())
-              .withConditions(managedServicesRequestDefaultConditions())
+              .withConditions(cloudServicesRequestDefaultConditions())
               .build());
     } else {
-      status.setConditions(managedServicesRequestDefaultConditions());
+      status.setConditions(cloudServicesRequestDefaultConditions());
     }
   }
 
-  private static List<ManagedKafkaCondition> managedServicesRequestDefaultConditions() {
+  private static List<KafkaCondition> cloudServicesRequestDefaultConditions() {
     return List.of(
-        new ManagedKafkaCondition()
+        new KafkaCondition()
             .setLastTransitionTime(isoNow())
-            .setType(ManagedKafkaCondition.Type.AcccesTokenSecretValid)
+            .setType(KafkaCondition.Type.AcccesTokenSecretValid)
             .setReason("")
             .setMessage("")
-            .setStatus(ManagedKafkaCondition.Status.Unknown),
-        new ManagedKafkaCondition()
-            .setLastTransitionTime(isoNow())
-            .setReason("")
-            .setMessage("")
-            .setType(ManagedKafkaCondition.Type.Finished)
-            .setStatus(ManagedKafkaCondition.Status.Unknown),
-        new ManagedKafkaCondition()
+            .setStatus(KafkaCondition.Status.Unknown),
+        new KafkaCondition()
             .setLastTransitionTime(isoNow())
             .setReason("")
             .setMessage("")
-            .setType(ManagedKafkaCondition.Type.UserKafkasUpToDate)
-            .setStatus(ManagedKafkaCondition.Status.Unknown));
+            .setType(KafkaCondition.Type.Finished)
+            .setStatus(KafkaCondition.Status.Unknown),
+        new KafkaCondition()
+            .setLastTransitionTime(isoNow())
+            .setReason("")
+            .setMessage("")
+            .setType(KafkaCondition.Type.UserKafkasUpToDate)
+            .setStatus(KafkaCondition.Status.Unknown));
   }
 
   /**
@@ -76,14 +76,14 @@ public class ConditionUtil {
    * @param e the exception
    */
   public static void setConditionFromException(
-      List<ManagedKafkaCondition> conditions, ConditionAwareException e) {
+      List<KafkaCondition> conditions, ConditionAwareException e) {
     var condition = getCondition(conditions, e.getType());
     condition.setLastTransitionTime(isoNow());
     condition.setMessage(e.getConditionMessage());
     condition.setStatus(e.getStatus());
     condition.setReason(e.getReason());
 
-    var finishedCondition = getCondition(conditions, ManagedKafkaCondition.Type.Finished);
+    var finishedCondition = getCondition(conditions, KafkaCondition.Type.Finished);
 
     // There should be a finishedCondition, if not just write a debug log.
     if (finishedCondition == null) {
@@ -96,8 +96,8 @@ public class ConditionUtil {
     }
   }
 
-  public static ManagedKafkaCondition getCondition(
-      List<ManagedKafkaCondition> resource, ManagedKafkaCondition.Type type) {
+  public static KafkaCondition getCondition(
+      List<KafkaCondition> resource, KafkaCondition.Type type) {
     return resource.stream()
         .filter(condition -> condition.getType() == (type))
         .findFirst()
@@ -114,47 +114,47 @@ public class ConditionUtil {
     return ZonedDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.ISO_INSTANT);
   }
 
-  public static void initializeConditions(ManagedServiceAccountRequest resource) {
+  public static void initializeConditions(CloudServiceAccountRequest resource) {
     var status = resource.getStatus();
     if (status == null) {
       resource.setStatus(
-          new ManagedServiceAccountRequestStatusBuilder()
-              .withConditions(managedKafkaServiceAccountRequestDefaultConditions())
+          new CloudServiceAccountRequestStatusBuilder()
+              .withConditions(kafkaServiceAccountRequestDefaultConditions())
               .build());
     } else {
-      status.setConditions(managedKafkaServiceAccountRequestDefaultConditions());
+      status.setConditions(kafkaServiceAccountRequestDefaultConditions());
     }
   }
 
-  private static List<ManagedKafkaCondition> managedKafkaServiceAccountRequestDefaultConditions() {
+  private static List<KafkaCondition> kafkaServiceAccountRequestDefaultConditions() {
     return List.of(
-        new ManagedKafkaCondition()
+        new KafkaCondition()
             .setLastTransitionTime(isoNow())
-            .setType(ManagedKafkaCondition.Type.AcccesTokenSecretValid)
+            .setType(KafkaCondition.Type.AcccesTokenSecretValid)
             .setReason("")
             .setMessage("")
-            .setStatus(ManagedKafkaCondition.Status.Unknown),
-        new ManagedKafkaCondition()
-            .setLastTransitionTime(isoNow())
-            .setReason("")
-            .setMessage("")
-            .setType(ManagedKafkaCondition.Type.ServiceAccountCreated)
-            .setStatus(ManagedKafkaCondition.Status.Unknown),
-        new ManagedKafkaCondition()
+            .setStatus(KafkaCondition.Status.Unknown),
+        new KafkaCondition()
             .setLastTransitionTime(isoNow())
             .setReason("")
             .setMessage("")
-            .setType(ManagedKafkaCondition.Type.ServiceAccountSecretCreated)
-            .setStatus(ManagedKafkaCondition.Status.Unknown),
-        new ManagedKafkaCondition()
+            .setType(KafkaCondition.Type.ServiceAccountCreated)
+            .setStatus(KafkaCondition.Status.Unknown),
+        new KafkaCondition()
             .setLastTransitionTime(isoNow())
             .setReason("")
             .setMessage("")
-            .setType(ManagedKafkaCondition.Type.Finished)
+            .setType(KafkaCondition.Type.ServiceAccountSecretCreated)
+            .setStatus(KafkaCondition.Status.Unknown),
+        new KafkaCondition()
+            .setLastTransitionTime(isoNow())
+            .setReason("")
+            .setMessage("")
+            .setType(KafkaCondition.Type.Finished)
             .setStatus(Status.Unknown));
   }
 
-  public static void setAllConditionsTrue(List<ManagedKafkaCondition> conditions) {
+  public static void setAllConditionsTrue(List<KafkaCondition> conditions) {
     conditions.forEach(
         condition -> {
           condition.setLastTransitionTime(isoNow());
@@ -164,41 +164,41 @@ public class ConditionUtil {
         });
   }
 
-  public static void initializeConditions(ManagedKafkaConnection resource) {
+  public static void initializeConditions(KafkaConnection resource) {
     var status = resource.getStatus();
     if (status == null) {
       resource.setStatus(
-          new ManagedKafkaConnectionStatusBuilder()
-              .withConditions(managedKafkaConnectionDefaultConditions())
+          new KafkaConnectionStatusBuilder()
+              .withConditions(kafkaConnectionDefaultConditions())
               .build());
     } else {
-      status.setConditions(managedKafkaConnectionDefaultConditions());
+      status.setConditions(kafkaConnectionDefaultConditions());
     }
   }
 
-  private static List<ManagedKafkaCondition> managedKafkaConnectionDefaultConditions() {
+  private static List<KafkaCondition> kafkaConnectionDefaultConditions() {
     return List.of(
-        new ManagedKafkaCondition()
+        new KafkaCondition()
             .setLastTransitionTime(isoNow())
-            .setType(ManagedKafkaCondition.Type.AcccesTokenSecretValid)
+            .setType(KafkaCondition.Type.AcccesTokenSecretValid)
             .setReason("")
             .setMessage("")
-            .setStatus(ManagedKafkaCondition.Status.Unknown),
-        new ManagedKafkaCondition()
+            .setStatus(KafkaCondition.Status.Unknown),
+        new KafkaCondition()
             .setLastTransitionTime(isoNow())
-            .setType(ManagedKafkaCondition.Type.FoundKafkaById)
+            .setType(KafkaCondition.Type.FoundKafkaById)
             .setReason("")
             .setMessage("")
-            .setStatus(ManagedKafkaCondition.Status.Unknown),
-        new ManagedKafkaCondition()
+            .setStatus(KafkaCondition.Status.Unknown),
+        new KafkaCondition()
             .setLastTransitionTime(isoNow())
             .setReason("")
             .setMessage("")
-            .setType(ManagedKafkaCondition.Type.Finished)
+            .setType(KafkaCondition.Type.Finished)
             .setStatus(Status.Unknown));
   }
 
-  public static boolean allTrue(List<ManagedKafkaCondition> conditions) {
+  public static boolean allTrue(List<KafkaCondition> conditions) {
     AtomicBoolean allTrue = new AtomicBoolean(true);
     for (var cond : conditions) {
       if (cond.getStatus() != True) {

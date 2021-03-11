@@ -1,7 +1,7 @@
 package com.openshift.cloud.beans;
 
 import com.openshift.cloud.controllers.ConditionAwareException;
-import com.openshift.cloud.v1alpha.models.ManagedKafkaCondition;
+import com.openshift.cloud.v1alpha.models.KafkaCondition;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.vertx.core.json.JsonObject;
 import java.io.IOException;
@@ -57,8 +57,8 @@ public class AccessTokenSecretTool {
       throw new ConditionAwareException(
           ex.getMessage(),
           ex,
-          ManagedKafkaCondition.Type.AcccesTokenSecretValid,
-          ManagedKafkaCondition.Status.False,
+          KafkaCondition.Type.AcccesTokenSecretValid,
+          KafkaCondition.Status.False,
           ex.getClass().getName(),
           ex.getMessage());
     }

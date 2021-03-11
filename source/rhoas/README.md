@@ -1,11 +1,11 @@
 # RHOAS Service-Binding Operator
-This operator creates and manages custom resources used by the RHOAS Managed Kafka Service.
+This operator creates and manages custom resources used by the RHOAS Kafka Service.
 
 # Prerequesites
  * Java 11+
  * Maven
  * A service-api token from cloud.redhat.com (Talk to Pete)
- * Access to a managed-services instance.
+ * Access to a RHOAS services .
 
 # Building and Running
 
@@ -37,11 +37,11 @@ mvn quarkus:dev
 
 # Usage
 
-Once the operator has come online it will load deployed crds and deploy crds based on our model classes if no deployed crds are found. You can verify the operator is working by creating a `ManagedKafkaConnection` custom resource. And example follows :
+Once the operator has come online it will load deployed crds and deploy crds based on our model classes if no deployed crds are found. You can verify the operator is working by creating a `KafkaConnection` custom resource. And example follows :
 
 ```yaml
 apiVersion: rhoas.redhat.com/v1alpha1
-kind: ManagedKafkaConnection
+kind: KafkaConnection
 metadata:
   name: rhosak-demo
 

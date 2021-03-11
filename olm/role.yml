@@ -27,15 +27,15 @@ rules:
 - apiGroups:
   - rhoas.redhat.com
   resources:
-  - 'managedkafkaconnections'
-  - 'managedkafkaconnections/status'
-  - 'managedkafkaconnections/finalizers'
-  - 'managedservicesrequests'
-  - 'managedservicesrequests/status'
-  - 'managedservicesrequests/finalizers'
-  - 'managedserviceaccountrequests'
-  - 'managedserviceaccountrequests/status'
-  - 'managedserviceaccountrequests/finalizers'
+  - 'kafkaconnections'
+  - 'kafkaconnections/status'
+  - 'kafkaconnections/finalizers'
+  - 'cloudservicesrequests'
+  - 'cloudservicesrequests/status'
+  - 'cloudservicesrequests/finalizers'
+  - 'cloudserviceaccountrequests'
+  - 'cloudserviceaccountrequests/status'
+  - 'cloudserviceaccountrequests/finalizers'
   verbs:
   - create
   - delete
