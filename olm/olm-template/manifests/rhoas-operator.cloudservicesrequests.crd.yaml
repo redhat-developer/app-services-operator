@@ -8,7 +8,7 @@ spec:
     kind: CloudServicesRequest
     plural: cloudservicesrequests
     shortNames:
-      - mscr
+      - cscr
     singular: cloudservicesrequest
   scope: Namespaced
   versions:

@@ -33,9 +33,9 @@ public final class KafkaK8sClients {
 
   @Inject KubernetesClient client;
 
-  private CustomResourceDefinition mkcCrd;
-  private CustomResourceDefinition mscrCrd;
-  private CustomResourceDefinition msarCrd;
+  private CustomResourceDefinition akcCrd;
+  private CustomResourceDefinition cscrCrd;
+  private CustomResourceDefinition csarCrd;
 
   @PostConstruct
   public void init() {
@@ -43,33 +43,33 @@ public final class KafkaK8sClients {
 
     var crds = client.apiextensions().v1beta1();
 
-    this.mkcCrd = initKafkaConnectionCRDAndClient(crds);
-    this.mscrCrd = initCloudServicesRequestCRDAndClient(crds);
-    this.msarCrd = initCloudServiceAccountRequestCRDAndClient(crds);
+    this.akcCrd = initKafkaConnectionCRDAndClient(crds);
+    this.cscrCrd = initCloudServicesRequestCRDAndClient(crds);
+    this.csarCrd = initCloudServiceAccountRequestCRDAndClient(crds);
   }
 
   public MixedOperation<KafkaConnection, KafkaConnectionList, Resource<KafkaConnection>>
       kafkaConnection() {
     KubernetesDeserializer.registerCustomKind(
-        getApiVersion(KafkaConnection.class), mkcCrd.getKind(), KafkaConnection.class);
+        getApiVersion(KafkaConnection.class), akcCrd.getKind(), KafkaConnection.class);
 
-    var mkcCrdContext = CustomResourceDefinitionContext.fromCrd(this.mkcCrd);
+    var akcCrdContext = CustomResourceDefinitionContext.fromCrd(this.akcCrd);
 
     // lets create a client for the CRD
-    return client.customResources(mkcCrdContext, KafkaConnection.class, KafkaConnectionList.class);
+    return client.customResources(akcCrdContext, KafkaConnection.class, KafkaConnectionList.class);
   }
 
   public MixedOperation<
           CloudServicesRequest, CloudServicesRequestList, Resource<CloudServicesRequest>>
       cloudServicesRequest() {
     KubernetesDeserializer.registerCustomKind(
-        getApiVersion(CloudServicesRequest.class), mscrCrd.getKind(), CloudServicesRequest.class);
+        getApiVersion(CloudServicesRequest.class), cscrCrd.getKind(), CloudServicesRequest.class);
 
-    var mkcCrdContext = CustomResourceDefinitionContext.fromCrd(this.mscrCrd);
+    var akcCrdContext = CustomResourceDefinitionContext.fromCrd(this.cscrCrd);
 
     // lets create a client for the CRD
     return client.customResources(
-        mkcCrdContext, CloudServicesRequest.class, CloudServicesRequestList.class);
+        akcCrdContext, CloudServicesRequest.class, CloudServicesRequestList.class);
   }
 
   public MixedOperation<
@@ -79,100 +79,100 @@ public final class KafkaK8sClients {
       cloudServiceAccountRequest() {
     KubernetesDeserializer.registerCustomKind(
         getApiVersion(CloudServiceAccountRequest.class),
-        msarCrd.getKind(),
+        csarCrd.getKind(),
         CloudServiceAccountRequest.class);
 
-    var mkcCrdContext = CustomResourceDefinitionContext.fromCrd(this.msarCrd);
+    var akcCrdContext = CustomResourceDefinitionContext.fromCrd(this.csarCrd);
 
     // lets create a client for the CRD
     return client.customResources(
-        mkcCrdContext, CloudServiceAccountRequest.class, CloudServiceAccountRequestList.class);
+        akcCrdContext, CloudServiceAccountRequest.class, CloudServiceAccountRequestList.class);
   }
 
   private CustomResourceDefinition initCloudServiceAccountRequestCRDAndClient(
       V1beta1ApiextensionAPIGroupDSL crds) {
 
-    CustomResourceDefinition mkcCrd;
+    CustomResourceDefinition akcCrd;
 
     var crdsItems = crds.customResourceDefinitions().list().getItems();
     var kafkaConnectionCRDName = CustomResource.getCRDName(CloudServiceAccountRequest.class);
 
-    var mkcCrdOptional =
+    var akcCrdOptional =
         crdsItems.stream()
             .filter(crd -> kafkaConnectionCRDName.equals(crd.getMetadata().getName()))
             .findFirst();
 
-    if (mkcCrdOptional.isEmpty()) {
+    if (akcCrdOptional.isEmpty()) {
       LOG.info("Creating CloudServiceAccountRequest CRD");
-      mkcCrd =
+      akcCrd =
           CustomResourceDefinitionContext.v1beta1CRDFromCustomResourceType(
                   CloudServiceAccountRequest.class)
               .build();
-      client.apiextensions().v1beta1().customResourceDefinitions().create(mkcCrd);
+      client.apiextensions().v1beta1().customResourceDefinitions().create(akcCrd);
       LOG.info("CloudServiceAccountRequest CRD Created");
     } else {
       LOG.info("Found CloudServiceAccountRequest CRD");
-      mkcCrd = mkcCrdOptional.get();
+      akcCrd = akcCrdOptional.get();
     }
 
-    return mkcCrd;
+    return akcCrd;
   }
 
   private CustomResourceDefinition initKafkaConnectionCRDAndClient(
       V1beta1ApiextensionAPIGroupDSL crds) {
 
-    CustomResourceDefinition mkcCrd;
+    CustomResourceDefinition akcCrd;
 
     var crdsItems = crds.customResourceDefinitions().list().getItems();
     var kafkaConnectionCRDName = CustomResource.getCRDName(KafkaConnection.class);
 
-    var mkcCrdOptional =
+    var akcCrdOptional =
         crdsItems.stream()
             .filter(crd -> kafkaConnectionCRDName.equals(crd.getMetadata().getName()))
             .findFirst();
 
-    if (mkcCrdOptional.isEmpty()) {
+    if (akcCrdOptional.isEmpty()) {
       LOG.info("Creating KafkaConnection CRD");
-      mkcCrd =
+      akcCrd =
           CustomResourceDefinitionContext.v1beta1CRDFromCustomResourceType(KafkaConnection.class)
               .build();
-      client.apiextensions().v1beta1().customResourceDefinitions().create(mkcCrd);
+      client.apiextensions().v1beta1().customResourceDefinitions().create(akcCrd);
       LOG.info("KafkaConnection CRD Created");
     } else {
       LOG.info("Found KafkaConnection CRD");
-      mkcCrd = mkcCrdOptional.get();
+      akcCrd = akcCrdOptional.get();
     }
 
-    return mkcCrd;
+    return akcCrd;
   }
 
   private CustomResourceDefinition initCloudServicesRequestCRDAndClient(
       V1beta1ApiextensionAPIGroupDSL crds) {
 
-    CustomResourceDefinition mkcCrd;
+    CustomResourceDefinition akcCrd;
 
     var crdsItems = crds.customResourceDefinitions().list().getItems();
     var cloudServicesRequestCRDName = CustomResource.getCRDName(CloudServicesRequest.class);
 
-    var mkcCrdOptional =
+    var akcCrdOptional =
         crdsItems.stream()
             .filter(crd -> cloudServicesRequestCRDName.equals(crd.getMetadata().getName()))
             .findFirst();
 
-    if (mkcCrdOptional.isEmpty()) {
+    if (akcCrdOptional.isEmpty()) {
       LOG.info("Creating CloudServicesRequest CRD");
-      mkcCrd =
+      akcCrd =
           CustomResourceDefinitionContext.v1beta1CRDFromCustomResourceType(
                   CloudServicesRequest.class)
               .build();
-      client.apiextensions().v1beta1().customResourceDefinitions().create(mkcCrd);
+      client.apiextensions().v1beta1().customResourceDefinitions().create(akcCrd);
       LOG.info("CloudServicesRequest CRD Created");
     } else {
       LOG.info("Found CloudServicesRequest CRD");
-      mkcCrd = mkcCrdOptional.get();
+      akcCrd = akcCrdOptional.get();
     }
 
-    return mkcCrd;
+    return akcCrd;
   }
 
   /**

@@ -16,7 +16,7 @@ spec:
     kind: KafkaConnection
     plural: kafkaconnections
     shortNames:
-    - mkc
+    - akc
     singular: kafkaconnection
   scope: Namespaced
   versions:
