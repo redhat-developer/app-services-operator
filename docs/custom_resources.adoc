@@ -9,7 +9,7 @@ All resources are namespace scoped and include operator-managed conditions.
 
 == CloudServicesRequest
 
-This custom resource is populated with managed services available to the provided access token. These services are listed under the status object. This resource is used to get a list of available services. For instance, the id of a Kafka service is used by `KafkaConnection`.
+This custom resource is populated with services available to the provided access token. These services are listed under the status object. This resource is used to get a list of available services. For instance, the id of a Kafka service is used by `KafkaConnection`.
 
 === Example
 .example.yaml
@@ -19,13 +19,13 @@ This custom resource is populated with managed services available to the provide
 apiVersion: rhoas.redhat.com/v1alpha1
 kind: CloudServicesRequest
 metadata:
-  name: namespace-name-managed-kafkas
+  name: namespace-name-kafkas
   namespace: rhoas-operator-testing
   labels:
     app.kubernetes.io/component: external-service
     app.kubernetes.io/managed-by: rhoas
 spec:
-  accessTokenSecretName: rh-managed-services-api-accesstoken # see `AcccesTokenSecretValid Condition`
+  accessTokenSecretName: rh-cloud-services-api-accesstoken # see `AcccesTokenSecretValid Condition`
 # status:
   ## conditions:
   ## - lastTransitionTime: "2021-03-04T00:41:25.745120Z"
@@ -66,15 +66,15 @@ spec:
  The status subresource has the following properties 
 
  * lastUpdate - The last update of the status object in ISO format
- * userKafkas - a list of managed kafka services.
+ * userKafkas - a list of kafka services.
 
 
 ==== UserKafka's Format
  
  The `userKafkas` status field is a list of `userKafka` objects. These object have the following properties:
  
-  * `id` - the id field used to reference this managed service. See `KafkaConnection`
-  * `bootstrapServerHost` - the URL for the managed service instance
+  * `id` - the id field used to reference this service. See `KafkaConnection`
+  * `bootstrapServerHost` - the URL for the service instance
   * `name` - a human readable name
   * `provider` - the cloud provider hosting the service
   * `region` - geographic region service is hosted in
@@ -148,7 +148,7 @@ spec:
 
  * `bootstrapServerHost` - The url of the `kafkaId`
  * `uiRef` - The url of the ui for `kafkaId`
- * `serviceAccountSecretName` - The secret which contains the service account credentials used to connect to the managed service
+ * `serviceAccountSecretName` - The secret which contains the service account credentials used to connect to the service
  * `saslMechanism` - The security mechanism used to perform a connection with this resource. Default *PLAIN*
  * `securityProtocol` - The security protocol used to perform a connection with this resource. Default *SSL*
 
@@ -161,7 +161,7 @@ spec:
 
 == CloudServiceAccountRequest
 
-This resource creates a service account per its spec. Credentials for the service account will be stored in a secret with the name provided by `serviceAccountSecretName`. This service account is used to connect to managed kafka instances. See `KafkaConnection` for details on connecting to the instances.
+This resource creates a service account per its spec. Credentials for the service account will be stored in a secret with the name provided by `serviceAccountSecretName`. This service account is used to connect to kafka instances. See `KafkaConnection` for details on connecting to the instances.
 
 == Example
 
@@ -210,8 +210,8 @@ status:
  
 The operator will create and manage a secret for the account created by this resource. The credentials secret is an opaque secret with the following keys : 
 
- * `client-id` - an identifier provided by the managed service API for this client
- * `client-secret` - a secret provided by the managed service API for this client
+ * `client-id` - an identifier provided by the service API for this client
+ * `client-secret` - a secret provided by the service API for this client
 
 
 === Spec

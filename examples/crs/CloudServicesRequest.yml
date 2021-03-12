@@ -2,7 +2,7 @@
 apiVersion: rhoas.redhat.com/v1alpha1
 kind: CloudServicesRequest
 metadata:
-  name: namespace-name-managed-kafkas
+  name: namespace-name-kafkas
   namespace: rhoas-operator-testing
   labels:
     app.kubernetes.io/component: external-service

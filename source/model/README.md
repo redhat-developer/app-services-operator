@@ -1,11 +1,11 @@
 # RHOAS Service-Binding Operator
-This operator creates and manages custom resources used by the RHOAS Managed Kafka Service.
+This operator creates and manages custom resources for RHOAS cloud services
 
 # Prerequesites
  * Java 11+
  * Maven
  * A service-api token from cloud.redhat.com (Talk to Pete)
- * Access to a managed-services instance.
+ * Access to a rhoas services instance.
 
 # Building and Running
 
@@ -19,7 +19,7 @@ mvn quarkus:dev;
 
 ## Building
 
-The operator source is in the [rhoas](./rhoas) module. The [openapi](./openapi) module generates an API based on the managed-services-api openapi manifest. `rhoas` has a dependency on `openapi` and therefor the parent project should be installed with `mvn clean install` before the operator is run.
+The operator source is in the [rhoas](./rhoas) module. The [openapi](./openapi) module generates an API based on the services-api openapi manifest. `rhoas` has a dependency on `openapi` and therefor the parent project should be installed with `mvn clean install` before the operator is run.
 
 ```sh
 mvn clean install;

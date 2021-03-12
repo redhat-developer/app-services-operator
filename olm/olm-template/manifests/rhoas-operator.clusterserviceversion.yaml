@@ -23,12 +23,12 @@ spec:
       kind: CloudServiceAccountRequest
       name: cloudserviceaccountrequests.rhoas.redhat.com
       version: v1alpha1
-    - description: Managed Services Request
+    - description: Cloud Services Request
       displayName:  Cloud Services Request
       kind: CloudServicesRequest
       name: cloudservicesrequests.rhoas.redhat.com
       version: v1alpha1
-    - description: Binds Managed Kafka
+    - description: Binds Cloud Kafka
       displayName: Kafka Connection
       kind: KafkaConnection
       name: kafkaconnections.rhoas.redhat.com
@@ -116,8 +116,8 @@ spec:
                     cpu: 30m
                     memory: 128Mi                
               serviceAccountName: rhoas-operator
-  description: Operator connects your Red Hat Managed Services into your Cluster
-  displayName: Red Hat Managed Services Connection operator
+  description: Operator connects your Red Hat Cloud Services into your Cluster
+  displayName: RHOAS
   keywords:
   - managed
   - kafka
