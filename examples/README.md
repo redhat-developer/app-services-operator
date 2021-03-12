@@ -17,7 +17,7 @@ Get token from https://cloud.redhat.com/openshift/token and paste it into secret
 ```
 oc apply -f ./secrets/api-token.yml
 ```
-2. Create managed kafka connection 
+2. Create CloudServicesRequest
 ```
 oc apply -f ./crs/CloudServicesRequest.yml
 ```
@@ -34,7 +34,7 @@ Go and edit `kafkaId` based on status from `CloudServicesRequest` object
 oc get CloudServicesRequest -o yaml
 ```
 
-Edit connection and create it
+Edit connection - change kafkaId and create it
 ```
 oc apply -f ./crs/KafkaConnection.yml
 ```

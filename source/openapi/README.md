@@ -1,6 +1,6 @@
 # kas-fleet-manager-api
 
-This module generates an ApiClient for RHOAS services. The service definition is found in the file [managed-services-api.yaml](./managed-services-api.yaml). Configuration can be found in [pom.xml](./pom.xml). API generation is handled by the [openapi-generator-maven-plugin](https://github.com/OpenAPITools/openapi-generator/blob/master/modules/openapi-generator-maven-plugin/README.md).
+This module generates an ApiClient for RHOAS services. The service definition is found in the file [kas-fleet-manager.yaml](./kas-fleet-manager.yaml). Configuration can be found in [pom.xml](./pom.xml). API generation is handled by the [openapi-generator-maven-plugin](https://github.com/OpenAPITools/openapi-generator/blob/master/modules/openapi-generator-maven-plugin/README.md).
 
 # Building
 Normally this project will be built and installed as part of running `mvn install` on the parent project.
