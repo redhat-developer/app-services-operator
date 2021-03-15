@@ -1,14 +1,12 @@
 package com.openshift.cloud.v1alpha.models;
 
 import io.sundr.builder.annotations.Buildable;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @Buildable
 public class KafkaConnectionStatus {
-
   private String message;
   private String updated;
   private String bootstrapServerHost;
@@ -32,7 +30,7 @@ public class KafkaConnectionStatus {
     this.updated = updated;
     this.bootstrapServerHost = bootstrapServerHost;
     this.serviceAccountSecretName = serviceAccountSecretName;
-    this.metadata  = new HashMap<String, String>();
+    this.metadata = new HashMap<String, String>();
   }
 
   public String getMessage() {

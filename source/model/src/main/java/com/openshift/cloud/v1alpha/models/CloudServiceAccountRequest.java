@@ -1,6 +1,5 @@
 package com.openshift.cloud.v1alpha.models;
 
-import io.dekorate.crd.annotation.Crd;
 import io.fabric8.kubernetes.api.model.Namespaced;
 import io.fabric8.kubernetes.client.CustomResource;
 import io.fabric8.kubernetes.model.annotation.Group;
