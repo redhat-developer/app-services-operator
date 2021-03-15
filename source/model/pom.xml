@@ -15,24 +15,11 @@
     <fabric8.version>5.0.0</fabric8.version>
     <operator.sdk.version>1.7.0</operator.sdk.version>
     <quarkus.version>1.11.0.Final</quarkus.version>
-    <dekorate.version>2.0.0.beta3</dekorate.version>
     <sundrio.version>0.24.1</sundrio.version>
 
   </properties>
   <dependencyManagement>
     <dependencies>
-      <dependency>
-        <groupId>io.fabric8</groupId>
-        <artifactId>crd-generator</artifactId>
-        <scope>compile</scope>
-        <version>5.1.1</version>
-      </dependency>
-      <!-- This dependency will not be needed anymore in a future release of the kubernetes-client -->
-      <dependency>
-        <groupId>io.fabric8</groupId>
-        <artifactId>kubernetes-model-common</artifactId>
-        <version>4.12.0</version>
-      </dependency>
       <dependency>
         <groupId>io.sundr</groupId>
         <artifactId>builder-annotations</artifactId>
@@ -43,13 +30,20 @@
   <dependencies>
     <dependency>
       <groupId>io.fabric8</groupId>
-      <artifactId>kubernetes-client</artifactId>
-      <version>${fabric8.version}</version>
+      <artifactId>crd-generator</artifactId>
+      <scope>compile</scope>
+      <version>5.1.1</version>
+    </dependency>
+    <!-- This dependency will not be needed anymore in a future release of the kubernetes-client -->
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>kubernetes-model-common</artifactId>
+      <version>4.12.0</version>
     </dependency>
     <dependency>
-      <groupId>io.dekorate</groupId>
-      <artifactId>crd-annotations</artifactId>
-      <optional>true</optional> <!-- we need to keep this optional to avoid conflicts with quarkus-kubernetes -->
+      <groupId>io.fabric8</groupId>
+      <artifactId>kubernetes-client</artifactId>
+      <version>${fabric8.version}</version>
     </dependency>
     <dependency>
       <groupId>io.sundr</groupId>

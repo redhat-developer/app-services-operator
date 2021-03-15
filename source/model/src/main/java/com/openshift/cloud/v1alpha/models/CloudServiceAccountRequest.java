@@ -13,7 +13,6 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 @Plural("cloudserviceaccountrequests")
 @Group("rhoas.redhat.com")
 @Version("v1alpha1")
-@Crd(group = "rhoas.redhat.com", version = "v1alpha1")
 public class CloudServiceAccountRequest
     extends CustomResource<CloudServiceAccountRequestSpec, CloudServiceAccountRequestStatus>
     implements Namespaced {
