@@ -17,7 +17,7 @@
     <quarkus.version>1.11.0.Final</quarkus.version>
     <sundrio.version>0.24.1</sundrio.version>
     <fabric8.models.version>5.2.0</fabric8.models.version>
-    <fabric8.crdgen.version>5.1.0</fabric8.crdgen.version>
+    <fabric8.crdgen.version>5.2.0</fabric8.crdgen.version>
 
   </properties>
   <dependencyManagement>
@@ -30,19 +30,19 @@
     </dependencies>
   </dependencyManagement>
   <dependencies>
-<!--    <dependency>-->
-<!--      <groupId>io.fabric8</groupId>-->
-<!--      <artifactId>crd-generator</artifactId>-->
-<!--      <scope>compile</scope>-->
-<!--      <version>${fabric8.crdgen.version}</version>-->
-<!--    </dependency>-->
-<!--    &lt;!&ndash; This dependency will not be needed anymore in a future release of the kubernetes-client &ndash;&gt;-->
-<!--    <dependency>-->
-<!--      <groupId>io.fabric8</groupId>-->
-<!--      <artifactId>kubernetes-model-common</artifactId>-->
-<!--      <scope>compile</scope>-->
-<!--      <version>${fabric8.models.version}</version>-->
-<!--    </dependency>-->
+        <dependency>
+          <groupId>io.fabric8</groupId>
+          <artifactId>crd-generator-apt</artifactId>
+          <scope>compile</scope>
+          <version>${fabric8.crdgen.version}</version>
+        </dependency>
+        <!-- This dependency will not be needed anymore in a future release of the kubernetes-client -->
+        <dependency>
+          <groupId>io.fabric8</groupId>
+          <artifactId>kubernetes-model-common</artifactId>
+          <scope>compile</scope>
+          <version>${fabric8.models.version}</version>
+        </dependency>
     <dependency>
       <groupId>io.fabric8</groupId>
       <artifactId>kubernetes-client</artifactId>
