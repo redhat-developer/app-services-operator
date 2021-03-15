@@ -18,7 +18,6 @@ public class UserKafka {
   /**
    * @param owner
    * @param provider
-   * @param created
    * @param id
    * @param region
    */

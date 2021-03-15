@@ -3,13 +3,16 @@ kind: CustomResourceDefinition
 metadata:
   name: kafkaconnections.rhoas.redhat.com
   annotations:
-    service.binding/host: 'path={.status.bootstrapServerHost}'
+    service.binding/bootstrapServers: 'path={.status.bootstrapServerHost}'
     service.binding/password: >-
       path={.status.serviceAccountSecretName},objectType=Secret,sourceKey=client-secret
     service.binding/user: >-
       path={.status.serviceAccountSecretName},objectType=Secret,sourceKey=client-id
-    service.binding/saslMechanism: 'path={.status.saslMechanism}'
-    service.binding/securityProtocol: 'path={.status.securityProtocol}'
+    ## Additional binding metadata required for Quarkus
+    service.binding/saslMechanism: 'path={.status.metadata.saslMechanism}'
+    service.binding/securityProtocol: 'path={.status.metadata.securityProtocol}'
+    service.binding/type: 'path={.status.metadata.type}'
+    service.binding/provider: 'path={.status.metadata.provider}'
 spec:
   group: rhoas.redhat.com
   names:
@@ -45,9 +48,9 @@ spec:
               message:
                 nullable: true
                 type: string
-              uiRef:
+              metadata:
                 nullable: true
-                type: string
+                type: object
               updated:
                 nullable: true
                 type: string
@@ -55,12 +58,6 @@ spec:
                 nullable: true
                 type: string
               serviceAccountSecretName:
-                nullable: true
-                type: string
-              saslMechanism:
-                nullable: true
-                type: string
-              securityProtocol:
                 nullable: true
                 type: string
               conditions:
