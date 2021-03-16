@@ -49,13 +49,14 @@ public class KafkaApiClient {
     try {
       return createClient(accessToken).getKafkaById(kafkaId);
     } catch (ApiException e) {
+      String message = getStandarizedErrorMessage(e);
       throw new ConditionAwareException(
-          e.getMessage(),
+          message,
           e,
           KafkaCondition.Type.FoundKafkaById,
           KafkaCondition.Status.False,
           e.getClass().getName(),
-          e.getMessage());
+          message);
     }
   }
 
@@ -63,13 +64,14 @@ public class KafkaApiClient {
     try {
       return createClient(accessToken).listKafkas(null, null, null, null);
     } catch (ApiException e) {
+      String message = getStandarizedErrorMessage(e);
       throw new ConditionAwareException(
-          e.getMessage(),
+          message,
           e,
           KafkaCondition.Type.UserKafkasUpToDate,
           KafkaCondition.Status.False,
           e.getClass().getName(),
-          e.getMessage());
+          message);
     }
   }
 
@@ -81,13 +83,14 @@ public class KafkaApiClient {
       serviceAccountRequest.setName(spec.getServiceAccountName());
       return createClient(accessToken).createServiceAccount(serviceAccountRequest);
     } catch (ApiException e) {
+      String message = getStandarizedErrorMessage(e);
       throw new ConditionAwareException(
-          e.getMessage(),
+          message,
           e,
           KafkaCondition.Type.ServiceAccountCreated,
           KafkaCondition.Status.False,
           e.getClass().getName(),
-          e.getMessage());
+          message);
     }
   }
 
@@ -132,5 +135,27 @@ public class KafkaApiClient {
           e.getClass().getName(),
           e.getMessage());
     }
+  }
+
+  private String getStandarizedErrorMessage(ApiException e) {
+    if (e.getCode() == 504) {
+      return "Server timeout. Server is not responding";
+    }
+    if (e.getCode() == 500) {
+      return "Unknown server error.";
+    }
+    if (e.getCode() == 500) {
+      return "Unknown server error.";
+    }
+    if (e.getCode() == 400) {
+      return "Invalid request " + e.getMessage();
+    }
+    if (e.getCode() == 401) {
+      return "Auth Token is invalid.";
+    }
+    if (e.getCode() == 403) {
+      return "User not authorized to access the service";
+    }
+    return e.getMessage();
   }
 }
