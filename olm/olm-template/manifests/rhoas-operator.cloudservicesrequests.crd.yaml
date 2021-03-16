@@ -25,6 +25,8 @@ spec:
                 accessTokenSecretName:
                   type: string
               type: object
+              ## temporary required to workaround lack of scheduling issue with the operator SDK
+              x-kubernetes-preserve-unknown-fields: true
             status:
               properties:
                 message:
@@ -80,4 +82,3 @@ spec:
                         type: string
               type: object
           type: object
-  preserveUnknownFields: false
