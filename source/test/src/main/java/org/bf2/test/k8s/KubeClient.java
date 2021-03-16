@@ -5,12 +5,6 @@ import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.bf2.test.k8s.cmdClient.KubeCmdClient;
-import org.bf2.test.k8s.cmdClient.Kubectl;
-import org.bf2.test.k8s.cmdClient.Oc;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.FileVisitResult;
@@ -21,6 +15,11 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.bf2.test.k8s.cmdClient.KubeCmdClient;
+import org.bf2.test.k8s.cmdClient.Kubectl;
+import org.bf2.test.k8s.cmdClient.Oc;
 
 /** Abstraction over fabric8 client and cmd kube client */
 public class KubeClient {

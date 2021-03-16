@@ -1,6 +1,5 @@
 package com.openshift.cloud.controllers;
 
-import com.openshift.cloud.ApiException;
 import com.openshift.cloud.beans.AccessTokenSecretTool;
 import com.openshift.cloud.beans.KafkaApiClient;
 import com.openshift.cloud.beans.KafkaK8sClients;
@@ -8,26 +7,22 @@ import com.openshift.cloud.v1alpha.models.CloudServicesRequest;
 import com.openshift.cloud.v1alpha.models.UserKafka;
 import io.javaoperatorsdk.operator.api.*;
 import io.javaoperatorsdk.operator.processing.event.EventSourceManager;
-
-import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.logging.Logger;
+import javax.inject.Inject;
 
 @Controller
 public class CloudServicesRequestController
     extends AbstractCloudServicesController<CloudServicesRequest> {
 
-    private static final Logger LOG =
-            Logger.getLogger(CloudServicesRequestController.class.getName());
+  private static final Logger LOG =
+      Logger.getLogger(CloudServicesRequestController.class.getName());
 
-    @Inject
-    AccessTokenSecretTool accessTokenSecretTool;
+  @Inject AccessTokenSecretTool accessTokenSecretTool;
 
-    @Inject
-    KafkaK8sClients kafkaClientFactory;
+  @Inject KafkaK8sClients kafkaClientFactory;
 
-    @Inject
-    KafkaApiClient apiClient;
+  @Inject KafkaApiClient apiClient;
 
   public CloudServicesRequestController() {}
 
