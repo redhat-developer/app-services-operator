@@ -53,7 +53,7 @@ public class AccessTokenSecretTool {
       var accessToken = exchangeToken(offlineToken);
       return accessToken;
     } catch (Exception ex) {
-      LOG.log(Level.SEVERE, ex.getMessage(), ex);
+      LOG.log(Level.SEVERE, ex.getMessage());
       throw new ConditionAwareException(
           ex.getMessage(),
           ex,
@@ -65,17 +65,21 @@ public class AccessTokenSecretTool {
   }
 
   private String getOfflineTokenFromSecret(String secretName, String namespace) {
-    var offlineToken =
-        k8sClient
+    var token =      k8sClient
             .secrets()
             .inNamespace(namespace)
             .withName(secretName)
-            .get()
-            .getData()
-            .get(ACCESS_TOKEN_SECRET_KEY);
-    offlineToken = new String(Base64.getDecoder().decode(offlineToken));
+            .get();
+    if(token !=null ) {
+      var offlineToken =
+              token
+                      .getData()
+                      .get(ACCESS_TOKEN_SECRET_KEY);
+      offlineToken = new String(Base64.getDecoder().decode(offlineToken));
 
-    return offlineToken;
+      return offlineToken;
+    }
+    throw new Error("Missing Offline Token Secret "+ secretName);
   }
 
   /**
