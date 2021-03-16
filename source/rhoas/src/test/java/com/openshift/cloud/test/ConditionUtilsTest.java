@@ -12,6 +12,7 @@ public class ConditionUtilsTest {
   @Test
   public void finishedInitializedToUnknown() {
     var resource = new KafkaConnection();
+    resource.getMetadata().setGeneration(1l);
     ConditionUtil.initializeConditions(resource);
 
     var resourceConditions = resource.getStatus().getConditions();
@@ -24,6 +25,7 @@ public class ConditionUtilsTest {
   @Test
   public void settingExceptionSetsFinishedToFalse() {
     var resource = new KafkaConnection();
+    resource.getMetadata().setGeneration(1l);
     ConditionUtil.initializeConditions(resource);
 
     var resourceConditions = resource.getStatus().getConditions();
