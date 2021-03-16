@@ -15,19 +15,8 @@
   <properties>
     <fabric8.version>5.1.1</fabric8.version>
     <operator.sdk.version>1.7.5</operator.sdk.version>
-    <quarkus.version>1.12.1.Final</quarkus.version>
   </properties>
-  <dependencyManagement>
-    <dependencies>
-      <dependency>
-        <groupId>io.quarkus</groupId>
-        <artifactId>quarkus-bom</artifactId>
-        <version>${quarkus.version}</version>
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
+  
   <dependencies>
     <dependency>
       <groupId>io.fabric8</groupId>
@@ -53,6 +42,18 @@
       <groupId>com.openshift.cloud</groupId>
       <artifactId>rhoas-model</artifactId>
       <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-junit5</artifactId>
+      <version>${quarkus.version}</version>
+      <scope>test</scope>
+  </dependency>
+    <dependency>
+      <groupId>com.openshift.cloud</groupId>
+      <artifactId>test</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>

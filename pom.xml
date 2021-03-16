@@ -16,58 +16,74 @@
   limitations under the License.
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+    <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.openshift.cloud</groupId>
-  <artifactId>rhoas-operator-parent</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
-  <packaging>pom</packaging>
+    <groupId>com.openshift.cloud</groupId>
+    <artifactId>rhoas-operator-parent</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
 
-  <name>RHOAS Operator</name>
-  <url>http://cloud.redhat.com</url>
+    <name>RHOAS Operator</name>
+    <url>http://cloud.redhat.com</url>
 
     <modules>
         <module>source/openapi</module>
         <module>source/model</module>
+        <module>source/test</module>
         <module>source/rhoas</module>
     </modules>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>io.quarkus</groupId>
+                <artifactId>quarkus-bom</artifactId>
+                <version>${quarkus.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <properties>
         <java.version>11</java.version>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
+        <quarkus.version>1.12.1.Final</quarkus.version>
+        <log4j2.version>2.13.3</log4j2.version>
+
     </properties>
     <build>
-      <plugins>
-          <plugin>
-              <groupId>com.coveo</groupId>
-              <artifactId>fmt-maven-plugin</artifactId>
-              <version>2.10</version>
-              <executions>
-                  <execution>
-                      <goals>
-                          <goal>format</goal>
-                      </goals>
-                  </execution>
-              </executions>
-          </plugin>
-          <plugin>
-              <groupId>org.apache.maven.plugins</groupId>
-              <artifactId>maven-surefire-plugin</artifactId>
-              <version>2.21.0</version>
-              <dependencies>
-                  <dependency>
-                      <groupId>org.junit.platform</groupId>
-                      <artifactId>junit-platform-surefire-provider</artifactId>
-                      <version>1.2.0-M1</version>
-                  </dependency>
-                  <dependency>
-                      <groupId>org.junit.jupiter</groupId>
-                      <artifactId>junit-jupiter-engine</artifactId>
-                      <version>5.2.0-M1</version>
-                  </dependency>
-              </dependencies>
-          </plugin>
-      </plugins>
-  </build>
+        <plugins>
+            <plugin>
+                <groupId>com.coveo</groupId>
+                <artifactId>fmt-maven-plugin</artifactId>
+                <version>2.10</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>format</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.21.0</version>
+                <dependencies>
+
+                    <dependency>
+                        <groupId>org.junit.platform</groupId>
+                        <artifactId>junit-platform-surefire-provider</artifactId>
+                        <version>1.2.0-M1</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.junit.jupiter</groupId>
+                        <artifactId>junit-jupiter-engine</artifactId>
+                        <version>5.2.0-M1</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+        </plugins>
+    </build>
 </project>
