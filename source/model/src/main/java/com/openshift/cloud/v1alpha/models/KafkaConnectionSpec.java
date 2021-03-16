@@ -1,5 +1,8 @@
 package com.openshift.cloud.v1alpha.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class KafkaConnectionSpec {
 
   private String kafkaId;

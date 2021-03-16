@@ -1,9 +1,11 @@
 package com.openshift.cloud.v1alpha.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class CloudServicesRequestSpec {
 
   private String accessTokenSecretName = "rhoas_binding_operator_token"; // Default as per ADR_00022
