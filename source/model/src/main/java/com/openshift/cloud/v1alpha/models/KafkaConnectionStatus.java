@@ -1,22 +1,18 @@
 package com.openshift.cloud.v1alpha.models;
 
 import io.sundr.builder.annotations.Buildable;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Buildable
 public class KafkaConnectionStatus {
-
-  private static final String UI_REF_TEMPLATE =
-      "https://cloud.redhat.com/beta/application-services/openshift-streams/kafkas/%s";
-
   private String message;
   private String updated;
   private String bootstrapServerHost;
   private String serviceAccountSecretName;
-  private String saslMechanism;
-  private String securityProtocol;
-  private String uiRef;
   private List<KafkaCondition> conditions;
+  private Map<String, String> metadata;
 
   /** No args constructor for use in serialization */
   public KafkaConnectionStatus() {}
@@ -24,7 +20,7 @@ public class KafkaConnectionStatus {
   /**
    * @param serviceAccountSecretName
    * @param message
-   * @param boostrapServer
+   * @param bootstrapServerHost
    * @param updated
    */
   public KafkaConnectionStatus(
@@ -34,8 +30,7 @@ public class KafkaConnectionStatus {
     this.updated = updated;
     this.bootstrapServerHost = bootstrapServerHost;
     this.serviceAccountSecretName = serviceAccountSecretName;
-    this.saslMechanism = "PLAINTEXT";
-    this.securityProtocol = "SASL_SSL";
+    this.metadata = new HashMap<String, String>();
   }
 
   public String getMessage() {
@@ -62,22 +57,6 @@ public class KafkaConnectionStatus {
     this.serviceAccountSecretName = serviceAccountSecretName;
   }
 
-  public String getSecurityProtocol() {
-    return securityProtocol;
-  }
-
-  public void setSecurityProtocol(String securityProtocol) {
-    this.securityProtocol = securityProtocol;
-  }
-
-  public String getSaslMechanism() {
-    return saslMechanism;
-  }
-
-  public void setSaslMechanism(String saslMechanism) {
-    this.saslMechanism = saslMechanism;
-  }
-
   public List<KafkaCondition> getConditions() {
     return conditions;
   }
@@ -94,23 +73,11 @@ public class KafkaConnectionStatus {
     this.bootstrapServerHost = bootstrapServerHost;
   }
 
-  public String getUiRef() {
-    return uiRef;
+  public Map<String, String> getMetadata() {
+    return metadata;
   }
 
-  public void setUiRef(String uiRef) {
-    this.uiRef = uiRef;
-  }
-
-  /**
-   * Set the UI ref with a templated using a kafka ID
-   *
-   * <p>The template is
-   * "https://cloud.redhat.com/beta/application-services/openshift-streams/kafkas/%s"
-   *
-   * @param kafkaId the value to replace
-   */
-  public void setUiRefForKafkaId(String kafkaId) {
-    this.uiRef = String.format(UI_REF_TEMPLATE, kafkaId);
+  public void setMetadata(Map<String, String> metadata) {
+    this.metadata = metadata;
   }
 }

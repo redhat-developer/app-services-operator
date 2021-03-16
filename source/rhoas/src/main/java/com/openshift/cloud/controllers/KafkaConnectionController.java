@@ -2,6 +2,7 @@ package com.openshift.cloud.controllers;
 
 import com.openshift.cloud.beans.AccessTokenSecretTool;
 import com.openshift.cloud.beans.KafkaApiClient;
+import com.openshift.cloud.utils.ConnectionResourcesMetadata;
 import com.openshift.cloud.v1alpha.models.KafkaConnection;
 import io.javaoperatorsdk.operator.api.*;
 import io.javaoperatorsdk.operator.processing.event.EventSourceManager;
@@ -50,9 +51,7 @@ public class KafkaConnectionController implements ResourceController<KafkaConnec
       status.setUpdated(Instant.now().toString());
       status.setBootstrapServerHost(bootStrapHost);
       status.setServiceAccountSecretName(serviceAccountSecretName);
-      status.setUiRefForKafkaId(kafkaId);
-      status.setSaslMechanism("PLAIN");
-      status.setSecurityProtocol("SASL_SSL");
+      status.setMetadata(ConnectionResourcesMetadata.buildKafkaMetadata(kafkaId));
 
       ConditionUtil.setAllConditionsTrue(resource.getStatus().getConditions());
     } catch (ConditionAwareException e) {

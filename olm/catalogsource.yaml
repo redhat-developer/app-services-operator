@@ -1,14 +1,14 @@
 apiVersion: operators.coreos.com/v1alpha1
 kind: CatalogSource
 metadata:
-  name: rhoas-operators
+  name: rhoas-operators2
   namespace: openshift-marketplace
 spec:
   displayName: RHOAS Operators
   icon:
     base64data: ""
     mediatype: ""
-  image: quay.io/rhoasg/service-operator-registry:autolatest
+  image: quay.io/rhoas/service-operator-registry:autolatest
   priority: -400
   publisher: RHOAS
   sourceType: grpc
