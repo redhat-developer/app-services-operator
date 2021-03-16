@@ -156,6 +156,7 @@ public class ConditionUtil {
             .setStatus(KafkaCondition.Status.Unknown),
         new KafkaCondition()
             .setLastTransitionTime(isoNow())
+            .setLastTransitionGeneration(generation)
             .setReason("")
             .setMessage("")
             .setType(KafkaCondition.Type.Finished)

@@ -34,7 +34,7 @@ public abstract class AbstractCloudServicesController<T extends CustomResource>
   @Override
   /** This method is overriden by the proxies, but should not be overriden by you, the developer. */
   public UpdateControl<T> createOrUpdateResource(T resource, Context<T> context) {
-      LOG.info("Updating resource " + resource.getCRDName());
+    LOG.info("Updating resource " + resource.getCRDName());
     if (shouldProcess(resource)) {
       sealedInitializeConditions(resource);
       try {
