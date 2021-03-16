@@ -21,6 +21,7 @@ public class KafkaCondition {
   private String message;
   private Status status;
   private String lastTransitionTime;
+  private Long lastTransitionGeneration;
 
   public Type getType() {
     return type;
@@ -79,6 +80,15 @@ public class KafkaCondition {
 
   public KafkaCondition setLastTransitionTime(String lastTransitionTime) {
     this.lastTransitionTime = lastTransitionTime;
+    return this;
+  }
+
+  public Long getLastTransitionGeneration() {
+    return lastTransitionGeneration;
+  }
+
+  public KafkaCondition setLastTransitionGeneration(Long lastTransitionGeneration) {
+    this.lastTransitionGeneration = lastTransitionGeneration;
     return this;
   }
 }
