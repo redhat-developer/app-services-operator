@@ -43,6 +43,8 @@ spec:
                     type: string
                 type: object
             type: object
+            ## temporary required to workaround lack of scheduling issue with the operator SDK
+            preserveUnknownFields: true
           status:
             properties:
               message:
@@ -78,4 +80,3 @@ spec:
                       type: string
             type: object
         type: object
-  preserveUnknownFields: false

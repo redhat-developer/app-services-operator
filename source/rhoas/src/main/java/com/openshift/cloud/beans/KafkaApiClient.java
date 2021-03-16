@@ -29,7 +29,7 @@ public class KafkaApiClient {
 
   @Inject KubernetesClient k8sClient;
 
-  @ConfigProperty(name = "client.basePath", defaultValue = "https://api.stage.openshift.com")
+  @ConfigProperty(name = "rhoas.client.apiBasePath")
   String clientBasePath;
 
   private DefaultApi createClient(String bearerToken) {
