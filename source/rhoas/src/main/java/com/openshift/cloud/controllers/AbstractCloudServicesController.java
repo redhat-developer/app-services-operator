@@ -3,6 +3,7 @@ package com.openshift.cloud.controllers;
 import com.openshift.cloud.v1alpha.models.CloudServiceAccountRequest;
 import com.openshift.cloud.v1alpha.models.CloudServicesRequest;
 import com.openshift.cloud.v1alpha.models.KafkaCondition;
+import com.openshift.cloud.v1alpha.models.KafkaCondition.Status;
 import com.openshift.cloud.v1alpha.models.KafkaCondition.Type;
 import com.openshift.cloud.v1alpha.models.KafkaConnection;
 import io.fabric8.kubernetes.client.CustomResource;
@@ -77,7 +78,15 @@ public abstract class AbstractCloudServicesController<T extends CustomResource>
             < resource.getMetadata().getGeneration()) {
       return true;
     }
-    return false;
+
+    if (Status.True.equals(finishedCondition.getStatus())) {
+      //everything is up to date and the resource had finished, then skip
+      return false;
+    } else {
+      return true;
+    }
+
+    
   }
 
   private List<KafkaCondition> getConditions(T resource) {
