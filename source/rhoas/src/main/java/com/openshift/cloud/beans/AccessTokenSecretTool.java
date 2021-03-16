@@ -65,21 +65,14 @@ public class AccessTokenSecretTool {
   }
 
   private String getOfflineTokenFromSecret(String secretName, String namespace) {
-    var token =      k8sClient
-            .secrets()
-            .inNamespace(namespace)
-            .withName(secretName)
-            .get();
-    if(token !=null ) {
-      var offlineToken =
-              token
-                      .getData()
-                      .get(ACCESS_TOKEN_SECRET_KEY);
+    var token = k8sClient.secrets().inNamespace(namespace).withName(secretName).get();
+    if (token != null) {
+      var offlineToken = token.getData().get(ACCESS_TOKEN_SECRET_KEY);
       offlineToken = new String(Base64.getDecoder().decode(offlineToken));
 
       return offlineToken;
     }
-    throw new Error("Missing Offline Token Secret "+ secretName);
+    throw new Error("Missing Offline Token Secret " + secretName);
   }
 
   /**
