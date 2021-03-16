@@ -1,0 +1,13 @@
+== Debugging Operator
+
+=== Setting up log level
+
+RHOAS_LOG_LEVEL=INFO
+
+=== Changing API path to local mock
+
+CLOUD_SERVICES_API=localhost:8080
+
+=== Listen to only single namespace
+
+QUARKUS_OPERATOR_SDK_CONTROLLERS_KAFKACONNECTIONCONTROLLER_NAMESPACES=operator_sandbox
