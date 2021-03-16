@@ -52,7 +52,8 @@ public class AccessTokenSecretTool {
       var offlineToken = getOfflineTokenFromSecret(accessTokenSecretName, namespace);
       var accessToken = exchangeToken(offlineToken);
       return accessToken;
-    } catch (Exception ex) {
+    } catch (Throwable ex) {
+      //I do not like ^^, but it seems like one of the APIs we call throws a type "error" when it should throw "exception"
       LOG.log(Level.SEVERE, ex.getMessage());
       throw new ConditionAwareException(
           ex.getMessage(),
