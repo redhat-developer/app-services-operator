@@ -5,14 +5,12 @@ import com.openshift.cloud.beans.KafkaApiClient;
 import com.openshift.cloud.utils.ConnectionResourcesMetadata;
 import com.openshift.cloud.v1alpha.models.KafkaConnection;
 import io.javaoperatorsdk.operator.api.*;
-import io.javaoperatorsdk.operator.processing.event.EventSourceManager;
 import java.time.Instant;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.inject.Inject;
 
 @Controller
-public class KafkaConnectionController implements ResourceController<KafkaConnection> {
+public class KafkaConnectionController extends AbstractCloudServicesController<KafkaConnection> {
 
   private static final Logger LOG = Logger.getLogger(KafkaConnectionController.class.getName());
 
@@ -21,53 +19,27 @@ public class KafkaConnectionController implements ResourceController<KafkaConnec
   @Inject AccessTokenSecretTool accessTokenSecretTool;
 
   @Override
-  public DeleteControl deleteResource(KafkaConnection resource, Context<KafkaConnection> context) {
-    LOG.info(String.format("Deleting resource %s", resource.getMetadata().getName()));
+  void doCreateOrUpdateResource(KafkaConnection resource, Context<KafkaConnection> context)
+      throws ConditionAwareException {
+    LOG.info(String.format("Creating or Updating resource %s", resource.getMetadata().getName()));
 
-    return DeleteControl.DEFAULT_DELETE;
-  }
+    var kafkaId = resource.getSpec().getKafkaId();
+    var accessTokenSecretName = resource.getSpec().getAccessTokenSecretName();
+    var serviceAccountSecretName =
+        resource.getSpec().getCredentials().getServiceAccountSecretName();
+    var namespace = resource.getMetadata().getNamespace();
 
-  @Override
-  public UpdateControl<KafkaConnection> createOrUpdateResource(
-      KafkaConnection resource, Context<KafkaConnection> context) {
-    ConditionUtil.initializeConditions(resource);
-    try {
-      LOG.info(String.format("Creating or Updating resource %s", resource.getMetadata().getName()));
+    String accessToken = accessTokenSecretTool.getAccessToken(accessTokenSecretName, namespace);
 
-      var kafkaId = resource.getSpec().getKafkaId();
-      var accessTokenSecretName = resource.getSpec().getAccessTokenSecretName();
-      var serviceAccountSecretName =
-          resource.getSpec().getCredentials().getServiceAccountSecretName();
-      var namespace = resource.getMetadata().getNamespace();
+    var kafkaServiceInfo = apiClient.getKafkaById(kafkaId, accessToken);
 
-      String accessToken = accessTokenSecretTool.getAccessToken(accessTokenSecretName, namespace);
+    var bootStrapHost = kafkaServiceInfo.getBootstrapServerHost();
 
-      var kafkaServiceInfo = apiClient.getKafkaById(kafkaId, accessToken);
-
-      var bootStrapHost = kafkaServiceInfo.getBootstrapServerHost();
-
-      var status = resource.getStatus();
-      status.setMessage("Created");
-      status.setUpdated(Instant.now().toString());
-      status.setBootstrapServerHost(bootStrapHost);
-      status.setServiceAccountSecretName(serviceAccountSecretName);
-      status.setMetadata(ConnectionResourcesMetadata.buildKafkaMetadata(kafkaId));
-
-      ConditionUtil.setAllConditionsTrue(resource.getStatus().getConditions());
-    } catch (ConditionAwareException e) {
-      LOG.log(Level.SEVERE, "Setting condition for exception " + e.getReason(), e);
-      ConditionUtil.setConditionFromException(resource.getStatus().getConditions(), e);
-    }
-    return UpdateControl.updateStatusSubResource(resource);
-  }
-
-  /**
-   * In init typically you might want to register event sources.
-   *
-   * @param eventSourceManager
-   */
-  @Override
-  public void init(EventSourceManager eventSourceManager) {
-    LOG.info("Init! This is where we would add watches for child resources");
+    var status = resource.getStatus();
+    status.setMessage("Created");
+    status.setUpdated(Instant.now().toString());
+    status.setBootstrapServerHost(bootStrapHost);
+    status.setServiceAccountSecretName(serviceAccountSecretName);
+    status.setMetadata(ConnectionResourcesMetadata.buildKafkaMetadata(kafkaId));
   }
 }
