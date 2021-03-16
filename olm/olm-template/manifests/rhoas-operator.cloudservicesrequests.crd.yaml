@@ -54,6 +54,10 @@ spec:
                           type: string
                         lastTransitionTime:
                           type: string
+                        lastTransitionGeneration:
+                          type: integer          
+                          format: int64
+                          nullable: true
                 userKafkas:
                   type: array
                   nullable: true
