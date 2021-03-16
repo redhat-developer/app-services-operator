@@ -51,6 +51,7 @@ spec:
               metadata:
                 nullable: true
                 type: object
+                x-kubernetes-preserve-unknown-fields: true
               updated:
                 nullable: true
                 type: string
