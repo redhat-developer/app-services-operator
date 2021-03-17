@@ -1,6 +1,6 @@
 package org.bf2.test.mock;
 
-import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinition;
+import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinition;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.NamespacedKubernetesClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
@@ -62,7 +62,7 @@ public class QuarkusKubeMockServer implements QuarkusTestResourceLifecycleManage
                   server
                       .getClient()
                       .apiextensions()
-                      .v1beta1()
+                      .v1()
                       .customResourceDefinitions()
                       .createOrReplace((CustomResourceDefinition) crd));
     }
