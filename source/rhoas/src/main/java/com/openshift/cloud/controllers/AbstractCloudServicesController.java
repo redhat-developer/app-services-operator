@@ -68,7 +68,7 @@ public abstract class AbstractCloudServicesController<T extends CustomResource>
 
     List<KafkaCondition> conditions = getConditions(resource);
 
-    if (conditions == null | conditions.isEmpty()) {
+    if (conditions == null || conditions.isEmpty()) {
       return true;
     }
 
@@ -80,13 +80,11 @@ public abstract class AbstractCloudServicesController<T extends CustomResource>
     }
 
     if (Status.True.equals(finishedCondition.getStatus())) {
-      //everything is up to date and the resource had finished, then skip
+      // everything is up to date and the resource had finished, then skip
       return false;
     } else {
       return true;
     }
-
-    
   }
 
   private List<KafkaCondition> getConditions(T resource) {
