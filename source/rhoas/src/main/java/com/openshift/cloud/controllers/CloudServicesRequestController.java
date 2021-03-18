@@ -1,6 +1,5 @@
 package com.openshift.cloud.controllers;
 
-import com.openshift.cloud.ApiException;
 import com.openshift.cloud.beans.AccessTokenSecretTool;
 import com.openshift.cloud.beans.KafkaApiClient;
 import com.openshift.cloud.beans.KafkaK8sClients;

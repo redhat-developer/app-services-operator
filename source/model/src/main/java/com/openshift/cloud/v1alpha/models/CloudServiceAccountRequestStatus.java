@@ -4,7 +4,7 @@ import io.sundr.builder.annotations.Buildable;
 import java.util.ArrayList;
 import java.util.List;
 
-@Buildable
+@Buildable(builderPackage = "io.fabric8.kubernetes.api.builder", editableEnabled = false)
 public class CloudServiceAccountRequestStatus {
 
   private String message = "";

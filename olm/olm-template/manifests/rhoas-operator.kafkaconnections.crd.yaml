@@ -44,7 +44,7 @@ spec:
                 type: object
             type: object
             ## temporary required to workaround lack of scheduling issue with the operator SDK
-            preserveUnknownFields: true
+            x-kubernetes-preserve-unknown-fields: true
           status:
             properties:
               message:
