@@ -66,7 +66,7 @@ public class AccessTokenSecretTool {
     }
   }
 
-  private String getOfflineTokenFromSecret(String secretName, String namespace) {
+  private String getOfflineTokenFromSecret(String secretName, String namespace) throws Exception {
     var token = k8sClient.secrets().inNamespace(namespace).withName(secretName).get();
     if (token != null) {
       var offlineToken = token.getData().get(ACCESS_TOKEN_SECRET_KEY);
@@ -74,7 +74,7 @@ public class AccessTokenSecretTool {
 
       return offlineToken;
     }
-    throw new Error("Missing Offline Token Secret " + secretName);
+    throw new Exception("Missing Offline Token Secret " + secretName);
   }
 
   /**
