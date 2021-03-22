@@ -16,12 +16,12 @@ import java.time.Duration;
 import java.util.Base64;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import javax.inject.Singleton;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 /** Utility bean to exchange offline tokens for access tokens */
-@Singleton
+@ApplicationScoped
 public class AccessTokenSecretTool {
   private static final Logger LOG = Logger.getLogger(AccessTokenSecretTool.class.getName());
 

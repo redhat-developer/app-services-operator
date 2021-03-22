@@ -1,13 +1,12 @@
-package com.openshift.cloud.test.util;
+package com.openshift.cloud.beans;
 
-import com.openshift.cloud.beans.AccessTokenSecretTool;
 import com.openshift.cloud.controllers.ConditionAwareException;
+import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Alternative;
-import javax.inject.Singleton;
 
 /** Utility bean to exchange offline tokens for access tokens */
 @Alternative
-@Singleton
+@ApplicationScoped
 public class MockAccessTokenSecretTool extends AccessTokenSecretTool {
 
   @Override
