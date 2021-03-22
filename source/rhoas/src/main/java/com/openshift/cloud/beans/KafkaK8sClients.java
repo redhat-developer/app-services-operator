@@ -18,15 +18,15 @@ import io.fabric8.kubernetes.internal.KubernetesDeserializer;
 import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
 import javax.annotation.PostConstruct;
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import javax.inject.Singleton;
 import org.jboss.logging.Logger;
 
 /**
  * This class is processed at startup and checks that CRDs are installed and provides apiClients for
  * use
  */
-@Singleton
+@ApplicationScoped
 public final class KafkaK8sClients {
 
   private static final Logger LOG = Logger.getLogger(KafkaK8sClients.class.getName());

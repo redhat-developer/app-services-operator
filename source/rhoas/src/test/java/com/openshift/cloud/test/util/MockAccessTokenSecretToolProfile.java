@@ -1,5 +1,7 @@
 package com.openshift.cloud.test.util;
 
+import com.openshift.cloud.beans.MockAccessTokenSecretTool;
+import com.openshift.cloud.beans.MockKafkaApiClient;
 import io.quarkus.test.junit.QuarkusTestProfile;
 import java.util.Set;
 
