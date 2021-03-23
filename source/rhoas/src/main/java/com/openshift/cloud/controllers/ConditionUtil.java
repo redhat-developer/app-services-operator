@@ -257,11 +257,11 @@ public class ConditionUtil {
       case 503: // SC_UNAVAILABILE
         return "Service unavailable at the moment";
       case 500: // SC_INTERNAL_SERVER_ERROR:
-        return "Unknown server error.";
+        return "Unknown server error";
       case 400: // HttpStatus.SC_BAD_REQUEST:
-        return "Invalid request";
+        return "Provided user input is invalid";
       case 401: // HttpStatus.SC_UNAUTHORIZED:
-        return "Auth Token is invalid.";
+        return "Cannot authenticate user with the service";
       case 403: // HttpStatus.SC_FORBIDDEN:
         return "User not authorized to access the service";
       default:
