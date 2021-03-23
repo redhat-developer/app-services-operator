@@ -1,6 +1,7 @@
 package com.openshift.cloud.beans;
 
 import com.openshift.cloud.controllers.ConditionAwareException;
+import com.openshift.cloud.controllers.ConditionUtil;
 import com.openshift.cloud.v1alpha.models.KafkaCondition;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.vertx.core.json.JsonObject;
@@ -52,9 +53,12 @@ public class AccessTokenSecretTool {
       var offlineToken = getOfflineTokenFromSecret(accessTokenSecretName, namespace);
       var accessToken = exchangeToken(offlineToken);
       return accessToken;
+    } catch (ConditionAwareException ex) {
+      // Log and rethrow exception
+      LOG.log(Level.SEVERE, ex.getMessage());
+      throw ex;
     } catch (Throwable ex) {
-      // I do not like ^^, but it seems like one of the APIs we call throws a type "error" when it
-      // should throw "exception"
+      // Unexpected exception or error (NPE, IOException, out of memory, etc)
       LOG.log(Level.SEVERE, ex.getMessage());
       throw new ConditionAwareException(
           ex.getMessage(),
@@ -66,15 +70,32 @@ public class AccessTokenSecretTool {
     }
   }
 
-  private String getOfflineTokenFromSecret(String secretName, String namespace) throws Exception {
+  /**
+   * Given a secret and a namespace load the secret and decode the value with the key "value"
+   *
+   * @param secretName name of the secret
+   * @param namespace namespace of the secret
+   * @return the 64 decoded value of namespace/secretName
+   * @throws ConditionAwareException if the secret does not exist
+   * @throws IllegalArgumentException if secret value is not in valid Base64
+   */
+  private String getOfflineTokenFromSecret(String secretName, String namespace)
+      throws ConditionAwareException {
     var token = k8sClient.secrets().inNamespace(namespace).withName(secretName).get();
     if (token != null) {
       var offlineToken = token.getData().get(ACCESS_TOKEN_SECRET_KEY);
+      // decode may throw IllegalArgumentException
       offlineToken = new String(Base64.getDecoder().decode(offlineToken));
-
       return offlineToken;
     }
-    throw new Exception("Missing Offline Token Secret " + secretName);
+    // We expect the token to exist, and if it doesn't raise an exception.
+    throw new ConditionAwareException(
+        String.format("Missing Offline Token Secret %s", secretName),
+        null,
+        KafkaCondition.Type.AcccesTokenSecretValid,
+        KafkaCondition.Status.False,
+        "ConditionAwareException",
+        String.format("Missing Offline Token Secret %s", secretName));
   }
 
   /**
@@ -82,8 +103,9 @@ public class AccessTokenSecretTool {
    *
    * @param offlineToken the token from ss.redhat.com
    * @return a token to be used as a bearer token to authorize the user
+   * @throws ConditionAwareException
    */
-  private String exchangeToken(String offlineToken) {
+  private String exchangeToken(String offlineToken) throws ConditionAwareException {
     try {
       HttpRequest request =
           HttpRequest.newBuilder()
@@ -107,10 +129,24 @@ public class AccessTokenSecretTool {
         var json = new JsonObject(tokens);
         return json.getString("access_token");
       } else {
-        throw new RuntimeException(response.body());
+        LOG.log(
+            Level.SEVERE, String.format("Exchange token failed with error %s", response.body()));
+        throw new ConditionAwareException(
+            response.body(),
+            null,
+            KafkaCondition.Type.AcccesTokenSecretValid,
+            KafkaCondition.Status.False,
+            String.format("Http Error Code %d", response.statusCode()),
+            ConditionUtil.getStandarizedErrorMessage(response.statusCode()));
       }
     } catch (IOException | InterruptedException e) {
-      throw new RuntimeException(e);
+      throw new ConditionAwareException(
+          e.getMessage(),
+          e,
+          KafkaCondition.Type.AcccesTokenSecretValid,
+          KafkaCondition.Status.False,
+          e.getClass().getName(),
+          e.getMessage());
     }
   }
 

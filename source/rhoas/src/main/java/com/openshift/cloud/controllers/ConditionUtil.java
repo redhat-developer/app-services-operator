@@ -3,6 +3,7 @@ package com.openshift.cloud.controllers;
 import static com.openshift.cloud.v1alpha.models.KafkaCondition.Status.False;
 import static com.openshift.cloud.v1alpha.models.KafkaCondition.Status.True;
 
+import com.openshift.cloud.ApiException;
 import com.openshift.cloud.v1alpha.models.*;
 import com.openshift.cloud.v1alpha.models.KafkaCondition.Status;
 import java.time.ZoneOffset;
@@ -221,5 +222,50 @@ public class ConditionUtil {
     }
     ;
     return allTrue.get();
+  }
+
+  /**
+   * Given an api exception, map the http error code to a known string.
+   *
+   * @param e an exception thrown by a call to the MAS API
+   * @return a human readable String to be set as the message property of a failed condition
+   */
+  public static String getStandarizedErrorMessage(ApiException e) {
+
+    switch (e.getCode()) {
+      case 504: // SC_GATEWAY_TIMEOUT:
+      case 500: // SC_INTERNAL_SERVER_ERROR:
+      case 401: // HttpStatus.SC_UNAUTHORIZED:
+      case 403: // HttpStatus.SC_FORBIDDEN:
+        return getStandarizedErrorMessage(e.getCode());
+      case 400: // HttpStatus.SC_BAD_REQUEST:
+        return "Invalid request " + e.getMessage();
+      default:
+        return e.getMessage();
+    }
+  }
+  /**
+   * Map the http error code to a known string.
+   *
+   * @param statusCode a non 200 HTTP code returned by the system.
+   * @return a human readable String to be set as the message property of a failed condition
+   */
+  public static String getStandarizedErrorMessage(int statusCode) {
+    switch (statusCode) {
+      case 504: // SC_GATEWAY_TIMEOUT:
+        return "Server timeout. Server is not responding";
+      case 503: // SC_UNAVAILABILE
+        return "Service unavailable at the moment";
+      case 500: // SC_INTERNAL_SERVER_ERROR:
+        return "Unknown server error.";
+      case 400: // HttpStatus.SC_BAD_REQUEST:
+        return "Invalid request";
+      case 401: // HttpStatus.SC_UNAUTHORIZED:
+        return "Auth Token is invalid.";
+      case 403: // HttpStatus.SC_FORBIDDEN:
+        return "User not authorized to access the service";
+      default:
+        return String.format("Http Error Code %d", statusCode);
+    }
   }
 }

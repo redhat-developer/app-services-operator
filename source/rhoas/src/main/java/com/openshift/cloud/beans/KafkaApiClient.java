@@ -10,6 +10,7 @@ import com.openshift.cloud.api.models.ServiceAccount;
 import com.openshift.cloud.api.models.ServiceAccountRequest;
 import com.openshift.cloud.auth.HttpBearerAuth;
 import com.openshift.cloud.controllers.ConditionAwareException;
+import com.openshift.cloud.controllers.ConditionUtil;
 import com.openshift.cloud.v1alpha.models.CloudServiceAccountRequest;
 import com.openshift.cloud.v1alpha.models.CloudServiceAccountRequestSpec;
 import com.openshift.cloud.v1alpha.models.KafkaCondition;
@@ -49,7 +50,7 @@ public class KafkaApiClient {
     try {
       return createClient(accessToken).getKafkaById(kafkaId);
     } catch (ApiException e) {
-      String message = getStandarizedErrorMessage(e);
+      String message = ConditionUtil.getStandarizedErrorMessage(e);
       throw new ConditionAwareException(
           message,
           e,
@@ -64,7 +65,7 @@ public class KafkaApiClient {
     try {
       return createClient(accessToken).listKafkas(null, null, null, null);
     } catch (ApiException e) {
-      String message = getStandarizedErrorMessage(e);
+      String message = ConditionUtil.getStandarizedErrorMessage(e);
       throw new ConditionAwareException(
           message,
           e,
@@ -83,7 +84,7 @@ public class KafkaApiClient {
       serviceAccountRequest.setName(spec.getServiceAccountName());
       return createClient(accessToken).createServiceAccount(serviceAccountRequest);
     } catch (ApiException e) {
-      String message = getStandarizedErrorMessage(e);
+      String message = ConditionUtil.getStandarizedErrorMessage(e);
       throw new ConditionAwareException(
           message,
           e,
@@ -135,27 +136,5 @@ public class KafkaApiClient {
           e.getClass().getName(),
           e.getMessage());
     }
-  }
-
-  private String getStandarizedErrorMessage(ApiException e) {
-    if (e.getCode() == 504) {
-      return "Server timeout. Server is not responding";
-    }
-    if (e.getCode() == 500) {
-      return "Unknown server error.";
-    }
-    if (e.getCode() == 500) {
-      return "Unknown server error.";
-    }
-    if (e.getCode() == 400) {
-      return "Invalid request " + e.getMessage();
-    }
-    if (e.getCode() == 401) {
-      return "Auth Token is invalid.";
-    }
-    if (e.getCode() == 403) {
-      return "User not authorized to access the service";
-    }
-    return e.getMessage();
   }
 }
