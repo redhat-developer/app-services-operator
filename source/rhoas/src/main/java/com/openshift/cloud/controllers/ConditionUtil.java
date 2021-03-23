@@ -254,6 +254,8 @@ public class ConditionUtil {
     switch (statusCode) {
       case 504: // SC_GATEWAY_TIMEOUT:
         return "Server timeout. Server is not responding";
+      case 503: // SC_UNAVAILABILE
+        return "Service unavailable at the moment";
       case 500: // SC_INTERNAL_SERVER_ERROR:
         return "Unknown server error.";
       case 400: // HttpStatus.SC_BAD_REQUEST:
