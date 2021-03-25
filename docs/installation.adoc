@@ -57,7 +57,7 @@ metadata:
   name: rhoas-operators
   namespace: openshift-marketplace
 spec:
-  displayName: RHOAS Operators
+  displayName: rhoas
   icon:
     base64data: ""
     mediatype: ""
