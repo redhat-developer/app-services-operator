@@ -1,0 +1,10 @@
+== API Mocks
+
+In normal operation, RHOAS Operator uses specialized bean classes when fetching available Kafka instances or creating service accounts. During testing these mock can be used to isolate the operator from its external dependencies. They are enabled by overriding the system property `quarkus.arc.selected-alternatives`.
+
+== MockAccessTokenSecretTool
+
+This mock returns a constant as an access token. This replaces the normal access token behavior which calls the k8s API as well as our SSO system. Enable the mock by adding `com.openshift.cloud.beans.MockAccessTokenSecretTool` to the `quarkus.arc.selected-alternatives` system property.
+
+== MockKafkaApiClient
+The mocked cloud services API returns constants for queried kafkas and service account creation. Cloud services can be mocked by adding `com.openshift.cloud.beans.MockKafkaApiClient` to the `quarkus.arc.selected-alternatives` system property.
