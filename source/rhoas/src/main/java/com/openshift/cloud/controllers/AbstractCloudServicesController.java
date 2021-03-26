@@ -45,6 +45,13 @@ public abstract class AbstractCloudServicesController<T extends CustomResource>
       } catch (ConditionAwareException e) {
         LOG.log(Level.SEVERE, e.getMessage(), e);
         sealedSetErrorConditions(resource, e);
+      } catch (Throwable t) {
+        LOG.log(Level.SEVERE, t.getMessage(), t);
+
+        KafkaCondition finished = getSealedErrorCondition(resource, Type.Finished);
+        finished.setReason(t.getClass().getName());
+        finished.setMessage(t.getMessage());
+        finished.setStatus(Status.False);
       }
 
       return UpdateControl.updateStatusSubResource(resource);
@@ -141,6 +148,22 @@ public abstract class AbstractCloudServicesController<T extends CustomResource>
       ConditionUtil.initializeConditions((CloudServicesRequest) resource);
     } else if (resource instanceof CloudServiceAccountRequest) {
       ConditionUtil.initializeConditions((CloudServiceAccountRequest) resource);
+    } else {
+      throw new IllegalArgumentException(
+          String.format("Resource of type %s is not supported", resource.getCRDName()));
+    }
+  }
+
+  private KafkaCondition getSealedErrorCondition(T resource, Type type) {
+    if (resource instanceof KafkaConnection) {
+      return ConditionUtil.getCondition(
+          ((KafkaConnection) resource).getStatus().getConditions(), type);
+    } else if (resource instanceof CloudServicesRequest) {
+      return ConditionUtil.getCondition(
+          ((CloudServicesRequest) resource).getStatus().getConditions(), type);
+    } else if (resource instanceof CloudServiceAccountRequest) {
+      return ConditionUtil.getCondition(
+          ((CloudServiceAccountRequest) resource).getStatus().getConditions(), type);
     } else {
       throw new IllegalArgumentException(
           String.format("Resource of type %s is not supported", resource.getCRDName()));

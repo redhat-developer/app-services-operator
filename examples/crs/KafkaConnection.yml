@@ -1,7 +1,7 @@
 apiVersion: rhoas.redhat.com/v1alpha1
 kind: KafkaConnection
 metadata:
-  name: test453-serviceapi
+  name: test
   namespace: rhoas-operator-testing
   labels:
     app.kubernetes.io/component: external-service

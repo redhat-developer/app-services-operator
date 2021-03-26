@@ -50,6 +50,9 @@ public class AccessTokenSecretTool {
   public String getAccessToken(String accessTokenSecretName, String namespace)
       throws ConditionAwareException {
     try {
+      if (isNullOrEmpty(accessTokenSecretName, namespace)) {
+        throw new IllegalArgumentException("accessTokenSecretName and namespace must be provided and exist.");
+      }
       var offlineToken = getOfflineTokenFromSecret(accessTokenSecretName, namespace);
       var accessToken = exchangeToken(offlineToken);
       return accessToken;
@@ -68,6 +71,15 @@ public class AccessTokenSecretTool {
           ex.getClass().getName(),
           ex.getMessage());
     }
+  }
+
+  private boolean isNullOrEmpty(String... strings) {
+    for (String string : strings) {
+      if (string == null || string.isEmpty()) {
+        return true;
+      }
+    }
+    return false;
   }
 
   /**
