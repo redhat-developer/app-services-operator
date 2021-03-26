@@ -2,18 +2,18 @@
 
 > NOTE: Operator is currently in Beta state and not available on in OperatorHub
 
-=== Installing the Operator
+=== Installing the Operator CatalogSource
 
 ==== Prerequisites
 
 - OpenShift (kubernetes cluster)
 - OperatorHub/OLM installed
 
-==== OpenShift Marketplace (openshift-marketplace)
+==== Into OpenShift Marketplace (openshift-marketplace)
 
-> NOTE: This installation method requires elevated cluster privileges. 
+> NOTE: This installation method requires elevated cluster privileges since it writes to the *openshift-marketplace* namespace. 
 
-The RHOAS Operator can be added as a CatalogSource in the *openshift-marketplace* using this CR.
+The RHOAS Operator can be added as a CatalogSource in the *openshift-marketplace* using this CR:
 
 ----
 kubectl apply -f - << EOD
@@ -38,13 +38,7 @@ spec:
 EOD
 ----
 
-The CatalogSource will be loaded and sync'd with your OpenShift OperatorHub. This process takes about five minutes.
-
-As *dedicated-admin* or *cluster-admin*, open your OpenShift cluster's OperatorHub. Type "rhoas" into the _filter_ field, and select the RHOAS Operator.
-
-Follow the on screen wizard to install the operator. Once the operator is installed, you may begin using it.
-
-==== Specific Namespace
+==== Into an Alternative Namespace
 
 In this example we add the RHOAS Operator CatalogSource to the *rhoas-operator* namespace.
 
@@ -73,7 +67,21 @@ spec:
 EOD
 ----
 
-Create the RHOAS Operator Subscription:
+=== Creating an Operator Subscription and OperatorGroup
+
+==== Using OpenShift OperatorHub
+
+Wait for the CatalogSource to load and synchronise with OpenShift OperatorHub. This process takes about five minutes.
+
+Next, use a *dedicated-admin* or *cluster-admin* account and open your OpenShift cluster's OperatorHub. Type "rhoas" into the _filter_ field, and select the RHOAS Operator.
+
+Follow the on screen wizard to install the operator into the namespace(s) of your choosing. Once the operator is installed, you may begin using it.
+
+==== Using CRs
+
+Create a RHOAS Operator Subscription using this CR:
+
+> Note: This CR *sourceNamespace* is set to "rhoas-operator". Change this to "openshift-marketplace" if you installed the CatalogSource there.
 
 ----
 kubectl apply -f - << EOD
