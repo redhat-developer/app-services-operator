@@ -1,6 +1,6 @@
 == Installation of Operator
 
-> NOTE: Operator is currently in Beta state and not available on operator hub
+> NOTE: Operator is currently in Beta state and not available on in OperatorHub
 
 === Installing the Operator
 
@@ -9,9 +9,11 @@
 - OpenShift (kubernetes cluster)
 - OperatorHub/OLM installed
 
-==== OperatorHub Instructions
+==== OpenShift Marketplace (openshift-marketplace)
 
-RHOAS Operator can be installed by adding this Catalog Source. 
+> NOTE: This installation method requires elevated cluster privileges. 
+
+The RHOAS Operator can be added as a CatalogSource in the *openshift-marketplace* using this CR.
 
 ----
 kubectl apply -f - << EOD
@@ -36,17 +38,17 @@ spec:
 EOD
 ----
 
-The catalog source will be loaded and sync'd with your OpenShift operator hub. This process takes about five minutes.
+The CatalogSource will be loaded and sync'd with your OpenShift OperatorHub. This process takes about five minutes.
 
-As admin, open your OpenShift cluster's operator hub.
-
-In filter type rhoas, and select the RHOAS Operator.
+As *dedicated-admin* or *cluster-admin*, open your OpenShift cluster's OperatorHub. Type "rhoas" into the _filter_ field, and select the RHOAS Operator.
 
 Follow the on screen wizard to install the operator. Once the operator is installed, you may begin using it.
 
-==== YAML Installation
+==== Specific Namespace
 
-Add the RHOAS Operator CatalogSource.
+In this example we add the RHOAS Operator CatalogSource to the *rhoas-operator* namespace.
+
+Create a CatalogSource:
 
 ----
 kubectl apply -f - << EOD
@@ -55,7 +57,7 @@ apiVersion: operators.coreos.com/v1alpha1
 kind: CatalogSource
 metadata:
   name: rhoas-operators
-  namespace: openshift-marketplace
+  namespace: rhoas-operator
 spec:
   displayName: rhoas
   icon:
@@ -71,7 +73,7 @@ spec:
 EOD
 ----
 
-Add you RHOAS Operator Subscription
+Create the RHOAS Operator Subscription:
 
 ----
 kubectl apply -f - << EOD
@@ -92,7 +94,9 @@ spec:
 EOD
 ----
 
-If your operator is installed in a namespace instead of the entire cluster, add your Operator Group 
+Create an OperatorGroup to make the Operator available to other namespaces:
+
+> Note: A global OperatorGroup example is provided below. You can restrict the target namespaces using a link:{https://docs.openshift.com/container-platform/4.2/operators/understanding_olm/olm-understanding-operatorgroups.html#olm-operatorgroups-target-namespace_olm-understanding-operatorgroups}[*selector* or *targetNamespaces*].
 
 ----
 kubectl apply -f - << EOD
