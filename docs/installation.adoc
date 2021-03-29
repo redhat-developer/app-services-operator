@@ -77,11 +77,11 @@ Next, use a *dedicated-admin* or *cluster-admin* account and open your OpenShift
 
 Follow the on screen wizard to install the operator into the namespace(s) of your choosing. Once the operator is installed, you may begin using it.
 
-==== Using CRs
+==== Installation on custom namespace using CR
 
 Create a RHOAS Operator Subscription using this CR:
 
-> Note: This CR *sourceNamespace* is set to "rhoas-operator". Change this to "openshift-marketplace" if you installed the CatalogSource there.
+> Note: This CR *sourceNamespace* is set to "rhoas-operator". Change this to your own namespace. For example "openshift-marketplace" if you installed the CatalogSource there.
 
 ----
 kubectl apply -f - << EOD
@@ -104,7 +104,7 @@ EOD
 
 Create an OperatorGroup to make the Operator available to other namespaces:
 
-> Note: A global OperatorGroup example is provided below. You can restrict the target namespaces using a link:{https://docs.openshift.com/container-platform/4.2/operators/understanding_olm/olm-understanding-operatorgroups.html#olm-operatorgroups-target-namespace_olm-understanding-operatorgroups}[*selector* or *targetNamespaces*].
+> Note: A global OperatorGroup example is provided below. You can restrict the target namespaces using a link:{https://docs.openshift.com/container-platform/4.7/operators/understanding/olm/olm-understanding-operatorgroups.html}[*selector* or *targetNamespaces*].
 
 ----
 kubectl apply -f - << EOD
@@ -116,4 +116,3 @@ metadata:
   namespace: rhoas-operator
 EOD
 ----
-
