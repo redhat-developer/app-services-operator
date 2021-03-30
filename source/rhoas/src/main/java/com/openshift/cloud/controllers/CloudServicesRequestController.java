@@ -67,10 +67,6 @@ public class CloudServicesRequestController
               userKafkas.add(userKafka);
             });
 
-    if (userKafkas.equals(resource.getStatus().getUserKafkas())) {
-
-    } else {
-      resource.getStatus().setUserKafkas(userKafkas);
-    }
+    resource.getStatus().setUserKafkas(userKafkas);
   }
 }
