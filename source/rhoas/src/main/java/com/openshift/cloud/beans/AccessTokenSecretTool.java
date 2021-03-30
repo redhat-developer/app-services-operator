@@ -51,7 +51,8 @@ public class AccessTokenSecretTool {
       throws ConditionAwareException {
     try {
       if (isNullOrEmpty(accessTokenSecretName, namespace)) {
-        throw new IllegalArgumentException("accessTokenSecretName and namespace must be provided and exist.");
+        throw new IllegalArgumentException(
+            "accessTokenSecretName and namespace must be provided and exist.");
       }
       var offlineToken = getOfflineTokenFromSecret(accessTokenSecretName, namespace);
       var accessToken = exchangeToken(offlineToken);
