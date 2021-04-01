@@ -3,6 +3,7 @@ package com.openshift.cloud.controllers;
 import com.openshift.cloud.beans.AccessTokenSecretTool;
 import com.openshift.cloud.beans.KafkaApiClient;
 import com.openshift.cloud.beans.KafkaK8sClients;
+import com.openshift.cloud.utils.InvalidUserInputException;
 import com.openshift.cloud.v1alpha.models.CloudServicesRequest;
 import com.openshift.cloud.v1alpha.models.UserKafka;
 import io.javaoperatorsdk.operator.api.*;
@@ -26,11 +27,7 @@ public class CloudServicesRequestController
 
   public CloudServicesRequestController() {}
 
-  /**
-   * @param resource the resource to check for new kafkas
-   * @return true if there were changes, false otherwise
-   * @throws ApiException if something goes wrong connecting to services
-   */
+  /** @return true if there were changes, false otherwise */
   @Override
   public void init(EventSourceManager eventSourceManager) {
     LOG.info("Init! This is where we would add watches for child resources");
@@ -39,9 +36,10 @@ public class CloudServicesRequestController
   @Override
   void doCreateOrUpdateResource(
       CloudServicesRequest resource, Context<CloudServicesRequest> context)
-      throws ConditionAwareException {
+      throws ConditionAwareException, InvalidUserInputException {
     var accessTokenSecretName = resource.getSpec().getAccessTokenSecretName();
     var namespace = resource.getMetadata().getNamespace();
+    validateResource(resource);
     String accessToken = null;
     accessToken = accessTokenSecretTool.getAccessToken(accessTokenSecretName, namespace);
 
@@ -68,5 +66,12 @@ public class CloudServicesRequestController
             });
 
     resource.getStatus().setUserKafkas(userKafkas);
+  }
+
+  void validateResource(CloudServicesRequest resource) throws InvalidUserInputException {
+    ConditionUtil.assertNotNull(resource.getSpec(), "spec");
+    ConditionUtil.assertNotNull(
+        resource.getSpec().getAccessTokenSecretName(), "spec.accessTokenSecretName");
+    ConditionUtil.assertNotNull(resource.getMetadata().getNamespace(), "metadata.namespace");
   }
 }

@@ -4,6 +4,7 @@ import static com.openshift.cloud.v1alpha.models.KafkaCondition.Status.False;
 import static com.openshift.cloud.v1alpha.models.KafkaCondition.Status.True;
 
 import com.openshift.cloud.ApiException;
+import com.openshift.cloud.utils.InvalidUserInputException;
 import com.openshift.cloud.v1alpha.models.*;
 import com.openshift.cloud.v1alpha.models.KafkaCondition.Status;
 import java.time.ZoneOffset;
@@ -266,6 +267,14 @@ public class ConditionUtil {
         return "User not authorized to access the service";
       default:
         return String.format("Http Error Code %d", statusCode);
+    }
+  }
+
+  /** Assert value and throw exception if that is not used */
+  public static void assertNotNull(Object value, String key) throws InvalidUserInputException {
+    if (value == null) {
+      var message = String.format("%s should not be null", key);
+      throw new InvalidUserInputException(key, message);
     }
   }
 }

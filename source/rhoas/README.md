@@ -4,7 +4,6 @@ This operator creates and manages custom resources used by the RHOAS Kafka Servi
 # Prerequesites
  * Java 11+
  * Maven
- * A service-api token from cloud.redhat.com (Talk to Pete)
  * Access to a RHOAS services .
 
 # Building and Running
