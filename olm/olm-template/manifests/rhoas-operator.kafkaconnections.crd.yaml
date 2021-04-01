@@ -4,10 +4,16 @@ metadata:
   name: kafkaconnections.rhoas.redhat.com
   annotations:
     service.binding/bootstrapServers: 'path={.status.bootstrapServerHost}'
-    service.binding/password: >-
-      path={.status.serviceAccountSecretName},objectType=Secret,sourceKey=client-secret
+    ## SASL PLAIN credentials
     service.binding/user: >-
       path={.status.serviceAccountSecretName},objectType=Secret,sourceKey=client-id
+    service.binding/password: >-
+      path={.status.serviceAccountSecretName},objectType=Secret,sourceKey=client-secret
+    ## SASL OAUTH BEARER credentials
+    service.binding/clientId: >-
+           path={.status.serviceAccountSecretName},objectType=Secret,sourceKey=client-id
+    service.binding/clientSecret: >-
+      path={.status.serviceAccountSecretName},objectType=Secret,sourceKey=client-secret
     ## Additional binding metadata required for Quarkus
     service.binding/saslMechanism: 'path={.status.metadata.saslMechanism}'
     service.binding/securityProtocol: 'path={.status.metadata.securityProtocol}'
