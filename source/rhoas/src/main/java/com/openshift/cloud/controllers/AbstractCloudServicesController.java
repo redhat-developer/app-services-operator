@@ -29,8 +29,7 @@ public abstract class AbstractCloudServicesController<T extends CustomResource>
    * @param resource
    * @param context
    */
-  abstract void doCreateOrUpdateResource(T resource, Context<T> context)
-      throws ConditionAwareException;
+  abstract void doCreateOrUpdateResource(T resource, Context<T> context) throws Throwable;
 
   @Override
   /** This method is overriden by the proxies, but should not be overriden by you, the developer. */
