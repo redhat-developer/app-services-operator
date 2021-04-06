@@ -34,3 +34,4 @@ postgresql-operator
 .project
 .settings
 .vscode
+*.iml
