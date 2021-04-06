@@ -4,11 +4,12 @@
 == Folder structure
 
 ```
-├── api-mock   contains service api mocks
-├── docs       documentation
-├── examples   CR examples for testing
-├── olm        OLM configuration for deployment
-└── source     Java packages
+├── api-mock    contains service api mocks
+├── docs        documentation
+├── examples    CR examples for testing
+├── olm         OLM configuration for deployment
+    ├── Quickstarts Openshift quickstarts
+└── source      Java packages
 ```
 
 == Java Source packages
