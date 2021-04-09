@@ -6,7 +6,7 @@ metadata:
       [{"apiVersion":"","kind":"KafkaConnection","metadata":{"name":""},"spec":{}},{"apiVersion":"","kind":"CloudServiceAccountRequest","metadata":{"name":""},"spec":{}},{"apiVersion":"","kind":"CloudServicesRequest","metadata":{"name":""},"spec":{}}]
     categories: 'Developer Tools, OpenShift Optional, Integration & Delivery'
     certified: 'false'
-    description: 'RHOAS Operator creates instances of Red Hat OpenShift Application Services in your cluster'
+    description: 'Red Hat OpenShift Application Services Operator'
     capabilities: Seamless Upgrades
     repository: 'https://github.com/redhat-developer/app-services-operator'
     olm.skipRange: ">=0.0.1 <{{version}}"    
@@ -131,6 +131,9 @@ spec:
   - rhoas
   - kafka
   - serviceregistry
+  - app-services
+  - application
+  - services
   maintainers:
   - email: ms-devexp@redhat.com
     name: RedHat
@@ -139,6 +142,6 @@ spec:
     - name: RHOAS Operator Documentation
       url: 'https://github.com/redhat-developer/app-services-operator/tree/main/docs'  
   provider:
-    name: Github project
+    name: Red Hat Inc.
     url: https://github.com/redhat-developer/app-services-operator/
   version: {{version}}
