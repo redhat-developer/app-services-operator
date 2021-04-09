@@ -8,7 +8,7 @@ metadata:
     certified: 'false'
     description: 'RHOAS Operator creates instances of Red Hat OpenShift Application Services in your cluster'
     capabilities: Seamless Upgrades
-    repository: 'https://github.com/bf2fc6cc711aee1a0c2a/operator'
+    repository: 'https://github.com/redhat-developer/app-services-operator'
     olm.skipRange: ">=0.0.1 <{{version}}"    
   name: rhoas-operator.{{version}}
 spec:
@@ -121,7 +121,7 @@ spec:
     and scaling cloud-native applications in open hybrid-cloud environments. 
     
     Operator will enable developers to connect with their Application Services directly in their own cluster by using
-    [RHOAS cli](https://github.com/bf2fc6cc711aee1a0c2a/cli) and OpenShift Console UI.
+    [RHOAS cli](https://github.com/redhat-developer/app-services-cli) and OpenShift Console UI.
 
     Operator currently enables developers to connect with their Red Hat OpenShift Streams for Apache Kafka (RHOSAK) instances.
     
@@ -136,9 +136,9 @@ spec:
     name: RedHat
   maturity: beta
   links:
-    - name: RHOAS Organization
-      url: 'https://github.com/bf2fc6cc711aee1a0c2a/operator'  
+    - name: RHOAS Operator Documentation
+      url: 'https://github.com/redhat-developer/app-services-operator/tree/main/docs'  
   provider:
-    name: Red Hat
-    url: https://github.com/bf2fc6cc711aee1a0c2a/operator
+    name: Github project
+    url: https://github.com/redhat-developer/app-services-operator/
   version: {{version}}
