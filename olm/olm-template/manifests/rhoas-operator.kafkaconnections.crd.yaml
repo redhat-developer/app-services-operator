@@ -19,6 +19,10 @@ metadata:
     service.binding/securityProtocol: 'path={.status.metadata.securityProtocol}'
     service.binding/type: 'path={.status.metadata.type}'
     service.binding/provider: 'path={.status.metadata.provider}'
+    ## Lowercase versions for old versions of quarkus (to be removed later)
+    service.binding/bootstrapservers: 'path={.status.bootstrapServerHost}'
+    service.binding/saslmechanism: 'path={.status.metadata.saslMechanism}'
+    service.binding/securityprotocol: 'path={.status.metadata.securityProtocol}'
 spec:
   group: rhoas.redhat.com
   names:
