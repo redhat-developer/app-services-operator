@@ -27,9 +27,7 @@ public class AccessTokenSecretTool {
 
   private static final String ACCESS_TOKEN_SECRET_KEY = "value";
 
-  @ConfigProperty(
-      name = "auth.serverUrl",
-      defaultValue = "https://sso.redhat.com/auth/realms/redhat-external")
+  @ConfigProperty(name = "auth.serverUrl")
   String authServerUrl;
 
   @ConfigProperty(name = "auth.clientId", defaultValue = "cloud-services")
