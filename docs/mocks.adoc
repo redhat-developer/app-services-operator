@@ -8,6 +8,9 @@ Mocks are used by our test suite by default. If you wish to run the mocks on the
 
 == Mocks in a Cluster
 
+To use the mocks in a cluster, it is easiest to edit the `release.yml` build file and build the operator in GitHub Actions. From there you can install the operator via a catalog source as normal.
+
+
 == MockAccessTokenSecretTool
 
 This mock returns a constant as an access token. This replaces the normal access token behavior which calls the k8s API as well as our SSO system. Enable the mock by adding `com.openshift.cloud.beans.MockAccessTokenSecretTool` to the `quarkus.arc.selected-alternatives` system property.
