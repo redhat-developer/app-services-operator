@@ -6,4 +6,5 @@ The RHOAS Operator watches its link:./custom_resources.adoc[custom resources] an
 
 * link:./installation.adoc[Installation process]
 * link:./custom_resources.adoc[Custom Resources]
+* link:./controllers.adoc[Controllers]
 * link:./mocks.adoc[API Mocks]
