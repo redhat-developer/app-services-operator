@@ -240,7 +240,7 @@ Each custom resource type has several conditions on their status subresource. So
 
 === Finished Condition
 
-This condition's `status` is set to `True` if processing has been completed successfully, or `False` if it was not. The `reason` and `message` fields are set on the condition with more information. This condition is on all resources.
+This condition's `status` is set to `True` if processing has been completed successfully, or `False` if it was not. The `reason` and `message` fields are set on the condition with more information. The `lastTransitionGeneration` field records the value of `metadata.generation` when the condition was set. This condition is on all resources.
 
 === AcccesTokenSecretValid Condition
 
