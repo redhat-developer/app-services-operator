@@ -5,7 +5,7 @@ OpenShift Application Services Connection Operator (RHOAS-Operator) manages the 
 ## Related Projects
 
  * [app services cli](https://github.com/redhat-developer/app-services-cli)
- * [app services console plugin](https://github.com/redhat-developer/app-services-openshift-console-plugin)
+ * [OpenShift UI extension for RHOAS operator](https://github.com/redhat-developer/app-services-openshift-console-plugin)
 
 ## Documentation
 
