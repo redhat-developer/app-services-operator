@@ -3,6 +3,8 @@ package com.openshift.cloud.controllers;
 import static com.openshift.cloud.v1alpha.models.KafkaCondition.Status.False;
 import static com.openshift.cloud.v1alpha.models.KafkaCondition.Status.True;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.openshift.cloud.ApiException;
 import com.openshift.cloud.utils.InvalidUserInputException;
 import com.openshift.cloud.v1alpha.models.*;
@@ -11,8 +13,8 @@ import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -213,45 +215,28 @@ public class ConditionUtil {
             .setStatus(Status.Unknown));
   }
 
-  public static boolean allTrue(List<KafkaCondition> conditions) {
-    AtomicBoolean allTrue = new AtomicBoolean(true);
-    for (var cond : conditions) {
-      if (cond.getStatus() != True) {
-        allTrue.set(false);
-        break;
-      }
-    }
-    ;
-    return allTrue.get();
-  }
-
   /**
-   * Given an api exception, map the http error code to a known string.
+   * Map the api exception to proper error
    *
-   * @param e an exception thrown by a call to the MAS API
+   * @param e exception using APIException object
    * @return a human readable String to be set as the message property of a failed condition
    */
   public static String getStandarizedErrorMessage(ApiException e) {
+    var statusCode = e.getCode();
+    var reason = "";
+    var errorObject = new HashMap<String, Object>();
 
-    switch (e.getCode()) {
-      case 504: // SC_GATEWAY_TIMEOUT:
-      case 500: // SC_INTERNAL_SERVER_ERROR:
-      case 401: // HttpStatus.SC_UNAUTHORIZED:
-      case 403: // HttpStatus.SC_FORBIDDEN:
-        return getStandarizedErrorMessage(e.getCode());
-      case 400: // HttpStatus.SC_BAD_REQUEST:
-        return "Invalid request " + e.getMessage();
-      default:
-        return e.getMessage();
+    try {
+      if (e.getMessage() != null) {
+        TypeReference<HashMap<String, Object>> typeRef = new TypeReference<>() {};
+        errorObject = new ObjectMapper().readValue(e.getMessage(), typeRef);
+        reason = errorObject.getOrDefault("reason", "").toString();
+      }
+    } catch (Exception exception) {
+      LOG.warning(
+          String.format("Cannot process error returned by api: %s", exception.getMessage()));
     }
-  }
-  /**
-   * Map the http error code to a known string.
-   *
-   * @param statusCode a non 200 HTTP code returned by the system.
-   * @return a human readable String to be set as the message property of a failed condition
-   */
-  public static String getStandarizedErrorMessage(int statusCode) {
+
     switch (statusCode) {
       case 504: // SC_GATEWAY_TIMEOUT:
         return "Server timeout. Server is not responding";
@@ -260,13 +245,13 @@ public class ConditionUtil {
       case 500: // SC_INTERNAL_SERVER_ERROR:
         return "Unknown server error";
       case 400: // HttpStatus.SC_BAD_REQUEST:
-        return "Provided user input is invalid";
+        return String.format("Provided user input is invalid: %s", reason);
       case 401: // HttpStatus.SC_UNAUTHORIZED:
         return "Cannot authenticate user with the service";
       case 403: // HttpStatus.SC_FORBIDDEN:
-        return "User not authorized to access the service";
+        return String.format("User not authorized to access the service: %s", reason);
       default:
-        return String.format("Http Error Code %d", statusCode);
+        return String.format("Error %d: %s", statusCode, reason);
     }
   }
 
