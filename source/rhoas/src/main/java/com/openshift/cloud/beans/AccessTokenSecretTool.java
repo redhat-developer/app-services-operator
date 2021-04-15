@@ -1,5 +1,6 @@
 package com.openshift.cloud.beans;
 
+import com.openshift.cloud.ApiException;
 import com.openshift.cloud.controllers.ConditionAwareException;
 import com.openshift.cloud.controllers.ConditionUtil;
 import com.openshift.cloud.v1alpha.models.KafkaCondition;
@@ -144,13 +145,16 @@ public class AccessTokenSecretTool {
       } else {
         LOG.log(
             Level.SEVERE, String.format("Exchange token failed with error %s", response.body()));
+        // Reusing API error but only with status code
+        var apiError =
+            ConditionUtil.getStandarizedErrorMessage(new ApiException(response.statusCode(), null));
         throw new ConditionAwareException(
             response.body(),
             null,
             KafkaCondition.Type.AcccesTokenSecretValid,
             KafkaCondition.Status.False,
             String.format("Http Error Code %d", response.statusCode()),
-            ConditionUtil.getStandarizedErrorMessage(response.statusCode()));
+            apiError);
       }
     } catch (IOException | InterruptedException e) {
       throw new ConditionAwareException(
