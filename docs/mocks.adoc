@@ -2,9 +2,36 @@
 
 In normal operation, RHOAS Operator uses specialized bean classes when fetching available Kafka instances or creating service accounts. During testing these mock can be used to isolate the operator from its external dependencies. They are enabled by overriding the system property `quarkus.arc.selected-alternatives`.
 
+== Using Mocks Locally
+
+Mocks are used by our test suite by default. If you wish to run the mocks on the cluster, you will need to build the operator container with mocking enabled. To enable mocking in your operator container, add `-Dquarkus.arc.selected-alternatives=com.openshift.cloud.beans.MockKafkaApiClient,com.openshift.cloud.beans.MockAccessTokenSecretTool` to the build command.
+
+== Mocks in a Cluster
+
 == MockAccessTokenSecretTool
 
 This mock returns a constant as an access token. This replaces the normal access token behavior which calls the k8s API as well as our SSO system. Enable the mock by adding `com.openshift.cloud.beans.MockAccessTokenSecretTool` to the `quarkus.arc.selected-alternatives` system property.
 
+Whereas the normal implementation will load the secret, exchange the token with our SSO service instance, and return an access token, the mock returns a constant token of "12345" when calls are made to `AccessTokenSecretTool.getAccessToken`. 
+
 == MockKafkaApiClient
+
 The mocked cloud services API returns constants for queried kafkas and service account creation. Cloud services can be mocked by adding `com.openshift.cloud.beans.MockKafkaApiClient` to the `quarkus.arc.selected-alternatives` system property.
+
+This mock replaces two operations : it does not create a real service account nor nor its service account secret and it does not query the MAS API for a list of available user Kafkas. 
+
+The `createServiceAccount` method returns a constant service account with an id of "123456789" and with other values as provided by the CloudServiceAccountRequest.
+
+The 'getKafkaById' and `listKafkas` methods return a constant kafka with the following information :
+
+```
+    bootstrapServerHost: "testHost"
+    cloudProvider : "cloudProvider"
+    createdAt: OffsetDateTime.now();#The current time
+    name : "name"
+    owner : "owner"
+    id :"1234567890"
+    status : "status"
+    updatedAt : OffsetDateTime.now();
+    region : "region"
+```
