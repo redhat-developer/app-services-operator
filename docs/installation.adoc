@@ -116,3 +116,38 @@ metadata:
   namespace: rhoas-operator
 EOD
 ----
+
+==== Configuring The Operator
+
+You may configure the Operator by setting `config` values on the Subscription object which are passed to the pod. For example, the following Subscription resource will create a pod with memory limits : 
+
+----
+apiVersion: operators.coreos.com/v1alpha1
+kind: Subscription
+metadata:
+  labels:
+    operators.coreos.com/rhoas-operator.openshift-operators: ""
+  name: rhoas-operator
+spec:
+  channel: beta
+  installPlanApproval: Automatic
+  name: rhoas-operator
+  source: rhoas-operators
+  sourceNamespace: openshift-marketplace
+  startingCSV: rhoas-operator.0.6.5
+  config:
+    resources:
+      requests:
+        memory: "128Mi"
+        cpu: "250m"
+      limits:
+        memory: "256Mi"
+        cpu: "500m"
+----
+
+The operator also has several values which may be set via environment variables. These can be passed to the pod via the Subscription object as well.
+
+ * AUTH_SERVERURL : The SSO service which exchanges tokens, defaults to `https://sso.redhat.com/auth/realms/redhat-external`
+ * AUTH_CLIENTID :  The SSO client client-id, defaults to `cloud-services`
+ * AUTH_TOKENPATH : The path to use with AUTH_SERVERURL to exchange the access token, defaults to `protocol/openid-connect/token`
+ * CLOUD_SERVICES_API : The base path for the cloud services API, defaults to `https://api.stage.openshift.com`
