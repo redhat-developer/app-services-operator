@@ -18,7 +18,6 @@
     <sundrio.version>0.24.1</sundrio.version>
     <fabric8.models.version>5.2.0</fabric8.models.version>
     <fabric8.crdgen.version>5.2.0</fabric8.crdgen.version>
-
   </properties>
   <dependencyManagement>
     <dependencies>
@@ -29,6 +28,13 @@
       </dependency>
     </dependencies>
   </dependencyManagement>
+  <distributionManagement>
+    <repository>
+      <id>github</id>
+      <name>GitHub OWNER Apache Maven Packages</name>
+      <url>https://maven.pkg.github.com/secondsun/app-services-operator</url>
+    </repository>
+ </distributionManagement>
   <dependencies>
         <dependency>
           <groupId>io.fabric8</groupId>
@@ -57,10 +63,27 @@
   <build>
     <plugins>
       <plugin>
+        <groupId>net.nicoulaj.maven.plugins</groupId>
+        <artifactId>checksum-maven-plugin</artifactId>
+        <version>1.9</version>
+        <executions>
+            <execution>
+            <goals>
+                <goal>artifacts</goal>
+            </goals>
+            </execution>
+        </executions>
+        <configuration>
+        <algorithms>
+            <algorithm>SHA-256</algorithm>
+        </algorithms>
+        </configuration>
+    </plugin>
+      <plugin>
         <artifactId>maven-deploy-plugin</artifactId>
         <version>2.8.2</version>
         <configuration>
-          <skip>true</skip>
+          
         </configuration>
       </plugin>
       <plugin>
