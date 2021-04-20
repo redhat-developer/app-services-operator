@@ -93,8 +93,7 @@ public class KafkaConnectionControllerTest {
     var metaData = status.getMetadata();
     assertEquals("PLAIN", metaData.get("saslMechanism"));
     assertEquals("SASL_SSL", metaData.get("securityProtocol"));
-    assertEquals(
-        "https://cloud.redhat.com/beta/application-services/openshift-streams/kafkas/1234567890",
+    assertEquals("https://https://cloud.redhat.com/beta/application-services/streams/kafkas/1234567890",
         metaData.get("cloudUI"));
     assertEquals("rhoas", metaData.get("provider"));
     assertEquals("kafka", metaData.get("type"));
