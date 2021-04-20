@@ -3,13 +3,15 @@ kind: ClusterServiceVersion
 metadata:
   annotations:
     alm-examples: >-
-      [{"apiVersion":"","kind":"KafkaConnection","metadata":{"name":""},"spec":{}},{"apiVersion":"","kind":"CloudServiceAccountRequest","metadata":{"name":""},"spec":{}},{"apiVersion":"","kind":"CloudServicesRequest","metadata":{"name":""},"spec":{}}]
+      [{"apiVersion":"rhoas.redhat.com/v1alpha1","kind":"KafkaConnection","metadata":{"name":"example", "namespace":"example-namespace", "labels":{"app.kubernetes.io/component":"external-service", "app.kubernetes.io/managed-by":"rhoas"}},"spec":{"accessTokenSecretName":"rh-managed-services-api-accesstoken", "kafkaId":"exampleId","credentials":{"serviceAccountSecretName":"service-account-secret"}}},{"apiVersion":"rhoas.redhat.com/v1alpha1","kind":"CloudServiceAccountRequest","metadata":{"name":"example","namespace":"example-namespace"},"spec":{"serviceAccountName": "RhoasOperatorServiceAccount","serviceAccountDescription": "Operator created service account","serviceAccountSecretName": "service-account-credentials",  "accessTokenSecretName": "rh-managed-services-api-accesstoken"}},{"apiVersion":"rhoas.redhat.com/v1alpha1","kind":"CloudServicesRequest","metadata":{"name":"example","namespace":"example-namespace", "labels":{"app.kubernetes.io/component":"external-service", "app.kubernetes.io/managed-by":"rhoas"}},"spec":{"accessTokenSecretName": "rh-cloud-services-api-accesstoken"}}]
     categories: 'Developer Tools, OpenShift Optional, Integration & Delivery'
     certified: 'false'
     description: 'Red Hat OpenShift Application Services Operator'
     capabilities: Seamless Upgrades
     repository: 'https://github.com/redhat-developer/app-services-operator'
     olm.skipRange: ">=0.0.1 <0.6.8"    
+    containerImage: quay.io/rhoas/service-operator:0.6.8
+    createdAt: 2021-04-15 10:50:00
   name: rhoas-operator.0.6.8
 spec:
   apiservicedefinitions: {}
@@ -114,18 +116,22 @@ spec:
                     memory: 128Mi                
               serviceAccountName: rhoas-operator
   description:  >-
-    RHOAS Operator (Preview) creates instances of Red Hat OpenShift Application Services in your cluster.
+    **OpenShift Application Services Operator (RHOAS-Operator)** creates instances of Red Hat OpenShift Application Services in your cluster.  
+
 
     Red Hat OpenShift Application Services, when added to Red Hat OpenShift Dedicated, 
     provide a streamlined developer experience for building, deploying, 
-    and scaling cloud-native applications in open hybrid-cloud environments. 
+    and scaling cloud-native applications in open hybrid-cloud environments.   
     
-    Operator will enable developers to connect with their Application Services directly in their own cluster by using
-    [RHOAS cli](https://github.com/redhat-developer/app-services-cli) and OpenShift Console UI.
 
-    Operator currently enables developers to connect with their Red Hat OpenShift Streams for Apache Kafka (RHOSAK) instances.
+    RHOAS-Operator enables developers to connect with their Application Services directly in their own cluster by using
+    [RHOAS cli](https://github.com/redhat-developer/app-services-cli) and OpenShift Console UI.  
     
-  displayName: RHOAS
+
+    RHOAS-Operator requires developers to connect with their Red Hat OpenShift Streams for Apache Kafka (RHOSAK) instances.  
+    
+
+  displayName: RedHat OpenShift Application Services Operator (RHOAS-Operator)  (Preview)
   keywords:
   - cloud
   - rhoas
