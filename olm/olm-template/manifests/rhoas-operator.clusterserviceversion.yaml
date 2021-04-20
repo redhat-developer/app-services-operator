@@ -116,7 +116,8 @@ spec:
                     memory: 128Mi                
               serviceAccountName: rhoas-operator
   description:  >-
-    **OpenShift Application Services Operator (RHOAS-Operator)** creates instances of Red Hat OpenShift Application Services in your cluster.  
+    **OpenShift Application Services Operator (RHOAS-Operator)** creates instances of Red Hat OpenShift Application Services in your cluster.
+    Operator is currently available as limited BETA release and it cannot be consumed without invitation.
 
 
     Red Hat OpenShift Application Services, when added to Red Hat OpenShift Dedicated, 
@@ -131,7 +132,7 @@ spec:
     RHOAS-Operator requires developers to connect with their Red Hat OpenShift Streams for Apache Kafka (RHOSAK) instances.  
     
 
-  displayName: RedHat OpenShift Application Services Operator (RHOAS-Operator)  (Preview)
+  displayName: RedHat OpenShift Application Services Operator (RHOAS-Operator)
   keywords:
   - cloud
   - rhoas
