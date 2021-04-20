@@ -117,7 +117,7 @@ spec:
               serviceAccountName: rhoas-operator
   description:  >-
     **OpenShift Application Services Operator (RHOAS-Operator)** creates instances of Red Hat OpenShift Application Services in your cluster.
-    Operator is currently available as limited BETA release and it cannot be consumed without invitation.
+    Operator is currently available as limited Beta and it cannot be consumed without invitation.
 
 
     Red Hat OpenShift Application Services, when added to Red Hat OpenShift Dedicated, 
@@ -142,8 +142,8 @@ spec:
   - application
   - services
   maintainers:
-  - email: ms-devexp@redhat.com
-    name: RedHat
+  - email: rhosak-eval-support@redhat.com
+    name: Red Hat
   maturity: beta
   links:
     - name: RHOAS Operator Documentation
