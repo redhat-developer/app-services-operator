@@ -11,9 +11,12 @@ jobs:
     - name: Set QUAY Organization
       id: quay-organization
       run: echo "::set-output name=name::$( [ -z '${{ secrets.quay_organization }}' ] && echo 'rhoas' || echo '${{ secrets.quay_organization }}')"    
+    - name: Set Time
+      id: time
+      run: echo "::set-output name=time::$( date +%Y-%m-%d\ %H:%M:%S )"          
     - uses: actions/checkout@v2
     - name: Bump version
-      run: 'FORCE_VERSION=${GITHUB_REF##*/} olm/autoupdate.sh ${{ secrets.quay_robotaccount }} ${{ secrets.quay_robottoken }} ${{ steps.quay-organization.outputs.name }}'
+      run: 'FORCE_VERSION=${GITHUB_REF##*/} olm/autoupdate.sh ${{ secrets.quay_robotaccount }} ${{ secrets.quay_robottoken }} ${{ steps.quay-organization.outputs.name }} "${{steps.time.outputs.time}}"'
     - name: Load version number
       id: version-number
       run: echo "::set-output name=version::$(cat olm/version)"

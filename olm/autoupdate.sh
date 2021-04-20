@@ -3,6 +3,7 @@
 ## First Parameter : Quay UserName
 ## Second Parameter : Quay Token
 ## Third Parameter : Quay Organization
+## Fourth Parameter : Time
 
 set -e
 
@@ -31,6 +32,7 @@ mkdir olm-catalog/rhoas-operator/$version
 cp -r olm-template/* olm-catalog/rhoas-operator/$version
 sed -i "s/{{version}}/$version/g" olm-catalog/rhoas-operator/$version/manifests/rhoas-operator.clusterserviceversion.yaml 
 sed -i "s/{{organization}}/$3/g" olm-catalog/rhoas-operator/$version/manifests/rhoas-operator.clusterserviceversion.yaml 
+sed -i "s/{{time}}/$4/g" olm-catalog/rhoas-operator/$version/manifests/rhoas-operator.clusterserviceversion.yaml 
 
 
 echo "Building bundle"
