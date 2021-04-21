@@ -105,6 +105,9 @@ spec:
             spec:
               containers:
               - image: quay.io/{{organization}}/service-operator:{{version}}
+                env:
+                  - name: CLOUD_SERVICES_API
+                    value: https://api.openshift.com
                 imagePullPolicy: Always
                 name: rhoas-operator
                 resources:

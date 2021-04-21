@@ -10,6 +10,8 @@ import io.quarkus.runtime.Quarkus;
 import io.quarkus.runtime.QuarkusApplication;
 import io.quarkus.runtime.annotations.QuarkusMain;
 import javax.inject.Inject;
+
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.jboss.logging.Logger;
 
 @QuarkusMain
@@ -25,15 +27,20 @@ public class RHOASOperator implements QuarkusApplication {
 
   @Inject CloudServiceAccountRequestController serviceAccountRequestController;
 
+  @ConfigProperty(name = "rhoas.client.apiBasePath")
+  String clientBasePath;
+
   private static final Logger LOG = Logger.getLogger(RHOASOperator.class);
 
   public static void main(String... args) {
-    LOG.info("Autoupdating RHOAS Operator starting");
+    LOG.info("RHOAS Operator starting");
     Quarkus.run(RHOASOperator.class, args);
   }
 
   @Override
   public int run(String... args) throws Exception {
+    LOG.info("Using API URL: " + clientBasePath);
+    
     ControllerConfiguration<?> config = configuration.getConfigurationFor(connectionController);
     LOG.info("CR class: " + config.getCustomResourceClass());
 
