@@ -7,6 +7,7 @@ RHOAS_LOG_LEVEL=INFO
 === Changing API path to local mock
 
 CLOUD_SERVICES_API=localhost:8080
+CLOUD_SERVICES_SSO=https://sso.redhat.com/auth/realms/redhat-external
 
 === Listen to only single namespace
 
