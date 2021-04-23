@@ -1,9 +1,9 @@
 # This workflow publish release versions of images.
 name: Release workflow
 on:
-  create:
-    ref_type: tag 
-
+  release:
+    types: 
+      - created
 jobs:
   build:
     runs-on: ubuntu-latest
