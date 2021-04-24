@@ -1,6 +1,7 @@
 # OpenShift Application Services Connection Operator (RHOAS-Operator)
 
-OpenShift Application Services Connection Operator (RHOAS-Operator) manages the connections between RHOAS Service Accounts and RHOAS Cloud Services. Users provide RHOAS-Operator with a [cloud.redhat.com](https://cloud.redhat.com) API Token via a secret and the operator uses that token to access the Managed Services APIs on behalf of the user to process their KafkaConnection, CloudServicesRequest, and CloudServiceAccountRequest custom resources. These resources are monitored by the [Service Binding Operator](https://github.com/redhat-developer/service-binding-operator) which provides connectivity between your application and RHOAS services.
+Connect Red Hat services with your OpenShift and Kubernetes instance to 
+automatically discover configuration and credentials.
 
 ## Related Projects
 
