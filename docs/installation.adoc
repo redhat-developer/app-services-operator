@@ -13,3 +13,9 @@ Operator is available as part of the OperatorHub.
 7. Press Install to perform installation
 
 Once Operator is installed you can interact with it using `rhoas cluster` commands and directly in OpenShift UI (`Managed Services Catalog` should be visible after installation)
+
+=== Installing Developer Preview
+
+Preview versions of the operator can be installed using CatalogSource.
+If you developer looking to try out early version of operator please see: 
+link:./build_docs/dev-install.adoc[Contributor installation] doc
