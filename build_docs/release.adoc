@@ -2,6 +2,41 @@
 
 Our release process is automated via GitHub actions. Each release generates new OLM metadata with its container, an operator container, updates the OLM Catalog index container, and pushes all of these to link:quay.io/rhoas[the RHOAS Quay organization]. These releases are available on the `beta` channel in OperatorHub.
 
+== Process
+
+=== Requirements
+
+1. Installed https://github.com/git-chglog/git-chglog
+2. Be on the list of the approved OperatorHub RHOAS developers 
+
+=== Procedure
+
+1. Create new release https://github.com/redhat-developer/app-services-operator/releases/new
+2. Wait for the build to finish and check if operator was properly pushed
+3. Update changelog 
++
+[source]
+----
+git-chglog -o CHANGELOG.md
+----
++
+4. Update release with the generated changelog version
+5. Install catalog source with version of the operator (or wait for the automatic verification to be performed using catalog source)
+6. Execute OperatorHub update for RHOAS
++
+[source]
+----
+cd olm
+./operatorhub.sh
+cd community-operators
+git push yourfork +currentBranch
+----
++
+7. Create PR to update Operator hub
+8. Once merged test installation of the Operator from OperatorHub
+
+== Additional Information
+
 === OLM metadata
 
 The `olm/olm-catalog` directory is managed by our release scripts. It contains the metadata files which are hosted by the index container. Each bundle is released as a separate container image named `service-operator-bundle` with the version of the GitHub tag that triggered the release script. The `olm/autoupdate.sh` script maintains this metadata.
