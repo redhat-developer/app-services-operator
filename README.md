@@ -1,12 +1,13 @@
 # OpenShift Application Services Connection Operator (RHOAS-Operator)
 
-Connect Red Hat services with your OpenShift and Kubernetes instance to 
+Connect Red Hat Application Services with your OpenShift and Kubernetes instance to 
 automatically discover configuration and credentials.
 
 ## Related Projects
 
- * [app services cli](https://github.com/redhat-developer/app-services-cli)
+ * [App Services CLI](https://github.com/redhat-developer/app-services-cli)
  * [OpenShift UI extension for RHOAS operator](https://github.com/redhat-developer/app-services-openshift-console-plugin)
+ * [Service Binding Operator](https://github.com/redhat-developer/service-binding-operator)
 
 ## Documentation
 
