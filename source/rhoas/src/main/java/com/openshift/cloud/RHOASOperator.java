@@ -10,7 +10,6 @@ import io.quarkus.runtime.Quarkus;
 import io.quarkus.runtime.QuarkusApplication;
 import io.quarkus.runtime.annotations.QuarkusMain;
 import javax.inject.Inject;
-
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.jboss.logging.Logger;
 
@@ -40,7 +39,7 @@ public class RHOASOperator implements QuarkusApplication {
   @Override
   public int run(String... args) throws Exception {
     LOG.info("Using API URL: " + clientBasePath);
-    
+
     ControllerConfiguration<?> config = configuration.getConfigurationFor(connectionController);
     LOG.info("CR class: " + config.getCustomResourceClass());
 
