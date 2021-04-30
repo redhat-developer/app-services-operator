@@ -1,11 +1,18 @@
 package com.openshift.cloud.v1alpha.models;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
+@Getter
+@Setter
+@EqualsAndHashCode
+@ToString
+@NoArgsConstructor
 public class Credentials {
 
   private String serviceAccountSecretName;
-
-  /** No args constructor for use in serialization */
-  public Credentials() {}
 
   /** @param serviceAccountSecretName */
   public Credentials(String serviceAccountSecretName) {
@@ -13,11 +20,5 @@ public class Credentials {
     this.serviceAccountSecretName = serviceAccountSecretName;
   }
 
-  public String getServiceAccountSecretName() {
-    return serviceAccountSecretName;
-  }
-
-  public void setServiceAccountSecretName(String serviceAccountSecretName) {
-    this.serviceAccountSecretName = serviceAccountSecretName;
-  }
+ 
 }

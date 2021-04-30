@@ -2,7 +2,19 @@ package com.openshift.cloud.v1alpha.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.sundr.builder.annotations.Buildable;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
+
+
+@Getter
+@Setter
+@EqualsAndHashCode
+@ToString
+@NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Buildable(builderPackage = "io.fabric8.kubernetes.api.builder", editableEnabled = false)
 public class CloudServiceAccountRequestSpec {
@@ -38,27 +50,4 @@ public class CloudServiceAccountRequestSpec {
     this.serviceAccountSecretName = serviceAccountSecretName;
   }
 
-  public String getServiceAccountName() {
-    return serviceAccountName;
-  }
-
-  public void setServiceAccountName(String serviceAccountName) {
-    this.serviceAccountName = serviceAccountName;
-  }
-
-  public String getServiceAccountDescription() {
-    return serviceAccountDescription;
-  }
-
-  public void setServiceAccountDescription(String serviceAccountDescription) {
-    this.serviceAccountDescription = serviceAccountDescription;
-  }
-
-  public String getServiceAccountSecretName() {
-    return serviceAccountSecretName;
-  }
-
-  public void setServiceAccountSecretName(String serviceAccountSecretName) {
-    this.serviceAccountSecretName = serviceAccountSecretName;
-  }
 }

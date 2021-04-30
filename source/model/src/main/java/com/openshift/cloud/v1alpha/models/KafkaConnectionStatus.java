@@ -14,8 +14,7 @@ public class KafkaConnectionStatus {
   private List<KafkaCondition> conditions;
   private Map<String, String> metadata;
 
-  /** No args constructor for use in serialization */
-  public KafkaConnectionStatus() {}
+ 
 
   /**
    * @param serviceAccountSecretName
@@ -32,52 +31,5 @@ public class KafkaConnectionStatus {
     this.serviceAccountSecretName = serviceAccountSecretName;
     this.metadata = new HashMap<String, String>();
   }
-
-  public String getMessage() {
-    return message;
-  }
-
-  public void setMessage(String message) {
-    this.message = message;
-  }
-
-  public String getUpdated() {
-    return updated;
-  }
-
-  public void setUpdated(String updated) {
-    this.updated = updated;
-  }
-
-  public String getServiceAccountSecretName() {
-    return serviceAccountSecretName;
-  }
-
-  public void setServiceAccountSecretName(String serviceAccountSecretName) {
-    this.serviceAccountSecretName = serviceAccountSecretName;
-  }
-
-  public List<KafkaCondition> getConditions() {
-    return conditions;
-  }
-
-  public void setConditions(List<KafkaCondition> conditions) {
-    this.conditions = conditions;
-  }
-
-  public String getBootstrapServerHost() {
-    return bootstrapServerHost;
-  }
-
-  public void setBootstrapServerHost(String bootstrapServerHost) {
-    this.bootstrapServerHost = bootstrapServerHost;
-  }
-
-  public Map<String, String> getMetadata() {
-    return metadata;
-  }
-
-  public void setMetadata(Map<String, String> metadata) {
-    this.metadata = metadata;
-  }
+ 
 }

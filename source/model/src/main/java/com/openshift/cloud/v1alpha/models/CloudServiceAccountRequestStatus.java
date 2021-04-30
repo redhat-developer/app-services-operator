@@ -3,7 +3,17 @@ package com.openshift.cloud.v1alpha.models;
 import io.sundr.builder.annotations.Buildable;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
+@Getter
+@Setter
+@EqualsAndHashCode
+@ToString
+@NoArgsConstructor
 @Buildable(builderPackage = "io.fabric8.kubernetes.api.builder", editableEnabled = false)
 public class CloudServiceAccountRequestStatus {
 
@@ -12,8 +22,6 @@ public class CloudServiceAccountRequestStatus {
   private String serviceAccountSecretName = "";
   private List<KafkaCondition> conditions = new ArrayList<>();
 
-  /** No args constructor for use in serialization */
-  public CloudServiceAccountRequestStatus() {}
 
   /**
    * @param serviceAccountSecretName
@@ -28,35 +36,4 @@ public class CloudServiceAccountRequestStatus {
     this.serviceAccountSecretName = serviceAccountSecretName;
   }
 
-  public String getMessage() {
-    return message;
-  }
-
-  public void setMessage(String message) {
-    this.message = message;
-  }
-
-  public String getUpdated() {
-    return updated;
-  }
-
-  public void setUpdated(String updated) {
-    this.updated = updated;
-  }
-
-  public String getServiceAccountSecretName() {
-    return serviceAccountSecretName;
-  }
-
-  public void setServiceAccountSecretName(String serviceAccountSecretName) {
-    this.serviceAccountSecretName = serviceAccountSecretName;
-  }
-
-  public List<KafkaCondition> getConditions() {
-    return conditions;
-  }
-
-  public void setConditions(List<KafkaCondition> conditions) {
-    this.conditions = conditions;
-  }
 }

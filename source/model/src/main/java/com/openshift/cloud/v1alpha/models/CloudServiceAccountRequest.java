@@ -11,6 +11,12 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
 @Plural("cloudserviceaccountrequests")
 @Group("rhoas.redhat.com")
 @Version("v1alpha1")
@@ -18,35 +24,13 @@ import org.apache.commons.lang.builder.ToStringBuilder;
     builderPackage = "io.fabric8.kubernetes.api.builder",
     editableEnabled = false,
     refs = @BuildableReference(CustomResource.class))
+@Getter
+@Setter
+@EqualsAndHashCode
+@ToString
+@NoArgsConstructor
 public class CloudServiceAccountRequest
     extends CustomResource<CloudServiceAccountRequestSpec, CloudServiceAccountRequestStatus>
     implements Namespaced {
 
-  @Override
-  public String toString() {
-    return new ToStringBuilder(this)
-        .append("cloudServiceAccountRequestSpec", getSpec())
-        .append("cloudServiceAccountRequestStatus", getStatus())
-        .toString();
-  }
-
-  @Override
-  public int hashCode() {
-    return new HashCodeBuilder().append(getSpec()).append(getStatus()).toHashCode();
-  }
-
-  @Override
-  public boolean equals(Object other) {
-    if (other == this) {
-      return true;
-    }
-    if ((other instanceof CloudServiceAccountRequest) == false) {
-      return false;
-    }
-    CloudServiceAccountRequest rhs = ((CloudServiceAccountRequest) other);
-    return new EqualsBuilder()
-        .append(getSpec(), rhs.getSpec())
-        .append(getStatus(), rhs.getStatus())
-        .isEquals();
-  }
 }
