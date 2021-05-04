@@ -135,7 +135,7 @@ spec:
     RHOAS-Operator requires developers to connect with their Red Hat OpenShift Streams for Apache Kafka (RHOSAK) instances.  
     
 
-  displayName: RedHat OpenShift Application Services Operator (RHOAS-Operator)
+  displayName: OpenShift Application Services (RHOAS)
   keywords:
   - cloud
   - rhoas
