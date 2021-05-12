@@ -35,3 +35,5 @@ postgresql-operator
 .settings
 .vscode
 community-operators
+*.iml
+ 
