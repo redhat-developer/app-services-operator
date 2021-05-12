@@ -1,0 +1,128 @@
+apiVersion: console.openshift.io/v1
+kind: ConsoleQuickStart
+metadata:
+  name: rhosak-devsandbox-connect-cli-webterminal-quickstart
+spec:
+  displayName: Connecting Red Hat OpenShift Streams for Apache Kafka to OpenShift
+  tags:
+    - streams
+    - kafka
+  durationMinutes: 10
+  description: Using the OpenShift Streams for Apache Kafka cloud service in your OpenShift cluster
+  prerequisites: 
+    - Access to Red Hat OpenShift Streams for Apache Kafka (for more information, visit https://cloud.redhat.com/application-services).
+    - A running OpenShift Streams for Apache Kafka instance.
+  introduction: >-
+    ### This quick start shows you how to connect Red Hat OpenShift Streams for Apache Kafka to OpenShift using the RHOAS CLI.
+    
+    In this Quick Start, you'll connect your OpenShift Streams for Apache Kafka cloud service to your OpenShift cluster using the Red Hat OpenShift Application Services 
+    Operator and CLI. For more information on Red Hat OpenShift Application Services, please visit [cloud.redhat.com.](https://cloud.redhat.com/application-services)
+  tasks:
+  - title: Access the required (CLI) Tools.
+    description: |-
+      The Red Hat OpenShift Application Services operator allows you to represent Red Hat Cloud Services as first class citizens in your OpenShift environment.
+      This enables you to work and integrate with these services using standard OpenShift/Kubernetes features and APIs.
+          
+      To connect your OpenShift project to your Red Hat OpenShift Application Services, you can use the RHOAS CLI. We've provided all the tools necessary to complete
+      this Quick Start in the OpenShift Web Terminal: a terminal running in your OpenShift environment. Alternatively, you can install the RHOAS CLI, the OpenShift Client (oc), 
+      and ODO on your own machine. These tools can be downloaded from:
+        * oc:
+        * ODO:
+        * RHOAS CLI: 
+
+      To start the OpenShift Web Terminal, do the following (if you are using your local installation of the RHOAS CLI, you can skip these steps):
+      
+      1. click on the **Open Command Line Terminal** icon at the top right of your OpenShift screen. 
+
+      1. A command line terminal window will open at the bottom of your screen. You'll see the message **Connecting to your OpenShift command line terminal**. 
+      This can take a couple of seconds.
+
+      1. You will see a `bash-4.4 ~ $` prompt when your terminal is ready. To check whether you can access the required tooling, execute the command `rhoas` in your terminal. 
+      This should print the Red Hat OpenShift Application Service CLI help text.
+
+      
+  - title: Connect your Red Hat OpenShift Application Services to your OpenShift instance.
+    description: |-
+      With the tooling in place, you can connect your Red Hat OpenShift Streams for Apache Kafka instance to your OpenShift project/namespace.
+      
+      The Red Hat OpenShift Application Services operator allows you to represent Red Hat Cloud Services as first class citizens in your OpenShift environment.
+      This enables you to work and integrate with these services using standard OpenShift/Kubernetes features and APIs.
+
+      We will use the `rhoas` CLI to connect your Kafka instance to your OpenShift project. The `rhoas` CLI uses a browser-based login flow by default 
+      (meaning, when you execute `rhoas login` it will start a sign-in flow in your web browser). Since our terminal in OpenShift does not have access to a browser,
+      we need to login using a token.
+
+      1. Navigate to https://cloud.redhat.com/openshift/token and copy the token to your clipboard using the **Copy to clipboard** button.
+
+      1. In your terminal, execute the RHOAS CLI login command, replacing {token} with the token you've just copied to your clipboard: `rhoas login --token={token}`. 
+      You should see a response saying: **You are now logged in as {user}**.
+
+      1. List your Kafka instances by executing the command: `rhoas kafka list`. You should see a Streams for Apache Kafka instance that has been provisioned for you.
+
+      The **rhoas** CLI uses the **oc** CLI to determine the OpenShift instance, and project, that the Streams for Apache Kafka instance should be connected to.
+      Let's verify that your **oc** client is properly connected to your OpenShift project.
+
+      1. In your terminal, execute the following command: `oc status`. You should get a response like: **In project {project} on server https://{host}:443**. Make sure the {project}
+      that your **oc** client is connected to is the project to which you want to bind your Kafka instance.
+
+      1. If your **oc** client is not connected to the correct project, execute the following command, replacing {project} with the name of the project that you want to bind your Kafka instance to: `oc project {project}`.
+      You will get a reply that you are now using the the project you specified.
+
+      1. To connect your Kafka instance to your project, execute the following command in your terminal: `rhoas cluster connect`.
+
+      1. You are asked to select the Kafka instance you want to connect. Since you only have a single Kafka instance in your Red Hat Cloud Services, simply press **Enter** to continue.
+
+      1. The CLI will print the **Connection Details** and asks you to confirm. Type `y` and press **Enter** to continue.
+
+      1. You will be asked to provide a token, which again can be retrieved from https://cloud.redhat.com/openshift/token . Navigate to this URL again, copy the token to your clipboard, and copy it into your terminal. Press **Enter** to continue.
+      You should see the message: *KafkaConnection successfully installed on your cluster.*
+
+      1. To verify that the connection has been successfully created, execute the following **oc** command: `oc get KafkaConnection`. This should return a **KafkaConnection** with the name of your Kafka instance.
+
+    review:
+      instructions: |-
+        #### Verify that you've successfully connected to Red Hat OpenShift Application Services:
+        Did you see the your **KafkaConnection** listed when you executed the `oc get KafkaConnection` command?
+      failedTaskHelp: This task isn’t verified yet. Try the task again.
+    summary:
+      success: >-
+        Great work! You've connected you OpenShift project
+        to your **Red Hat OpenShift Application Services**.
+      failed: Try the steps again.
+  
+  - title: Inspect the Kafka connection details
+    description: |-
+      With your Streams for Apache Kafka instance bound to your OpenShit project/namespace, you can now connect your application to it.
+            
+      This can be done in different ways.
+      * You can inspect the connection details of your Kafka instance and configure your application to connect to it.
+      * You can use OpenShift/Kubernetes Service Binding to bind your application to the service and have the connection details and credentials automatically injected into your application.
+
+      1. In your terminal, execute the following command to get the name of the **KafkaConnection** resource we've created in the previous task: `oc get KafkaConnection`.
+      This will list the **KafkaConnection** resources in your project.
+
+      1. Execute the following command to retrieve the details of your **KakfaConnection**. Replace *{kafka-connection-name}* with the name of your **KafkaConnection** resource: `oc describe KafkaConnection/{kafka-connection-name}`
+    
+      1. The output of the previous command contains the details of your **KafkaConnection**. Try to find the **Bootstrap Server Host** setting of your **KafkaConnection**.
+
+      1. The **KafkaConnection** contains more information that the **Bootstrap Server Host**. Try to find the **Sasl Mechanism** and the **Security Protocol**.
+
+      1. Finally the **KafkaConnection** has a reference to **Service Account Secret** that contains the **Client ID** and **Client Secret** needed to connect to the service. Try to find that configuration in your **KafkaConnection**.
+
+    review:
+      instructions: |-
+        #### You have all the necessary information to connect your application to your OpenShift Streams for Apache Kafka instance:
+        Have you seen the Bootstrap Server hostname and port?
+
+        Do you know which authentication mechanism (SASL/PLAIN, SASL/OAUTHBEARER) to use?
+
+        Do you know the name of the secret in which your **Client ID** and **Client Secret** are stored?
+      failedTaskHelp: This task isn't verified yet. Try the task again.
+    summary:
+      success: >-
+        Great work! You've connected your Streams for Apache Kafka cloud service to your OpenShift project/namespace.
+      failed: Try the steps again.
+  conclusion: >-
+    You've successfully created a connection between a Red Hat managed cloud service and your OpenShift project/namespace.
+    You can now start using this Kafka instance in your applications, for example by binding the service to a Quarkus microservice.
+
