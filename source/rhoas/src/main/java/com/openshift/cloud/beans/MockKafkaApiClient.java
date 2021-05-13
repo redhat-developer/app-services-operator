@@ -1,8 +1,8 @@
 package com.openshift.cloud.beans;
 
-import com.openshift.cloud.api.models.KafkaRequest;
-import com.openshift.cloud.api.models.KafkaRequestList;
-import com.openshift.cloud.api.models.ServiceAccount;
+import com.openshift.cloud.api.kas.models.KafkaRequest;
+import com.openshift.cloud.api.kas.models.KafkaRequestList;
+import com.openshift.cloud.api.kas.models.ServiceAccount;
 import com.openshift.cloud.controllers.ConditionAwareException;
 import com.openshift.cloud.v1alpha.models.CloudServiceAccountRequest;
 import com.openshift.cloud.v1alpha.models.CloudServiceAccountRequestSpec;

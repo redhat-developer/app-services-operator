@@ -114,7 +114,7 @@
                 <!-- /RELEASE_VERSION -->
                 <executions>
                     <execution>
-                        <id>default</id>
+                        <id>kas-open-api</id>
                         <goals>
                             <goal>generate</goal>
                         </goals>
@@ -127,8 +127,32 @@
                             <generateModelTests>false</generateModelTests>
                             <generateApiTests>false</generateApiTests>
                             <configOptions>
-                                <modelPackage>com.openshift.cloud.api.models</modelPackage>
-                                <apiPackage>com.openshift.cloud.api</apiPackage>
+                                <modelPackage>com.openshift.cloud.api.kas.models</modelPackage>
+                                <apiPackage>com.openshift.cloud.api.kas</apiPackage>
+                                <dateLibrary>java8</dateLibrary>
+                                <licenseName>Apache-2.0</licenseName>
+                                <licenseUrl>https://www.apache.org/licenses/LICENSE-2.0.txt</licenseUrl>
+                            </configOptions>
+                            <library>resteasy</library>
+                            <ignoreFileOverride>${project.basedir}/.openapi-generator-ignore </ignoreFileOverride>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>srs-open-api</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <!-- specify the swagger yaml -->
+                            <inputSpec>${project.basedir}/srs-fleet-manager.json</inputSpec>
+
+                            <!-- target to generate java client code -->
+                            <generatorName>java</generatorName>
+                            <generateModelTests>false</generateModelTests>
+                            <generateApiTests>false</generateApiTests>
+                            <configOptions>
+                                <modelPackage>com.openshift.cloud.api.srs.models</modelPackage>
+                                <apiPackage>com.openshift.cloud.api.srs</apiPackage>
                                 <dateLibrary>java8</dateLibrary>
                                 <licenseName>Apache-2.0</licenseName>
                                 <licenseUrl>https://www.apache.org/licenses/LICENSE-2.0.txt</licenseUrl>
