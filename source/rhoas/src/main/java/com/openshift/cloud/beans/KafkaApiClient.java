@@ -1,14 +1,14 @@
 package com.openshift.cloud.beans;
 
-import com.openshift.cloud.ApiClient;
-import com.openshift.cloud.ApiException;
-import com.openshift.cloud.Configuration;
-import com.openshift.cloud.api.DefaultApi;
-import com.openshift.cloud.api.models.KafkaRequest;
-import com.openshift.cloud.api.models.KafkaRequestList;
-import com.openshift.cloud.api.models.ServiceAccount;
-import com.openshift.cloud.api.models.ServiceAccountRequest;
-import com.openshift.cloud.auth.HttpBearerAuth;
+import com.openshift.cloud.api.ApiClient;
+import com.openshift.cloud.api.ApiException;
+import com.openshift.cloud.api.Configuration;
+import com.openshift.cloud.api.auth.HttpBearerAuth;
+import com.openshift.cloud.api.kas.DefaultApi;
+import com.openshift.cloud.api.kas.models.KafkaRequest;
+import com.openshift.cloud.api.kas.models.KafkaRequestList;
+import com.openshift.cloud.api.kas.models.ServiceAccount;
+import com.openshift.cloud.api.kas.models.ServiceAccountRequest;
 import com.openshift.cloud.controllers.ConditionAwareException;
 import com.openshift.cloud.controllers.ConditionUtil;
 import com.openshift.cloud.v1alpha.models.CloudServiceAccountRequest;

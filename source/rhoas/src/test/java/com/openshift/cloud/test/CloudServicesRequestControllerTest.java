@@ -2,7 +2,7 @@ package com.openshift.cloud.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.openshift.cloud.api.models.KafkaRequest;
+import com.openshift.cloud.api.kas.models.KafkaRequest;
 import com.openshift.cloud.beans.MockKafkaApiClient;
 import com.openshift.cloud.controllers.CloudServicesRequestController;
 import com.openshift.cloud.controllers.ConditionUtil;

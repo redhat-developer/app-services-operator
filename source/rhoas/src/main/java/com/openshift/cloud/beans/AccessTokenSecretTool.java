@@ -1,6 +1,6 @@
 package com.openshift.cloud.beans;
 
-import com.openshift.cloud.ApiException;
+import com.openshift.cloud.api.ApiException;
 import com.openshift.cloud.controllers.ConditionAwareException;
 import com.openshift.cloud.controllers.ConditionUtil;
 import com.openshift.cloud.v1alpha.models.KafkaCondition;
