@@ -1,55 +1,64 @@
-= RHOAS Custom Resource Lifecycles
+= RHOAS Operator Custom Resource controllers
 
-Each custom resource has a controller associated with it. These controllers can be found in the [com.openshift.cloud.controllers](https://github.com/redhat-developer/app-services-operator/tree/main/source/rhoas/src/main/java/com/openshift/cloud/controllers) package in our github repository.
+Each Custom Resource (CR) object that works with the RHOAS Operator has a controller associated with it. The Operator also uses an `AbstractCloudServicesController` controller that abstracts common controller logic.
+
+You can find the controllers in the link:https://github.com/redhat-developer/app-services-operator/tree/main/source/rhoas/src/main/java/com/openshift/cloud/controllers[com.openshift.cloud.controllers^] package in our GitHub repository.
+
+Each of the controllers is described below.
 
 == AbstractCloudServicesController
 
-This class abstracts common controller logic. It is responsible for verifying that resources should be processed, initializing status subresources, dispatching events to specific controllers, catching and reporting errors, and aggregating updates to write the status subresource. Developers who wish to add more controllers should extend this class and override `doCreateOrUpdateResource`. 
+This controller abstracts common controller logic. The abstract controller is responsible for:
 
-This controller also provides a default `deleteResource` method which deletes the custom resource. If you need custom delete logic then you should override this method in your controller.
+ * Verifying that resources should be processed by the Operator
+ * Initializing status subresources
+ * Dispatching events to specific controllers
+ * Catching and reporting errors
+ * Aggregating updates to write to the status subresource
 
-=== Process Checks
+If you are a developer that intends to add more controllers for use with the Operator, you should extend this class and override the `doCreateOrUpdateResource` property.
 
-The abstract controller performs several checks on a custom resource before the resource is processed. Resources are processed if one of the following is true : 
- 
- * A resource has no status
- * A resource has no conditions
- * A resource has conditions, and the finished condition's status is "False"
- * A resource has conditions, the finished condition status is "True", and the "LastTransitionGeneration" value of the finished condition is less than that of the current metadata.generation value
+This controller also provides a default `deleteResource` method that deletes a given CR. If you need custom delete logic, then you should override this method in the controller for your CR.
+
+=== Process checks
+
+The controller performs several checks on a CR before the Operator processes that resource. The Operator processes a CR if *one* of the following conditions is true:
+
+ * The CR has no status
+ * The CR has no conditions
+ * The CR has conditions, and the status of the `Finished` condition is `False`
+ * The CR has conditions, the status of the `Finished` condition status is `True`, and the `LastTransitionGeneration` value of the `Finished` condition is less than the current value of the `metadata.generation` property
 
 == CloudServicesRequestController
 
-This controller consumes a `CloudServicesRequest` custom resource. The processing of the resource performs the following functions : 
- 
- * The accessTokenSecret is loaded and its value exchanged with the sso service to get a live access token.
- * The live access token authenticates with the cloud services API
- * The list of available kafka clusters is fetched from the cloud services API
- * This list is written to the status subresource
+This controller consumes a `CloudServicesRequest` CR. When the controller processes the CR, the following events occur:
 
-This controller uses the default delete operation and deletes the CloudServicesRequest custom resource.
+ * `CloudServicesRequestController` loads the value of the `accessTokenSecretName` field of the CR. The controller exchanges the value with the SSO service, to get a live access token.
+ * The live access token authenticates with the Cloud Services API.
+ * `CloudServicesRequestController` fetches the list of available Kafka instances from the Cloud Services API.
+ * `AbstractCloudServicesController` writes the list of Kafka instances to the status subresource.
+
+This controller uses the default delete operation and deletes the `CloudServicesRequest` CR.
 
 == CloudServiceAccountRequestController
 
-This controller creates a service account to access the Kafka instance. Currently there is a limit of two service accounts per user. This controller consumes a `CloudServiceAccountRequest` custom resource. The processing of the resource performs the following functions : 
+This controller consumes a `CloudServiceAccountRequest` CR to create a service account to access the Kafka instance. Currently, there is a limit of two service accounts per user. When the controller processes the CR, the following events occur:
 
- * The accessTokenSecret is loaded and its value exchanged with the sso service to get a live access token.
- * The live access token authenticates with the cloud services API
- * The controller creates the service account in the SSO system
- * The controller writes the service account information to a secret which is consumed by the SBO
- * The status subresources is updated with the Kafka's bootstrapServerHost value and the secret for the service account.
+* `CloudServiceAccountRequestController` loads the value of the `accessTokenSecretName` field of the CR. The controller exchanges the value with the SSO service, to get a live access token.
+*  The live access token authenticates with the Cloud Services API.
+ * `CloudServiceAccountRequestController` creates the service account in the SSO system.
+ * `CloudServiceAccountRequestController` writes the service account information to a secret. The secret is consumed by the Service Binding Operator (SBO).
+ * `AbstractCloudServicesController` updates the status subresource with the `bootstrapServerHost` value of the Kafka instance and the secret for the service account.
 
-This controller uses the default delete operation and deletes the CloudServiceAccountRequest custom resource. It is the user's resposibility to cleanup the service account secret and service accounts in the SSO system.
+This controller uses the default delete operation and deletes the `CloudServiceAccountRequest` CR. Users are responsible for cleaning up service accounts and service account secrets in the SSO system.
 
 == KafkaConnectionController
 
-This controller consumes a `KafkaConnection` custom resource. The processing of the resource performs the following functions : 
- 
- * The accessTokenSecret is loaded and its value exchanged with the sso service to get a live access token.
- * The live access token authenticates with the cloud services API
- * The Kafka service's connection information is loaded via the cloud services API using the `spec.kafkaId` field
- * The status subresources is updated with the Kafka's bootstrapServerHost value and the secret for the service account.
+This controller consumes a `KafkaConnection` CR. When the controller processes the CR, the following events occur:
 
-This controller uses the default delete operation and deletes the KafkaConnection custom resource.
+ * `KafkaConnectionController` loads the value of the `accessTokenSecretName` field of the CR. The controller exchanges the value with the SSO service, to get a live access token.
+ * The live access token authenticates with the cloud services API.
+ * `KafkaConnectionController` loads connection information for the Kafka instance from the Cloud Services API using the `spec.kafkaId` field.
+ * `AbstractCloudServicesController` updates the status subresource with the `bootstrapServerHost` value of the Kafka instance and the secret for the service account.
 
-
-
+This controller uses the default delete operation and deletes the `KafkaConnection` CR.
