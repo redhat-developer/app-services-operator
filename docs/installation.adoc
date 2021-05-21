@@ -1,21 +1,32 @@
-== Installation of Operator on OpenShift 
+== Installing the RHOAS Operator on OpenShift
 
-Operator is available as part of the OperatorHub.
+This procedure shows how to use OperatorHub to install the OpenShift Application Services (RHOAS) Operator.
 
-> NOTE: to install operator you would need to be administrator on your OpenShift Cluster
+NOTE: To install the RHOAS Operator, you  must have cluster administrator privileges for your OpenShift cluster.
 
-1. Go to `Administrator` side panel 
-2. Expand `Operators` section
-3. Select `OperatorHub` section
-4. Type `RHOAS` in the search bar
-5. Select RHOAS operator 
-6. Press continue when `Show community Operator` dialog opens
-7. Press Install to perform installation
+.Procedure
+. Log in to the OpenShift web console as a cluster administrator.
+. Use the perspective switcher in the top-left corner to switch to the *Administrator* perspective.
+. In the left menu, click *Operators* > *OperatorHub*.
+. In the *Filter by keyword...* field, enter `RHOAS`.
+. Select the `OpenShift Application Services (RHOAS)` Operator.
+. If a dialog box entitled `Show community Operator` appears, review the included information. When you have finished reviewing the information, click *Continue*.
++
+An information pane for the RHOAS Operator opens.
+. Review the information about the RHOAS Operator and click *Install*.
 
-Once Operator is installed you can interact with it using `rhoas cluster` commands and directly in OpenShift UI (`Managed Services Catalog` should be visible after installation)
+. On the *Install Operator* page:
+.. For the *Installation mode* option, ensure that `All namespaces on the cluster` is selected.
+.. For the `Update channel` and `Update approval` options, keep the default values.
+.. Click *Install*.
+. When the installation process finishes, click *View Operator* to see the Operator details. Alternatively, click *Operators* > *Installed Operators* and then click the RHOAS Operator.
++
+Observe that the RHOAS Operator is installed in the `openshift-operators` namespace.
 
-=== Installing Developer Preview
+Once the Operator is installed, you can use the `rhoas` CLI to interact with the Operator using `rhoas cluster` commands.
 
-Preview versions of the operator can be installed using CatalogSource.
-If you developer looking to try out early version of operator please see: 
-link:./build_docs/dev-install.adoc[Contributor installation] doc
+In addition, you can use the Developer Catalog in the OpenShift web console to create resource instances for the Operator. To access the Developer Catalog, use the perspective switcher in the top-left corner to switch to the *Developer* perspective. Then, click *+Add* > *From Catalog*.
+
+=== Installing preview versions of the Operator
+
+You can install preview versions of the Operator using the CatalogSource for those versions. If you are a developer that wants to try an earlier version of the Operator, see the link:./build_docs/dev-install.adoc[contributor installation documentation].
