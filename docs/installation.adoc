@@ -29,4 +29,4 @@ In addition, you can use the Developer Catalog in the OpenShift web console to c
 
 === Installing preview versions of the Operator
 
-You can install preview versions of the Operator using the CatalogSource for those versions. If you are a developer that wants to try an earlier version of the Operator, see the link:./build_docs/dev-install.adoc[contributor installation documentation].
+You can install early preview versions of the Operator using the custom CatalogSource. If you are a developer that wants to try an earlier version of the Operator, see the link:./build_docs/dev-install.adoc[contributor installation documentation].
