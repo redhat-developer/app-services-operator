@@ -12,7 +12,7 @@ NOTE: To install the RHOAS Operator, you  must have cluster administrator privil
 . Select the `OpenShift Application Services (RHOAS)` Operator.
 . If a dialog box entitled `Show community Operator` appears, review the included information. When you have finished reviewing the information, click *Continue*.
 +
-An information pane for the RHOAS Operator opens.
+An information sidebar for the RHOAS Operator opens.
 . Review the information about the RHOAS Operator and click *Install*.
 
 . On the *Install Operator* page:
