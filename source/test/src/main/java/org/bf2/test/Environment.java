@@ -57,28 +57,15 @@ public class Environment {
           .resolve("test-run-" + DATE_FORMAT.format(LocalDateTime.now()));
   public static final Path ROOT_PATH =
       Paths.get(System.getProperty("user.dir")).getParent().getParent();
-  public static final Path YAML_BUNDLE_PATH =
-      getOrDefault(
-          YAML_BUNDLE_PATH_ENV,
-          Paths::get,
-          Paths.get(ROOT_PATH.toString(), "operator", "src", "main", "kubernetes"));
-  public static final List<Path> CRDS_PATH =
-      List.of(
-          ROOT_PATH
-              .resolve("olm")
-              .resolve("olm-template")
-              .resolve("manifests")
-              .resolve("rhoas-operator.cloudservicesrequests.crd.yaml"),
-          ROOT_PATH
-              .resolve("olm")
-              .resolve("olm-template")
-              .resolve("manifests")
-              .resolve("rhoas-operator.cloudserviceaccountrequest.crd.yaml"),
-          ROOT_PATH
-              .resolve("olm")
-              .resolve("olm-template")
-              .resolve("manifests")
-              .resolve("rhoas-operator.kafkaconnections.crd.yaml"));
+  public static final Path YAML_BUNDLE_PATH = getOrDefault(YAML_BUNDLE_PATH_ENV, Paths::get,
+      Paths.get(ROOT_PATH.toString(), "operator", "src", "main", "kubernetes"));
+  public static final List<Path> CRDS_PATH = List.of(
+      ROOT_PATH.resolve("olm").resolve("olm-template").resolve("manifests")
+          .resolve("rhoas-operator.cloudservicesrequests.crd.yaml"),
+      ROOT_PATH.resolve("olm").resolve("olm-template").resolve("manifests")
+          .resolve("rhoas-operator.cloudserviceaccountrequest.crd.yaml"),
+      ROOT_PATH.resolve("olm").resolve("olm-template").resolve("manifests")
+          .resolve("rhoas-operator.kafkaconnections.crd.yaml"));
 
   public static final String IMAGE =
       getOrDefault(OPERATOR_IMAGE_ENV, "localhost:5000/bf2/operator:latest");
@@ -131,12 +118,8 @@ public class Environment {
    * @return value of variable fin defined data type
    */
   private static <T> T getOrDefault(String var, Function<String, T> converter, T defaultValue) {
-    String value =
-        System.getenv(var) != null
-            ? System.getenv(var)
-            : (Objects.requireNonNull(JSON_DATA).get(var) != null
-                ? JSON_DATA.get(var).asText()
-                : null);
+    String value = System.getenv(var) != null ? System.getenv(var)
+        : (Objects.requireNonNull(JSON_DATA).get(var) != null ? JSON_DATA.get(var).asText() : null);
     T returnValue = defaultValue;
     if (value != null) {
       returnValue = converter.apply(value);
@@ -151,13 +134,8 @@ public class Environment {
    * @return json object with loaded variables
    */
   private static JsonNode loadConfigurationFile() {
-    config =
-        System.getenv()
-            .getOrDefault(
-                CONFIG_FILE_PATH_ENV,
-                Paths.get(System.getProperty("user.dir"), "config.json")
-                    .toAbsolutePath()
-                    .toString());
+    config = System.getenv().getOrDefault(CONFIG_FILE_PATH_ENV,
+        Paths.get(System.getProperty("user.dir"), "config.json").toAbsolutePath().toString());
     ObjectMapper mapper = new ObjectMapper();
     try {
       File jsonFile = new File(config).getAbsoluteFile();

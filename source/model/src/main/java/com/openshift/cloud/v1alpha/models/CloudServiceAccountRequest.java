@@ -14,9 +14,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 @Plural("cloudserviceaccountrequests")
 @Group("rhoas.redhat.com")
 @Version("v1alpha1")
-@Buildable(
-    builderPackage = "io.fabric8.kubernetes.api.builder",
-    editableEnabled = false,
+@Buildable(builderPackage = "io.fabric8.kubernetes.api.builder", editableEnabled = false,
     refs = @BuildableReference(CustomResource.class))
 public class CloudServiceAccountRequest
     extends CustomResource<CloudServiceAccountRequestSpec, CloudServiceAccountRequestStatus>
@@ -24,10 +22,8 @@ public class CloudServiceAccountRequest
 
   @Override
   public String toString() {
-    return new ToStringBuilder(this)
-        .append("cloudServiceAccountRequestSpec", getSpec())
-        .append("cloudServiceAccountRequestStatus", getStatus())
-        .toString();
+    return new ToStringBuilder(this).append("cloudServiceAccountRequestSpec", getSpec())
+        .append("cloudServiceAccountRequestStatus", getStatus()).toString();
   }
 
   @Override
@@ -44,9 +40,7 @@ public class CloudServiceAccountRequest
       return false;
     }
     CloudServiceAccountRequest rhs = ((CloudServiceAccountRequest) other);
-    return new EqualsBuilder()
-        .append(getSpec(), rhs.getSpec())
-        .append(getStatus(), rhs.getStatus())
+    return new EqualsBuilder().append(getSpec(), rhs.getSpec()).append(getStatus(), rhs.getStatus())
         .isEquals();
   }
 }

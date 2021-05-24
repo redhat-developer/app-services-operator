@@ -31,7 +31,8 @@ public final class KafkaK8sClients {
 
   private static final Logger LOG = Logger.getLogger(KafkaK8sClients.class.getName());
 
-  @Inject KubernetesClient client;
+  @Inject
+  KubernetesClient client;
 
   private CustomResourceDefinition akcCrd;
   private CustomResourceDefinition cscrCrd;
@@ -48,10 +49,9 @@ public final class KafkaK8sClients {
     this.csarCrd = initCloudServiceAccountRequestCRDAndClient(crds);
   }
 
-  public MixedOperation<KafkaConnection, KafkaConnectionList, Resource<KafkaConnection>>
-      kafkaConnection() {
-    KubernetesDeserializer.registerCustomKind(
-        getApiVersion(KafkaConnection.class), akcCrd.getKind(), KafkaConnection.class);
+  public MixedOperation<KafkaConnection, KafkaConnectionList, Resource<KafkaConnection>> kafkaConnection() {
+    KubernetesDeserializer.registerCustomKind(getApiVersion(KafkaConnection.class),
+        akcCrd.getKind(), KafkaConnection.class);
 
     var akcCrdContext = CustomResourceDefinitionContext.fromCrd(this.akcCrd);
 
@@ -59,34 +59,26 @@ public final class KafkaK8sClients {
     return client.customResources(akcCrdContext, KafkaConnection.class, KafkaConnectionList.class);
   }
 
-  public MixedOperation<
-          CloudServicesRequest, CloudServicesRequestList, Resource<CloudServicesRequest>>
-      cloudServicesRequest() {
-    KubernetesDeserializer.registerCustomKind(
-        getApiVersion(CloudServicesRequest.class), cscrCrd.getKind(), CloudServicesRequest.class);
+  public MixedOperation<CloudServicesRequest, CloudServicesRequestList, Resource<CloudServicesRequest>> cloudServicesRequest() {
+    KubernetesDeserializer.registerCustomKind(getApiVersion(CloudServicesRequest.class),
+        cscrCrd.getKind(), CloudServicesRequest.class);
 
     var akcCrdContext = CustomResourceDefinitionContext.fromCrd(this.cscrCrd);
 
     // lets create a client for the CRD
-    return client.customResources(
-        akcCrdContext, CloudServicesRequest.class, CloudServicesRequestList.class);
+    return client.customResources(akcCrdContext, CloudServicesRequest.class,
+        CloudServicesRequestList.class);
   }
 
-  public MixedOperation<
-          CloudServiceAccountRequest,
-          CloudServiceAccountRequestList,
-          Resource<CloudServiceAccountRequest>>
-      cloudServiceAccountRequest() {
-    KubernetesDeserializer.registerCustomKind(
-        getApiVersion(CloudServiceAccountRequest.class),
-        csarCrd.getKind(),
-        CloudServiceAccountRequest.class);
+  public MixedOperation<CloudServiceAccountRequest, CloudServiceAccountRequestList, Resource<CloudServiceAccountRequest>> cloudServiceAccountRequest() {
+    KubernetesDeserializer.registerCustomKind(getApiVersion(CloudServiceAccountRequest.class),
+        csarCrd.getKind(), CloudServiceAccountRequest.class);
 
     var akcCrdContext = CustomResourceDefinitionContext.fromCrd(this.csarCrd);
 
     // lets create a client for the CRD
-    return client.customResources(
-        akcCrdContext, CloudServiceAccountRequest.class, CloudServiceAccountRequestList.class);
+    return client.customResources(akcCrdContext, CloudServiceAccountRequest.class,
+        CloudServiceAccountRequestList.class);
   }
 
   private CustomResourceDefinition initCloudServiceAccountRequestCRDAndClient(
@@ -97,17 +89,13 @@ public final class KafkaK8sClients {
     var crdsItems = crds.customResourceDefinitions().list().getItems();
     var kafkaConnectionCRDName = CustomResource.getCRDName(CloudServiceAccountRequest.class);
 
-    var akcCrdOptional =
-        crdsItems.stream()
-            .filter(crd -> kafkaConnectionCRDName.equals(crd.getMetadata().getName()))
-            .findFirst();
+    var akcCrdOptional = crdsItems.stream()
+        .filter(crd -> kafkaConnectionCRDName.equals(crd.getMetadata().getName())).findFirst();
 
     if (akcCrdOptional.isEmpty()) {
       LOG.info("Creating CloudServiceAccountRequest CRD");
-      akcCrd =
-          CustomResourceDefinitionContext.v1beta1CRDFromCustomResourceType(
-                  CloudServiceAccountRequest.class)
-              .build();
+      akcCrd = CustomResourceDefinitionContext
+          .v1beta1CRDFromCustomResourceType(CloudServiceAccountRequest.class).build();
       client.apiextensions().v1beta1().customResourceDefinitions().create(akcCrd);
       LOG.info("CloudServiceAccountRequest CRD Created");
     } else {
@@ -126,16 +114,13 @@ public final class KafkaK8sClients {
     var crdsItems = crds.customResourceDefinitions().list().getItems();
     var kafkaConnectionCRDName = CustomResource.getCRDName(KafkaConnection.class);
 
-    var akcCrdOptional =
-        crdsItems.stream()
-            .filter(crd -> kafkaConnectionCRDName.equals(crd.getMetadata().getName()))
-            .findFirst();
+    var akcCrdOptional = crdsItems.stream()
+        .filter(crd -> kafkaConnectionCRDName.equals(crd.getMetadata().getName())).findFirst();
 
     if (akcCrdOptional.isEmpty()) {
       LOG.info("Creating KafkaConnection CRD");
-      akcCrd =
-          CustomResourceDefinitionContext.v1beta1CRDFromCustomResourceType(KafkaConnection.class)
-              .build();
+      akcCrd = CustomResourceDefinitionContext
+          .v1beta1CRDFromCustomResourceType(KafkaConnection.class).build();
       client.apiextensions().v1beta1().customResourceDefinitions().create(akcCrd);
       LOG.info("KafkaConnection CRD Created");
     } else {
@@ -154,17 +139,13 @@ public final class KafkaK8sClients {
     var crdsItems = crds.customResourceDefinitions().list().getItems();
     var cloudServicesRequestCRDName = CustomResource.getCRDName(CloudServicesRequest.class);
 
-    var akcCrdOptional =
-        crdsItems.stream()
-            .filter(crd -> cloudServicesRequestCRDName.equals(crd.getMetadata().getName()))
-            .findFirst();
+    var akcCrdOptional = crdsItems.stream()
+        .filter(crd -> cloudServicesRequestCRDName.equals(crd.getMetadata().getName())).findFirst();
 
     if (akcCrdOptional.isEmpty()) {
       LOG.info("Creating CloudServicesRequest CRD");
-      akcCrd =
-          CustomResourceDefinitionContext.v1beta1CRDFromCustomResourceType(
-                  CloudServicesRequest.class)
-              .build();
+      akcCrd = CustomResourceDefinitionContext
+          .v1beta1CRDFromCustomResourceType(CloudServicesRequest.class).build();
       client.apiextensions().v1beta1().customResourceDefinitions().create(akcCrd);
       LOG.info("CloudServicesRequest CRD Created");
     } else {
@@ -180,8 +161,8 @@ public final class KafkaK8sClients {
    * derived from the {@link Group} and {@link Version} annotations.
    *
    * @param clazz the HasMetadata whose {@code apiVersion} we want to compute
-   * @return the computed {@code apiVersion} or {@code null} if neither {@link Group} or {@link
-   *     Version} annotations are present
+   * @return the computed {@code apiVersion} or {@code null} if neither {@link Group} or
+   *         {@link Version} annotations are present
    * @throws IllegalArgumentException if only one of {@link Group} or {@link Version} is provided
    */
   static String getApiVersion(Class<? extends HasMetadata> clazz) {
@@ -191,12 +172,8 @@ public final class KafkaK8sClients {
       return group + "/" + version;
     }
     if (group != null || version != null) {
-      throw new IllegalArgumentException(
-          "You need to specify both @"
-              + Group.class.getSimpleName()
-              + " and @"
-              + Version.class.getSimpleName()
-              + " annotations if you specify either");
+      throw new IllegalArgumentException("You need to specify both @" + Group.class.getSimpleName()
+          + " and @" + Version.class.getSimpleName() + " annotations if you specify either");
     }
     return null;
   }
@@ -206,8 +183,8 @@ public final class KafkaK8sClients {
    * annotation.
    *
    * @param clazz the HasMetadata whose group we want to retrieve
-   * @return the associated group or {@code null} if the HasMetadata is not annotated with {@link
-   *     Group}
+   * @return the associated group or {@code null} if the HasMetadata is not annotated with
+   *         {@link Group}
    */
   static String getGroup(Class<? extends HasMetadata> clazz) {
     final Group group = clazz.getAnnotation(Group.class);
@@ -215,12 +192,12 @@ public final class KafkaK8sClients {
   }
 
   /**
-   * Retrieves the version associated with the specified HasMetadata as defined by the {@link
-   * Version} annotation.
+   * Retrieves the version associated with the specified HasMetadata as defined by the
+   * {@link Version} annotation.
    *
    * @param clazz the HasMetadata whose version we want to retrieve
-   * @return the associated version or {@code null} if the HasMetadata is not annotated with {@link
-   *     Version}
+   * @return the associated version or {@code null} if the HasMetadata is not annotated with
+   *         {@link Version}
    */
   static String getVersion(Class<? extends HasMetadata> clazz) {
     final Version version = clazz.getAnnotation(Version.class);

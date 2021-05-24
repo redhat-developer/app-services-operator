@@ -1,6 +1,6 @@
 /*
- * Copyright Strimzi authors.
- * License: Apache License 2.0 (see the file LICENSE or http://apache.org/licenses/LICENSE-2.0.html).
+ * Copyright Strimzi authors. License: Apache License 2.0 (see the file LICENSE or
+ * http://apache.org/licenses/LICENSE-2.0.html).
  */
 package org.bf2.test.k8s.cmdClient;
 
@@ -99,8 +99,8 @@ public interface KubeCmdClient<K extends KubeCmdClient<K>> {
    */
   ExecResult execInPodContainer(String pod, String container, String... command);
 
-  ExecResult execInPodContainer(
-      boolean logToOutput, String pod, String container, String... command);
+  ExecResult execInPodContainer(boolean logToOutput, String pod, String container,
+      String... command);
 
   /**
    * Execute the given {@code command}.
@@ -192,8 +192,8 @@ public interface KubeCmdClient<K extends KubeCmdClient<K>> {
    * @param grepPattern Grep patterns for search
    * @return Grep result as string
    */
-  String searchInLog(
-      String resourceType, String resourceName, long sinceSeconds, String... grepPattern);
+  String searchInLog(String resourceType, String resourceName, long sinceSeconds,
+      String... grepPattern);
 
   /**
    * @param resourceType The type of resource
@@ -203,12 +203,8 @@ public interface KubeCmdClient<K extends KubeCmdClient<K>> {
    * @param grepPattern Grep patterns for search
    * @return Grep result as string
    */
-  String searchInLog(
-      String resourceType,
-      String resourceName,
-      String resourceContainer,
-      long sinceSeconds,
-      String... grepPattern);
+  String searchInLog(String resourceType, String resourceName, String resourceContainer,
+      long sinceSeconds, String... grepPattern);
 
   String getResourceAsJson(String resourceType, String resourceName);
 

@@ -29,8 +29,8 @@ public class QuarkusKubeMockServer implements QuarkusTestResourceLifecycleManage
     server = createServer();
     server.before();
     try (NamespacedKubernetesClient client = server.getClient()) {
-      systemProps.put(
-          Config.KUBERNETES_MASTER_SYSTEM_PROPERTY, client.getConfiguration().getMasterUrl());
+      systemProps.put(Config.KUBERNETES_MASTER_SYSTEM_PROPERTY,
+          client.getConfiguration().getMasterUrl());
     }
 
     try {
@@ -53,18 +53,9 @@ public class QuarkusKubeMockServer implements QuarkusTestResourceLifecycleManage
   public void configureServer(KubernetesServer mockServer) throws FileNotFoundException {
     // initialize with the crd
     for (Path crdPath : Environment.CRDS_PATH) {
-      server
-          .getClient()
-          .load(new FileInputStream(crdPath.toString()))
-          .get()
-          .forEach(
-              crd ->
-                  server
-                      .getClient()
-                      .apiextensions()
-                      .v1()
-                      .customResourceDefinitions()
-                      .createOrReplace((CustomResourceDefinition) crd));
+      server.getClient().load(new FileInputStream(crdPath.toString())).get()
+          .forEach(crd -> server.getClient().apiextensions().v1().customResourceDefinitions()
+              .createOrReplace((CustomResourceDefinition) crd));
     }
   }
 

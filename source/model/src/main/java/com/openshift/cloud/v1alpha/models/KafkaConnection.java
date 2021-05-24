@@ -15,9 +15,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 @Plural("kafkaconnections")
 @Group("rhoas.redhat.com")
 @Version("v1alpha1")
-@Buildable(
-    builderPackage = "io.fabric8.kubernetes.api.builder",
-    editableEnabled = false,
+@Buildable(builderPackage = "io.fabric8.kubernetes.api.builder", editableEnabled = false,
     refs = @BuildableReference(CustomResource.class))
 public class KafkaConnection extends CustomResource<KafkaConnectionSpec, KafkaConnectionStatus>
     implements Namespaced {
@@ -27,10 +25,8 @@ public class KafkaConnection extends CustomResource<KafkaConnectionSpec, KafkaCo
 
   @Override
   public String toString() {
-    return new ToStringBuilder(this)
-        .append("kafkaConnectionSpec", getSpec())
-        .append("kafkaConnectionStatus", getStatus())
-        .toString();
+    return new ToStringBuilder(this).append("kafkaConnectionSpec", getSpec())
+        .append("kafkaConnectionStatus", getStatus()).toString();
   }
 
   @Override
@@ -47,9 +43,7 @@ public class KafkaConnection extends CustomResource<KafkaConnectionSpec, KafkaCo
       return false;
     }
     KafkaConnection rhs = ((KafkaConnection) other);
-    return new EqualsBuilder()
-        .append(getSpec(), rhs.getSpec())
-        .append(getStatus(), rhs.getStatus())
+    return new EqualsBuilder().append(getSpec(), rhs.getSpec()).append(getStatus(), rhs.getStatus())
         .isEquals();
   }
 

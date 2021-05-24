@@ -37,7 +37,8 @@ public class AccessTokenSecretTool {
   @ConfigProperty(name = "auth.tokenPath", defaultValue = "protocol/openid-connect/token")
   String tokenPath;
 
-  @Inject KubernetesClient k8sClient;
+  @Inject
+  KubernetesClient k8sClient;
 
   /**
    * This method exchanges secret values for an access token.
@@ -63,13 +64,9 @@ public class AccessTokenSecretTool {
     } catch (Throwable ex) {
       // Unexpected exception or error (NPE, IOException, out of memory, etc)
       LOG.log(Level.SEVERE, ex.getMessage());
-      throw new ConditionAwareException(
-          ex.getMessage(),
-          ex,
-          KafkaCondition.Type.AcccesTokenSecretValid,
-          KafkaCondition.Status.False,
-          ex.getClass().getName(),
-          ex.getMessage());
+      throw new ConditionAwareException(ex.getMessage(), ex,
+          KafkaCondition.Type.AcccesTokenSecretValid, KafkaCondition.Status.False,
+          ex.getClass().getName(), ex.getMessage());
     }
   }
 
@@ -101,13 +98,9 @@ public class AccessTokenSecretTool {
       return offlineToken;
     }
     // We expect the token to exist, and if it doesn't raise an exception.
-    throw new ConditionAwareException(
-        String.format("Missing Offline Token Secret %s", secretName),
-        null,
-        KafkaCondition.Type.AcccesTokenSecretValid,
-        KafkaCondition.Status.False,
-        "ConditionAwareException",
-        String.format("Missing Offline Token Secret %s", secretName));
+    throw new ConditionAwareException(String.format("Missing Offline Token Secret %s", secretName),
+        null, KafkaCondition.Type.AcccesTokenSecretValid, KafkaCondition.Status.False,
+        "ConditionAwareException", String.format("Missing Offline Token Secret %s", secretName));
   }
 
   /**
@@ -120,18 +113,10 @@ public class AccessTokenSecretTool {
   private String exchangeToken(String offlineToken) throws ConditionAwareException {
     try {
       HttpRequest request =
-          HttpRequest.newBuilder()
-              .uri(URI.create(authServerUrl + "/" + tokenPath))
+          HttpRequest.newBuilder().uri(URI.create(authServerUrl + "/" + tokenPath))
               .header("content-type", "application/x-www-form-urlencoded")
-              .timeout(Duration.ofMinutes(2))
-              .POST(
-                  ofFormData(
-                      "grant_type",
-                      "refresh_token",
-                      "client_id",
-                      "cloud-services",
-                      "refresh_token",
-                      offlineToken))
+              .timeout(Duration.ofMinutes(2)).POST(ofFormData("grant_type", "refresh_token",
+                  "client_id", "cloud-services", "refresh_token", offlineToken))
               .build();
 
       HttpClient client = HttpClient.newBuilder().build();
@@ -141,27 +126,19 @@ public class AccessTokenSecretTool {
         var json = new JsonObject(tokens);
         return json.getString("access_token");
       } else {
-        LOG.log(
-            Level.SEVERE, String.format("Exchange token failed with error %s", response.body()));
+        LOG.log(Level.SEVERE,
+            String.format("Exchange token failed with error %s", response.body()));
         // Reusing API error but only with status code
         var apiError =
             ConditionUtil.getStandarizedErrorMessage(new ApiException(response.statusCode(), null));
-        throw new ConditionAwareException(
-            response.body(),
-            null,
-            KafkaCondition.Type.AcccesTokenSecretValid,
-            KafkaCondition.Status.False,
-            String.format("Http Error Code %d", response.statusCode()),
-            apiError);
+        throw new ConditionAwareException(response.body(), null,
+            KafkaCondition.Type.AcccesTokenSecretValid, KafkaCondition.Status.False,
+            String.format("Http Error Code %d", response.statusCode()), apiError);
       }
     } catch (IOException | InterruptedException e) {
-      throw new ConditionAwareException(
-          e.getMessage(),
-          e,
-          KafkaCondition.Type.AcccesTokenSecretValid,
-          KafkaCondition.Status.False,
-          e.getClass().getName(),
-          e.getMessage());
+      throw new ConditionAwareException(e.getMessage(), e,
+          KafkaCondition.Type.AcccesTokenSecretValid, KafkaCondition.Status.False,
+          e.getClass().getName(), e.getMessage());
     }
   }
 

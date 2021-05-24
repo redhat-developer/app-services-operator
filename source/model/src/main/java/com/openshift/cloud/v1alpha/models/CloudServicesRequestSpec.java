@@ -29,8 +29,7 @@ public class CloudServicesRequestSpec {
 
   @Override
   public String toString() {
-    return new ToStringBuilder(this)
-        .append("accessTokenSecretName", accessTokenSecretName)
+    return new ToStringBuilder(this).append("accessTokenSecretName", accessTokenSecretName)
         .toString();
   }
 

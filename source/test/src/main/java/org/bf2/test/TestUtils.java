@@ -29,9 +29,10 @@ import org.junit.jupiter.api.extension.ExtensionContext;
 public class TestUtils {
   private static final Logger LOGGER = LogManager.getLogger(TestUtils.class);
 
-  public static long waitFor(
-      String description, long pollIntervalMs, long timeoutMs, BooleanSupplier ready) {
-    return waitFor(description, pollIntervalMs, timeoutMs, ready, () -> {});
+  public static long waitFor(String description, long pollIntervalMs, long timeoutMs,
+      BooleanSupplier ready) {
+    return waitFor(description, pollIntervalMs, timeoutMs, ready, () -> {
+    });
   }
 
   /**
@@ -44,12 +45,8 @@ public class TestUtils {
    * @param onTimeout lambda method which is called when timeout is reached
    * @return
    */
-  public static long waitFor(
-      String description,
-      long pollIntervalMs,
-      long timeoutMs,
-      BooleanSupplier ready,
-      Runnable onTimeout) {
+  public static long waitFor(String description, long pollIntervalMs, long timeoutMs,
+      BooleanSupplier ready, Runnable onTimeout) {
     LOGGER.debug("Waiting for {}", description);
     long deadline = System.currentTimeMillis() + timeoutMs;
     while (true) {
@@ -72,11 +69,8 @@ public class TestUtils {
       }
       long sleepTime = Math.min(pollIntervalMs, timeLeft);
       if (LOGGER.isTraceEnabled()) {
-        LOGGER.trace(
-            "{} not ready, will try again in {} ms ({}ms till timeout)",
-            description,
-            sleepTime,
-            timeLeft);
+        LOGGER.trace("{} not ready, will try again in {} ms ({}ms till timeout)", description,
+            sleepTime, timeLeft);
       }
       try {
         Thread.sleep(sleepTime);
@@ -91,8 +85,7 @@ public class TestUtils {
     File yamlFile = File.createTempFile("temp-file", ".yaml");
 
     try (InputStream bais = (InputStream) URI.create(url).toURL().openConnection().getContent();
-        BufferedReader br =
-            new BufferedReader(new InputStreamReader(bais, StandardCharsets.UTF_8));
+        BufferedReader br = new BufferedReader(new InputStreamReader(bais, StandardCharsets.UTF_8));
         OutputStreamWriter osw =
             new OutputStreamWriter(new FileOutputStream(yamlFile), StandardCharsets.UTF_8)) {
 
@@ -105,10 +98,8 @@ public class TestUtils {
       }
       String yaml = sb.toString();
       yaml = yaml.replaceAll("namespace: .*", "namespace: " + namespace);
-      yaml =
-          yaml.replace(
-              "securityContext:\n" + "        runAsNonRoot: true\n" + "        runAsUser: 65534",
-              "");
+      yaml = yaml.replace(
+          "securityContext:\n" + "        runAsNonRoot: true\n" + "        runAsUser: 65534", "");
       osw.write(yaml);
       return yamlFile;
 

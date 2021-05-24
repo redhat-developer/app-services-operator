@@ -28,9 +28,7 @@ public class CloudServiceAccountRequestSpec {
    * @param serviceAccountName
    * @param serviceAccountDescription
    */
-  public CloudServiceAccountRequestSpec(
-      String serviceAccountName,
-      String serviceAccountDescription,
+  public CloudServiceAccountRequestSpec(String serviceAccountName, String serviceAccountDescription,
       String serviceAccountSecretName) {
     super();
     this.serviceAccountName = serviceAccountName;

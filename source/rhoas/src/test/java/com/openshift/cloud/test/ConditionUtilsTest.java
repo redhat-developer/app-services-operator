@@ -17,8 +17,7 @@ public class ConditionUtilsTest {
 
     var resourceConditions = resource.getStatus().getConditions();
 
-    Assertions.assertEquals(
-        KafkaCondition.Status.Unknown,
+    Assertions.assertEquals(KafkaCondition.Status.Unknown,
         ConditionUtil.getCondition(resourceConditions, KafkaCondition.Type.Finished).getStatus());
   }
 
@@ -30,18 +29,12 @@ public class ConditionUtilsTest {
 
     var resourceConditions = resource.getStatus().getConditions();
 
-    var exception =
-        new ConditionAwareException(
-            "Test Exception please Igrnore",
-            new RuntimeException(),
-            KafkaCondition.Type.AcccesTokenSecretValid,
-            KafkaCondition.Status.False,
-            "Ignore",
-            "Ignore");
+    var exception = new ConditionAwareException("Test Exception please Igrnore",
+        new RuntimeException(), KafkaCondition.Type.AcccesTokenSecretValid,
+        KafkaCondition.Status.False, "Ignore", "Ignore");
     ConditionUtil.setConditionFromException(resourceConditions, exception);
 
-    Assertions.assertEquals(
-        KafkaCondition.Status.False,
+    Assertions.assertEquals(KafkaCondition.Status.False,
         ConditionUtil.getCondition(resourceConditions, KafkaCondition.Type.Finished).getStatus());
   }
 }

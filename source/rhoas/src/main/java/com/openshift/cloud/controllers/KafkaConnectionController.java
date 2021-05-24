@@ -15,9 +15,11 @@ public class KafkaConnectionController extends AbstractCloudServicesController<K
 
   private static final Logger LOG = Logger.getLogger(KafkaConnectionController.class.getName());
 
-  @Inject KafkaApiClient apiClient;
+  @Inject
+  KafkaApiClient apiClient;
 
-  @Inject AccessTokenSecretTool accessTokenSecretTool;
+  @Inject
+  AccessTokenSecretTool accessTokenSecretTool;
 
   @Override
   void doCreateOrUpdateResource(KafkaConnection resource, Context<KafkaConnection> context)
@@ -48,11 +50,10 @@ public class KafkaConnectionController extends AbstractCloudServicesController<K
 
   void validateResource(KafkaConnection resource) throws InvalidUserInputException {
     ConditionUtil.assertNotNull(resource.getSpec(), "spec");
-    ConditionUtil.assertNotNull(
-        resource.getSpec().getAccessTokenSecretName(), "spec.accessTokenSecretName");
+    ConditionUtil.assertNotNull(resource.getSpec().getAccessTokenSecretName(),
+        "spec.accessTokenSecretName");
     ConditionUtil.assertNotNull(resource.getSpec().getCredentials(), "spec.credentials");
-    ConditionUtil.assertNotNull(
-        resource.getSpec().getCredentials().getServiceAccountSecretName(),
+    ConditionUtil.assertNotNull(resource.getSpec().getCredentials().getServiceAccountSecretName(),
         "spec.credentials.serviceAccountSecretName");
     ConditionUtil.assertNotNull(resource.getSpec().getKafkaId(), "spec.kafkaId");
     ConditionUtil.assertNotNull(resource.getMetadata().getNamespace(), "metadata.namespace");

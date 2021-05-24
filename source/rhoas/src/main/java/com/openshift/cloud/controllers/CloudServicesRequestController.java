@@ -19,11 +19,14 @@ public class CloudServicesRequestController
   private static final Logger LOG =
       Logger.getLogger(CloudServicesRequestController.class.getName());
 
-  @Inject AccessTokenSecretTool accessTokenSecretTool;
+  @Inject
+  AccessTokenSecretTool accessTokenSecretTool;
 
-  @Inject KafkaK8sClients kafkaClientFactory;
+  @Inject
+  KafkaK8sClients kafkaClientFactory;
 
-  @Inject KafkaApiClient apiClient;
+  @Inject
+  KafkaApiClient apiClient;
 
   public CloudServicesRequestController() {}
 
@@ -34,8 +37,8 @@ public class CloudServicesRequestController
   }
 
   @Override
-  void doCreateOrUpdateResource(
-      CloudServicesRequest resource, Context<CloudServicesRequest> context)
+  void doCreateOrUpdateResource(CloudServicesRequest resource,
+      Context<CloudServicesRequest> context)
       throws ConditionAwareException, InvalidUserInputException {
     var accessTokenSecretName = resource.getSpec().getAccessTokenSecretName();
     var namespace = resource.getMetadata().getNamespace();
@@ -47,31 +50,24 @@ public class CloudServicesRequestController
 
     var userKafkas = new ArrayList<UserKafka>();
 
-    kafkaList.getItems().stream()
-        .forEach(
-            listItem -> {
-              var userKafka =
-                  new UserKafka()
-                      .setId(listItem.getId())
-                      .setName(listItem.getName())
-                      .setOwner(listItem.getOwner())
-                      .setBootstrapServerHost(listItem.getBootstrapServerHost())
-                      .setStatus(listItem.getStatus())
-                      .setCreatedAt(listItem.getCreatedAt().toInstant().toString())
-                      .setUpdatedAt(listItem.getUpdatedAt().toInstant().toString())
-                      .setProvider(listItem.getCloudProvider())
-                      .setRegion(listItem.getRegion());
+    kafkaList.getItems().stream().forEach(listItem -> {
+      var userKafka = new UserKafka().setId(listItem.getId()).setName(listItem.getName())
+          .setOwner(listItem.getOwner()).setBootstrapServerHost(listItem.getBootstrapServerHost())
+          .setStatus(listItem.getStatus())
+          .setCreatedAt(listItem.getCreatedAt().toInstant().toString())
+          .setUpdatedAt(listItem.getUpdatedAt().toInstant().toString())
+          .setProvider(listItem.getCloudProvider()).setRegion(listItem.getRegion());
 
-              userKafkas.add(userKafka);
-            });
+      userKafkas.add(userKafka);
+    });
 
     resource.getStatus().setUserKafkas(userKafkas);
   }
 
   void validateResource(CloudServicesRequest resource) throws InvalidUserInputException {
     ConditionUtil.assertNotNull(resource.getSpec(), "spec");
-    ConditionUtil.assertNotNull(
-        resource.getSpec().getAccessTokenSecretName(), "spec.accessTokenSecretName");
+    ConditionUtil.assertNotNull(resource.getSpec().getAccessTokenSecretName(),
+        "spec.accessTokenSecretName");
     ConditionUtil.assertNotNull(resource.getMetadata().getNamespace(), "metadata.namespace");
   }
 }

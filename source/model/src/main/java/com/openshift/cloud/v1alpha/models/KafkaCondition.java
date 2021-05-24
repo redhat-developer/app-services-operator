@@ -2,18 +2,11 @@ package com.openshift.cloud.v1alpha.models;
 
 public class KafkaCondition {
   public enum Type {
-    AcccesTokenSecretValid,
-    UserKafkasUpToDate,
-    ServiceAccountCreated,
-    ServiceAccountSecretCreated,
-    Finished,
-    FoundKafkaById;
+    AcccesTokenSecretValid, UserKafkasUpToDate, ServiceAccountCreated, ServiceAccountSecretCreated, Finished, FoundKafkaById;
   }
 
   public enum Status {
-    True,
-    False,
-    Unknown
+    True, False, Unknown
   }
 
   private Type type;
