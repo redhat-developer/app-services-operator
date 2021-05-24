@@ -10,7 +10,7 @@ Each of the controllers is described below.
 
 This controller abstracts common controller logic. The abstract controller is responsible for:
 
- * Verifying that resources should be processed by the Operator
+ * Verifying whether resources should be processed by the Operator
  * Initializing status subresources
  * Dispatching events to specific controllers
  * Catching and reporting errors
@@ -22,12 +22,12 @@ This controller also provides a default `deleteResource` method that deletes a g
 
 === Process checks
 
-The controller performs several checks on a CR before the Operator processes that resource. The Operator processes a CR if *one* of the following conditions is true:
+The controller performs several checks on a CR before the Operator processes the CR. The Operator processes a CR if *one* of the following conditions is true:
 
  * The CR has no status
  * The CR has no conditions
  * The CR has conditions, and the status of the `Finished` condition is `False`
- * The CR has conditions, the status of the `Finished` condition status is `True`, and the `LastTransitionGeneration` value of the `Finished` condition is less than the current value of the `metadata.generation` property
+ * The CR has conditions, the status of the `Finished` condition status is `True`, and the value of the `LastTransitionGeneration` property of the `Finished` condition is less than the current value of the `metadata.generation` property
 
 == CloudServicesRequestController
 
@@ -57,8 +57,8 @@ This controller uses the default delete operation and deletes the `CloudServiceA
 This controller consumes a `KafkaConnection` CR. When the controller processes the CR, the following events occur:
 
  * `KafkaConnectionController` loads the value of the `accessTokenSecretName` field of the CR. The controller exchanges the value with the SSO service, to get a live access token.
- * The live access token authenticates with the cloud services API.
- * `KafkaConnectionController` loads connection information for the Kafka instance from the Cloud Services API using the `spec.kafkaId` field.
+ * The live access token authenticates with the Cloud Services API.
+ * `KafkaConnectionController` loads connection information for the Kafka instance from the Cloud Services API, using the `spec.kafkaId` field.
  * `AbstractCloudServicesController` updates the status subresource with the `bootstrapServerHost` value of the Kafka instance and the secret for the service account.
 
 This controller uses the default delete operation and deletes the `KafkaConnection` CR.
