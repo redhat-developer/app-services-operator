@@ -38,28 +38,24 @@ import org.junit.jupiter.api.Test;
 @QuarkusTest
 public class CloudServicesRequestControllerTest {
 
-  @QuarkusKubernetesMockServer KubernetesServer server;
+  @QuarkusKubernetesMockServer
+  KubernetesServer server;
 
-  @Inject CloudServicesRequestController controller;
-  @Inject MockKafkaApiClient mockKafkaApiClient;
+  @Inject
+  CloudServicesRequestController controller;
+  @Inject
+  MockKafkaApiClient mockKafkaApiClient;
 
   /** Adds a secret to the k8s mock server */
   @BeforeEach
   public void setSecret() {
-    var secret =
-        new SecretBuilder()
-            .withNewMetadata()
-            .withNamespace("test")
-            .withName("rh-managed-services-api-accesstoken")
-            .endMetadata()
-            .addToData(Map.of("value", "bXl0b2tlbg=="));
+    var secret = new SecretBuilder().withNewMetadata().withNamespace("test")
+        .withName("rh-managed-services-api-accesstoken").endMetadata()
+        .addToData(Map.of("value", "bXl0b2tlbg=="));
 
-    server
-        .expect()
-        .get()
+    server.expect().get()
         .withPath("/api/v1/namespaces/test/secrets/rh-managed-services-api-accesstoken")
-        .andReturn(HttpURLConnection.HTTP_OK, secret.build())
-        .once();
+        .andReturn(HttpURLConnection.HTTP_OK, secret.build()).once();
   }
 
   @AfterEach
@@ -69,20 +65,13 @@ public class CloudServicesRequestControllerTest {
 
   @Test
   public void testCloudServicesRequest() {
-    var cloudServicesRequest =
-        new CloudServicesRequestBuilder()
-            .withMetadata(
-                new ObjectMetaBuilder()
-                    .withGeneration(10l)
-                    .withNamespace("test")
-                    .withName("csr-test")
-                    .build())
-            .withSpec(new CloudServicesRequestSpec("rh-managed-services-api-accesstoken"))
-            .build();
+    var cloudServicesRequest = new CloudServicesRequestBuilder()
+        .withMetadata(new ObjectMetaBuilder().withGeneration(10l).withNamespace("test")
+            .withName("csr-test").build())
+        .withSpec(new CloudServicesRequestSpec("rh-managed-services-api-accesstoken")).build();
 
-    var result =
-        controller.createOrUpdateResource(
-            cloudServicesRequest, EmptyContext.emptyContext(CloudServicesRequest.class));
+    var result = controller.createOrUpdateResource(cloudServicesRequest,
+        EmptyContext.emptyContext(CloudServicesRequest.class));
 
     Assertions.assertNotNull(result);
     Assertions.assertNotNull(result.getCustomResource());
@@ -108,20 +97,13 @@ public class CloudServicesRequestControllerTest {
    * likely fixed.
    */
   public void userKafkasUpdate() {
-    var cloudServicesRequest =
-        new CloudServicesRequestBuilder()
-            .withMetadata(
-                new ObjectMetaBuilder()
-                    .withGeneration(10l)
-                    .withNamespace("test")
-                    .withName("csr-test")
-                    .build())
-            .withSpec(new CloudServicesRequestSpec("rh-managed-services-api-accesstoken"))
-            .build();
+    var cloudServicesRequest = new CloudServicesRequestBuilder()
+        .withMetadata(new ObjectMetaBuilder().withGeneration(10l).withNamespace("test")
+            .withName("csr-test").build())
+        .withSpec(new CloudServicesRequestSpec("rh-managed-services-api-accesstoken")).build();
 
-    var result =
-        controller.createOrUpdateResource(
-            cloudServicesRequest, EmptyContext.emptyContext(CloudServicesRequest.class));
+    var result = controller.createOrUpdateResource(cloudServicesRequest,
+        EmptyContext.emptyContext(CloudServicesRequest.class));
 
     UserKafka userKafkas = (result.getCustomResource()).getStatus().getUserKafkas().get(0);
 
@@ -130,9 +112,8 @@ public class CloudServicesRequestControllerTest {
 
     cloudServicesRequest.getMetadata().setGeneration(11l);
 
-    result =
-        controller.createOrUpdateResource(
-            cloudServicesRequest, EmptyContext.emptyContext(CloudServicesRequest.class));
+    result = controller.createOrUpdateResource(cloudServicesRequest,
+        EmptyContext.emptyContext(CloudServicesRequest.class));
 
     UserKafka userKafkas2 = (result.getCustomResource()).getStatus().getUserKafkas().get(0);
     assertEquals("status", userKafkas.getStatus());

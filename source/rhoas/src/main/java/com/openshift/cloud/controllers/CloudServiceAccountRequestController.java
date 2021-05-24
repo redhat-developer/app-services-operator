@@ -14,15 +14,18 @@ import javax.inject.Inject;
 public class CloudServiceAccountRequestController
     extends AbstractCloudServicesController<CloudServiceAccountRequest> {
 
-  @Inject AccessTokenSecretTool accessTokenSecretTool;
+  @Inject
+  AccessTokenSecretTool accessTokenSecretTool;
 
-  @Inject KafkaK8sClients kafkaClientFactory;
+  @Inject
+  KafkaK8sClients kafkaClientFactory;
 
-  @Inject KafkaApiClient apiClient;
+  @Inject
+  KafkaApiClient apiClient;
 
   @Override
-  void doCreateOrUpdateResource(
-      CloudServiceAccountRequest resource, Context<CloudServiceAccountRequest> context)
+  void doCreateOrUpdateResource(CloudServiceAccountRequest resource,
+      Context<CloudServiceAccountRequest> context)
       throws ConditionAwareException, InvalidUserInputException {
 
     validateResource(resource);
@@ -47,12 +50,12 @@ public class CloudServiceAccountRequestController
 
   void validateResource(CloudServiceAccountRequest resource) throws InvalidUserInputException {
     ConditionUtil.assertNotNull(resource.getSpec(), "spec");
-    ConditionUtil.assertNotNull(
-        resource.getSpec().getAccessTokenSecretName(), "spec.accessTokenSecretName");
-    ConditionUtil.assertNotNull(
-        resource.getSpec().getServiceAccountName(), "spec.serviceAccountName");
-    ConditionUtil.assertNotNull(
-        resource.getSpec().getServiceAccountSecretName(), "spec.serviceAccountSecretName");
+    ConditionUtil.assertNotNull(resource.getSpec().getAccessTokenSecretName(),
+        "spec.accessTokenSecretName");
+    ConditionUtil.assertNotNull(resource.getSpec().getServiceAccountName(),
+        "spec.serviceAccountName");
+    ConditionUtil.assertNotNull(resource.getSpec().getServiceAccountSecretName(),
+        "spec.serviceAccountSecretName");
     ConditionUtil.assertNotNull(resource.getMetadata().getNamespace(), "metadata.namespace");
   }
 }

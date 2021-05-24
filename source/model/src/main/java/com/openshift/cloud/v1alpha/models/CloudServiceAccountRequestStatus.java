@@ -20,8 +20,8 @@ public class CloudServiceAccountRequestStatus {
    * @param message
    * @param updated
    */
-  public CloudServiceAccountRequestStatus(
-      String message, String updated, String serviceAccountSecretName) {
+  public CloudServiceAccountRequestStatus(String message, String updated,
+      String serviceAccountSecretName) {
     super();
     this.message = message;
     this.updated = updated;

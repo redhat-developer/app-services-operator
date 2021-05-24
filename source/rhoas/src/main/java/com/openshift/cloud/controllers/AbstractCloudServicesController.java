@@ -64,7 +64,7 @@ public abstract class AbstractCloudServicesController<T extends CustomResource>
    *
    * @param resource
    * @return true if resource has no status or conditions or if condition.finished.generation <
-   *     metadata.generation
+   *         metadata.generation
    */
   private boolean shouldProcess(T resource) {
 
@@ -79,9 +79,8 @@ public abstract class AbstractCloudServicesController<T extends CustomResource>
     }
 
     var finishedCondition = ConditionUtil.getCondition(conditions, Type.Finished);
-    if (finishedCondition.getLastTransitionGeneration() == null
-        || finishedCondition.getLastTransitionGeneration()
-            < resource.getMetadata().getGeneration()) {
+    if (finishedCondition.getLastTransitionGeneration() == null || finishedCondition
+        .getLastTransitionGeneration() < resource.getMetadata().getGeneration()) {
       return true;
     }
 
@@ -110,8 +109,8 @@ public abstract class AbstractCloudServicesController<T extends CustomResource>
     if (resource instanceof KafkaConnection) {
       ConditionUtil.setAllConditionsTrue(((KafkaConnection) resource).getStatus().getConditions());
     } else if (resource instanceof CloudServicesRequest) {
-      ConditionUtil.setAllConditionsTrue(
-          ((CloudServicesRequest) resource).getStatus().getConditions());
+      ConditionUtil
+          .setAllConditionsTrue(((CloudServicesRequest) resource).getStatus().getConditions());
     } else if (resource instanceof CloudServiceAccountRequest) {
       ConditionUtil.setAllConditionsTrue(
           ((CloudServiceAccountRequest) resource).getStatus().getConditions());
@@ -120,8 +119,8 @@ public abstract class AbstractCloudServicesController<T extends CustomResource>
 
   private void sealedSetErrorConditions(T resource, ConditionAwareException e) {
     if (resource instanceof KafkaConnection) {
-      ConditionUtil.setConditionFromException(
-          ((KafkaConnection) resource).getStatus().getConditions(), e);
+      ConditionUtil
+          .setConditionFromException(((KafkaConnection) resource).getStatus().getConditions(), e);
     } else if (resource instanceof CloudServicesRequest) {
       ConditionUtil.setConditionFromException(
           ((CloudServicesRequest) resource).getStatus().getConditions(), e);
@@ -155,14 +154,14 @@ public abstract class AbstractCloudServicesController<T extends CustomResource>
 
   private KafkaCondition getSealedErrorCondition(T resource, Type type) {
     if (resource instanceof KafkaConnection) {
-      return ConditionUtil.getCondition(
-          ((KafkaConnection) resource).getStatus().getConditions(), type);
+      return ConditionUtil.getCondition(((KafkaConnection) resource).getStatus().getConditions(),
+          type);
     } else if (resource instanceof CloudServicesRequest) {
-      return ConditionUtil.getCondition(
-          ((CloudServicesRequest) resource).getStatus().getConditions(), type);
+      return ConditionUtil
+          .getCondition(((CloudServicesRequest) resource).getStatus().getConditions(), type);
     } else if (resource instanceof CloudServiceAccountRequest) {
-      return ConditionUtil.getCondition(
-          ((CloudServiceAccountRequest) resource).getStatus().getConditions(), type);
+      return ConditionUtil
+          .getCondition(((CloudServiceAccountRequest) resource).getStatus().getConditions(), type);
     } else {
       throw new IllegalArgumentException(
           String.format("Resource of type %s is not supported", resource.getCRDName()));

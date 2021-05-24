@@ -26,51 +26,38 @@ import org.junit.jupiter.api.Test;
 @QuarkusTest
 public class CloudServiceAccountRequestTest {
 
-  @QuarkusKubernetesMockServer KubernetesServer server;
+  @QuarkusKubernetesMockServer
+  KubernetesServer server;
 
-  @Inject CloudServiceAccountRequestController controller;
+  @Inject
+  CloudServiceAccountRequestController controller;
 
   /** Adds a secret to the k8s mock server */
   @BeforeEach
   public void setSecret() {
-    var secret =
-        new SecretBuilder()
-            .withNewMetadata()
-            .withNamespace("test")
-            .withName("rh-managed-services-api-accesstoken")
-            .endMetadata()
-            .addToData(Map.of("value", "bXl0b2tlbg=="));
+    var secret = new SecretBuilder().withNewMetadata().withNamespace("test")
+        .withName("rh-managed-services-api-accesstoken").endMetadata()
+        .addToData(Map.of("value", "bXl0b2tlbg=="));
 
-    server
-        .expect()
-        .get()
+    server.expect().get()
         .withPath("/api/v1/namespaces/test/secrets/rh-managed-services-api-accesstoken")
-        .andReturn(HttpURLConnection.HTTP_OK, secret.build())
-        .once();
+        .andReturn(HttpURLConnection.HTTP_OK, secret.build()).once();
   }
 
   @Test
   public void testCSARGoldenScenario() {
-    var csar =
-        new CloudServiceAccountRequestBuilder()
-            .withMetadata(
-                new ObjectMetaBuilder()
-                    .withGeneration(10l)
-                    .withNamespace("test")
-                    .withName("csr-test")
-                    .build())
-            .withSpec(
-                new CloudServiceAccountRequestSpecBuilder()
-                    .withAccessTokenSecretName("rh-managed-services-api-accesstoken")
-                    .withNewServiceAccountDescription("Sample Description")
-                    .withNewServiceAccountName("accountName")
-                    .withNewServiceAccountSecretName("accountSecret")
-                    .build())
-            .build();
+    var csar = new CloudServiceAccountRequestBuilder()
+        .withMetadata(new ObjectMetaBuilder().withGeneration(10l).withNamespace("test")
+            .withName("csr-test").build())
+        .withSpec(new CloudServiceAccountRequestSpecBuilder()
+            .withAccessTokenSecretName("rh-managed-services-api-accesstoken")
+            .withNewServiceAccountDescription("Sample Description")
+            .withNewServiceAccountName("accountName")
+            .withNewServiceAccountSecretName("accountSecret").build())
+        .build();
 
-    var result =
-        controller.createOrUpdateResource(
-            csar, EmptyContext.emptyContext(CloudServiceAccountRequest.class));
+    var result = controller.createOrUpdateResource(csar,
+        EmptyContext.emptyContext(CloudServiceAccountRequest.class));
 
     Assertions.assertTrue(result.isUpdateStatusSubResource());
   }

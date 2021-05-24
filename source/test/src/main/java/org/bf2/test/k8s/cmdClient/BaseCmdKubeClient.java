@@ -1,6 +1,6 @@
 /*
- * Copyright Strimzi authors.
- * License: Apache License 2.0 (see the file LICENSE or http://apache.org/licenses/LICENSE-2.0.html).
+ * Copyright Strimzi authors. License: Apache License 2.0 (see the file LICENSE or
+ * http://apache.org/licenses/LICENSE-2.0.html).
  */
 package org.bf2.test.k8s.cmdClient;
 
@@ -140,16 +140,14 @@ public abstract class BaseCmdKubeClient<K extends BaseCmdKubeClient<K>>
     }
   }
 
-  private Map<File, ExecResult> execRecursive(
-      String subcommand, File[] files, Comparator<File> cmp) {
+  private Map<File, ExecResult> execRecursive(String subcommand, File[] files,
+      Comparator<File> cmp) {
     Map<File, ExecResult> execResults = new HashMap<>(25);
     for (File f : files) {
       if (f.isFile()) {
         if (f.getName().endsWith(".yaml")) {
-          execResults.put(
-              f,
-              Exec.exec(
-                  null, namespacedCommand(subcommand, "-f", f.getAbsolutePath()), 0, false, false));
+          execResults.put(f, Exec.exec(null,
+              namespacedCommand(subcommand, "-f", f.getAbsolutePath()), 0, false, false));
         }
       } else if (f.isDirectory()) {
         File[] children = f.listFiles();
@@ -220,8 +218,8 @@ public abstract class BaseCmdKubeClient<K extends BaseCmdKubeClient<K>>
   @SuppressWarnings("unchecked")
   public K scaleByName(String kind, String name, int replicas) {
     try (Context context = defaultContext()) {
-      Exec.exec(
-          null, namespacedCommand("scale", kind, name, "--replicas", Integer.toString(replicas)));
+      Exec.exec(null,
+          namespacedCommand("scale", kind, name, "--replicas", Integer.toString(replicas)));
       return (K) this;
     }
   }
@@ -239,8 +237,8 @@ public abstract class BaseCmdKubeClient<K extends BaseCmdKubeClient<K>>
   }
 
   @Override
-  public ExecResult execInPodContainer(
-      boolean logToOutput, String pod, String container, String... command) {
+  public ExecResult execInPodContainer(boolean logToOutput, String pod, String container,
+      String... command) {
     List<String> cmd = namespacedCommand("exec", pod, "-c", container, "--");
     cmd.addAll(asList(command));
     return Exec.exec(null, cmd, 0, logToOutput);
@@ -278,9 +276,7 @@ public abstract class BaseCmdKubeClient<K extends BaseCmdKubeClient<K>>
   }
 
   enum ExType {
-    BREAK,
-    CONTINUE,
-    THROW
+    BREAK, CONTINUE, THROW
   }
 
   @SuppressWarnings("unchecked")
@@ -288,23 +284,18 @@ public abstract class BaseCmdKubeClient<K extends BaseCmdKubeClient<K>>
     long timeoutMs = 570_000L;
     long pollMs = 1_000L;
     ObjectMapper mapper = new ObjectMapper();
-    TestUtils.waitFor(
-        resource + " " + name,
-        pollMs,
-        timeoutMs,
-        () -> {
-          try {
-            String jsonString =
-                Exec.exec(namespacedCommand("get", resource, name, "-o", "json")).out();
-            LOGGER.trace("{}", jsonString);
-            JsonNode actualObj = mapper.readTree(jsonString);
-            return condition.test(actualObj);
-          } catch (KubeClusterException.NotFound e) {
-            return false;
-          } catch (IOException e) {
-            throw new RuntimeException(e);
-          }
-        });
+    TestUtils.waitFor(resource + " " + name, pollMs, timeoutMs, () -> {
+      try {
+        String jsonString = Exec.exec(namespacedCommand("get", resource, name, "-o", "json")).out();
+        LOGGER.trace("{}", jsonString);
+        JsonNode actualObj = mapper.readTree(jsonString);
+        return condition.test(actualObj);
+      } catch (KubeClusterException.NotFound e) {
+        return false;
+      } catch (IOException e) {
+        throw new RuntimeException(e);
+      }
+    });
     return (K) this;
   }
 
@@ -317,18 +308,14 @@ public abstract class BaseCmdKubeClient<K extends BaseCmdKubeClient<K>>
   @Override
   @SuppressWarnings("unchecked")
   public K waitForResourceDeletion(String resourceType, String resourceName) {
-    TestUtils.waitFor(
-        resourceType + " " + resourceName + " removal",
-        1_000L,
-        480_000L,
-        () -> {
-          try {
-            get(resourceType, resourceName);
-            return false;
-          } catch (KubeClusterException.NotFound e) {
-            return true;
-          }
-        });
+    TestUtils.waitFor(resourceType + " " + resourceName + " removal", 1_000L, 480_000L, () -> {
+      try {
+        get(resourceType, resourceName);
+        return false;
+      } catch (KubeClusterException.NotFound e) {
+        return true;
+      }
+    });
     return (K) this;
   }
 
@@ -339,16 +326,10 @@ public abstract class BaseCmdKubeClient<K extends BaseCmdKubeClient<K>>
 
   @Override
   public List<String> list(String resourceType) {
-    return asList(
-            Exec.exec(
-                    namespacedCommand(
-                        "get", resourceType, "-o", "jsonpath={range .items[*]}{.metadata.name} "))
-                .out()
-                .trim()
-                .split(" +"))
-        .stream()
-        .filter(s -> !s.trim().isEmpty())
-        .collect(Collectors.toList());
+    return asList(Exec.exec(
+        namespacedCommand("get", resourceType, "-o", "jsonpath={range .items[*]}{.metadata.name} "))
+        .out().trim().split(" +")).stream().filter(s -> !s.trim().isEmpty())
+            .collect(Collectors.toList());
   }
 
   @Override
@@ -396,23 +377,14 @@ public abstract class BaseCmdKubeClient<K extends BaseCmdKubeClient<K>>
   }
 
   @Override
-  public String searchInLog(
-      String resourceType, String resourceName, long sinceSeconds, String... grepPattern) {
+  public String searchInLog(String resourceType, String resourceName, long sinceSeconds,
+      String... grepPattern) {
     try {
-      return Exec.exec(
-              "bash",
-              "-c",
-              join(
-                  " ",
-                  namespacedCommand(
-                      "logs",
-                      resourceType + "/" + resourceName,
-                      "--since=" + sinceSeconds + "s",
-                      "|",
-                      "grep",
-                      " -e " + join(" -e ", grepPattern),
-                      "-B",
-                      "1")))
+      return Exec.exec("bash", "-c",
+          join(" ",
+              namespacedCommand("logs", resourceType + "/" + resourceName,
+                  "--since=" + sinceSeconds + "s", "|", "grep", " -e " + join(" -e ", grepPattern),
+                  "-B", "1")))
           .out();
     } catch (KubeClusterException e) {
       if (e.result != null && e.result.returnCode() == 1) {
@@ -425,28 +397,14 @@ public abstract class BaseCmdKubeClient<K extends BaseCmdKubeClient<K>>
   }
 
   @Override
-  public String searchInLog(
-      String resourceType,
-      String resourceName,
-      String resourceContainer,
-      long sinceSeconds,
-      String... grepPattern) {
+  public String searchInLog(String resourceType, String resourceName, String resourceContainer,
+      long sinceSeconds, String... grepPattern) {
     try {
-      return Exec.exec(
-              "bash",
-              "-c",
-              join(
-                  " ",
-                  namespacedCommand(
-                      "logs",
-                      resourceType + "/" + resourceName,
-                      "-c " + resourceContainer,
-                      "--since=" + sinceSeconds + "s",
-                      "|",
-                      "grep",
-                      " -e " + join(" -e ", grepPattern),
-                      "-B",
-                      "1")))
+      return Exec.exec("bash", "-c",
+          join(" ",
+              namespacedCommand("logs", resourceType + "/" + resourceName,
+                  "-c " + resourceContainer, "--since=" + sinceSeconds + "s", "|", "grep",
+                  " -e " + join(" -e ", grepPattern), "-B", "1")))
           .out();
     } catch (KubeClusterException e) {
       if (e.result != null && e.result.exitStatus()) {
@@ -459,16 +417,7 @@ public abstract class BaseCmdKubeClient<K extends BaseCmdKubeClient<K>>
   }
 
   public List<String> listResourcesByLabel(String resourceType, String label) {
-    return asList(
-        Exec.exec(
-                namespacedCommand(
-                    "get",
-                    resourceType,
-                    "-l",
-                    label,
-                    "-o",
-                    "jsonpath={range .items[*]}{.metadata.name} "))
-            .out()
-            .split("\\s+"));
+    return asList(Exec.exec(namespacedCommand("get", resourceType, "-l", label, "-o",
+        "jsonpath={range .items[*]}{.metadata.name} ")).out().split("\\s+"));
   }
 }

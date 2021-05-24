@@ -42,16 +42,15 @@ public class MockKafkaApiClient extends KafkaApiClient {
   }
 
   @Override
-  public void createSecretForServiceAccount(
-      CloudServiceAccountRequest resource, ServiceAccount serviceAccount)
-      throws ConditionAwareException {
+  public void createSecretForServiceAccount(CloudServiceAccountRequest resource,
+      ServiceAccount serviceAccount) throws ConditionAwareException {
     // NOOP
     // The secret is pseudo hard coded and will be returned as a hard coded value by the k8s mock
   }
 
   @Override
-  public ServiceAccount createServiceAccount(
-      CloudServiceAccountRequestSpec spec, String accessToken) throws ConditionAwareException {
+  public ServiceAccount createServiceAccount(CloudServiceAccountRequestSpec spec,
+      String accessToken) throws ConditionAwareException {
     ServiceAccount sa = new ServiceAccount();
     sa.setClientID("clientID");
     sa.setClientSecret("clientSecret");

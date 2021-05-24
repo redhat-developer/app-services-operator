@@ -28,7 +28,8 @@ import org.eclipse.microprofile.config.inject.ConfigProperty;
 @ApplicationScoped
 public class KafkaApiClient {
 
-  @Inject KubernetesClient k8sClient;
+  @Inject
+  KubernetesClient k8sClient;
 
   @ConfigProperty(name = "rhoas.client.apiBasePath")
   String clientBasePath;
@@ -51,13 +52,8 @@ public class KafkaApiClient {
       return createClient(accessToken).getKafkaById(kafkaId);
     } catch (ApiException e) {
       String message = ConditionUtil.getStandarizedErrorMessage(e);
-      throw new ConditionAwareException(
-          message,
-          e,
-          KafkaCondition.Type.FoundKafkaById,
-          KafkaCondition.Status.False,
-          e.getClass().getName(),
-          message);
+      throw new ConditionAwareException(message, e, KafkaCondition.Type.FoundKafkaById,
+          KafkaCondition.Status.False, e.getClass().getName(), message);
     }
   }
 
@@ -66,18 +62,13 @@ public class KafkaApiClient {
       return createClient(accessToken).listKafkas(null, null, null, null);
     } catch (ApiException e) {
       String message = ConditionUtil.getStandarizedErrorMessage(e);
-      throw new ConditionAwareException(
-          message,
-          e,
-          KafkaCondition.Type.UserKafkasUpToDate,
-          KafkaCondition.Status.False,
-          e.getClass().getName(),
-          message);
+      throw new ConditionAwareException(message, e, KafkaCondition.Type.UserKafkasUpToDate,
+          KafkaCondition.Status.False, e.getClass().getName(), message);
     }
   }
 
-  public ServiceAccount createServiceAccount(
-      CloudServiceAccountRequestSpec spec, String accessToken) throws ConditionAwareException {
+  public ServiceAccount createServiceAccount(CloudServiceAccountRequestSpec spec,
+      String accessToken) throws ConditionAwareException {
     try {
       var serviceAccountRequest = new ServiceAccountRequest();
       serviceAccountRequest.setDescription(spec.getServiceAccountDescription());
@@ -85,56 +76,34 @@ public class KafkaApiClient {
       return createClient(accessToken).createServiceAccount(serviceAccountRequest);
     } catch (ApiException e) {
       String message = ConditionUtil.getStandarizedErrorMessage(e);
-      throw new ConditionAwareException(
-          message,
-          e,
-          KafkaCondition.Type.ServiceAccountCreated,
-          KafkaCondition.Status.False,
-          e.getClass().getName(),
-          message);
+      throw new ConditionAwareException(message, e, KafkaCondition.Type.ServiceAccountCreated,
+          KafkaCondition.Status.False, e.getClass().getName(), message);
     }
   }
 
-  public void createSecretForServiceAccount(
-      CloudServiceAccountRequest resource, ServiceAccount serviceAccount)
-      throws ConditionAwareException {
+  public void createSecretForServiceAccount(CloudServiceAccountRequest resource,
+      ServiceAccount serviceAccount) throws ConditionAwareException {
     try {
-      var secret =
-          new SecretBuilder()
-              .editOrNewMetadata()
-              .withName(resource.getSpec().getServiceAccountSecretName())
-              .withNamespace(resource.getMetadata().getNamespace())
-              .withOwnerReferences(
-                  List.of(
-                      new OwnerReferenceBuilder()
-                          .withApiVersion(resource.getApiVersion())
-                          .withController(true)
-                          .withKind(resource.getKind())
-                          .withName(resource.getMetadata().getName())
-                          .withUid(resource.getMetadata().getUid())
-                          .build()))
-              .endMetadata()
-              .withData(
-                  Map.of(
-                      "client-secret",
-                      Base64.getEncoder()
-                          .encodeToString(
-                              serviceAccount.getClientSecret().getBytes(Charset.defaultCharset())),
-                      "client-id",
-                      Base64.getEncoder()
-                          .encodeToString(
-                              serviceAccount.getClientID().getBytes(Charset.defaultCharset()))))
-              .build();
+      var secret = new SecretBuilder().editOrNewMetadata()
+          .withName(resource.getSpec().getServiceAccountSecretName())
+          .withNamespace(resource.getMetadata().getNamespace())
+          .withOwnerReferences(List.of(new OwnerReferenceBuilder()
+              .withApiVersion(resource.getApiVersion()).withController(true)
+              .withKind(resource.getKind()).withName(resource.getMetadata().getName())
+              .withUid(resource.getMetadata().getUid()).build()))
+          .endMetadata()
+          .withData(Map.of("client-secret", Base64.getEncoder()
+              .encodeToString(serviceAccount.getClientSecret().getBytes(Charset.defaultCharset())),
+              "client-id",
+              Base64.getEncoder()
+                  .encodeToString(serviceAccount.getClientID().getBytes(Charset.defaultCharset()))))
+          .build();
 
       k8sClient.secrets().inNamespace(secret.getMetadata().getNamespace()).create(secret);
     } catch (Exception e) {
-      throw new ConditionAwareException(
-          e.getMessage(),
-          e,
-          KafkaCondition.Type.ServiceAccountSecretCreated,
-          KafkaCondition.Status.False,
-          e.getClass().getName(),
-          e.getMessage());
+      throw new ConditionAwareException(e.getMessage(), e,
+          KafkaCondition.Type.ServiceAccountSecretCreated, KafkaCondition.Status.False,
+          e.getClass().getName(), e.getMessage());
     }
   }
 }

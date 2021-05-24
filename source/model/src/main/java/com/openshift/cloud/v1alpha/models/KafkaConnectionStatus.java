@@ -23,8 +23,8 @@ public class KafkaConnectionStatus {
    * @param bootstrapServerHost
    * @param updated
    */
-  public KafkaConnectionStatus(
-      String message, String updated, String bootstrapServerHost, String serviceAccountSecretName) {
+  public KafkaConnectionStatus(String message, String updated, String bootstrapServerHost,
+      String serviceAccountSecretName) {
     super();
     this.message = message;
     this.updated = updated;

@@ -17,5 +17,7 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 11
+    - name: Enforce Formatting
+      run: mvn formatter:validate
     - name: Build and run Unit tests
       run: mvn package --file pom.xml --no-transfer-progress

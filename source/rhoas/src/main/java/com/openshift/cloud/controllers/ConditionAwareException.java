@@ -10,13 +10,8 @@ public class ConditionAwareException extends Exception {
   private final KafkaCondition.Status status;
   private String reason, conditionMessage;
 
-  public ConditionAwareException(
-      String exceptionMessage,
-      Throwable cause,
-      KafkaCondition.Type type,
-      KafkaCondition.Status status,
-      String reason,
-      String conditionMessage) {
+  public ConditionAwareException(String exceptionMessage, Throwable cause, KafkaCondition.Type type,
+      KafkaCondition.Status status, String reason, String conditionMessage) {
     super(exceptionMessage, cause);
     this.type = type;
     this.status = status;

@@ -146,8 +146,8 @@ public class Exec {
    * @param logToOutput log output or not
    * @return execution results
    */
-  public static ExecResult exec(
-      String input, List<String> command, int timeout, boolean logToOutput) {
+  public static ExecResult exec(String input, List<String> command, int timeout,
+      boolean logToOutput) {
     return exec(input, command, Collections.emptySet(), timeout, logToOutput, true);
   }
 
@@ -159,8 +159,8 @@ public class Exec {
    * @param throwErrors throw error if exec fail
    * @return results
    */
-  public static ExecResult exec(
-      String input, List<String> command, int timeout, boolean logToOutput, boolean throwErrors) {
+  public static ExecResult exec(String input, List<String> command, int timeout,
+      boolean logToOutput, boolean throwErrors) {
     return exec(input, command, Collections.emptySet(), timeout, logToOutput, throwErrors);
   }
 
@@ -174,13 +174,8 @@ public class Exec {
    * @param throwErrors look for errors in output and throws exception if true
    * @return execution results
    */
-  public static ExecResult exec(
-      String input,
-      List<String> command,
-      Set<EnvVar> envVars,
-      int timeout,
-      boolean logToOutput,
-      boolean throwErrors) {
+  public static ExecResult exec(String input, List<String> command, Set<EnvVar> envVars,
+      int timeout, boolean logToOutput, boolean throwErrors) {
     int ret = 1;
     ExecResult execResult;
     try {
@@ -206,16 +201,9 @@ public class Exec {
       execResult = new ExecResult(ret, executor.out(), executor.err());
 
       if (throwErrors && ret != 0) {
-        String msg =
-            "`"
-                + join(" ", command)
-                + "` got status code "
-                + ret
-                + " and stderr:\n------\n"
-                + executor.stdErr
-                + "\n------\nand stdout:\n------\n"
-                + executor.stdOut
-                + "\n------";
+        String msg = "`" + join(" ", command) + "` got status code " + ret
+            + " and stderr:\n------\n" + executor.stdErr + "\n------\nand stdout:\n------\n"
+            + executor.stdOut + "\n------";
 
         Matcher matcher = ERROR_PATTERN.matcher(executor.err());
         KubeClusterException t = null;
@@ -268,10 +256,9 @@ public class Exec {
     ProcessBuilder builder = new ProcessBuilder();
     builder.command(commands);
     if (envVars != null) {
-      envVars.forEach(
-          e -> {
-            builder.environment().put(e.getName(), e.getValue());
-          });
+      envVars.forEach(e -> {
+        builder.environment().put(e.getName(), e.getValue());
+      });
     }
     builder.directory(new File(System.getProperty("user.dir")));
     process = builder.start();
@@ -346,11 +333,9 @@ public class Exec {
     if (logPath != null) {
       try {
         Files.createDirectories(logPath);
-        Files.write(
-            Paths.get(logPath.toString(), "stdOutput.log"),
+        Files.write(Paths.get(logPath.toString(), "stdOutput.log"),
             stdOut.getBytes(Charset.defaultCharset()));
-        Files.write(
-            Paths.get(logPath.toString(), "stdError.log"),
+        Files.write(Paths.get(logPath.toString(), "stdError.log"),
             stdErr.getBytes(Charset.defaultCharset()));
       } catch (Exception ex) {
         LOGGER.warn("Cannot save output of execution: " + ex.getMessage());
@@ -381,8 +366,7 @@ public class Exec {
    */
   public static String cutExecutorLog(String log) {
     if (log.length() > MAXIMUM_EXEC_LOG_CHARACTER_SIZE) {
-      LOGGER.warn(
-          "Executor log is too long. Going to strip it and print only first {} characters",
+      LOGGER.warn("Executor log is too long. Going to strip it and print only first {} characters",
           MAXIMUM_EXEC_LOG_CHARACTER_SIZE);
       return log.substring(0, MAXIMUM_EXEC_LOG_CHARACTER_SIZE);
     }
@@ -418,22 +402,20 @@ public class Exec {
      * @return return future string of output
      */
     public Future<String> read() {
-      return CompletableFuture.supplyAsync(
-          () -> {
-            try (Scanner scanner = new Scanner(is, StandardCharsets.UTF_8.name())) {
-              while (scanner.hasNextLine()) {
-                data.append(scanner.nextLine());
-                if (appendLineSeparator) {
-                  data.append(System.getProperty("line.separator"));
-                }
-              }
-              scanner.close();
-              return data.toString();
-            } catch (Exception e) {
-              throw new CompletionException(e);
+      return CompletableFuture.supplyAsync(() -> {
+        try (Scanner scanner = new Scanner(is, StandardCharsets.UTF_8.name())) {
+          while (scanner.hasNextLine()) {
+            data.append(scanner.nextLine());
+            if (appendLineSeparator) {
+              data.append(System.getProperty("line.separator"));
             }
-          },
-          runnable -> new Thread(runnable).start());
+          }
+          scanner.close();
+          return data.toString();
+        } catch (Exception e) {
+          throw new CompletionException(e);
+        }
+      }, runnable -> new Thread(runnable).start());
     }
   }
 }

@@ -16,15 +16,20 @@ import org.jboss.logging.Logger;
 @QuarkusMain
 public class RHOASOperator implements QuarkusApplication {
 
-  @Inject Operator operator;
+  @Inject
+  Operator operator;
 
-  @Inject ConfigurationService configuration;
+  @Inject
+  ConfigurationService configuration;
 
-  @Inject KafkaConnectionController connectionController;
+  @Inject
+  KafkaConnectionController connectionController;
 
-  @Inject CloudServicesRequestController requestController;
+  @Inject
+  CloudServicesRequestController requestController;
 
-  @Inject CloudServiceAccountRequestController serviceAccountRequestController;
+  @Inject
+  CloudServiceAccountRequestController serviceAccountRequestController;
 
   @ConfigProperty(name = "rhoas.client.apiBasePath")
   String clientBasePath;

@@ -33,49 +33,35 @@ import org.junit.jupiter.api.Test;
 @QuarkusTest
 public class KafkaConnectionControllerTest {
 
-  @QuarkusKubernetesMockServer KubernetesServer server;
+  @QuarkusKubernetesMockServer
+  KubernetesServer server;
 
-  @Inject KafkaConnectionController controller;
+  @Inject
+  KafkaConnectionController controller;
 
   /** Adds a secret to the k8s mock server */
   @BeforeEach
   public void setSecret() {
-    var secret =
-        new SecretBuilder()
-            .withNewMetadata()
-            .withNamespace("test")
-            .withName("rh-managed-services-api-accesstoken")
-            .endMetadata()
-            .addToData(Map.of("value", "bXl0b2tlbg=="));
+    var secret = new SecretBuilder().withNewMetadata().withNamespace("test")
+        .withName("rh-managed-services-api-accesstoken").endMetadata()
+        .addToData(Map.of("value", "bXl0b2tlbg=="));
 
-    server
-        .expect()
-        .get()
+    server.expect().get()
         .withPath("/api/v1/namespaces/test/secrets/rh-managed-services-api-accesstoken")
-        .andReturn(HttpURLConnection.HTTP_OK, secret.build())
-        .once();
+        .andReturn(HttpURLConnection.HTTP_OK, secret.build()).once();
   }
 
   @Test
   public void testKafkaConnectionRequest() {
-    var kafkaConnectionRequest =
-        new KafkaConnectionBuilder()
-            .withMetadata(
-                new ObjectMetaBuilder()
-                    .withGeneration(10l)
-                    .withNamespace("test")
-                    .withName("kc-test")
-                    .build())
-            .withSpec(
-                new KafkaConnectionSpecBuilder()
-                    .withAccessTokenSecretName("rh-managed-services-api-accesstoken")
-                    .withCredentials(new Credentials("sa-secret"))
-                    .withKafkaId("1234567890")
-                    .build())
-            .build();
-    var result =
-        controller.createOrUpdateResource(
-            kafkaConnectionRequest, EmptyContext.emptyContext(KafkaConnection.class));
+    var kafkaConnectionRequest = new KafkaConnectionBuilder()
+        .withMetadata(new ObjectMetaBuilder().withGeneration(10l).withNamespace("test")
+            .withName("kc-test").build())
+        .withSpec(new KafkaConnectionSpecBuilder()
+            .withAccessTokenSecretName("rh-managed-services-api-accesstoken")
+            .withCredentials(new Credentials("sa-secret")).withKafkaId("1234567890").build())
+        .build();
+    var result = controller.createOrUpdateResource(kafkaConnectionRequest,
+        EmptyContext.emptyContext(KafkaConnection.class));
 
     Assertions.assertNotNull(result);
     Assertions.assertNotNull(result.getCustomResource());
@@ -93,8 +79,7 @@ public class KafkaConnectionControllerTest {
     var metaData = status.getMetadata();
     assertEquals("PLAIN", metaData.get("saslMechanism"));
     assertEquals("SASL_SSL", metaData.get("securityProtocol"));
-    assertEquals(
-        "https://cloud.redhat.com/beta/application-services/streams/kafkas/1234567890",
+    assertEquals("https://cloud.redhat.com/beta/application-services/streams/kafkas/1234567890",
         metaData.get("cloudUI"));
     assertEquals("rhoas", metaData.get("provider"));
     assertEquals("kafka", metaData.get("type"));

@@ -14,20 +14,15 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 @Plural("cloudservicesrequests")
 @Group("rhoas.redhat.com")
 @Version("v1alpha1")
-@Buildable(
-    builderPackage = "io.fabric8.kubernetes.api.builder",
-    editableEnabled = false,
+@Buildable(builderPackage = "io.fabric8.kubernetes.api.builder", editableEnabled = false,
     refs = @BuildableReference(CustomResource.class))
-public class CloudServicesRequest
-    extends CustomResource<CloudServicesRequestSpec, CloudServicesRequestStatus>
-    implements Namespaced {
+public class CloudServicesRequest extends
+    CustomResource<CloudServicesRequestSpec, CloudServicesRequestStatus> implements Namespaced {
 
   @Override
   public String toString() {
-    return new ToStringBuilder(this)
-        .append("cloudServicesRequestSpec", getSpec())
-        .append("cloudServicesRequestStatus", getStatus())
-        .toString();
+    return new ToStringBuilder(this).append("cloudServicesRequestSpec", getSpec())
+        .append("cloudServicesRequestStatus", getStatus()).toString();
   }
 
   @Override
@@ -44,9 +39,7 @@ public class CloudServicesRequest
       return false;
     }
     CloudServicesRequest rhs = ((CloudServicesRequest) other);
-    return new EqualsBuilder()
-        .append(getSpec(), rhs.getSpec())
-        .append(getStatus(), rhs.getStatus())
+    return new EqualsBuilder().append(getSpec(), rhs.getSpec()).append(getStatus(), rhs.getStatus())
         .isEquals();
   }
 }
