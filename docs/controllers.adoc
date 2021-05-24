@@ -1,6 +1,6 @@
 = RHOAS Operator Custom Resource controllers
 
-Each Custom Resource (CR) object that works with the RHOAS Operator has a controller associated with it. The Operator also uses an `AbstractCloudServicesController` controller that abstracts common controller logic.
+Each type of Custom Resource (CR) that the OpenShift Application Services (RHOAS) Operator manages has an associated controller. The Operator also uses an `AbstractCloudServicesController` controller that abstracts common controller logic.
 
 You can find the controllers in the link:https://github.com/redhat-developer/app-services-operator/tree/main/source/rhoas/src/main/java/com/openshift/cloud/controllers[com.openshift.cloud.controllers^] package in our GitHub repository.
 
