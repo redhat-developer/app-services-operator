@@ -17,8 +17,12 @@ jobs:
     steps:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - uses: actions/checkout@v2
-    - name: asciidoctor-ghpages
-      uses: wtrocki/asciidoctor-ghpages-action@v2
+    - uses: mougenko/asciidoc-to-html@v1.0.0
       with:
-        asciidoctor_params: --attribute=nofooter
-        pdf_build: false
+        src: docs
+        dest: website
+    - name: Deploy 🚀
+      uses: JamesIves/github-pages-deploy-action@4.1.3
+      with:
+        branch: gh-pages # The branch the action should deploy to.
+        folder: website # The folder the action should deploy.
