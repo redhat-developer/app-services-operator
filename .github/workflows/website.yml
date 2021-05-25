@@ -21,6 +21,8 @@ jobs:
       with:
         src: docs
         dest: website
+    - id: mougenko/asciidoc-to-html@v1.0.0
+      run: ls website
     - name: Deploy 🚀
       uses: JamesIves/github-pages-deploy-action@4.1.3
       with:
