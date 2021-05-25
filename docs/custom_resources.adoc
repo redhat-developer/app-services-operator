@@ -269,7 +269,8 @@ Fields and subresources in the `CloudServiceAccountRequest` CR are described bel
 
 Each CR type managed by the RHOAS Operator has several conditions defined in the `status` subresource. Some conditions are shared by multiple types and some are type-specific.
 
-All conditions have a `status` value of `True`, `False`, or `Unknown`. When the Operator processes a CR, it first sets the `status` value of each condition to `Unknown`. Then, the Operator sets each condition to a value of `True` as the condition is checked. If a condition fails to check, the Operator sets the `status` values of the condition *and* the `Finished` condition to `False`. The Operator also updates the `reason` and `message` fields with more information.
+Each CR has a condition field that follows the same standard. Conditions are represented as an array of objects.
+All condition objects have a `status` value of `True`, `False`, or `Unknown`. When the Operator processes a CR, it first sets the `status` value of each condition to `Unknown`. Then, the Operator sets each condition to a value of `True` as the condition is checked. If a condition fails to check, the Operator sets the `status` values of the condition *and* the `Finished` condition to `False`. The Operator also updates the `reason` and `message` fields with more information.
 
 When a check fails, the Operator halts processing of the CR. The Operator does not check subsequent conditions and their values remain set to `Unknown`. To resume processing of the CR, you must correct the errors and submit a new CR.
 
