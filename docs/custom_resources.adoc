@@ -1,17 +1,22 @@
 = RHOAS Operator Custom Resources
 
-The operator manages the following resources:
- - `CloudServicesRequest`
- - `KafkaConnection`
- - `CloudServiceAccountRequest`.
- 
-All resources are namespace scoped and include operator-managed conditions. 
+The OpenShift Application Sercvices (RHOAS) Operator manages the following types of Custom Resources (CRs):
 
+* `CloudServicesRequest`
+* `KafkaConnection`
+* `CloudServiceAccountRequest`
+
+All CRs are namespace-scoped and include Operator-managed conditions. Each CR is described in the sections that follow.
+
+[id="CloudServicesRequest"]
 == CloudServicesRequest
 
-This custom resource is populated with services available to the provided access token. These services are listed under the status object. This resource is used to get a list of available services. For instance, the id of a Kafka service is used by `KafkaConnection`.
+The `CloudServicesRequest` CR is used to get a list of available services. The controller for the CR updates the CR with services that are available to the provided access token. These services are listed under the `status` subresource. For example, the ID of an available Kafka service is used by the `KafkaConnection` CR.
 
 === Example
+
+An example of the `CloudServicesRequest` CR is shown below.
+
 .example.yaml
 [source,yaml]
 ----
@@ -57,46 +62,60 @@ spec:
 
 ----
 
-== Spec
- 
- * `accessTokenSecretName` see `AcccesTokenSecretValid Condition`
+=== Specification details
 
-=== Status
- 
- The status subresource has the following properties 
+Fields and subresources in the `CloudServicesRequest` CR are described below.
 
- * lastUpdate - The last update of the status object in ISO format
- * userKafkas - a list of kafka services.
+[discrete]
+==== spec
 
+`accessTokenSecretName`:: Name of the secret that contains an offline access token. The Operator uses this offline token to request a *live* access token from an authentication service. The live access token, in turn, authenticates with the Cloud Services API. The `status` field for the `AcccesTokenSecretValid` condition indicates whether the token was available and successfully exchanged with the authentication service. For more information, see xref:access-token-secret-valid[AcccesTokenSecretValid condition].
 
-==== UserKafka's Format
- 
- The `userKafkas` status field is a list of `userKafka` objects. These object have the following properties:
- 
-  * `id` - the id field used to reference this service. See `KafkaConnection`
-  * `bootstrapServerHost` - the URL for the service instance
-  * `name` - a human readable name
-  * `provider` - the cloud provider hosting the service
-  * `region` - geographic region service is hosted in
-  * `owner` - the human or organization who owns this resource
-  * `updatedAt` - an ISO formatted date when the resource was updated
-  * `createdAt` - an ISO formatted date when the resource was created
-  * `status` - a human or machine readable status
-  
+[discrete]
+==== spec.status
 
-==== Conditions
+The `status` subresource has the following properties:
 
- * UserKafkasUpToDate - If `status` is true then the userKafkas property is up to date as of `lastTransitionTime`
- * Finished - see `Finished Condition`
- * AcccesTokenSecretValid - see `AcccesTokenSecretValid Condition`
+`lastUpdate`:: Last update of the status object, in ISO format
+`userKafkas`:: List of available Kafka services
 
+[discrete]
+[id="userKafkas"]
+==== spec.status.userKafkas
+
+The `userKafkas` status field is a list of `userKafka` objects. These objects have the following properties:
+
+`id`:: ID field used to reference the service. For more information, see `KafkaConnection`.
+`bootstrapServerHost`:: URL for the service instance
+`name`:: Human-readable name for the service instance
+`provider`:: Cloud provider that is hosting the service
+`region`:: Geographic region in which the service is hosted
+`owner`:: Human or organization that owns the service instance
+`updatedAt`:: ISO-formatted date that shows when the service instance was updated
+`createdAt`:: ISO-formatted date that shows when the service instance was created
+`status`:: Human or machine-readable status for the service instance
+
+[discrete]
+==== spec.status.conditions
+
+`UserKafkasUpToDate`:: If the value of the `status` field is `True`, then the `userKafkas` property is up to date, as of `lastTransitionTime`.
+`Finished`:: Indicates whether the Operator has successfully finished processing the CR. For more information, see xref:finished-condition[Finished condition].
+`AcccesTokenSecretValid`:: Indicates whether the token specified as a value for the `accessTokenSecretName` field was available and successfully exchanged with the authentication service. For more information, see xref:access-token-secret-valid[AcccesTokenSecretValid condition].
+
+[id="KafkaConnection"]
 == KafkaConnection
 
-This resource represents a binding between a service account and a managed kafka instance. The service account is referenced using the `serviceAccountSecretName` created by `CloudServiceAccountRequest` and the `kafkaId` for a `userKafka` instance provided by `CloudServicesRequest`.
+The `KafkaConnection` CR represents a binding between a service account and a managed Kafka instance. The Operator references the service account name using both of these values:
+
+* The value of the `serviceAccountSecretName` field provided by the `CloudServiceAccountRequest` CR
+* The value of the `kafkaId` property for a `userKafka` instance provided by the `CloudServicesRequest` CR
 
 === Example
 
-[source,yml]
+An example of the `KafkaConnection` CR is shown below.
+
+.example.yaml
+[source,yaml]
 ----
 apiVersion: rhoas.redhat.com/v1alpha1
 kind: KafkaConnection
@@ -133,38 +152,46 @@ spec:
 #  uiRef: https://cloud.redhat.com/beta/application-services/openshift-streams/kafkas/valid-kafka-id
 ----
 
+=== Specification details
 
-=== Spec
+Fields and subresources in the ` KafkaConnection` CR are described below.
 
- * kafkaId - the id of the Kafka instance. See `CloudServicesRequest.status.userKafkas`
- * credentials - the credentials object to be used when accessing the `kafkaId` instance. See `CloudServicesRequest`
- * `accessTokenSecretName` see `AcccesTokenSecretValid Condition`
+[discrete]
+=== spec
 
-==== Credentials Format
+`kafkaId`:: ID of the Kafka instance. For more information, see xref:userKafkas[status.userKafkas] in the `CloudServicesRequest` CR.
+`credentials`:: Credentials object to be used when accessing the `kafkaId` instance. For more information, see the xref:CloudServicesRequest[CloudServicesRequest CR].
+`accessTokenSecretName`:: Name of the secret that contains an offline access token. The Operator uses this offline token to request a *live* access token from an authentication service. The live access token, in turn, authenticates with the Cloud Services API. The `status` field for the `AcccesTokenSecretValid` condition indicates whether the token was available and successfully exchanged with the authentication service. For more information, see xref:access-token-secret-valid[AcccesTokenSecretValid condition].
 
- * `serviceAccountSecretName` - secret containing service account credentials.
+==== spec.credentials
 
-=== Status
+`serviceAccountSecretName`:: Name of the secret that contains service account credentials
 
- * `bootstrapServerHost` - The url of the `kafkaId`
- * `uiRef` - The url of the ui for `kafkaId`
- * `serviceAccountSecretName` - The secret which contains the service account credentials used to connect to the service
- * `saslMechanism` - The security mechanism used to perform a connection with this resource. Default *PLAIN*
- * `securityProtocol` - The security protocol used to perform a connection with this resource. Default *SSL*
+[discrete]
+=== spec.status
 
-==== Conditions
- 
- * FoundKafkaById - If `status` is `True` then the `kafkaId` field matched a Kafka instance id.
- * Finished - see `Finished Condition`
- * AcccesTokenSecretValid - see `AcccesTokenSecretValid Condition`
+`bootstrapServerHost`:: URL for the bootstrap server of the Kafka instance
+`uiRef`:: URL for the UI of the Kafka instance
+`serviceAccountSecretName`:: Name of the secret that contains the service account credentials used to connect to the Kafka instance
+`saslMechanism`:: Security mechanism used to connect to the Kafka instance. The default value is `PLAIN`.
+`securityProtocol`:: Security protocol used to connect to the Kafka instance. The default value is `SSL`.
 
+[discrete]
+=== spec.status.conditions
+
+`FoundKafkaById`:: If value is `True`, then the value of the `kafkaId` field matches a Kafka instance ID.
+`Finished`:: Indicates whether the Operator has successfully finished processing the CR. For more information, see xref:finished-condition[Finished condition].
+`AcccesTokenSecretValid`:: Indicates whether the token specified as a value for the `accessTokenSecretName` field was available and successfully exchanged with the authentication service. For more information, see xref:access-token-secret-valid[AcccesTokenSecretValid condition].
 
 == CloudServiceAccountRequest
 
-This resource creates a service account per its spec. Credentials for the service account will be stored in a secret with the name provided by `serviceAccountSecretName`. This service account is used to connect to kafka instances. See `KafkaConnection` for details on connecting to the instances.
+The `CloudServiceAccountRequest` CR creates service accounts to connect to Kafka instances. Credentials for the service account are stored in a secret. The name of the credentials secret is specified by the value of the `serviceAccountSecretName` field. For more information about connecting to Kafka instances, see the xref:KafkaConnection[KafkaConnection CR].
 
-== Example
+=== Example
 
+An example of the `CloudServiceAccountRequest` CR is shown below.
+
+.example.yaml
 [source,yaml]
 ----
 apiVersion: rhoas.redhat.com/v1alpha1
@@ -175,9 +202,9 @@ metadata:
 spec:
   serviceAccountName: "RhoasOperatorServiceAccount"
   serviceAccountDescription: "Operator created service account"
-  
+
   serviceAccountSecretName: service-account-credentials
-  accessTokenSecretName: rh-managed-services-api-accesstoken    
+  accessTokenSecretName: rh-managed-services-api-accesstoken
 status:
   conditions:
   - lastTransitionTime: "2021-03-05T02:06:49.407299Z"
@@ -205,43 +232,54 @@ status:
   updated: "2021-03-05T02:06:49.407249Z"
 ----
 
+[id="credentials-secret-format"]
+=== Format of credentials secret
 
-=== Credentials Secret Format
- 
-The operator will create and manage a secret for the account created by this resource. The credentials secret is an opaque secret with the following keys : 
+The Operator creates and manages a secret for the secret account created by the `CloudServiceAccountRequest` CR. The credentials secret is an opaque secret with the following keys:
 
- * `client-id` - an identifier provided by the service API for this client
- * `client-secret` - a secret provided by the service API for this client
+`client-id`:: Identifier provided by the service API for the client
+`client-secret`:: Secret provided by the service API for the client
 
+=== Specification details
 
-=== Spec
-  * `serviceAccountName` - the name of the account that is to be created by the operator
-  * `serviceAccountDescription` - the description of the account that is to be created by the operator
-  * `serviceAccountSecretName` - the name of the secret to be created. See `Credentials Secret Format`
-  * `accessTokenSecretName` - see `AcccesTokenSecretValid Condition`
+Fields and subresources in the `CloudServiceAccountRequest` CR are described below.
 
-=== Status
+[discrete]
+=== spec
+`serviceAccountName`:: Name of the service account to be created by the Operator
+`serviceAccountDescription`:: Description of the service account to be created by the Operator
+`serviceAccountSecretName`:: Name of the secret to be created by the Operator. For more information, see xref:credentials-secret-format[Format of credentials secret].
+`accessTokenSecretName`:: Name of the secret that contains an offline access token. The Operator uses this offline token to request a *live* access token from an authentication service. The live access token, in turn, authenticates with the Cloud Services API. The `status` field for the `AcccesTokenSecretValid` condition indicates whether the token was available and successfully exchanged with the authentication service. For more information, see xref:access-token-secret-valid[AcccesTokenSecretValid condition].
 
- * `updated` - an ISO timestamp of when the status was created
- * `serviceAccountSecretName` - the secret name contained the credentials for the service account.
+[discrete]
+=== spec.status
 
+`updated`:: ISO-formatted timestamp that shows when the status was created
+`serviceAccountSecretName`:: Secret name that contains the credentials for the service account
 
-==== Conditions
- 
- * ServiceAccountCreated - When status is `True` then the service account was created successfully.
- * ServiceAccountSecretCreated - When status is `True` then the credentials secret was created successfully.
- * Finished - see `Finished Condition`
- * AcccesTokenSecretValid - see `AcccesTokenSecretValid Condition`
+[discrete]
+=== spec.status.conditions
 
+`ServiceAccountCreated`:: If the value of this field is `True`, the Operator successfully created the service account.
+`ServiceAccountSecretCreated`:: If the value of this field is `True`, the Operator successfully created the credentials secret.
+`Finished`:: Indicates whether the Operator has successfully finished processing the CR. For more information, see xref:finished-condition[Finished condition].
+`AcccesTokenSecretValid`:: Indicates whether the token specified as a value for the `accessTokenSecretName` field was available and successfully exchanged with the authentication service. For more information, see xref:access-token-secret-valid[AcccesTokenSecretValid condition].
 
-== Conditions Common to RHOAS Custom Resources
+== Conditions common to all RHOAS Custom Resources
 
-Each custom resource type has several conditions on their status subresource. Some conditions are shared by multiple types and some are type specific. All types have the status of `True`, `False`, and `Unknown`. When the operator begins running on the resource, it will set all conditions to `Unknown`. The operator then sets each condition to `True` as they are checked. If a condition fails to check, it and the `Finished` conditions will be set to `False` as well as have their `reason` and `message` fields set.  Additionally, processing is halted and subsequent conditions are not checked and they will remain `Unknown`. In order to resume processing, the errors must be corrected and a new custom resource submitted.
+Each CR type managed by the RHOAS Operator has several conditions defined in the `status` subresource. Some conditions are shared by multiple types and some are type-specific.
 
-=== Finished Condition
+Each CR has a condition field that follows the same standard. Conditions are represented as an array of objects.
+All condition objects have a `status` value of `True`, `False`, or `Unknown`. When the Operator processes a CR, it first sets the `status` value of each condition to `Unknown`. Then, the Operator sets each condition to a value of `True` as the condition is checked. If a condition fails to check, the Operator sets the `status` values of the condition *and* the `Finished` condition to `False`. The Operator also updates the `reason` and `message` fields with more information.
 
-This condition's `status` is set to `True` if processing has been completed successfully, or `False` if it was not. The `reason` and `message` fields are set on the condition with more information. The `lastTransitionGeneration` field records the value of `metadata.generation` when the condition was set. This condition is on all resources.
+When a check fails, the Operator halts processing of the CR. The Operator does not check subsequent conditions and their values remain set to `Unknown`. To resume processing of the CR, you must correct the errors and submit a new CR.
 
-=== AcccesTokenSecretValid Condition
+[id="finished-condition"]
+=== Finished condition
 
-All custom resources require an `accessTokenSecretName` to be set. This is the name of an opaque secret with the `value` key set to an offline access token. The operator exchanges this token with an authentication service to get an access token. It then uses the token to perform operations. If this condition has a `True` status then the token was available and exchanged. If the status is `False` then there was an error with the `accessTokenSecretName` property. The `reason` and `message` fields will contain more information.
+The Operator sets the `status` value of this condition to `True` if processing is completed successfully, or `False` if it is not. The Operator also updates the `reason` and `message` fields with more information. The `lastTransitionGeneration` field records the value of `metadata.generation` when the condition was set. This condition is included in all of the CRs managed by the RHOAS Operator.
+
+[id="access-token-secret-valid"]
+=== AcccesTokenSecretValid condition
+
+All of the CRs managed by the RHOAS Operator require a value to be specified for the `accessTokenSecretName` field. This field is the name of an opaque secret with the `value` key of the secret set to an offline access token. The Operator exchanges this token with an authentication service to get a *live* access token. The Operator then uses the live access token to perform operations. If this condition has a `status` value of `True`, this indicates that the token was available and exchanged. If the `status` value is `False`, then there was an error with the `accessTokenSecretName` property. The Operator updates the `reason` and `message` fields with more information.
