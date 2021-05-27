@@ -1,33 +1,33 @@
-== API Mocks
+= API mocks
 
-In normal operation, RHOAS Operator uses specialized bean classes when fetching available Kafka instances or creating service accounts. During testing these mock can be used to isolate the operator from its external dependencies. They are enabled by overriding the system property `quarkus.arc.selected-alternatives`.
+In normal operation, the OpenShift Application Services (RHOAS) Operator uses specialized bean classes when fetching available Kafka instances or creating service accounts. During testing, you can use API mocks to isolate the Operator from its external dependencies. You can enable the mocks by overriding the system property `quarkus.arc.selected-alternatives`.
 
-== Using Mocks Locally
+== Using mocks in a cluster
 
-Mocks are used by our test suite by default. If you wish to run the mocks on the cluster, you will need to build the operator container with mocking enabled. To enable mocking in your operator container, add `-Dquarkus.arc.selected-alternatives=com.openshift.cloud.beans.MockKafkaApiClient,com.openshift.cloud.beans.MockAccessTokenSecretTool` to the build command.
+Mocks are used by our test suite by default. If you wish to run the mocks on a cluster, you need to build the Operator container with mocking enabled. To enable mocking in your Operator container, add `-Dquarkus.arc.selected-alternatives=com.openshift.cloud.beans.MockKafkaApiClient,com.openshift.cloud.beans.MockAccessTokenSecretTool` to the build command.
 
-== Mocks in a Cluster
+To achieve this, it is easiest to edit the `release.yml` build file and build the Operator in GitHub Actions. From there, you can install the Operator using the CatalogSource, as normal.
 
-To use the mocks in a cluster, it is easiest to edit the `release.yml` build file and build the operator in GitHub Actions. From there you can install the operator via a catalog source as normal.
-
+The mocks that you can use are described in the following sections.
 
 == MockAccessTokenSecretTool
 
-This mock returns a constant as an access token. This replaces the normal access token behavior which calls the k8s API as well as our SSO system. Enable the mock by adding `com.openshift.cloud.beans.MockAccessTokenSecretTool` to the `quarkus.arc.selected-alternatives` system property.
+This mock returns a constant as an access token. This replaces the normal access token behavior, which calls the Kubernetes API as well as our SSO system. Enable the mock by adding `com.openshift.cloud.beans.MockAccessTokenSecretTool` to the `quarkus.arc.selected-alternatives` system property.
 
-Whereas the normal implementation will load the secret, exchange the token with our SSO service instance, and return an access token, the mock returns a constant token of "12345" when calls are made to `AccessTokenSecretTool.getAccessToken`. 
+Whereas the normal implementation loads the secret, exchanges the token with our SSO service instance, and returns an access token, the mock returns a constant token of `12345` when calls are made to `AccessTokenSecretTool.getAccessToken`.
 
 == MockKafkaApiClient
 
-The mocked cloud services API returns constants for queried kafkas and service account creation. Cloud services can be mocked by adding `com.openshift.cloud.beans.MockKafkaApiClient` to the `quarkus.arc.selected-alternatives` system property.
+The mocked Cloud Services API returns constants for queried Kafka instances and service account creation. You can mock the Cloud Services API by adding `com.openshift.cloud.beans.MockKafkaApiClient` to the `quarkus.arc.selected-alternatives` system property.
 
-This mock replaces two operations : it does not create a real service account nor nor its service account secret and it does not query the MAS API for a list of available user Kafkas. 
+This mock replaces two operations; it does not create a real service account or its service account secret, and it does not query the MAS API for a list of available user Kafka instances.
 
-The `createServiceAccount` method returns a constant service account with an id of "123456789" and with other values as provided by the CloudServiceAccountRequest.
+The `createServiceAccount` method returns a constant service account with an id of `123456789` and with other values as provided by the `CloudServiceAccountRequest` Custom Resource.
 
-The 'getKafkaById' and `listKafkas` methods return a constant kafka with the following information :
+The `getKafkaById` and `listKafkas` methods return a constant Kafka object with the following information:
 
-```
+[source,yaml]
+----
     bootstrapServerHost: "testHost"
     cloudProvider : "cloudProvider"
     createdAt: OffsetDateTime.now();#The current time
@@ -37,4 +37,4 @@ The 'getKafkaById' and `listKafkas` methods return a constant kafka with the fol
     status : "status"
     updatedAt : OffsetDateTime.now();
     region : "region"
-```
+----
