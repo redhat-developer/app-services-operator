@@ -153,6 +153,30 @@ public class ConditionUtil {
     }
   }
 
+  public static void initializeConditions(ServiceRegistryConnection resource) {
+    var status = resource.getStatus();
+    if (status == null) {
+      resource.setStatus(new ServiceRegistryConnectionStatusBuilder()
+          .withConditions(serviceRegistryConnectionDefaultConditions(1)).build());
+    } else {
+      status
+          .setConditions(kafkaConnectionDefaultConditions(resource.getMetadata().getGeneration()));
+    }
+  }
+
+  private static List<KafkaCondition> serviceRegistryConnectionDefaultConditions(long generation) {
+    return List.of(
+        new KafkaCondition().setLastTransitionTime(isoNow()).setLastTransitionGeneration(generation)
+            .setType(KafkaCondition.Type.AcccesTokenSecretValid).setReason("").setMessage("")
+            .setStatus(KafkaCondition.Status.Unknown),
+        new KafkaCondition().setLastTransitionTime(isoNow())
+            .setType(KafkaCondition.Type.FoundServiceRegistryById).setLastTransitionGeneration(generation)
+            .setReason("").setMessage("").setStatus(KafkaCondition.Status.Unknown),
+        new KafkaCondition().setLastTransitionTime(isoNow()).setLastTransitionGeneration(generation)
+            .setReason("").setMessage("").setType(KafkaCondition.Type.Finished)
+            .setStatus(Status.Unknown));
+  }
+
   private static List<KafkaCondition> kafkaConnectionDefaultConditions(long generation) {
     return List.of(
         new KafkaCondition().setLastTransitionTime(isoNow()).setLastTransitionGeneration(generation)
@@ -169,11 +193,12 @@ public class ConditionUtil {
   /**
    * Map the api exception to proper error
    *
-   * @param e exception using APIException object
+   * @param code a http status code
+   * @param e exception using Exception object
    * @return a human readable String to be set as the message property of a failed condition
    */
-  public static String getStandarizedErrorMessage(ApiException e) {
-    var statusCode = e.getCode();
+  public static String getStandarizedErrorMessage(int code, Exception e) {
+    var statusCode = code;
     var reason = "";
     var errorObject = new HashMap<String, Object>();
 
