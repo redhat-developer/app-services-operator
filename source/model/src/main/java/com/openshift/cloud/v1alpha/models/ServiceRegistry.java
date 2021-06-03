@@ -1,6 +1,6 @@
 package com.openshift.cloud.v1alpha.models;
 
-public class SchemaRegistry {
+public class ServiceRegistry {
   private Integer id;
   private String registryStatus;
   private String registryUrl;
@@ -8,9 +8,9 @@ public class SchemaRegistry {
   private String lastUpdated;
   private Integer registryDeploymentId;
 
-  public SchemaRegistry() {}
+  public ServiceRegistry() {}
 
-  public SchemaRegistry(Integer id, String registryStatus, String registryUrl, String name,
+  public ServiceRegistry(Integer id, String registryStatus, String registryUrl, String name,
       String lastUpdated, Integer registryDeploymentId) {
     this.id = id;
     this.registryStatus = registryStatus;
@@ -24,7 +24,7 @@ public class SchemaRegistry {
     return id;
   }
 
-  public SchemaRegistry setId(Integer id) {
+  public ServiceRegistry setId(Integer id) {
     this.id = id;
     return this;
   }
@@ -33,7 +33,7 @@ public class SchemaRegistry {
     return registryStatus;
   }
 
-  public SchemaRegistry setRegistryStatus(String registryStatus) {
+  public ServiceRegistry setRegistryStatus(String registryStatus) {
     this.registryStatus = registryStatus;
     return this;
   }
@@ -42,7 +42,7 @@ public class SchemaRegistry {
     return registryUrl;
   }
 
-  public SchemaRegistry setRegistryUrl(String registryUrl) {
+  public ServiceRegistry setRegistryUrl(String registryUrl) {
     this.registryUrl = registryUrl;
     return this;
   }
@@ -51,7 +51,7 @@ public class SchemaRegistry {
     return name;
   }
 
-  public SchemaRegistry setName(String name) {
+  public ServiceRegistry setName(String name) {
     this.name = name;
     return this;
   }
@@ -60,7 +60,7 @@ public class SchemaRegistry {
     return lastUpdated;
   }
 
-  public SchemaRegistry setLastUpdated(String lastUpdated) {
+  public ServiceRegistry setLastUpdated(String lastUpdated) {
     this.lastUpdated = lastUpdated;
     return this;
   }
@@ -69,7 +69,7 @@ public class SchemaRegistry {
     return registryDeploymentId;
   }
 
-  public SchemaRegistry setRegistryDeploymentId(Integer registryDeploymentId) {
+  public ServiceRegistry setRegistryDeploymentId(Integer registryDeploymentId) {
     this.registryDeploymentId = registryDeploymentId;
     return this;
   }
@@ -81,7 +81,7 @@ public class SchemaRegistry {
     if (o == null || getClass() != o.getClass())
       return false;
 
-    SchemaRegistry that = (SchemaRegistry) o;
+    ServiceRegistry that = (ServiceRegistry) o;
 
     if (id != null ? !id.equals(that.id) : that.id != null)
       return false;

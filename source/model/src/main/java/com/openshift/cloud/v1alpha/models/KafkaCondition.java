@@ -3,7 +3,7 @@ package com.openshift.cloud.v1alpha.models;
 // TODO This needs to be renamed because we're more than just Kafkas now
 public class KafkaCondition {
   public enum Type {
-    AcccesTokenSecretValid, UserKafkasUpToDate, ServiceRegistriesUpToDate, ServiceAccountCreated, ServiceAccountSecretCreated, Finished, FoundKafkaById;
+    AcccesTokenSecretValid, UserKafkasUpToDate, ServiceRegistriesUpToDate, ServiceAccountCreated, ServiceAccountSecretCreated, Finished, FoundKafkaById, FoundServiceRegistryById;
   }
 
   public enum Status {
