@@ -153,6 +153,30 @@ public class ConditionUtil {
     }
   }
 
+  public static void initializeConditions(ServiceRegistryConnection resource) {
+    var status = resource.getStatus();
+    if (status == null) {
+      resource.setStatus(new ServiceRegistryConnectionStatusBuilder()
+          .withConditions(serviceRegistryConnectionDefaultConditions(1)).build());
+    } else {
+      status
+          .setConditions(kafkaConnectionDefaultConditions(resource.getMetadata().getGeneration()));
+    }
+  }
+
+  private static List<KafkaCondition> serviceRegistryConnectionDefaultConditions(long generation) {
+    return List.of(
+        new KafkaCondition().setLastTransitionTime(isoNow()).setLastTransitionGeneration(generation)
+            .setType(KafkaCondition.Type.AcccesTokenSecretValid).setReason("").setMessage("")
+            .setStatus(KafkaCondition.Status.Unknown),
+        new KafkaCondition().setLastTransitionTime(isoNow())
+            .setType(KafkaCondition.Type.FoundServiceRegistryById).setLastTransitionGeneration(generation)
+            .setReason("").setMessage("").setStatus(KafkaCondition.Status.Unknown),
+        new KafkaCondition().setLastTransitionTime(isoNow()).setLastTransitionGeneration(generation)
+            .setReason("").setMessage("").setType(KafkaCondition.Type.Finished)
+            .setStatus(Status.Unknown));
+  }
+
   private static List<KafkaCondition> kafkaConnectionDefaultConditions(long generation) {
     return List.of(
         new KafkaCondition().setLastTransitionTime(isoNow()).setLastTransitionGeneration(generation)

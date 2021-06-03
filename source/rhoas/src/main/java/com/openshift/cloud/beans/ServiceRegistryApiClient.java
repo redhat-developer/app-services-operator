@@ -16,7 +16,7 @@ import com.openshift.cloud.api.auth.HttpBearerAuth;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 @ApplicationScoped
-public class SchemaRegistryApiClient {
+public class ServiceRegistryApiClient {
 
   @ConfigProperty(name = "rhoas.client.apiBasePath")
   String clientBasePath;
@@ -43,5 +43,15 @@ public class SchemaRegistryApiClient {
     }
 
   }
+
+public Registry getServiceRegistryById(Integer registryId, String accessToken)  throws ConditionAwareException {
+  try {
+    return createRegistriesClient(accessToken).getRegistry(registryId);
+  } catch (ApiException e) {
+    String message = ConditionUtil.getStandarizedErrorMessage(e);
+    throw new ConditionAwareException(message, e, KafkaCondition.Type.FoundServiceRegistryById,
+        KafkaCondition.Status.False, e.getClass().getName(), message);
+  }
+}
 
 }

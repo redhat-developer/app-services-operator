@@ -84,14 +84,14 @@ spec:
                         type: string
                       status:
                         type: string
-                schemaRegistries:
+                serviceRegistries:
                   type: array
                   nullable: true
                   items:
                     type: object
                     properties:
                       id:
-                        type: string
+                        type: integer
                       registryStatus:
                         type: string
                       registryUrl:

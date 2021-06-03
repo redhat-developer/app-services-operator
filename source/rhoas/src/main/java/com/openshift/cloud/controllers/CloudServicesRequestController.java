@@ -3,10 +3,10 @@ package com.openshift.cloud.controllers;
 import com.openshift.cloud.beans.AccessTokenSecretTool;
 import com.openshift.cloud.beans.KafkaApiClient;
 import com.openshift.cloud.beans.KafkaK8sClients;
-import com.openshift.cloud.beans.SchemaRegistryApiClient;
+import com.openshift.cloud.beans.ServiceRegistryApiClient;
 import com.openshift.cloud.utils.InvalidUserInputException;
 import com.openshift.cloud.v1alpha.models.CloudServicesRequest;
-import com.openshift.cloud.v1alpha.models.SchemaRegistry;
+import com.openshift.cloud.v1alpha.models.ServiceRegistry;
 import com.openshift.cloud.v1alpha.models.UserKafka;
 import io.javaoperatorsdk.operator.api.*;
 import io.javaoperatorsdk.operator.processing.event.EventSourceManager;
@@ -31,7 +31,7 @@ public class CloudServicesRequestController
   KafkaApiClient kasApiClient;
 
   @Inject
-  SchemaRegistryApiClient srsApiClient;
+  ServiceRegistryApiClient srsApiClient;
 
   public CloudServicesRequestController() {}
 
@@ -69,19 +69,19 @@ public class CloudServicesRequestController
 
     resource.getStatus().setUserKafkas(userKafkas);
 
-    var registries = new ArrayList<SchemaRegistry>();
+    var registries = new ArrayList<ServiceRegistry>();
 
     registryList.forEach(listItem -> {
-      var schemaRegistry = new SchemaRegistry().setId(listItem.getId()).setName(listItem.getName())
+      var serviceRegistry = new ServiceRegistry().setId(listItem.getId()).setName(listItem.getName())
           .setRegistryUrl(listItem.getRegistryUrl())
           .setRegistryStatus(listItem.getStatus().getValue().getValue())
           .setLastUpdated(listItem.getStatus().getLastUpdated().toInstant().toString())
           .setRegistryDeploymentId(listItem.getRegistryDeploymentId());
 
-      registries.add(schemaRegistry);
+      registries.add(serviceRegistry);
     });
 
-    resource.getStatus().setSchemaRegistries(registries);
+    resource.getStatus().setServiceRegistries(registries);
   }
 
   void validateResource(CloudServicesRequest resource) throws InvalidUserInputException {

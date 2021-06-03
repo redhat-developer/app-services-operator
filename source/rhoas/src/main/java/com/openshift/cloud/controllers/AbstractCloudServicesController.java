@@ -6,6 +6,8 @@ import com.openshift.cloud.v1alpha.models.KafkaCondition;
 import com.openshift.cloud.v1alpha.models.KafkaCondition.Status;
 import com.openshift.cloud.v1alpha.models.KafkaCondition.Type;
 import com.openshift.cloud.v1alpha.models.KafkaConnection;
+import com.openshift.cloud.v1alpha.models.ServiceRegistryConnection;
+
 import io.fabric8.kubernetes.client.CustomResource;
 import io.javaoperatorsdk.operator.api.Context;
 import io.javaoperatorsdk.operator.api.DeleteControl;
@@ -95,6 +97,8 @@ public abstract class AbstractCloudServicesController<T extends CustomResource>
   private List<KafkaCondition> getConditions(T resource) {
     if (resource instanceof KafkaConnection) {
       return (((KafkaConnection) resource).getStatus().getConditions());
+    } else if (resource instanceof ServiceRegistryConnection) {
+      return (((ServiceRegistryConnection) resource).getStatus().getConditions());
     } else if (resource instanceof CloudServicesRequest) {
       return (((CloudServicesRequest) resource).getStatus().getConditions());
     } else if (resource instanceof CloudServiceAccountRequest) {
@@ -108,6 +112,8 @@ public abstract class AbstractCloudServicesController<T extends CustomResource>
   private void sealedSetAllConditionsTrue(T resource) {
     if (resource instanceof KafkaConnection) {
       ConditionUtil.setAllConditionsTrue(((KafkaConnection) resource).getStatus().getConditions());
+    } else if (resource instanceof ServiceRegistryConnection) {
+      ConditionUtil.setAllConditionsTrue(((ServiceRegistryConnection) resource).getStatus().getConditions());
     } else if (resource instanceof CloudServicesRequest) {
       ConditionUtil
           .setAllConditionsTrue(((CloudServicesRequest) resource).getStatus().getConditions());
@@ -121,6 +127,9 @@ public abstract class AbstractCloudServicesController<T extends CustomResource>
     if (resource instanceof KafkaConnection) {
       ConditionUtil
           .setConditionFromException(((KafkaConnection) resource).getStatus().getConditions(), e);
+    } else if (resource instanceof ServiceRegistryConnection) {
+      ConditionUtil
+          .setConditionFromException(((ServiceRegistryConnection) resource).getStatus().getConditions(), e);
     } else if (resource instanceof CloudServicesRequest) {
       ConditionUtil.setConditionFromException(
           ((CloudServicesRequest) resource).getStatus().getConditions(), e);
@@ -142,6 +151,8 @@ public abstract class AbstractCloudServicesController<T extends CustomResource>
   private void sealedInitializeConditions(T resource) {
     if (resource instanceof KafkaConnection) {
       ConditionUtil.initializeConditions((KafkaConnection) resource);
+    } else if (resource instanceof ServiceRegistryConnection) {
+      ConditionUtil.initializeConditions((ServiceRegistryConnection) resource);
     } else if (resource instanceof CloudServicesRequest) {
       ConditionUtil.initializeConditions((CloudServicesRequest) resource);
     } else if (resource instanceof CloudServiceAccountRequest) {
@@ -155,6 +166,9 @@ public abstract class AbstractCloudServicesController<T extends CustomResource>
   private KafkaCondition getSealedErrorCondition(T resource, Type type) {
     if (resource instanceof KafkaConnection) {
       return ConditionUtil.getCondition(((KafkaConnection) resource).getStatus().getConditions(),
+          type);
+    } else if (resource instanceof ServiceRegistryConnection) {
+      return ConditionUtil.getCondition(((ServiceRegistryConnection) resource).getStatus().getConditions(),
           type);
     } else if (resource instanceof CloudServicesRequest) {
       return ConditionUtil
