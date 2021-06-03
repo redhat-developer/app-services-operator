@@ -4,19 +4,19 @@ import java.util.List;
 
 import javax.enterprise.context.ApplicationScoped;
 import com.openshift.cloud.v1alpha.models.KafkaCondition;
-import com.openshift.cloud.api.ApiClient;
-import com.openshift.cloud.api.ApiException;
-import com.openshift.cloud.api.Configuration;
+import com.openshift.cloud.api.srs.invoker.ApiClient;
+import com.openshift.cloud.api.srs.invoker.ApiException;
+import com.openshift.cloud.api.srs.invoker.Configuration;
 import com.openshift.cloud.api.srs.RegistriesApi;
 import com.openshift.cloud.api.srs.models.Registry;
 import com.openshift.cloud.controllers.ConditionAwareException;
 import com.openshift.cloud.controllers.ConditionUtil;
-import com.openshift.cloud.api.auth.HttpBearerAuth;
+import com.openshift.cloud.api.srs.invoker.auth.HttpBearerAuth;
 
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 @ApplicationScoped
-public class SchemaRegistryApiClient {
+public class ServiceRegistryApiClient {
 
   @ConfigProperty(name = "rhoas.client.apiBasePath")
   String clientBasePath;
@@ -37,11 +37,21 @@ public class SchemaRegistryApiClient {
     try {
       return createRegistriesClient(accessToken).getRegistries();
     } catch (ApiException e) {
-      String message = ConditionUtil.getStandarizedErrorMessage(e);
+      String message = ConditionUtil.getStandarizedErrorMessage(e.getCode(), e);
       throw new ConditionAwareException(message, e, KafkaCondition.Type.ServiceRegistriesUpToDate,
           KafkaCondition.Status.False, e.getClass().getName(), message);
     }
 
   }
+
+public Registry getServiceRegistryById(Integer registryId, String accessToken)  throws ConditionAwareException {
+  try {
+    return createRegistriesClient(accessToken).getRegistry(registryId);
+  } catch (ApiException e) {
+    String message = ConditionUtil.getStandarizedErrorMessage(e.getCode(), e);
+    throw new ConditionAwareException(message, e, KafkaCondition.Type.FoundServiceRegistryById,
+        KafkaCondition.Status.False, e.getClass().getName(), message);
+  }
+}
 
 }
