@@ -24,7 +24,13 @@
         <javax-ws-rs-api-version>2.1.1</javax-ws-rs-api-version>
 
     </properties>
-
+    <distributionManagement>
+        <repository>
+          <id>github</id>
+          <name>GitHub OWNER Apache Maven Packages</name>
+          <url>https://maven.pkg.github.com/redhat-developer/app-services-operator</url>
+        </repository>
+     </distributionManagement>
     <dependencies>
         <dependency>
             <groupId>io.swagger</groupId>
@@ -129,6 +135,7 @@
                             <configOptions>
                                 <modelPackage>com.openshift.cloud.api.kas.models</modelPackage>
                                 <apiPackage>com.openshift.cloud.api.kas</apiPackage>
+                                <invokerPackage>com.openshift.cloud.api.kas.invoker</invokerPackage>
                                 <dateLibrary>java8</dateLibrary>
                                 <licenseName>Apache-2.0</licenseName>
                                 <licenseUrl>https://www.apache.org/licenses/LICENSE-2.0.txt</licenseUrl>
@@ -153,6 +160,7 @@
                             <configOptions>
                                 <modelPackage>com.openshift.cloud.api.srs.models</modelPackage>
                                 <apiPackage>com.openshift.cloud.api.srs</apiPackage>
+                                <invokerPackage>com.openshift.cloud.api.srs.invoker</invokerPackage>
                                 <dateLibrary>java8</dateLibrary>
                                 <licenseName>Apache-2.0</licenseName>
                                 <licenseUrl>https://www.apache.org/licenses/LICENSE-2.0.txt</licenseUrl>

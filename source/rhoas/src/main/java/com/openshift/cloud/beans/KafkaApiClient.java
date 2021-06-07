@@ -1,9 +1,9 @@
 package com.openshift.cloud.beans;
 
-import com.openshift.cloud.api.ApiClient;
-import com.openshift.cloud.api.ApiException;
-import com.openshift.cloud.api.Configuration;
-import com.openshift.cloud.api.auth.HttpBearerAuth;
+import com.openshift.cloud.api.kas.invoker.ApiClient;
+import com.openshift.cloud.api.kas.invoker.ApiException;
+import com.openshift.cloud.api.kas.invoker.Configuration;
+import com.openshift.cloud.api.kas.invoker.auth.HttpBearerAuth;
 import com.openshift.cloud.api.kas.DefaultApi;
 import com.openshift.cloud.api.kas.models.KafkaRequest;
 import com.openshift.cloud.api.kas.models.KafkaRequestList;

@@ -5,7 +5,7 @@ import static com.openshift.cloud.v1alpha.models.KafkaCondition.Status.True;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.openshift.cloud.api.ApiException;
+import com.openshift.cloud.api.kas.invoker.ApiException;
 import com.openshift.cloud.utils.InvalidUserInputException;
 import com.openshift.cloud.v1alpha.models.*;
 import com.openshift.cloud.v1alpha.models.KafkaCondition.Status;
