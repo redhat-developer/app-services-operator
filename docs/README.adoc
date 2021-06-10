@@ -4,7 +4,12 @@ The RHOAS Operator is a link:https://kubernetes.io/docs/concepts/extend-kubernet
 
 The RHOAS Operator watches its link:./custom_resources.adoc[custom resources] and updates their link:https://book-v1.book.kubebuilder.io/basics/status_subresource.html[Status subresource]. The status subresource is consumed the by link:https://github.com/redhat-developer/service-binding-operator[Service Binding Operator] which makes the custom resources available to you applications.
 
-* link:./installation.adoc[Installation process]
-* link:./custom_resources.adoc[Custom Resources]
-* link:./controllers.adoc[Controllers]
-* link:./mocks.adoc[API Mocks]
+=== Contents
+
+link:./installation.adoc[Installation process]
+
+link:./custom_resources.adoc[Custom Resources]
+
+link:./controllers.adoc[Controllers]
+
+link:./mocks.adoc[API Mocks]
