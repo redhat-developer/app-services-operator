@@ -1,4 +1,35 @@
 
+<a name="0.7.3"></a>
+## [0.7.3](https://github.com/redhat-developer/app-services-operator/compare/0.7.2...0.7.3) (2021-06-07)
+
+### Bug Fixes
+
+* publishing openapi and fixing generation
+* Remove invalid workflow
+* add website build
+* add missing README to quickstarts
+
+### Documentation
+
+* Updates to Operator installation procedure ([#221](https://github.com/redhat-developer/app-services-operator/issues/221))
+* Added quick starts initially created for dev sandbox to the operator, so they will be automatically installed on any OpenShift instance on which the rhoas operator is installed. ([#215](https://github.com/redhat-developer/app-services-operator/issues/215))
+
+
+<a name="0.7.2"></a>
+## [0.7.2](https://github.com/redhat-developer/app-services-operator/compare/0.7.1...0.7.2) (2021-05-04)
+
+### Bug Fixes
+
+* change extensively long operator name ([#209](https://github.com/redhat-developer/app-services-operator/issues/209))
+* update open api spec ([#206](https://github.com/redhat-developer/app-services-operator/issues/206))
+* name of the project and general information
+* provide operator hub instllation docs ([#200](https://github.com/redhat-developer/app-services-operator/issues/200))
+* add reference to service binding operator
+* update readme with shorter into
+* push tags for release process
+* update to trigger builds only on release
+
+
 <a name="0.7.1"></a>
 ## [0.7.1](https://github.com/redhat-developer/app-services-operator/compare/0.7.0...0.7.1) (2021-04-21)
 
@@ -6,6 +37,7 @@
 
 * add logging capability to tell us what env is used by operator
 * add explicit env variable pointing to the environment
+
 
 <a name="0.7.0"></a>
 ## [0.7.0](https://github.com/redhat-developer/app-services-operator/compare/0.6.9...0.7.0) (2021-04-21)
