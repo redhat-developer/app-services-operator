@@ -30,7 +30,6 @@ fi
 echo "Creating bundle"
 mkdir olm-catalog/rhoas-operator/$version
 cp -r olm-template/* olm-catalog/rhoas-operator/$version
-cp -r quickstarts/*.yaml olm-catalog/rhoas-operator/$version/manifests
 
 sed -i "s/{{version}}/$version/g" olm-catalog/rhoas-operator/$version/manifests/rhoas-operator.clusterserviceversion.yaml 
 sed -i "s/{{organization}}/$3/g" olm-catalog/rhoas-operator/$version/manifests/rhoas-operator.clusterserviceversion.yaml 
