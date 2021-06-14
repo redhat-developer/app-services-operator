@@ -34,7 +34,7 @@
     <repositories>
         <repository>
             <id>github</id>
-            <url>https://maven.pkg.github.com/secondsun/*</url>
+            <url>https://maven.pkg.github.com/redhat-developer/*</url>
             <snapshots>
               <enabled>true</enabled>
             </snapshots>
