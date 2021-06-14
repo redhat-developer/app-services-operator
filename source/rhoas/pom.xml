@@ -30,9 +30,9 @@
       <version>${quarkus.operator.sdk.version}</version>
     </dependency>
     <dependency>
-      <groupId>com.openshift.cloud</groupId>
-      <artifactId>managed-services-api</artifactId>
-      <version>${project.version}</version>
+      <groupId>cloud.redhat.com</groupId>
+      <artifactId>kafka-management-sdk</artifactId>
+      <version>1.1.1</version>
     </dependency>
     <dependency>
       <groupId>com.openshift.cloud</groupId>
