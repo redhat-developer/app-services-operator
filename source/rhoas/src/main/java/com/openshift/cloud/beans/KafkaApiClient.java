@@ -5,6 +5,7 @@ import com.openshift.cloud.api.kas.invoker.ApiException;
 import com.openshift.cloud.api.kas.invoker.Configuration;
 import com.openshift.cloud.api.kas.invoker.auth.HttpBearerAuth;
 import com.openshift.cloud.api.kas.DefaultApi;
+import com.openshift.cloud.api.kas.SecurityApi;
 import com.openshift.cloud.api.kas.models.KafkaRequest;
 import com.openshift.cloud.api.kas.models.KafkaRequestList;
 import com.openshift.cloud.api.kas.models.ServiceAccount;
@@ -59,7 +60,7 @@ public class KafkaApiClient {
 
   public KafkaRequestList listKafkas(String accessToken) throws ConditionAwareException {
     try {
-      return createClient(accessToken).listKafkas(null, null, null, null);
+      return createClient(accessToken).getKafkas(null, null, null, null);
     } catch (ApiException e) {
       String message = ConditionUtil.getStandarizedErrorMessage(e);
       throw new ConditionAwareException(message, e, KafkaCondition.Type.UserKafkasUpToDate,
@@ -73,12 +74,23 @@ public class KafkaApiClient {
       var serviceAccountRequest = new ServiceAccountRequest();
       serviceAccountRequest.setDescription(spec.getServiceAccountDescription());
       serviceAccountRequest.setName(spec.getServiceAccountName());
-      return createClient(accessToken).createServiceAccount(serviceAccountRequest);
+      return createSecurityClient(accessToken).createServiceAccount(serviceAccountRequest);
     } catch (ApiException e) {
       String message = ConditionUtil.getStandarizedErrorMessage(e);
       throw new ConditionAwareException(message, e, KafkaCondition.Type.ServiceAccountCreated,
           KafkaCondition.Status.False, e.getClass().getName(), message);
     }
+  }
+
+  private SecurityApi createSecurityClient(String bearerToken) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath(clientBasePath);
+
+    // Configure HTTP bearer authorization: Bearer
+    HttpBearerAuth Bearer = (HttpBearerAuth) defaultClient.getAuthentication("Bearer");
+    Bearer.setBearerToken(bearerToken);
+
+    return new SecurityApi(defaultClient);
   }
 
   public void createSecretForServiceAccount(CloudServiceAccountRequest resource,
@@ -96,7 +108,7 @@ public class KafkaApiClient {
               .encodeToString(serviceAccount.getClientSecret().getBytes(Charset.defaultCharset())),
               "client-id",
               Base64.getEncoder()
-                  .encodeToString(serviceAccount.getClientID().getBytes(Charset.defaultCharset()))))
+                  .encodeToString(serviceAccount.getClientId().getBytes(Charset.defaultCharset()))))
           .build();
 
       k8sClient.secrets().inNamespace(secret.getMetadata().getNamespace()).create(secret);

@@ -26,11 +26,20 @@
     <name>RHOAS Operator</name>
     <url>http://cloud.redhat.com</url>
     <modules>
-        <module>source/openapi</module>
+        <!-- <module>source/openapi</module> -->
         <module>source/model</module>
         <module>source/test</module>
         <module>source/rhoas</module>
     </modules>
+    <repositories>
+        <repository>
+            <id>github</id>
+            <url>https://maven.pkg.github.com/secondsun/*</url>
+            <snapshots>
+              <enabled>true</enabled>
+            </snapshots>
+          </repository>
+    </repositories>
     <dependencyManagement>
         <dependencies>
             <dependency>

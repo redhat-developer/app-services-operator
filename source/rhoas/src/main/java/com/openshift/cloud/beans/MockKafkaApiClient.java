@@ -52,7 +52,7 @@ public class MockKafkaApiClient extends KafkaApiClient {
   public ServiceAccount createServiceAccount(CloudServiceAccountRequestSpec spec,
       String accessToken) throws ConditionAwareException {
     ServiceAccount sa = new ServiceAccount();
-    sa.setClientID("clientID");
+    sa.setClientId("clientID");
     sa.setClientSecret("clientSecret");
     sa.setDescription(spec.getServiceAccountDescription());
     sa.setId("123456789");
