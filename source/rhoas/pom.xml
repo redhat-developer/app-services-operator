@@ -32,7 +32,7 @@
     <dependency>
       <groupId>cloud.redhat.com</groupId>
       <artifactId>kafka-management-sdk</artifactId>
-      <version>0.0.1</version>
+      <version>0.2.0</version>
     </dependency>
     <dependency>
       <groupId>com.openshift.cloud</groupId>
