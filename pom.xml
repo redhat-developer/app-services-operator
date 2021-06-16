@@ -31,15 +31,14 @@
         <module>source/test</module>
         <module>source/rhoas</module>
     </modules>
+
     <repositories>
         <repository>
             <id>github</id>
-            <url>https://maven.pkg.github.com/redhat-developer/*</url>
-            <snapshots>
-              <enabled>true</enabled>
-            </snapshots>
+            <url>https://maven.pkg.github.com/redhat-developer/app-services-sdk-java</url>
           </repository>
-    </repositories>
+      </repositories>  
+
     <dependencyManagement>
         <dependencies>
             <dependency>

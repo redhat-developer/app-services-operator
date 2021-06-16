@@ -17,7 +17,6 @@
     <quarkus.operator.sdk.version>1.8.3</quarkus.operator.sdk.version>
 
   </properties>
-  
   <dependencies>
     <dependency>
       <groupId>io.fabric8</groupId>
