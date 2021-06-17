@@ -4,7 +4,11 @@
  - mvn
  - OpenShift Client (or kubernetes)
 
-= Building and Devloping
+= GitHub Packages Setup
+
+This project uses GitHub packages for some of its dependencies. Before you can build this project using `mvn install` you must configure Maven to authenticate to GitHub with a Personal Access Token that has packages:read permission.   Please refer to [link:https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-apache-maven-registry[GitHub's documentation] fordetailed instructions.
+
+= Building and Developing
 
 The operator is written in Java as a multi module Maven project. The easiest way to build and run the operator locally is 
 
