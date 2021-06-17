@@ -6,7 +6,7 @@
 
 = GitHub Packages Setup
 
-This project uses GitHub packages for some of its dependencies. Before you can build this project using `mvn install` you must configure Maven to authenticate to GitHub with a Personal Access Token that has packages:read permission.   Please refer to [link:https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-apache-maven-registry[GitHub's documentation] fordetailed instructions.
+This project uses GitHub packages for of its dependencies. Before you can build this project using `mvn install` you must configure Maven to authenticate to GitHub with a Personal Access Token that has packages:read permission.   Please refer to [link:https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-apache-maven-registry[GitHub's documentation] fordetailed instructions.
 
 = Building and Developing
 
