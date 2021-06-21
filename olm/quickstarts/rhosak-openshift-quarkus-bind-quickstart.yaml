@@ -3,223 +3,221 @@ kind: ConsoleQuickStart
 metadata:
   name: rhosak-devsandbox-quarkus-bind-cli-toolscontainer-quickstart
 spec:
-  displayName: Binding your Quarkus application to Streams for Apache Kafka
+  displayName: Binding a Quarkus application to Streams for Apache Kafka
   tags:
     - streams
     - kafka
     - quarkus
   durationMinutes: 10
-  description: Binding your Quarkus application to the OpenShift Streams for Apache Kafka cloud service
+  description: Binding a Quarkus application to a Kafka instance in Streams for Apache Kafka
   prerequisites:
-    - Access to Red Hat OpenShift Streams for Apache Kafka (for more information, visit https://cloud.redhat.com/application-services).
-    - A running OpenShift Streams for Apache Kafka instance.
-    - A connection (KafkaConnection) betweeen your OpenShift project and your OpenShift Streams for Apache Kafka instance.
-  introduction: >-
-    ### This quick start shows you how to bind your Quarkus application to your Red Hat OpenShift Streams for Apache Kafka instance.
+    - You've completed the **Connecting an OpenShift project to Streams for Apache Kafka using the CLI** quick start.
+    - You have privileges to deploy applications in the OpenShift project that you connected your Kafka instance to.
+    - Your Kafka instance in Streams for Apache Kafka is in the **Ready** state.
 
-    In this Quick Start, you'll bind a Quarkus application to your Kafka instance using Kubernetes Service Binding.
-    Service Binding allows you to communicate connection details and secrets to an application to allow it to bind to a service.
-    In this context, a service can be anything: a Kafka instance, a NoSQL database, etc.
+  introduction: |-
+      ### This quick start shows how to bind an example Quarkus application to a Kafka instance in Red Hat OpenShift Streams for Apache Kafka.
 
-    By using Service Binding, we no longer need to configure connection details (host, port) authentication mechanisms (SASL, OAuth) and
-    credentials (username/password, client id/client secret) in an application. Instead, Service Binding injects these variables into your
-    application container (as files or environment variables), for your application to consume.
+      As a developer of applications and services, there might be cases where you need to connect OpenShift applications to Kafka instances in Streams for Apache Kafka. Connecting an OpenShift application to a backing service such as Streams for Apache Kafka is called *service binding*.
 
-    The Quarkus Kubernetes Service Binding extension enables Quarkus applications to automatically pickup these variables, injected as files, from the container's
-    filesystem, removing the need to specify any configuration settings in the application resources (e.g configuration files) themselves.
+      In this quick start, you'll use the Red Hat OpenShift Application Services (RHOAS) Operator and CLI to bind an example Quarkus application to your Kafka instance. [Quarkus](https://quarkus.io/^) is a Kubernetes-native Java framework that is optimized for serverless, cloud, and Kubernetes environments.
+
+      When you use the RHOAS CLI to bind a Kafka instance with an application, the RHOAS Operator automatically injects connection credentials as files into the Pod for your application. The example Quarkus application uses the `quarkus-kubernetes-service-binding` [extension](https://quarkus.io/guides/deploying-to-kubernetes#service-binding), which means that the application automatically detects and uses the injected connection credentials. This eliminates the need for manual configuration of your application.
+
+      #### Prerequisites
+      - You've completed the **Connecting an OpenShift project to Streams for Apache Kafka using the CLI** quick start.
+      - You have privileges to deploy applications in the OpenShift project to which you connected your Kafka instance.
+      - Your Kafka instance in Streams for Apache Kafka is in the **Ready** state.
+
   tasks:
-    - title: Deploying your Quarkus application
+    - title: Deploying an example Quarkus application
       description: |-
-        As the first task, you will deploy a Quarkus application that produces to, and consumes from, a Kafka instance.
-        It's an adapted version of the standard Quarkus Kafka Quick Start, as we've added the Quarkus Kubernetes Service Binding plugin.
 
-        The Quick Start is a PriceConverter application that generates random prices (integers) and sends them to a Kafka topic.
-        Another component of the application consumes these prices, applies a conversion and makes them available via a REST service endpoint.
-        The output can be inspected on a simple webpage.
+        In this task, you'll deploy an example Quarkus application.
 
-        To deploy the Quarkus application:
+        The Quarkus application generates random numbers between 0 and 100 and produces those numbers to a Kafka topic. Another part of the application consumes the numbers from the Kafka topic. Finally, the application uses *server-sent events* to expose the numbers as a REST UI. A web page in the application displays the exposed numbers.
 
-        1. Click on the [perspective switcher]{{highlight qs-perspective-switcher}} at the top of the navigation, and select **Developer**.
+        #### Prerequisites
+        - You've completed the **Connecting an OpenShift project to Streams for Apache Kafka using the CLI** quick start.
+        - You have privileges to deploy applications in the OpenShift project that you connected your Kafka instance to.
 
-        1. In the navigation menu, click [Add]{{highlight qs-nav-add}}.
+        #### Procedure
 
-        1. Make sure that your OpenShift **Project**, which you can see at the top of the **Add** window, is set to `{username}-dev` (where *{username}* is your username in the DevSandbox OpenShift environment). 
-        This should be the project in which you have created your ```KafkaConnection``` in the **Connecting Red Hat OpenShift Streams for Apache Kafka to OpenShift** Quick Start.
+        1. Log in to the OpenShift web console with privileges to deploy applications in the same project that you previously connected your Kafka instance to.
 
-        To reduce the wait time of this Quick Start, we have pre-built the container image with the Quarkus application, allowing us to directly deploy the container instead of having to build it.
-        The source code of this application can be found [here](https://github.com/redhat-developer/app-services-guides/tree/main/code-examples/quarkus-kafka-quickstart):
+        1. Click the [perspective switcher]{{highlight qs-perspective-switcher}}. Switch to the **Developer** perspective.
 
-        1. Click on the **Container Image** card.
+        1. Click the **Project** drop-down menu at the top of the page. Select the project that you connected your Kafka instance to.
 
-        1. In the **Image name from external registry** field, enter: `quay.io/rhoas/rhoas-quarkus-kafka-quickstart`
+        1. Deploy the example Quarkus application.
 
-        1. In the *Runtime icon** field, select `quarkus`.
+            i. Click [Add]{{highlight qs-nav-add}}.
 
-        1. Leave all the the fields set to their default values and click the **Create** button. This will create a new OpenShift **Deployment** for your Quarkus application.
+            ii. Click **Container images**.
+                The **Deploy Image** page opens.
 
-        1. You will see the deployment of your Quarkus application in the [Topology]{{highlight qs-perspective-topology}} screen. The icon of your Quarkus applications should have a blue circle around it, indicating that the application has been deployed successfully.
+            iii. For the **Image name from external registry** option, enter `quay.io/rhoas/rhoas-quarkus-kafka-quickstart`.
 
-        1. Click on the **Open URL** icon in the upper-right of your Quarkus application icon in the Topology view. You will see the default Quarkus page.
+            iv. For the **Runtime icon** option, select `quarkus`. For all other options, keep the default values.
 
-        1. Add the path `/prices.html` to the URL of your Quarkus application. This will open the **prices** page of your Quarkus application.
-        Since the application is not connected to Kafka yet, the page shows that prices are not available.
+            vi. Click **Create**.
+                  The [Topology]{{highlight qs-nav-topology}} page opens.
+                  You should see an icon for the Quarkus application you created. After some time, the icon should have a dark blue circle, which indicates that OpenShift deployed the application successfully.
 
-        1. Go back to your OpenShift Topology view and click on the icon of your Quarkus application. This will open a panel on the righ-hand-side of your screen.
-        Click on the **Resources** tab. You will see the **Pods** of your Deployment. Currently we only have a single pod.
+           vii. Click the **Open URL** link in the top-right corner of the icon for the application.
+                  A web page for the Quarkus application opens.
 
-        1. Click on the **View logs** link next to the pod. In the logs of your application, you will see warnings stating that the application can not connect to Kafka.
+        1. In your web browser, add `/prices.html` to the URL of the web page for the Quarkus application.
+           A new web page, entitled **Last price**, opens. Because you have not yet connected the Quarkus application to your Kafka instance, the price value appears as `N/A`.
+
+        1. In the OpenShift web console, click [Topology]{{highlight qs-nav-topology}}.
+
+        1. Click the icon for the Quarkus application.
+           A sidebar opens, with the **Resources** tab displayed. Under **Pods**, you should see a single Pod, corresponding to the Quarkus application.
+
+        1. Click the **View logs** link next to the name of the Pod.
+           In the logs for the Quarkus application, you see warnings indicating that the application can't connect to Kafka. You'll establish this connection in a later task.
 
       review:
         instructions: |-
-          #### Verify that you've deployed your Quarkus application:
-          Do you see a Quarkus application in your Topology view?
-
-          Does the Quarkus application icon have blue circle around it, indicating a successful deployment?
-
-          Did you inspect the logs of your application pod? Did you see the warnings stating that the application could not connect to a Kafka instance?
+          #### Verify that you successfully deployed the example Quarkus application
+          * Do you see a Quarkus application on the Topology page of your project?
+          * Does the Quarkus application icon have a dark blue circle around it, indicating a successful deployment?
+          * Do the logs for the Quarkus application Pod state that the application can't connect to a Kafka instance?
         failedTaskHelp: This task isn’t verified yet. Try the task again.
       summary:
         success: >-
-          Great work! You've deployed your Quarkus application to your OpenShift project/namespace.
+          You've successfully deployed an example Quarkus application to your OpenShift project.
         failed: Try the steps again.
 
     - title: Creating a Kafka topic for your Quarkus application
-      description: >-
-        Your Quarkus application is configured to produce to, and consume from a topic named ```prices```.
-        We therefore need to creat this topic in Streams for Apache Kafka.
+      description: |-
 
-        1. Navigate to the In the **Kafka Instances** page of the [Streams for Apache Kafka web console](https://cloud.redhat.com/beta/application-services/streams/kafkas). Click on the name of the Kafka instance that you want to add a topic to.
+        In the previous task, you created an example Quarkus application that uses a Kafka topic called `prices` to produce and consume messages. In this task, you'll create the `prices` topic in your Kafka instance.
 
-        1. Click **Create topic** and follow the guided steps to define the topic details. 
-        Click **Next** to complete each step and click **Finish** to complete the setup.
+        #### Prerequisites
+        - Your Kafka instance is in the **Ready** state.
+
+        #### Procedure
+
+        1. In your web browser, open the [Kafka Instances](https://cloud.redhat.com/beta/application-services/streams/kafkas) page of the Streams for Apache Kafka web console. Click the name of the Kafka instance that you want to add a topic to.
+
+        1. Click **Create topic** and follow the guided steps to define the topic details. Click **Next** to complete each step and click **Finish** to complete the setup.
+
+           Specify the following values:
 
             **Topic name**: ```prices```.
 
-            **Partitions**: ```1```
+            **Partitions**: ```1```.
 
-            **Message retention**: ```1 day```
-            
-            **Replicas**: Replicas configuration is by default configured as ```3 replicas``` and ```2 min in-sync-replicas```.
+            **Retention time**: ```1 day```
 
-        After you complete the topic setup, the new Kafka topic is listed in the topics table. 
-        Your Quarkus application can now start producing and consuming messages to and from this topic .
+            **Replicas**: By default, this option is preconfigured to `3` replicas and `2` minimum in-sync-replicas.
+
+        After you complete the topic setup, the new Kafka topic is listed in the topics table. You're now ready to bind the example Quarkus application to your Kafka instance, so that the application can use the topic to produce and consume messages.
       review:
         instructions: |-
-          Is the new Kafka topic listed in the topics table?
+          #### Verify that you successfully created the Kafka topic
+          Is the `prices` topic listed in the topics table?
         failedTaskHelp: This task isn’t verified yet. Try the task again.
       summary:
         success: >-
-          You have completed this task!
+          You successfully created the topic needed by the example Quarkus application. You're now ready to bind the Quarkus application to your Kafka instance.
         failed: Try the steps again.
 
-    - title: Access the required (CLI) Tools.
+    - title: Binding the Quarkus application to your Kafka instance
       description: |-
-        To bind your Quarkus application to the Streams for Apache Kafka instance, you will use the ```oc``` command line tool. We've provided all the tools necessary to complete
-        this Quick Start in an image that you can deploy in your OpenShift project. Alternatively, you can install  OpenShift Client (oc) on your own machine. These tools can be downloaded from:
-          * oc: [https://mirror.openshift.com/pub/openshift-v4/clients/ocp/latest/](https://mirror.openshift.com/pub/openshift-v4/clients/ocp/latest/)
 
-        To install the tooling image, do the following (if you are using your local installation of the RHOAS CLI, or if you've alread installed the tooling image in a previous Quick Start, you can skip these steps):
+        In this task, you use the RHOAS CLI to bind your Kafka instance to your example Quarkus application. When you perform this binding, the RHOAS Operator injects connection credentials as files into the Pod for the application.
 
-        1. Click on the [perspective switcher]{{highlight qs-perspective-switcher}} at the top of the navigation, and select **Developer**.
+        The Quarkus application in this quick start uses the `quarkus-kubernetes-service-binding` [extension](https://quarkus.io/guides/deploying-to-kubernetes#service-binding). This means that the application automatically detects and uses the injected connection credentials.
 
-        1. In the navigation menu, click [Add]{{highlight qs-nav-add}}.
+        #### Prerequisites
+        - You've completed the **Connecting an OpenShift project to Red Hat OpenShift Streams for Apache Kafka to the CLI** quick start.
+        - You've deployed the example Quarkus application.
+        - Your Kafka instance is in the **Ready** state.
+        - You've created the `prices` topic in your Kafka instance.
 
-        1. Make sure that your OpenShift **Project**, which you can see at the top of the **Add** window, is set to `{username}-dev` (where *{username}* is your username in the DevSandbox OpenShift environment).
+        #### Procedure
 
-        1. Click on the **Container Image** card.
+        1. Ensure that you're logged into OpenShift as the same user that deployed the Quarkus application earlier in this quick start.
 
-        1. In the **Image name from external registry** field, enter: `quay.io/rhosak/rhoas-tools`.
+        1. Open a terminal window. If you installed the CLI tools in your OpenShift project using an image provided by Red Hat:
 
-        1. In the *Runtime icon* field, select `openshift`.
+            i. In your project, click the icon for the tools application.
+            A sidebar opens, with the **Resources** tab displayed. Under **Pods**, you should see a single Pod, corresponding to the tools application.
 
-        1. Uncheck the **Route** box and leave all other fields set to their default values.
-        You don't need a route for this application, so under the **Advanced Options** you can uncheck the **create a route to the Application** checkbox. 
-        Click the **Create** button. This will create a new OpenShift **Deployment** for the tools image.
+             ii. Click the link to the Pod.
+                 The **Pod details** page opens.
 
-        Pulling the container image and creating the container will take a couple of seconds.
+             iii. Click the **Terminal** tab.
+                  A terminal window opens inside the Pod.
 
-        1. You will see the deployment of the tools image in the [Topology]{{highlight qs-nav-add}} screen. The icon of the application should have a blue circle around it, indicating that the application has been deployed successfully.
+        1. Ensure that the current OpenShift project is the one in which you deployed the example Quarkus application. For example:
 
-        1. Click on the icon of the tools application. This will open a panel on the righ-hand-side of your screen.
-        Click on the **Resources** tab. You will see the **Pods** of your Deployment. Currently we only have a single pod.
+           ```
+           $ oc project my-project
+           ```
 
-        1. Click on the link to the pod. This opens the details page of the pod.
+        1. Use the RHOAS CLI to bind your Kafka instance to your OpenShift project.
 
-        1. Open the **Terminal** tab. This opens a terminal inside the pod. To check whether you can access the required tooling, execute the command `oc` in your terminal.
-        This should print the OpenShift Client CLI help text.
+           ```
+           $ rhoas cluster bind
+           ```
 
-        You now need to connect `oc` to your OpenShift environment. If you've previously done this in another Quick Start, you might not need to do this again.
-        You can verify this by executing the `oc status` command. If that returns without errors, showing the current project and the OpenShift instance you're connected to, you can skip the following steps.
+        1. Type the name of the Kafka instance that you want to connect to OpenShift. Press **Enter**.
 
-        1. In your terminal, first login the **oc** client to our OpenShift instance. To do this:
-            1. Click on your username in the top-right of the OpenShift console and click **Copy login command**
-            1. A new tab opens in your browser with the OpenShift Developer Sandbox login screen. In the *Log in with...* box, select **DevSandbox**.
-            1. Click on **Display Token**.
-            1. Copy the `oc login` command.
-            1. Go to your terminal, and execute the command you just copied.
+           You're prompted to specify the OpenShift application that you want to bind your Kafka instance to.
 
-        With your `oc` client connected, point it to the correct project:
-        1. In your terminal, point your **oc** client to the correct OpenShift namespace/project (replace *{username}* with your username in the Developer Sandbox OpenShift environment): `oc project {username}-dev`. This should be the project in which you've deployed your Quarkus application and that contains the `KafkaConnection`.
-        1. Execute the command `oc get deployment`. This should returen the **Deployment** of you Quarkus application, and the **Deployment** of your tools container (if you're using that container).
+        1. To bind to the the example Quarkus application that you deployed, type `rhoas-quarkus-kafka-quickstart`. Press **Enter**.
+
+        1. Type `y` to confirm that you want to continue. Press **Enter**.
+           When binding is complete, you should see output like the following:
+           ```
+           Binding my-kafka-instance with rhoas-quarkus-kafka-quickstart app succeeded
+           ```
+           The preceding output shows that the RHOAS CLI has successfully bound a Kafka instance called `my-kafka-instance` to the example Quarkus application (called `rhoas-quarkus-kafka-quickstart`) in OpenShift.
+
+           When service binding is complete, OpenShift redeploys the Quarkus application. The Quarkus application starts to use the `prices` Kafka topic that you created. One part of the Quarkus application publishes price updates to this topic, while another part of the application consumes the updates.
+
+        1. To verify that the Quarkus application is using the Kafka topic, reopen the **Last price** web page that you opened earlier in this quick start.
+
+            i. In the OpenShift web console, click [Topology]{{highlight qs-nav-topology}}.
+               The icon for the Quarkus application should still include a dark blue circle, which indicates that OpenShift redeployed the application successfully.
+
+            ii. Click the **Open URL** link in the top-right corner of the icon for the Quarkus application.
+                The default web page for the Quarkus application opens.
+
+            iii. In your web browser, add `/prices.html` to the URL of the web page for the Quarkus application.
+                 The **Last price** web page opens.
+                 On the web page, observe that the the price value is continuously updated. The updates show that the Quarkus application is now using the `prices` topic in your Kafka instance to produce and consume messages.
+
+        1. In the OpenShift web console, click [Topology]{{highlight qs-nav-topology}}.
+
+        1. Click the icon for the Quarkus application.
+           A sidebar opens, with the **Resources** tab displayed. Under **Pods**, you should still see a Pod corresponding to the Quarkus application.
+
+        1. Click the **View logs** link next to the name of the Pod.
+           In the logs for the Quarkus application, you should see that the Quarkus application has now connected to a Kafka instance.
+
+        1. On the same page of the console, click the **Details** tab. Scroll down until you see the **Volumes** section.
+           Observe that there is a volume mounted on the `/bindings` path of the Pod. This volume contains the files that the RHOAS Operator injected into the application. Each file contains a single connection credential for your Kafka instance, specified in plain text.
+
+           Because the Quarkus application uses the `quarkus-kubernetes-service-binding` [extension](https://quarkus.io/guides/deploying-to-kubernetes#service-binding), the application automatically detects and uses the injected connection credentials.
 
       review:
         instructions: |-
-          #### Verify that you've successfully connected your `oc` client to your OpenShift instance:
-          Did you see the **Deployment** of your Quarkus application as output of the `oc get deployment` command?
+          #### Verify that you successfully bound your Quarkus application to your Kakfa instance in OpenShift Streams for Apache Kafka
+          - Is the price value continuously updated on the **Last price** web page of the Quarkus application?
+          - Do the logs in the Pod for the Quarkus application show that the application is connected to you Kafka instance?
+          - Do you see service binding files mounted on a volume in the Pod for the Quarkus application?
+
         failedTaskHelp: This task isn’t verified yet. Try the task again.
       summary:
         success: >-
-          Great work! You have access to the tooling required for the remainder of this quickstart.
-        failed: Try the steps again.
-    - title: Bind your Quarkus application to your Streams for Apache Kafka instance.
-      description: |-
-        With your Quarkus application running, and your Streams for Apache Kafka instance connected to your namespace, you can now bind your application to your Kafka instance.
-        This is done using the Service Binding Operator, which will inject the configuration values required to connect to your Kafka instance into your Quarkus application.
-        The Quarkus application has been configured to use the `quarkus-kubernetes-service-binding` [extension](https://github.com/DuncanDoyle/quarkus-kafka-quickstart-summit2021/blob/main/pom.xml#L82-L85)
-        enabling auto-discovery of the binding files injected into the Quarkus application pod.
-
-        We will create the binding using the `rhoas` command line tool. In future versions of OpenShift, you will also be able to do this directly from the OpenShift Developer Console.
-
-        To create the binding, we simply use the `rhoas cluster bind` command, and select the application deployment that we want to bind to our Streams for Apache Kafka instance that has already been connected to our OpenShift project.
-
-        1. Go to the terminal of your tools container (or your own terminal if are using the tooling from your own machine).
-
-        1. Execute the command `rhoas cluster bind`:
-            1. Select the Kafka instance you want your application to connect with (if not already pre-selected).
-            1. Select `rhoas-quarkus-kafka-quickstart` as the application that you want to connect to your Kafka instance.
-            1. When asked if you want to continue, select `y` and press **Enter**.
-
-        1. The binding will mount the Kafka connection configuration as files into the Quarkus application pod, from where they will be automatically picked up by the `quarkus-kubernetes-service-binding` extension.
-
-        1. With the binding created, your Quarkus application will now redeploy. Go back to the **Topology** screen by clicking on the [Topology]{{highlight qs-nav-add}} in the navigation menu.
-
-        1. Click on the **Open URL** icon in the upper-right of your Quarkus application icon in the Topology view. You will see the default Quarkus page.
-
-        1. Add the path `/prices.html` to the URL of your Quarkus application. This will open the **prices** page of your Quarkus application.
-        The application has now been properly configured, and prices are being sent to and consumed from the Kafka topic.
-
-        1. Go back to the **Topology** screen, click on the Quarkus application. This will open a panel on the righ-hand-side of your screen.
-        Click on the **Resources** tab. You will see the **Pod** of your Deployment. Click on the **View logs** link next to your pod.
-        In the logs of your application, you will see that your Quarkus application has connected to Kafka.
-
-        1. In the same screen, click on the **Details** tab. Scroll down until you see the **Volumes** section. Note that there is a **kafka-binding** volume,
-        which contains the binding files that contain the information required by your Quarkus application to connect to your Kafka instance.
-        These files are auto-discovered and used by the **quarkus-kubernetes-service-binding** extension to automatically connect your Quarkus application to OpenShift Streams for Apache Kafka.
-
-      review:
-        instructions: |-
-          #### Verify that you've successfully connected your Quarkus application to your OpenShift Streams for Apache Kafka instance:
-          Did you see the **prices** in your Quarkus application's webpage?
-
-          Did you see the binding files mounted in your Quarkus application's pod?
-
-          Did you see your Quarkus application's logs? Did you see it being connected to your Kafka instance?
-        failedTaskHelp: This task isn’t verified yet. Try the task again.
-      summary:
-        success: >-
-          Great work! You've connected your Quarkus application to your Streams for Apache Kafka instance using Kubernetes Service Binding.
+          Great work! You've bound an example Quarkus application to a Kafka instance in Streams for Apache Kafka.
         failed: Try the steps again.
 
   conclusion: >-
-    You've successfully connected your Quarkus application running on OpenShift to your OpenShift Streams for Apache Kafka instance.
-    You've used Kubernetes Service Binding to automatically inject the configuration parameters to connect to your Kafka instance into your Quarkus application.
+    You've successfully bound a Quarkus application running on OpenShift to your Kafka instance in Streams for Apache Kafka.
+    The RHOAS Operator automatically injected the connection credentials required for your Quarkus application to connect to your Kafka instance.
