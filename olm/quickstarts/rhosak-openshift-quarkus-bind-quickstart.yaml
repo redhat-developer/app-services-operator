@@ -3,24 +3,24 @@ kind: ConsoleQuickStart
 metadata:
   name: rhosak-devsandbox-quarkus-bind-cli-toolscontainer-quickstart
 spec:
-  displayName: Binding a Quarkus application to Streams for Apache Kafka
+  displayName: Binding a Quarkus application to Streams for Apache Kafka using the CLI
   tags:
     - streams
     - kafka
     - quarkus
   durationMinutes: 10
-  description: Binding a Quarkus application to a Kafka instance in Streams for Apache Kafka
+  description: Binding a Quarkus application to Streams for Apache Kafka using the CLI
   prerequisites:
     - You've completed the **Connecting an OpenShift project to Streams for Apache Kafka using the CLI** quick start.
     - You have privileges to deploy applications in the OpenShift project that you connected your Kafka instance to.
     - Your Kafka instance in Streams for Apache Kafka is in the **Ready** state.
 
   introduction: |-
-      ### This quick start shows how to bind an example Quarkus application to a Kafka instance in Red Hat OpenShift Streams for Apache Kafka.
+      ### This quick start shows how to use Red Hat OpenShift Application Services (RHOAS) CLI to the bind an example Quarkus application to a Kafka instance in Red Hat OpenShift Streams for Apache Kafka.
 
       As a developer of applications and services, there might be cases where you need to connect OpenShift applications to Kafka instances in Streams for Apache Kafka. Connecting an OpenShift application to a backing service such as Streams for Apache Kafka is called *service binding*.
 
-      In this quick start, you'll use the Red Hat OpenShift Application Services (RHOAS) Operator and CLI to bind an example Quarkus application to your Kafka instance. [Quarkus](https://quarkus.io/^) is a Kubernetes-native Java framework that is optimized for serverless, cloud, and Kubernetes environments.
+      In this quick start, you'll use the RHOAS CLI and Operator to bind an example Quarkus application to your Kafka instance. [Quarkus](https://quarkus.io/^) is a Kubernetes-native Java framework that is optimized for serverless, cloud, and Kubernetes environments.
 
       When you use the RHOAS CLI to bind a Kafka instance with an application, the RHOAS Operator automatically injects connection credentials as files into the Pod for your application. The example Quarkus application uses the `quarkus-kubernetes-service-binding` [extension](https://quarkus.io/guides/deploying-to-kubernetes#service-binding), which means that the application automatically detects and uses the injected connection credentials. This eliminates the need for manual configuration of your application.
 
