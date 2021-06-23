@@ -92,6 +92,27 @@
           </execution>
         </executions>
       </plugin>
+      <plugin>
+        <artifactId>maven-resources-plugin</artifactId>
+        <version>3.2.0</version>
+        <executions>
+          <execution>
+            <id>copy-file</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${basedir}/target/classes/olm/quickstarts</outputDirectory>
+              <resources>          
+                <resource>
+                  <directory>${project.parent.basedir}/olm/quickstarts/</directory>
+                </resource>
+              </resources>              
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
   </build>
 </project>

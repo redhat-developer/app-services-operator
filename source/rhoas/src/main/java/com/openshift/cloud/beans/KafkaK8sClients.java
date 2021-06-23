@@ -7,6 +7,8 @@ import com.openshift.cloud.v1alpha.models.CloudServicesRequestList;
 import com.openshift.cloud.v1alpha.models.KafkaConnection;
 import com.openshift.cloud.v1alpha.models.KafkaConnectionList;
 import io.fabric8.kubernetes.api.model.HasMetadata;
+import io.fabric8.kubernetes.api.model.ListOptions;
+import io.fabric8.kubernetes.api.model.ListOptionsBuilder;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinition;
 import io.fabric8.kubernetes.client.CustomResource;
 import io.fabric8.kubernetes.client.KubernetesClient;
@@ -17,6 +19,14 @@ import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.internal.KubernetesDeserializer;
 import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
+import io.fabric8.openshift.client.OpenShiftClient;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -28,6 +38,18 @@ import org.jboss.logging.Logger;
  */
 @ApplicationScoped
 public final class KafkaK8sClients {
+
+  private static final String CONNECT_QUICKSTART =
+      "/olm/quickstarts/rhosak-openshift-connect-quickstart.yaml";
+  private static final String GETTING_STARTED_QUICKSTART =
+      "/olm/quickstarts/rhosak-openshift-getting-started-quickstart.yaml";
+  private static final String KAFKACAT_QUICKSTART =
+      "/olm/quickstarts/rhosak-openshift-kafkacat-quickstart.yaml";
+  private static final String QUARKUS_BIND_QUICKSTART =
+      "/olm/quickstarts/rhosak-openshift-quarkus-bind-quickstart.yaml";
+
+  private static final String[] QUICKSTARTS = {CONNECT_QUICKSTART, GETTING_STARTED_QUICKSTART,
+      KAFKACAT_QUICKSTART, QUARKUS_BIND_QUICKSTART};
 
   private static final Logger LOG = Logger.getLogger(KafkaK8sClients.class.getName());
 
@@ -47,6 +69,44 @@ public final class KafkaK8sClients {
     this.akcCrd = initKafkaConnectionCRDAndClient(crds);
     this.cscrCrd = initCloudServicesRequestCRDAndClient(crds);
     this.csarCrd = initCloudServiceAccountRequestCRDAndClient(crds);
+  }
+
+  public void initQuickStarts() {
+    if (hasConsoleQuickStart()) {
+      var quickstartCRD = client.apiextensions().v1beta1().customResourceDefinitions()
+          .withName("consolequickstarts.console.openshift.io").get();
+      var quickstartContext = CustomResourceDefinitionContext.fromCrd(quickstartCRD);
+      var quickStartClient = client.customResource(quickstartContext);
+      for (String quickstartFile : QUICKSTARTS) {
+        try (InputStream fileStream =
+            KafkaK8sClients.class.getClassLoader().getResourceAsStream(quickstartFile)) {
+          var consoleQuickStart = quickStartClient.load(fileStream);
+          var quickStartName =
+              ((Map<String, Object>) consoleQuickStart.get("metadata")).get("name").toString();
+          LOG.info(quickStartName);
+          LOG.info(((List) quickStartClient
+              .list(new ListOptionsBuilder().withKind("consolequickstarts")
+                  .withFieldSelector(String.format("metadata.name=%s", quickStartName)).build())
+              .get("items")).size());
+          if (((List) quickStartClient
+              .list(new ListOptionsBuilder().withKind("consolequickstarts")
+                  .withFieldSelector(String.format("metadata.name=%s", quickStartName)).build())
+              .get("items")).isEmpty()) {
+            quickStartClient.create(consoleQuickStart);
+          }
+        } catch (Exception e) {
+          LOG.error("Exception creating " + quickstartFile + ". Please create manually if missing.",
+              e);
+        }
+      }
+    }
+
+  }
+
+  private boolean hasConsoleQuickStart() {
+
+    return client.apiextensions().v1beta1().customResourceDefinitions()
+        .withName("consolequickstarts.console.openshift.io").get() != null;
   }
 
   public MixedOperation<KafkaConnection, KafkaConnectionList, Resource<KafkaConnection>> kafkaConnection() {
