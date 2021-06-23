@@ -1,5 +1,6 @@
 package com.openshift.cloud;
 
+import com.openshift.cloud.beans.KafkaK8sClients;
 import com.openshift.cloud.controllers.CloudServiceAccountRequestController;
 import com.openshift.cloud.controllers.CloudServicesRequestController;
 import com.openshift.cloud.controllers.KafkaConnectionController;
@@ -31,6 +32,9 @@ public class RHOASOperator implements QuarkusApplication {
   @Inject
   CloudServiceAccountRequestController serviceAccountRequestController;
 
+  @Inject
+  KafkaK8sClients client;
+
   @ConfigProperty(name = "rhoas.client.apiBasePath")
   String clientBasePath;
 
@@ -43,6 +47,9 @@ public class RHOASOperator implements QuarkusApplication {
 
   @Override
   public int run(String... args) throws Exception {
+
+    client.initQuickStarts();
+
     LOG.info("Using API URL: " + clientBasePath);
 
     ControllerConfiguration<?> config = configuration.getConfigurationFor(connectionController);

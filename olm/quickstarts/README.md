@@ -4,7 +4,7 @@ Quickstarts available as part of this operator.
 
 ## Adding Quick Starts to your OpenShift for local testing
 
-Add all Quick Starts to your OpenShift cluster
+The operator automatically installs quickstarts when it starts up. If you wish to replace them, you may use the following : 
 ```
 oc apply -f https://raw.githubusercontent.com/redhat-developer/app-services-operator/quickstarts/olm/quickstarts/rhosak-openshift-connect-quickstart.yaml
 oc apply -f https://raw.githubusercontent.com/redhat-developer/app-services-operator/quickstarts/olm/quickstarts/rhosak-openshift-getting-started-quickstart.yaml
