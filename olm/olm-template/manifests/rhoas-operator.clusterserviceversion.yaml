@@ -90,6 +90,20 @@ spec:
             - patch
             - update
             - watch
+        - apiGroups:
+            - console.openshift.io
+          resources:
+            - 'consolequickstarts'
+            - 'consolequickstarts/status'
+            - 'consolequickstarts/finalizers'
+          verbs:
+            - create
+            - delete
+            - get
+            - list
+            - patch
+            - update
+            - watch
       deployments:
       - name: rhoas-operator
         spec:
