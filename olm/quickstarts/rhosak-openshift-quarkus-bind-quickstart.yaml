@@ -228,5 +228,5 @@ spec:
         failed: Try the steps again.
 
   conclusion: >-
-    Congratulations! You successfully bound a Quarkus application running in OpenShift to a Kafka instance in Streams for Apache Kafka.
+    Congratulations! You successfully bound an example Quarkus application running in OpenShift to a Kafka instance in Streams for Apache Kafka.
     The RHOAS Operator automatically injected the connection parameters required for the Quarkus application to connect to the Kafka instance.
