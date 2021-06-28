@@ -194,7 +194,15 @@
 
 
 <a name="0.3.0"></a>
-## [0.3.0](https://github.com/redhat-developer/app-services-operator/compare/0.2.1...0.3.0) (2021-03-11)
+## [0.3.0](https://github.com/redhat-developer/app-services-operator/compare/0.2.4...0.3.0) (2021-03-11)
+
+
+<a name="0.2.4"></a>
+## [0.2.4](https://github.com/redhat-developer/app-services-operator/compare/0.2.5...0.2.4) (2021-03-11)
+
+
+<a name="0.2.5"></a>
+## [0.2.5](https://github.com/redhat-developer/app-services-operator/compare/0.2.1...0.2.5) (2021-03-11)
 
 ### BREAKING CHANGES
 
