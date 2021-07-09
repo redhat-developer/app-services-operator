@@ -217,7 +217,7 @@ spec:
            ```
            You're prompted to specify the Kafka instance that you want to connect to OpenShift.
 
-        1. If you've more than one Kafka instance, use the up and down arrows on your keyboard to highlight the Kafka instance that you want to connect to OpenShift. Press **Enter**.
+        1. If you have more than one Kafka instance, use the up and down arrows on your keyboard to highlight the instance that you want to connect to OpenShift. Press **Enter**.
 
         1. Review the information shown by the RHOAS CLI. When you're ready to continue, type `y` and then press **Enter**.
 

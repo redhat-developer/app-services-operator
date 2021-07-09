@@ -260,17 +260,17 @@ spec:
            ```
            You're prompted to specify the Kafka instance that you want to bind to an application in your OpenShift project.
 
-        1. If you've more than one Kafka instance, use the up and down arrows on your keyboard to highlight the Kafka instance that you want to bind to an application on OpenShift. Press **Enter**.
+        1. If you have more than one Kafka instance, use the up and down arrows on your keyboard to highlight the instance that you want to bind to an application on OpenShift. Press **Enter**.
 
            You're prompted to specify the application that you want to bind your Kafka instance to.
 
-        1. If you've more than one application in your OpenShift project, use the up and down arrows on your keyboard to highlight the `rhoas-quarkus-kafka-quickstart` example application. Press **Enter**.
+        1. If you have more than one application in your OpenShift project, use the up and down arrows on your keyboard to highlight the `rhoas-quarkus-kafka-quickstart` example application. Press **Enter**.
 
         1. Type `y` to confirm that you want to continue. Press **Enter**.
 
            When binding is complete, you should see output like the following:
            ```
-           Using Service  Binding Operator to perform binding
+           Using Service Binding Operator to perform binding
            Binding my-kafka-instance with rhoas-quarkus-kafka-quickstart app succeeded
            ```
            The output shows that the RHOAS CLI successfully instructed the Service Binding Operator to bind a Kafka instance called `my-kafka-instance` to the example Quarkus application called `rhoas-quarkus-kafka-quickstart`.
