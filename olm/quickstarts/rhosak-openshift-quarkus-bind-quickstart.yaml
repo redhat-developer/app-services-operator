@@ -13,7 +13,7 @@ spec:
   prerequisites:
     - Access to Red Hat OpenShift Streams for Apache Kafka (for more information, visit https://cloud.redhat.com/application-services).
     - A running OpenShift Streams for Apache Kafka instance.
-    - A connection (KafkaConnection) betweeen your OpenShift project and your OpenShift Streams for Apache Kafka instance.
+    - A connection (KafkaConnection) between your OpenShift project and your OpenShift Streams for Apache Kafka instance. Instructions can be found in the "Connecting Red Hat OpenShift Streams for Apache Kafka to OpenShift" quick start. 
   introduction: >-
     ### This quick start shows you how to bind your Quarkus application to your Red Hat OpenShift Streams for Apache Kafka instance.
 
@@ -183,6 +183,9 @@ spec:
         To create the binding, we simply use the `rhoas cluster bind` command, and select the application deployment that we want to bind to our Streams for Apache Kafka instance that has already been connected to our OpenShift project.
 
         1. Go to the terminal of your tools container (or your own terminal if are using the tooling from your own machine).
+
+        1. Verify that you have a **KafkaConnection** resource with the following command: `oc get KafkaConnection`. 
+        If there are no **KafkaConnection** resources in your project, follow the steps in the "Connecting Red Hat OpenShift Streams for Apache Kafka to OpenShift" quick start to create one before continuing.
 
         1. Execute the command `rhoas cluster bind`:
             1. Select the Kafka instance you want your application to connect with (if not already pre-selected).
