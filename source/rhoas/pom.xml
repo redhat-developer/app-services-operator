@@ -29,9 +29,9 @@
       <version>${quarkus.operator.sdk.version}</version>
     </dependency>
     <dependency>
-      <groupId>cloud.redhat.com</groupId>
+      <groupId>com.redhat.cloud</groupId>
       <artifactId>kafka-management-sdk</artifactId>
-      <version>0.2.0</version>
+      <version>0.3.1</version>
     </dependency>
     <dependency>
       <groupId>com.openshift.cloud</groupId>

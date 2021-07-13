@@ -32,13 +32,6 @@
         <module>source/rhoas</module>
     </modules>
 
-    <repositories>
-        <repository>
-            <id>github</id>
-            <url>https://maven.pkg.github.com/redhat-developer/app-services-sdk-java</url>
-          </repository>
-      </repositories>  
-
     <dependencyManagement>
         <dependencies>
             <dependency>
