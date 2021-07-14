@@ -11,7 +11,7 @@ spec:
   description: Connecting an OpenShift project to Red Hat OpenShift Streams for Apache Kafka using the RHOAS CLI
   prerequisites:
     - You have a Red Hat account.
-    - You’ve created a Kafka instance in [Streams for Apache Kafka](https://cloud.redhat.com/beta/application-services/streams/) and the instance is in the **Ready** state.
+    - You’ve created a Kafka instance in [Streams for Apache Kafka](https://console.redhat.com/beta/application-services/streams/) and the instance is in the **Ready** state.
     - The RHOAS Operator is installed on your OpenShift cluster.
 
   introduction: |-
@@ -23,7 +23,7 @@ spec:
 
     #### Prerequisites
     - You have a Red Hat account.
-    - You’ve created a Kafka instance in [Streams for Apache Kafka](https://cloud.redhat.com/beta/application-services/streams/) and the instance is in the **Ready** state.
+    - You’ve created a Kafka instance in [Streams for Apache Kafka](https://console.redhat.com/beta/application-services/streams/) and the instance is in the **Ready** state.
     - The RHOAS Operator is installed on your OpenShift cluster.
 
   tasks:
@@ -152,7 +152,7 @@ spec:
 
         1. Log in to the RHOAS CLI using a token.
 
-            i. In your web browser, open the [OpenShift Cluster Manager API Token](https://cloud.redhat.com/openshift/token) page.
+            i. In your web browser, open the [OpenShift Cluster Manager API Token](https://console.redhat.com/openshift/token) page.
 
             ii. On the OpenShift Cluster Manager API Token page, click **Load token**. When the page is refreshed, copy the API token shown.
 
@@ -191,9 +191,9 @@ spec:
 
         #### Prerequisites
 
-        - You’ve created a Kafka instance in [Streams for Apache Kafka](https://cloud.redhat.com/beta/application-services/streams/) and the instance is in the **Ready** state.
+        - You’ve created a Kafka instance in [Streams for Apache Kafka](https://console.redhat.com/beta/application-services/streams/) and the instance is in the **Ready** state.
         - You've verified connection between the RHOAS Operator and your OpenShift cluster.
-        - You have an API token to connect to your Kafka instance. To get a token, see the [OpenShift Cluster Manager API Token](https://cloud.redhat.com/openshift/token) page.
+        - You have an API token to connect to your Kafka instance. To get a token, see the [OpenShift Cluster Manager API Token](https://console.redhat.com/openshift/token) page.
 
         #### Procedure
 
@@ -227,7 +227,7 @@ spec:
 
            You're prompted to provide an access token. The RHOAS Operator requires this token to connect to your Kafka instance.
 
-        1. In your web browser, open the [OpenShift Cluster Manager API Token](https://cloud.redhat.com/openshift/token) page.
+        1. In your web browser, open the [OpenShift Cluster Manager API Token](https://console.redhat.com/openshift/token) page.
 
         1. On the OpenShift Cluster Manager API Token page, click **Load token**. When the page is refreshed, copy the API token shown.
 
