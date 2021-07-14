@@ -10,9 +10,9 @@ spec:
   durationMinutes: 10
   description: Connecting an OpenShift project to Red Hat OpenShift Streams for Apache Kafka using the RHOAS CLI
   prerequisites:
-    - You have a Red Hat account
-    - You’ve created a Kafka instance in [Streams for Apache Kafka](https://cloud.redhat.com/beta/application-services/streams/) and the instance is in the **Ready** state
-    - The RHOAS Operator is installed on your OpenShift cluster
+    - You have a Red Hat account.
+    - You’ve created a Kafka instance in [Streams for Apache Kafka](https://cloud.redhat.com/beta/application-services/streams/) and the instance is in the **Ready** state.
+    - The RHOAS Operator is installed on your OpenShift cluster.
 
   introduction: |-
     ### This quick start shows how to use the Red Hat OpenShift Application Services (RHOAS) CLI to connect a project in an OpenShift cluster to Red Hat OpenShift Streams for Apache Kafka.
@@ -35,7 +35,7 @@ spec:
         * The OpenShift CLI (`oc`)
         * The OpenShift Developer CLI (`odo`)
 
-        Alternatively, you can install the CLI tools locally on your computer. For instructions on installing the tools, see:
+        Alternatively, you can install the CLI tools locally on your computer. For instructions on installing the tools, see the following resources:
 
         * [Installing the RHOAS CLI](https://access.redhat.com/documentation/en-us/red_hat_openshift_streams_for_apache_kafka/1/guide/f520e427-cad2-40ce-823d-96234ccbc047#_8818f0d5-ae20-42c8-9622-a98e663ff1a8)
         * [Installing the OpenShift CLI](https://docs.openshift.com/container-platform/4.7/cli_reference/openshift_cli/getting-started-cli.html#installing-openshift-cli)
@@ -75,7 +75,7 @@ spec:
 
             iv. For the **Runtime icon** option, select `openshift`.
 
-            v. Under **Advanced Options**, *deselect* the **Create a route to the Application** check box. For all other options, keep the default values.
+            v. Under **Advanced Options**, *clear* the **Create a route to the Application** check box. For all other options, keep the default values.
 
             vi. Click **Create**.
                 The **Topology** page opens.
@@ -142,8 +142,9 @@ spec:
 
             iii. In the section entitled **Log in with this token**, copy the full `oc login` command shown.
 
-            v. On the command line, paste the login command you copied. Right-click on the command line and select **Paste**. An example is shown below.
+            v. On the command line, paste the login command you copied. Right-click on the command line and select **Paste**. The following code shows an example.
 
+            **Logging in to the OpenShift CLI using a token**
             ```
             $ oc login --token=sha256~0WJOGcha7EOAkCmJpSSb6pyo2EawSUwZJKDEw3c-Ox4 --server=https://example.com:6443
             ```
@@ -157,6 +158,7 @@ spec:
 
             iii. On the command line, log in to the RHOAS CLI using the API token you copied.
 
+            **Logging in to the RHOAS CLI using a token**
             ```
             $ rhoas login --token=<token>
             ```
@@ -164,6 +166,7 @@ spec:
 
         1. Use the RHOAS CLI to connect to your OpenShift cluster and retrieve the cluster status.
 
+           **Using the RHOAS CLI to retrieve the status of your OpenShift cluster**
            ```
            $ rhoas cluster status
            Namespace: my-project
@@ -212,6 +215,7 @@ spec:
 
         1. Use the RHOAS CLI to connect a Kafka instance in Streams for Apache Kafka to the current OpenShift project.
 
+           **Using the RHOAS CLI to connect a Kafka instance to your OpenShift cluster**
            ```
            $ rhoas cluster connect
            ```
@@ -229,8 +233,9 @@ spec:
 
         1. On the command line, right-click and select **Paste**. Press **Enter**.
 
-           The RHOAS Operator uses the API token to create a `KafkaConnection` resource on your OpenShift cluster. When this process is complete, you should see lines like the following:
+           The RHOAS Operator uses the API token to create a `KafkaConnection` resource on your OpenShift cluster. When this process is complete, you should see lines similar to the following example:
 
+           **Example output from creation of KafkaConnection resource**
            ```
            Service Account Secret "rh-cloud-services-service-account" created successfully
            KafkaConnection resource "my-kafka-instance" has been created
@@ -242,6 +247,7 @@ spec:
 
         1. Use the OpenShift CLI to verify that the RHOAS Operator successfully created the connection.
 
+           **Using the OpenShift CLI to verify Operator connection to your cluster**
            ```
            $ oc get KafkaConnection
 
@@ -292,12 +298,14 @@ spec:
 
         1. Use the OpenShift CLI to get the name of the `KafkaConnection` resource created in the previous task.
 
+           **Using the OpenShift CLI to get the name of the KafkaConnection resource**
            ```
            $ oc get KafkaConnection
            ```
 
         1. Use the OpenShift CLI to retrieve the details of the `KafkaConnection` resource.
 
+           **Using the OpenShift CLI to get the details of the KafkaConnection resource**
            ```
            $ oc describe KafkaConnection/<kafka-connection-name>
            ```

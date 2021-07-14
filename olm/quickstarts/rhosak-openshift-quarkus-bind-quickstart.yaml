@@ -233,8 +233,9 @@ spec:
 
             iii. In the section entitled **Log in with this token**, copy the full `oc login` command shown.
 
-            v. On the command line, paste the login command you copied. Right-click on the command line and select **Paste**. An example is shown below.
+            v. On the command line, paste the login command you copied. Right-click on the command line and select **Paste**. The following code shows an example.
 
+            **Logging in to the OpenShift CLI using a token**
             ```
             $ oc login --token=sha256~0WJOGcha7EOAkCmJpSSb6pyo2EawSUwZJKDEw3c-Ox4 --server=https://example.com:6443
             ```
@@ -248,6 +249,7 @@ spec:
 
             iii. On the command line, log in to the RHOAS CLI using the API token you copied.
 
+            **Logging in to the RHOAS CLI using a token**
             ```
             $ rhoas login --token=<token>
             ```
@@ -255,6 +257,7 @@ spec:
 
         1. Use the RHOAS CLI to instruct the Service Binding Operator to bind your Kafka instance to an application in your OpenShift project.
 
+           **Using the RHOAS CLI to bind a Kafka instance to an application in OpenShift**
            ```
            $ rhoas cluster bind
            ```
@@ -268,7 +271,9 @@ spec:
 
         1. Type `y` to confirm that you want to continue. Press **Enter**.
 
-           When binding is complete, you should see output like the following:
+           When binding is complete, you should see output similar to the following example:
+
+           **Example output from binding a Kafka instance to an application in OpenShift**
            ```
            Using Service Binding Operator to perform binding
            Binding my-kafka-instance with rhoas-quarkus-kafka-quickstart app succeeded
