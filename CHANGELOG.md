@@ -1,4 +1,12 @@
 
+<a name="0.7.7"></a>
+## [0.7.7](https://github.com/redhat-developer/app-services-operator/compare/0.7.6...0.7.7) (2021-07-19)
+
+### Features
+
+* install quickstarts on boot
+
+
 <a name="0.7.6"></a>
 ## [0.7.6](https://github.com/redhat-developer/app-services-operator/compare/0.7.5...0.7.6) (2021-06-24)
 
