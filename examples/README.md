@@ -13,7 +13,7 @@
 oc new-project rhoas-operator-testing
 ```
 1. Create secret with token used to connec to the cluster
-Get token from https://cloud.redhat.com/openshift/token and paste it into secret
+Get token from https://console.redhat.com/openshift/token and paste it into secret
 ```
 oc apply -f ./secrets/api-token.yml
 ```
