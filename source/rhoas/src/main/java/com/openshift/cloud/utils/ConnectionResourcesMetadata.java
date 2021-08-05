@@ -7,7 +7,7 @@ import java.util.Map;
 public class ConnectionResourcesMetadata {
 
   private static final String UI_REF_TEMPLATE =
-      "https://cloud.redhat.com/beta/application-services/streams/kafkas/%s";
+      "https://console.redhat.com/beta/application-services/streams/kafkas/%s";
 
   /**
    * Contains hardcoded values for all metadata for Kafka specific properties

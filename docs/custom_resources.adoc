@@ -149,7 +149,7 @@ spec:
 #  saslMechanism: PLAIN
 #  securityProtocol: SASL_SSL
 #  serviceAccountSecretName: service-account-credentials
-#  uiRef: https://cloud.redhat.com/beta/application-services/openshift-streams/kafkas/valid-kafka-id
+#  uiRef: https://console.redhat.com/beta/application-services/openshift-streams/kafkas/valid-kafka-id
 ----
 
 === Specification details

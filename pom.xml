@@ -24,7 +24,7 @@
     <packaging>pom</packaging>
 
     <name>RHOAS Operator</name>
-    <url>http://cloud.redhat.com</url>
+    <url>http://console.redhat.com</url>
     <modules>
         <!-- <module>source/openapi</module> -->
         <module>source/model</module>
