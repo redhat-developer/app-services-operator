@@ -7,6 +7,7 @@ import com.openshift.cloud.utils.InvalidUserInputException;
 import com.openshift.cloud.v1alpha.models.KafkaConnection;
 import io.javaoperatorsdk.operator.api.*;
 import java.time.Instant;
+import java.util.HashMap;
 import java.util.logging.Logger;
 import javax.inject.Inject;
 
@@ -27,7 +28,6 @@ public class KafkaConnectionController extends AbstractCloudServicesController<K
     LOG.info(String.format("Creating or Updating resource %s", resource.getMetadata().getName()));
 
     validateResource(resource);
-
     var kafkaId = resource.getSpec().getKafkaId();
     var accessTokenSecretName = resource.getSpec().getAccessTokenSecretName();
     var serviceAccountSecretName =
@@ -47,6 +47,7 @@ public class KafkaConnectionController extends AbstractCloudServicesController<K
     status.setServiceAccountSecretName(serviceAccountSecretName);
     status.setMetadata(ConnectionResourcesMetadata.buildKafkaMetadata(kafkaId));
   }
+
 
   void validateResource(KafkaConnection resource) throws InvalidUserInputException {
     ConditionUtil.assertNotNull(resource.getSpec(), "spec");
