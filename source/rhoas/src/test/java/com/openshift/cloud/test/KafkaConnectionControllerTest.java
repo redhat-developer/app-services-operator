@@ -55,8 +55,8 @@ public class KafkaConnectionControllerTest {
   public void testKafkaConnectionRequest() {
     var kafkaConnectionRequest = new KafkaConnectionBuilder()
         .withMetadata(new ObjectMetaBuilder().withGeneration(10l).withNamespace("test")
-            .withLabels(Map.of("app.kubernetes.io/component", "external-service", 
-            "app.kubernetes.io/managed-by", "rhoas" ))
+            .withLabels(Map.of("app.kubernetes.io/component", "external-service",
+                "app.kubernetes.io/managed-by", "rhoas"))
             .withName("kc-test").build())
         .withSpec(new KafkaConnectionSpecBuilder()
             .withAccessTokenSecretName("rh-managed-services-api-accesstoken")
