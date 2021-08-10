@@ -7,7 +7,6 @@ import com.openshift.cloud.utils.InvalidUserInputException;
 import com.openshift.cloud.v1alpha.models.KafkaConnection;
 import io.javaoperatorsdk.operator.api.*;
 import java.time.Instant;
-import java.util.HashMap;
 import java.util.logging.Logger;
 import javax.inject.Inject;
 
