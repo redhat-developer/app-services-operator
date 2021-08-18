@@ -1,5 +1,7 @@
 package com.openshift.cloud.controllers;
 
+import static com.openshift.cloud.v1alpha.models.KafkaConnection.*;
+
 import com.openshift.cloud.v1alpha.models.CloudServiceAccountRequest;
 import com.openshift.cloud.v1alpha.models.CloudServicesRequest;
 import com.openshift.cloud.v1alpha.models.KafkaCondition;
@@ -17,6 +19,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+
 /** This class manages conditions and checks for updates on startup. */
 public abstract class AbstractCloudServicesController<T extends CustomResource>
     implements ResourceController<T> {
@@ -24,11 +27,6 @@ public abstract class AbstractCloudServicesController<T extends CustomResource>
   private static final Logger LOG =
       Logger.getLogger(AbstractCloudServicesController.class.getName());
 
-  private static final String COMPONENT_LABEL_KEY = "app.kubernetes.io/component";
-  private static final String MANAGED_BY_LABEL_KEY = "app.kubernetes.io/managed-by";
-
-  private static final String COMPONENT_LABEL_VALUE = "external-service";
-  private static final String MANAGED_BY_LABEL_VALUE = "rhoas";
 
   /**
    * Implementations of this method should only change the status subresource. If you need to change

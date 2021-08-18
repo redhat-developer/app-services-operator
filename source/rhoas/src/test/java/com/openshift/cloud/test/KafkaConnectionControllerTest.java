@@ -1,6 +1,7 @@
 package com.openshift.cloud.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static com.openshift.cloud.v1alpha.models.KafkaConnection.*;
 
 import com.openshift.cloud.controllers.ConditionUtil;
 import com.openshift.cloud.controllers.KafkaConnectionController;
@@ -55,8 +56,8 @@ public class KafkaConnectionControllerTest {
   public void testKafkaConnectionRequest() {
     var kafkaConnectionRequest = new KafkaConnectionBuilder()
         .withMetadata(new ObjectMetaBuilder().withGeneration(10l).withNamespace("test")
-            .withLabels(Map.of("app.kubernetes.io/component", "external-service",
-                "app.kubernetes.io/managed-by", "rhoas"))
+            .withLabels(Map.of(KafkaConnection.COMPONENT_LABEL_KEY, KafkaConnection.COMPONENT_LABEL_VALUE,
+            KafkaConnection.MANAGED_BY_LABEL_KEY, KafkaConnection.MANAGED_BY_LABEL_VALUE))
             .withName("kc-test").build())
         .withSpec(new KafkaConnectionSpecBuilder()
             .withAccessTokenSecretName("rh-managed-services-api-accesstoken")

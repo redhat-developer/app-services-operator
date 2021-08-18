@@ -20,6 +20,12 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 public class KafkaConnection extends CustomResource<KafkaConnectionSpec, KafkaConnectionStatus>
     implements Namespaced {
 
+  public static final String COMPONENT_LABEL_KEY = "app.kubernetes.io/component";
+  public static final String MANAGED_BY_LABEL_KEY = "app.kubernetes.io/managed-by";
+    
+  public  static final String COMPONENT_LABEL_VALUE = "external-service";
+  public static final String MANAGED_BY_LABEL_VALUE = "rhoas";
+
   /** */
   private static final long serialVersionUID = 7721054567486507997L;
 
