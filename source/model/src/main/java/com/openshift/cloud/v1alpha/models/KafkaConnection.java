@@ -22,8 +22,8 @@ public class KafkaConnection extends CustomResource<KafkaConnectionSpec, KafkaCo
 
   public static final String COMPONENT_LABEL_KEY = "app.kubernetes.io/component";
   public static final String MANAGED_BY_LABEL_KEY = "app.kubernetes.io/managed-by";
-    
-  public  static final String COMPONENT_LABEL_VALUE = "external-service";
+
+  public static final String COMPONENT_LABEL_VALUE = "external-service";
   public static final String MANAGED_BY_LABEL_VALUE = "rhoas";
 
   /** */
