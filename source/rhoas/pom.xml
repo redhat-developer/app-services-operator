@@ -31,8 +31,13 @@
     <dependency>
       <groupId>com.redhat.cloud</groupId>
       <artifactId>kafka-management-sdk</artifactId>
-      <version>0.4.0</version>
+      <version>0.5.1</version>
     </dependency>
+    <dependency>
+      <groupId>com.redhat.cloud</groupId>
+      <artifactId>registry-management-sdk</artifactId>
+      <version>0.5.1</version>
+  </dependency>
     <dependency>
       <groupId>cloud.redhat.com</groupId>
       <artifactId>rhoas-model</artifactId>

@@ -8,13 +8,13 @@ import io.sundr.builder.annotations.Buildable;
 @Buildable(builderPackage = "io.fabric8.kubernetes.api.builder", editableEnabled = false)
 public class ServiceRegistryConnectionSpec {
 
-    private Integer serviceRegistryId;
+    private String serviceRegistryId;
     private String accessTokenSecretName;
     private Credentials credentials;
 
 
     
-    public Integer getServiceRegistryId() {
+    public String getServiceRegistryId() {
         return serviceRegistryId;
     }
     public Credentials getCredentials() {
@@ -29,7 +29,7 @@ public class ServiceRegistryConnectionSpec {
     public void setAccessTokenSecretName(String accessTokenSecretName) {
         this.accessTokenSecretName = accessTokenSecretName;
     }
-    public void setServiceRegistryId(Integer serviceRegistryId) {
+    public void setServiceRegistryId(String serviceRegistryId) {
         this.serviceRegistryId = serviceRegistryId;
     }
 
