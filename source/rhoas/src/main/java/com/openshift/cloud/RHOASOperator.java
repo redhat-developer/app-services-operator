@@ -4,6 +4,7 @@ import com.openshift.cloud.beans.KafkaK8sClients;
 import com.openshift.cloud.controllers.CloudServiceAccountRequestController;
 import com.openshift.cloud.controllers.CloudServicesRequestController;
 import com.openshift.cloud.controllers.KafkaConnectionController;
+import com.openshift.cloud.controllers.ServiceRegistryConnectionController;
 import io.javaoperatorsdk.operator.Operator;
 import io.javaoperatorsdk.operator.api.config.ConfigurationService;
 import io.javaoperatorsdk.operator.api.config.ControllerConfiguration;
@@ -25,6 +26,9 @@ public class RHOASOperator implements QuarkusApplication {
 
   @Inject
   KafkaConnectionController connectionController;
+
+  @Inject
+  ServiceRegistryConnectionController serviceRegistryConnectionController;
 
   @Inject
   CloudServicesRequestController requestController;
@@ -59,6 +63,9 @@ public class RHOASOperator implements QuarkusApplication {
     LOG.info("CR class: " + config.getCustomResourceClass());
 
     config = configuration.getConfigurationFor(serviceAccountRequestController);
+    LOG.info("CR class: " + config.getCustomResourceClass());
+
+    config = configuration.getConfigurationFor(serviceRegistryConnectionController);
     LOG.info("CR class: " + config.getCustomResourceClass());
 
     operator.start();

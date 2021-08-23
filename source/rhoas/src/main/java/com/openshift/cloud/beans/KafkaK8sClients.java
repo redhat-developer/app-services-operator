@@ -1,11 +1,6 @@
 package com.openshift.cloud.beans;
 
-import com.openshift.cloud.v1alpha.models.CloudServiceAccountRequest;
-import com.openshift.cloud.v1alpha.models.CloudServiceAccountRequestList;
-import com.openshift.cloud.v1alpha.models.CloudServicesRequest;
-import com.openshift.cloud.v1alpha.models.CloudServicesRequestList;
-import com.openshift.cloud.v1alpha.models.KafkaConnection;
-import com.openshift.cloud.v1alpha.models.KafkaConnectionList;
+import com.openshift.cloud.v1alpha.models.*;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.ListOptions;
 import io.fabric8.kubernetes.api.model.ListOptionsBuilder;
@@ -59,6 +54,7 @@ public final class KafkaK8sClients {
   private CustomResourceDefinition akcCrd;
   private CustomResourceDefinition cscrCrd;
   private CustomResourceDefinition csarCrd;
+  private CustomResourceDefinition srcCrd;
 
   @PostConstruct
   public void init() {
@@ -69,6 +65,7 @@ public final class KafkaK8sClients {
     this.akcCrd = initKafkaConnectionCRDAndClient(crds);
     this.cscrCrd = initCloudServicesRequestCRDAndClient(crds);
     this.csarCrd = initCloudServiceAccountRequestCRDAndClient(crds);
+    this.srcCrd = initServiceRegistryConnectionCRDAndClient(crds);
   }
 
   public void initQuickStarts() {
@@ -142,7 +139,7 @@ public final class KafkaK8sClients {
   }
 
   private CustomResourceDefinition initCloudServiceAccountRequestCRDAndClient(
-      V1beta1ApiextensionAPIGroupDSL crds) {
+          V1beta1ApiextensionAPIGroupDSL crds) {
 
     CustomResourceDefinition akcCrd;
 
@@ -150,17 +147,43 @@ public final class KafkaK8sClients {
     var kafkaConnectionCRDName = CustomResource.getCRDName(CloudServiceAccountRequest.class);
 
     var akcCrdOptional = crdsItems.stream()
-        .filter(crd -> kafkaConnectionCRDName.equals(crd.getMetadata().getName())).findFirst();
+            .filter(crd -> kafkaConnectionCRDName.equals(crd.getMetadata().getName())).findFirst();
 
     if (akcCrdOptional.isEmpty()) {
       LOG.info("Creating CloudServiceAccountRequest CRD");
       akcCrd = CustomResourceDefinitionContext
-          .v1beta1CRDFromCustomResourceType(CloudServiceAccountRequest.class).build();
+              .v1beta1CRDFromCustomResourceType(CloudServiceAccountRequest.class).build();
       client.apiextensions().v1beta1().customResourceDefinitions().create(akcCrd);
       LOG.info("CloudServiceAccountRequest CRD Created");
     } else {
       LOG.info("Found CloudServiceAccountRequest CRD");
       akcCrd = akcCrdOptional.get();
+    }
+
+    return akcCrd;
+  }
+
+
+  private CustomResourceDefinition initServiceRegistryConnectionCRDAndClient(
+          V1beta1ApiextensionAPIGroupDSL crds) {
+
+    CustomResourceDefinition akcCrd;
+
+    var crdsItems = crds.customResourceDefinitions().list().getItems();
+    var serviceRegistryConnectionCRD = CustomResource.getCRDName(ServiceRegistryConnection.class);
+
+    var srcCrdOptional = crdsItems.stream()
+            .filter(crd -> serviceRegistryConnectionCRD.equals(crd.getMetadata().getName())).findFirst();
+
+    if (srcCrdOptional.isEmpty()) {
+      LOG.info("Creating ServiceRegistryConnection CRD");
+      akcCrd = CustomResourceDefinitionContext
+              .v1beta1CRDFromCustomResourceType(ServiceRegistryConnection.class).build();
+      client.apiextensions().v1beta1().customResourceDefinitions().create(akcCrd);
+      LOG.info("ServiceRegistryConnection CRD Created");
+    } else {
+      LOG.info("Found ServiceRegistryConnection CRD");
+      akcCrd = srcCrdOptional.get();
     }
 
     return akcCrd;
