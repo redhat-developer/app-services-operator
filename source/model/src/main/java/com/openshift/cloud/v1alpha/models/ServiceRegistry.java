@@ -1,7 +1,7 @@
 package com.openshift.cloud.v1alpha.models;
 
 public class ServiceRegistry {
-  private Integer id;
+  private String id;
   private String registryStatus;
   private String registryUrl;
   private String name;
@@ -10,8 +10,8 @@ public class ServiceRegistry {
 
   public ServiceRegistry() {}
 
-  public ServiceRegistry(Integer id, String registryStatus, String registryUrl, String name,
-      String lastUpdated, Integer registryDeploymentId) {
+  public ServiceRegistry(String id, String registryStatus, String registryUrl, String name,
+                         String lastUpdated, Integer registryDeploymentId) {
     this.id = id;
     this.registryStatus = registryStatus;
     this.registryUrl = registryUrl;
@@ -20,11 +20,11 @@ public class ServiceRegistry {
     this.registryDeploymentId = registryDeploymentId;
   }
 
-  public Integer getId() {
+  public String getId() {
     return id;
   }
 
-  public ServiceRegistry setId(Integer id) {
+  public ServiceRegistry setId(String id) {
     this.id = id;
     return this;
   }
