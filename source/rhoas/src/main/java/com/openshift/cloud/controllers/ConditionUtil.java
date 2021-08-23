@@ -55,8 +55,11 @@ public class ConditionUtil {
   private static List<KafkaCondition> cloudServicesRequestDefaultConditions(long generation) {
     return List.of(
         new KafkaCondition().setLastTransitionTime(isoNow()).setLastTransitionGeneration(generation)
-            .setType(KafkaCondition.Type.AcccesTokenSecretValid).setReason("").setMessage("")
-            .setStatus(KafkaCondition.Status.Unknown),
+                .setType(KafkaCondition.Type.AcccesTokenSecretValid).setReason("").setMessage("")
+                .setStatus(KafkaCondition.Status.Unknown),
+        new KafkaCondition().setLastTransitionTime(isoNow()).setLastTransitionGeneration(generation)
+                .setType(KafkaCondition.Type.ServiceRegistriesUpToDate).setReason("").setMessage("")
+                .setStatus(KafkaCondition.Status.Unknown),
         new KafkaCondition().setLastTransitionTime(isoNow()).setLastTransitionGeneration(generation)
             .setReason("").setMessage("").setType(KafkaCondition.Type.Finished)
             .setStatus(KafkaCondition.Status.Unknown),
