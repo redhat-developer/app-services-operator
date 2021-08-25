@@ -14,38 +14,39 @@ import io.sundr.builder.annotations.BuildableReference;
 @Version("v1alpha1")
 @Buildable(builderPackage = "io.fabric8.kubernetes.api.builder", editableEnabled = false,
     refs = @BuildableReference(CustomResource.class))
-public class ServiceRegistryConnection  extends CustomResource<ServiceRegistryConnectionSpec, ServiceRegistryConnectionStatus>
-implements Namespaced {
+public class ServiceRegistryConnection
+    extends CustomResource<ServiceRegistryConnectionSpec, ServiceRegistryConnectionStatus>
+    implements Namespaced {
 
 
-    @Override
-    public ServiceRegistryConnectionSpec getSpec() {
-      return super.getSpec();
-    }
-  
-    @Override
-    public void setSpec(ServiceRegistryConnectionSpec spec) {
-      super.setSpec(spec);
-    }
-  
-    @Override
-    public ServiceRegistryConnectionStatus getStatus() {
-      return super.getStatus();
-    }
-  
-    @Override
-    public void setStatus(ServiceRegistryConnectionStatus status) {
-      super.setStatus(status);
-    }
-  
-    @Override
-    public ObjectMeta getMetadata() {
-      return super.getMetadata();
-    }
-  
-    @Override
-    public void setMetadata(ObjectMeta metadata) {
-      super.setMetadata(metadata);
-    }
+  @Override
+  public ServiceRegistryConnectionSpec getSpec() {
+    return super.getSpec();
+  }
+
+  @Override
+  public void setSpec(ServiceRegistryConnectionSpec spec) {
+    super.setSpec(spec);
+  }
+
+  @Override
+  public ServiceRegistryConnectionStatus getStatus() {
+    return super.getStatus();
+  }
+
+  @Override
+  public void setStatus(ServiceRegistryConnectionStatus status) {
+    super.setStatus(status);
+  }
+
+  @Override
+  public ObjectMeta getMetadata() {
+    return super.getMetadata();
+  }
+
+  @Override
+  public void setMetadata(ObjectMeta metadata) {
+    super.setMetadata(metadata);
+  }
 
 }

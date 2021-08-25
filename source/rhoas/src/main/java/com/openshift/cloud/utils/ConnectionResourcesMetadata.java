@@ -25,13 +25,13 @@ public class ConnectionResourcesMetadata {
     return map;
   }
 
-public static Map<String, String> buildServiceMetadata() {
-  var map = new HashMap<String, String>();
-  map.put("converter", "io.apicurio.registry.utils.converter.AvroConverter");
-  map.put("registryGlobalId", "io.apicurio.registry.utils.serde.strategy.GetOrCreateIdStrategy");
-  
-  map.put("provider", "rhoas");
-  map.put("type", "serviceregistry");
-  return map;
-}
+  public static Map<String, String> buildServiceMetadata() {
+    var map = new HashMap<String, String>();
+    map.put("converter", "io.apicurio.registry.utils.converter.AvroConverter");
+    map.put("registryGlobalId", "io.apicurio.registry.utils.serde.strategy.GetOrCreateIdStrategy");
+
+    map.put("provider", "rhoas");
+    map.put("type", "serviceregistry");
+    return map;
+  }
 }

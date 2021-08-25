@@ -14,17 +14,18 @@ import java.util.List;
 
 @ApplicationScoped
 @Alternative
-public class MockServiceRegistryApiClient extends ServiceRegistryApiClient{
+public class MockServiceRegistryApiClient extends ServiceRegistryApiClient {
 
-    @ConfigProperty(name = "rhoas.client.apiBasePath")
-    String clientBasePath;
+  @ConfigProperty(name = "rhoas.client.apiBasePath")
+  String clientBasePath;
 
-    public List<RegistryRest> listRegistries(String accessToken) throws ConditionAwareException {
-            return new ArrayList<>();
-    }
+  public List<RegistryRest> listRegistries(String accessToken) throws ConditionAwareException {
+    return new ArrayList<>();
+  }
 
-    public RegistryRest getServiceRegistryById(String registryId, String accessToken) throws ConditionAwareException {
-        return new RegistryRest();
-    }
+  public RegistryRest getServiceRegistryById(String registryId, String accessToken)
+      throws ConditionAwareException {
+    return new RegistryRest();
+  }
 
 }

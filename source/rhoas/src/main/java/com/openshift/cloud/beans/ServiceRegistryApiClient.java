@@ -35,7 +35,7 @@ public class ServiceRegistryApiClient {
 
   public List<RegistryRest> listRegistries(String accessToken) throws ConditionAwareException {
     try {
-      return createRegistriesClient(accessToken).getRegistries(null,null,null,null).getItems();
+      return createRegistriesClient(accessToken).getRegistries(null, null, null, null).getItems();
     } catch (ApiException e) {
       String message = ConditionUtil.getStandarizedErrorMessage(e.getCode(), e);
       throw new ConditionAwareException(message, e, KafkaCondition.Type.ServiceRegistriesUpToDate,
@@ -44,14 +44,15 @@ public class ServiceRegistryApiClient {
 
   }
 
-public RegistryRest getServiceRegistryById(String registryId, String accessToken)  throws ConditionAwareException {
-  try {
-    return createRegistriesClient(accessToken).getRegistry(registryId);
-  } catch (ApiException e) {
-    String message = ConditionUtil.getStandarizedErrorMessage(e.getCode(), e);
-    throw new ConditionAwareException(message, e, KafkaCondition.Type.FoundServiceRegistryById,
-        KafkaCondition.Status.False, e.getClass().getName(), message);
+  public RegistryRest getServiceRegistryById(String registryId, String accessToken)
+      throws ConditionAwareException {
+    try {
+      return createRegistriesClient(accessToken).getRegistry(registryId);
+    } catch (ApiException e) {
+      String message = ConditionUtil.getStandarizedErrorMessage(e.getCode(), e);
+      throw new ConditionAwareException(message, e, KafkaCondition.Type.FoundServiceRegistryById,
+          KafkaCondition.Status.False, e.getClass().getName(), message);
+    }
   }
-}
 
 }
