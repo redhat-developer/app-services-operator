@@ -100,9 +100,5 @@ spec:
                         type: string
                       lastUpdated:
                         type: string
-                      registryDeploymentId:
-                        type: integer          
-                        format: int64
-                        nullable: true
               type: object
           type: object
