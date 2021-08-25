@@ -129,8 +129,8 @@ public class AccessTokenSecretTool {
         LOG.log(Level.SEVERE,
             String.format("Exchange token failed with error %s", response.body()));
         // Reusing API error but only with status code
-        var apiError =
-            ConditionUtil.getStandarizedErrorMessage(response.statusCode(), new ApiException(response.statusCode(), null));
+        var apiError = ConditionUtil.getStandarizedErrorMessage(response.statusCode(),
+            new ApiException(response.statusCode(), null));
         throw new ConditionAwareException(response.body(), null,
             KafkaCondition.Type.AcccesTokenSecretValid, KafkaCondition.Status.False,
             String.format("Http Error Code %d", response.statusCode()), apiError);
