@@ -144,7 +144,8 @@ public abstract class AbstractCloudServicesController<T extends CustomResource>
     if (resource instanceof KafkaConnection) {
       ConditionUtil.setAllConditionsTrue(((KafkaConnection) resource).getStatus().getConditions());
     } else if (resource instanceof ServiceRegistryConnection) {
-      ConditionUtil.setAllConditionsTrue(((ServiceRegistryConnection) resource).getStatus().getConditions());
+      ConditionUtil
+          .setAllConditionsTrue(((ServiceRegistryConnection) resource).getStatus().getConditions());
     } else if (resource instanceof CloudServicesRequest) {
       ConditionUtil
           .setAllConditionsTrue(((CloudServicesRequest) resource).getStatus().getConditions());
@@ -159,8 +160,8 @@ public abstract class AbstractCloudServicesController<T extends CustomResource>
       ConditionUtil
           .setConditionFromException(((KafkaConnection) resource).getStatus().getConditions(), e);
     } else if (resource instanceof ServiceRegistryConnection) {
-      ConditionUtil
-          .setConditionFromException(((ServiceRegistryConnection) resource).getStatus().getConditions(), e);
+      ConditionUtil.setConditionFromException(
+          ((ServiceRegistryConnection) resource).getStatus().getConditions(), e);
     } else if (resource instanceof CloudServicesRequest) {
       ConditionUtil.setConditionFromException(
           ((CloudServicesRequest) resource).getStatus().getConditions(), e);
@@ -199,8 +200,8 @@ public abstract class AbstractCloudServicesController<T extends CustomResource>
       return ConditionUtil.getCondition(((KafkaConnection) resource).getStatus().getConditions(),
           type);
     } else if (resource instanceof ServiceRegistryConnection) {
-      return ConditionUtil.getCondition(((ServiceRegistryConnection) resource).getStatus().getConditions(),
-          type);
+      return ConditionUtil
+          .getCondition(((ServiceRegistryConnection) resource).getStatus().getConditions(), type);
     } else if (resource instanceof CloudServicesRequest) {
       return ConditionUtil
           .getCondition(((CloudServicesRequest) resource).getStatus().getConditions(), type);

@@ -10,7 +10,7 @@ public class ServiceRegistry {
   public ServiceRegistry() {}
 
   public ServiceRegistry(String id, String registryStatus, String registryUrl, String name,
-                         String lastUpdated) {
+      String lastUpdated) {
     this.id = id;
     this.registryStatus = registryStatus;
     this.registryUrl = registryUrl;
@@ -81,9 +81,7 @@ public class ServiceRegistry {
       return false;
     if (name != null ? !name.equals(that.name) : that.name != null)
       return false;
-      return (lastUpdated != null ? !lastUpdated.equals(that.lastUpdated) : that.lastUpdated != null)
-      return false;
-     
+    return (lastUpdated != null ? !lastUpdated.equals(that.lastUpdated) : that.lastUpdated != null);
   }
 
   @Override

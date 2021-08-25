@@ -71,8 +71,8 @@ public class CloudServicesRequestController
     var registries = new ArrayList<ServiceRegistry>();
 
     registryList.forEach(listItem -> {
-      var serviceRegistry = new ServiceRegistry().setId(listItem.getId()).setName(listItem.getName())
-          .setRegistryUrl(listItem.getRegistryUrl())
+      var serviceRegistry = new ServiceRegistry().setId(listItem.getId())
+          .setName(listItem.getName()).setRegistryUrl(listItem.getRegistryUrl())
           .setRegistryStatus(listItem.getStatus().getValue())
           .setLastUpdated(listItem.getUpdatedAt().toInstant().toString());
 
