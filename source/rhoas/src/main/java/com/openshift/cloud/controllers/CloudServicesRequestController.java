@@ -74,8 +74,7 @@ public class CloudServicesRequestController
       var serviceRegistry = new ServiceRegistry().setId(listItem.getId()).setName(listItem.getName())
           .setRegistryUrl(listItem.getRegistryUrl())
           .setRegistryStatus(listItem.getStatus().getValue())
-          .setLastUpdated(listItem.getUpdatedAt().toInstant().toString())
-          .setRegistryDeploymentId(listItem.getRegistryDeploymentId());
+          .setLastUpdated(listItem.getUpdatedAt().toInstant().toString());
 
       registries.add(serviceRegistry);
     });

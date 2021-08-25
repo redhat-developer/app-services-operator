@@ -6,18 +6,16 @@ public class ServiceRegistry {
   private String registryUrl;
   private String name;
   private String lastUpdated;
-  private Integer registryDeploymentId;
 
   public ServiceRegistry() {}
 
   public ServiceRegistry(String id, String registryStatus, String registryUrl, String name,
-                         String lastUpdated, Integer registryDeploymentId) {
+                         String lastUpdated) {
     this.id = id;
     this.registryStatus = registryStatus;
     this.registryUrl = registryUrl;
     this.name = name;
     this.lastUpdated = lastUpdated;
-    this.registryDeploymentId = registryDeploymentId;
   }
 
   public String getId() {
@@ -65,15 +63,6 @@ public class ServiceRegistry {
     return this;
   }
 
-  public Integer getRegistryDeploymentId() {
-    return registryDeploymentId;
-  }
-
-  public ServiceRegistry setRegistryDeploymentId(Integer registryDeploymentId) {
-    this.registryDeploymentId = registryDeploymentId;
-    return this;
-  }
-
   @Override
   public boolean equals(Object o) {
     if (this == o)
@@ -92,10 +81,9 @@ public class ServiceRegistry {
       return false;
     if (name != null ? !name.equals(that.name) : that.name != null)
       return false;
-    if (lastUpdated != null ? !lastUpdated.equals(that.lastUpdated) : that.lastUpdated != null)
+      return (lastUpdated != null ? !lastUpdated.equals(that.lastUpdated) : that.lastUpdated != null)
       return false;
-    return registryDeploymentId != null ? registryDeploymentId.equals(that.registryDeploymentId)
-        : that.registryDeploymentId == null;
+     
   }
 
   @Override
@@ -105,7 +93,6 @@ public class ServiceRegistry {
     result = 31 * result + (registryUrl != null ? registryUrl.hashCode() : 0);
     result = 31 * result + (name != null ? name.hashCode() : 0);
     result = 31 * result + (lastUpdated != null ? lastUpdated.hashCode() : 0);
-    result = 31 * result + (registryDeploymentId != null ? registryDeploymentId.hashCode() : 0);
     return result;
   }
 
@@ -117,7 +104,6 @@ public class ServiceRegistry {
     sb.append(", registryUrl='").append(registryUrl).append('\'');
     sb.append(", name='").append(name).append('\'');
     sb.append(", lastUpdated='").append(lastUpdated).append('\'');
-    sb.append(", registryDeploymentId=").append(registryDeploymentId);
     sb.append('}');
     return sb.toString();
   }
