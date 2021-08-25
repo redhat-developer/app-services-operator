@@ -13,45 +13,50 @@ import com.openshift.cloud.v1alpha.models.ServiceRegistryConnection;
 
 import io.javaoperatorsdk.operator.api.Context;
 
-public class ServiceRegistryConnectionController extends AbstractCloudServicesController<ServiceRegistryConnection> {
+public class ServiceRegistryConnectionController
+    extends AbstractCloudServicesController<ServiceRegistryConnection> {
 
-    @Inject
-    ServiceRegistryApiClient apiClient;
+  @Inject
+  ServiceRegistryApiClient apiClient;
 
-    @Inject
-    AccessTokenSecretTool accessTokenSecretTool;
+  @Inject
+  AccessTokenSecretTool accessTokenSecretTool;
 
-    @Override
-    void doCreateOrUpdateResource(ServiceRegistryConnection resource, Context<ServiceRegistryConnection> context)
-            throws Throwable {
+  @Override
+  void doCreateOrUpdateResource(ServiceRegistryConnection resource,
+      Context<ServiceRegistryConnection> context) throws Throwable {
 
-        validateResource(resource);
+    validateResource(resource);
 
-        var registryId = resource.getSpec().getServiceRegistryId();
-        var accessTokenSecretName = resource.getSpec().getAccessTokenSecretName();
-        var serviceAccountSecretName = resource.getSpec().getCredentials().getServiceAccountSecretName();
-        var namespace = resource.getMetadata().getNamespace();
+    var registryId = resource.getSpec().getServiceRegistryId();
+    var accessTokenSecretName = resource.getSpec().getAccessTokenSecretName();
+    var serviceAccountSecretName =
+        resource.getSpec().getCredentials().getServiceAccountSecretName();
+    var namespace = resource.getMetadata().getNamespace();
 
-        String accessToken = accessTokenSecretTool.getAccessToken(accessTokenSecretName, namespace);
+    String accessToken = accessTokenSecretTool.getAccessToken(accessTokenSecretName, namespace);
 
-        var registry = apiClient.getServiceRegistryById(registryId, accessToken);
-        var status = resource.getStatus();
-        status.setMessage("Created");
-        status.setUpdated(Instant.now().toString());
-        status.setRegistryUrl(registry.getRegistryUrl());
-        status.setServiceAccountSecretName(serviceAccountSecretName);
-        status.setMetadata(ConnectionResourcesMetadata.buildServiceMetadata());
+    var registry = apiClient.getServiceRegistryById(registryId, accessToken);
+    var status = resource.getStatus();
+    status.setMessage("Created");
+    status.setUpdated(Instant.now().toString());
+    status.setRegistryUrl(registry.getRegistryUrl());
+    status.setServiceAccountSecretName(serviceAccountSecretName);
+    status.setMetadata(ConnectionResourcesMetadata.buildServiceMetadata());
 
-    }
+  }
 
-    private void validateResource(ServiceRegistryConnection resource) throws InvalidUserInputException {
-        ConditionUtil.assertNotNull(resource.getSpec(), "spec");
-        ConditionUtil.assertNotNull(resource.getSpec().getAccessTokenSecretName(), "spec.accessTokenSecretName");
-        ConditionUtil.assertNotNull(resource.getSpec().getCredentials(), "spec.credentials");
-        ConditionUtil.assertNotNull(resource.getSpec().getCredentials().getServiceAccountSecretName(),
-                "spec.credentials.serviceAccountSecretName");
-        ConditionUtil.assertNotNull(resource.getSpec().getServiceRegistryId(), "spec.serviceRegistryId");
-        ConditionUtil.assertNotNull(resource.getMetadata().getNamespace(), "metadata.namespace");
-    }
+  private void validateResource(ServiceRegistryConnection resource)
+      throws InvalidUserInputException {
+    ConditionUtil.assertNotNull(resource.getSpec(), "spec");
+    ConditionUtil.assertNotNull(resource.getSpec().getAccessTokenSecretName(),
+        "spec.accessTokenSecretName");
+    ConditionUtil.assertNotNull(resource.getSpec().getCredentials(), "spec.credentials");
+    ConditionUtil.assertNotNull(resource.getSpec().getCredentials().getServiceAccountSecretName(),
+        "spec.credentials.serviceAccountSecretName");
+    ConditionUtil.assertNotNull(resource.getSpec().getServiceRegistryId(),
+        "spec.serviceRegistryId");
+    ConditionUtil.assertNotNull(resource.getMetadata().getNamespace(), "metadata.namespace");
+  }
 
 }

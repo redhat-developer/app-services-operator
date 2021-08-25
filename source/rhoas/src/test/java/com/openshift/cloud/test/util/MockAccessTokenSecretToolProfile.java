@@ -10,6 +10,7 @@ public class MockAccessTokenSecretToolProfile implements QuarkusTestProfile {
   @Override
   public Set<Class<?>> getEnabledAlternatives() {
 
-    return Set.of(MockAccessTokenSecretTool.class, MockKafkaApiClient.class, MockServiceRegistryApiClient.class);
+    return Set.of(MockAccessTokenSecretTool.class, MockKafkaApiClient.class,
+        MockServiceRegistryApiClient.class);
   }
 }
