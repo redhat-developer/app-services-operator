@@ -9,7 +9,6 @@ public class ServiceRegistryConnectionStatus {
 
   private String message;
   private String updated;
-  private String direction;
   private String registryUrl;
   private String serviceAccountSecretName;
   private List<KafkaCondition> conditions;
@@ -19,14 +18,6 @@ public class ServiceRegistryConnectionStatus {
 
   public String getMessage() {
     return message;
-  }
-
-  public String getDirection() {
-    return direction;
-  }
-
-  public void setDirection(String direction) {
-    this.direction = direction;
   }
 
   public void setMessage(String message) {
