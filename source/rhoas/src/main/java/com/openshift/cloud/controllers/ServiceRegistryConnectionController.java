@@ -10,6 +10,7 @@ import com.openshift.cloud.utils.ConnectionResourcesMetadata;
 import com.openshift.cloud.utils.InvalidUserInputException;
 import com.openshift.cloud.v1alpha.models.ServiceRegistryConnection;
 
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import io.javaoperatorsdk.operator.api.Context;
 
@@ -21,6 +22,9 @@ public class ServiceRegistryConnectionController
 
   @Inject
   AccessTokenSecretTool accessTokenSecretTool;
+
+  @ConfigProperty(name = "rhoas.client.srsOAuthHost", defaultValue = "https://identity.api.stage.openshift.com/auth/realms/rhoas")
+  String oAuthHost;
 
   @Override
   void doCreateOrUpdateResource(ServiceRegistryConnection resource,
@@ -42,7 +46,7 @@ public class ServiceRegistryConnectionController
     status.setUpdated(Instant.now().toString());
     status.setRegistryUrl(registry.getRegistryUrl());
     status.setServiceAccountSecretName(serviceAccountSecretName);
-    status.setMetadata(ConnectionResourcesMetadata.buildServiceMetadata());
+    status.setMetadata(ConnectionResourcesMetadata.buildServiceMetadata(oAuthHost));
 
   }
 
