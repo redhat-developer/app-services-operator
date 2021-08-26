@@ -7,6 +7,8 @@ metadata:
     ## Additional binding metadata required for Quarkus
     service.binding/converter: 'path={.status.metadata.converter}'
     service.binding/registryGlobalId: 'path={.status.metadata.registryGlobalId}'
+    service.binding/type: 'path={.status.metadata.type}'
+    service.binding/direction: 'path={.status.metadata.direction}'
      ## OAUTH BEARER credentials
     service.binding/clientId: >-
            path={.status.serviceAccountSecretName},objectType=Secret,sourceKey=client-id
@@ -39,7 +41,9 @@ spec:
               accessTokenSecretName:
                 type: string
               serviceRegistryId:
-                type: integer
+                type: string
+              direction:
+                type: string                
               credentials:
                 properties:
                   serviceAccountSecretName:

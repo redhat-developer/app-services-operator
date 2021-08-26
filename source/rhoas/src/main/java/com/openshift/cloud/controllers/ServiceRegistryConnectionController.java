@@ -23,7 +23,8 @@ public class ServiceRegistryConnectionController
   @Inject
   AccessTokenSecretTool accessTokenSecretTool;
 
-  @ConfigProperty(name = "rhoas.client.srsOAuthHost", defaultValue = "https://identity.api.stage.openshift.com/auth/realms/rhoas")
+  @ConfigProperty(name = "rhoas.client.srsOAuthHost",
+      defaultValue = "https://identity.api.stage.openshift.com/auth/realms/rhoas")
   String oAuthHost;
 
   @Override
@@ -45,6 +46,7 @@ public class ServiceRegistryConnectionController
     status.setMessage("Created");
     status.setUpdated(Instant.now().toString());
     status.setRegistryUrl(registry.getRegistryUrl());
+    status.setDirection(resource.getSpec().getDirection());
     status.setServiceAccountSecretName(serviceAccountSecretName);
     status.setMetadata(ConnectionResourcesMetadata.buildServiceMetadata(oAuthHost));
 

@@ -1,7 +1,6 @@
 package com.openshift.cloud.v1alpha.models;
 
 import io.sundr.builder.annotations.Buildable;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -10,13 +9,24 @@ public class ServiceRegistryConnectionStatus {
 
   private String message;
   private String updated;
+  private String direction;
   private String registryUrl;
   private String serviceAccountSecretName;
   private List<KafkaCondition> conditions;
   private Map<String, String> metadata;
 
+
+
   public String getMessage() {
     return message;
+  }
+
+  public String getDirection() {
+    return direction;
+  }
+
+  public void setDirection(String direction) {
+    this.direction = direction;
   }
 
   public void setMessage(String message) {
