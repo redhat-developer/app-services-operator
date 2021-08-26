@@ -46,9 +46,8 @@ public class ServiceRegistryConnectionController
     status.setMessage("Created");
     status.setUpdated(Instant.now().toString());
     status.setRegistryUrl(registry.getRegistryUrl());
-    status.setDirection(resource.getSpec().getDirection());
     status.setServiceAccountSecretName(serviceAccountSecretName);
-    status.setMetadata(ConnectionResourcesMetadata.buildServiceMetadata(oAuthHost));
+    status.setMetadata(ConnectionResourcesMetadata.buildServiceMetadata(oAuthHost, resource.getSpec().getDirection()));
 
   }
 
