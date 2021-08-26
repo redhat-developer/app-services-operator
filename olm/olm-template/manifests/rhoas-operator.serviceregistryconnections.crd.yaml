@@ -5,8 +5,6 @@ metadata:
   annotations:
     service.binding/registryUrl: 'path={.status.registryUrl}'
     ## Additional binding metadata required for Quarkus
-    service.binding/converter: 'path={.status.metadata.converter}'
-    service.binding/registryGlobalId: 'path={.status.metadata.registryGlobalId}'
     service.binding/type: 'path={.status.metadata.type}'
     service.binding/direction: 'path={.status.metadata.direction}'
      ## OAUTH BEARER credentials
@@ -17,7 +15,6 @@ metadata:
     service.binding/oAuthHost: 'path={.status.metadata.oAuthHost}'  
     ## Lowercase versions for old versions of quarkus (to be removed later)
     service.binding/registryurl: 'path={.status.registryUrl}'
-    service.binding/registryglobalid: 'path={.status.metadata.registryGlobalId}'
 spec:
   group: rhoas.redhat.com
   names:
