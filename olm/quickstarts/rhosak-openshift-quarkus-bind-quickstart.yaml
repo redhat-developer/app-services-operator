@@ -1,9 +1,9 @@
 apiVersion: console.openshift.io/v1
 kind: ConsoleQuickStart
 metadata:
-  name: rhosak-devsandbox-quarkus-bind-cli-toolscontainer-quickstart
+  name: rhosak-openshift-quarkus-bind-cli-quickstart
 spec:
-  displayName: Binding an application to Red Hat OpenShift Streams for Apache Kafka using the CLI
+  displayName: Binding a Quarkus application to Red Hat OpenShift Streams for Apache Kafka using the CLI
   icon: >-
     data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPCEtLSBHZW5lcmF0b3I6IEFk
     b2JlIElsbHVzdHJhdG9yIDI1LjIuMCwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246

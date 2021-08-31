@@ -1,0 +1,357 @@
+apiVersion: console.openshift.io/v1
+kind: ConsoleQuickStart
+metadata:
+  name: rhosak-openshift-nodejs-bind-console-quickstart
+spec:
+  displayName: Binding a Node.js application to Red Hat OpenShift Streams for Apache Kafka using the OpenShift web console
+  icon: >-
+    data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPCEtLSBHZW5lcmF0b3I6IEFk
+    b2JlIElsbHVzdHJhdG9yIDI1LjIuMCwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246
+    IDYuMDAgQnVpbGQgMCkgIC0tPgo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5z
+    PSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMu
+    b3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IgoJIHZpZXdCb3g9IjAgMCAzNyAzNyIgc3R5
+    bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgMzcgMzc7IiB4bWw6c3BhY2U9InByZXNlcnZl
+    Ij4KPHN0eWxlIHR5cGU9InRleHQvY3NzIj4KCS5zdDB7ZmlsbDojRUUwMDAwO30KCS5zdDF7Zmls
+    bDojRkZGRkZGO30KPC9zdHlsZT4KPGc+Cgk8cGF0aCBkPSJNMjcuNSwwLjVoLTE4Yy00Ljk3LDAt
+    OSw0LjAzLTksOXYxOGMwLDQuOTcsNC4wMyw5LDksOWgxOGM0Ljk3LDAsOS00LjAzLDktOXYtMThD
+    MzYuNSw0LjUzLDMyLjQ3LDAuNSwyNy41LDAuNUwyNy41LDAuNXoiCgkJLz4KCTxwYXRoIGNsYXNz
+    PSJzdDAiIGQ9Ik0xNi41LDE4LjEyYy0xLjcyLDAtMy4xMi0xLjQtMy4xMi0zLjEyczEuNC0zLjEy
+    LDMuMTItMy4xMnMzLjEyLDEuNCwzLjEyLDMuMTJTMTguMjIsMTguMTIsMTYuNSwxOC4xMnoKCQkg
+    TTE2LjUsMTMuMTJjLTEuMDMsMC0xLjg4LDAuODQtMS44OCwxLjg4czAuODQsMS44OCwxLjg4LDEu
+    ODhzMS44OC0wLjg0LDEuODgtMS44OFMxNy41MywxMy4xMiwxNi41LDEzLjEyeiIvPgoJPHBhdGgg
+    Y2xhc3M9InN0MSIgZD0iTTEyLjk0LDExLjA2bC0yLTJjLTAuMDgtMC4wOC0wLjE4LTAuMTMtMC4y
+    OS0wLjE1Yy0wLjAzLTAuMDEtMC4wNS0wLjAxLTAuMDctMC4wMQoJCWMtMC4xMS0wLjAxLTAuMjIt
+    MC4wMS0wLjMyLDAuMDNjMCwwLDAsMCwwLDBjLTAuMDcsMC4wMy0wLjEzLDAuMDctMC4xOCwwLjEy
+    Yy0wLjAxLDAuMDEtMC4wMSwwLjAxLTAuMDIsMC4wMWwtMiwyCgkJYy0wLjI0LDAuMjQtMC4yNCww
+    LjY0LDAsMC44OGMwLjEyLDAuMTIsMC4yOCwwLjE4LDAuNDQsMC4xOHMwLjMyLTAuMDYsMC40NC0w
+    LjE4bDAuOTMtMC45M1YyMi41YzAsMC4zNSwwLjI4LDAuNjIsMC42MiwwLjYyCgkJczAuNjItMC4y
+    OCwwLjYyLTAuNjJWMTEuMDFsMC45MywwLjkzYzAuMjQsMC4yNCwwLjY0LDAuMjQsMC44OCwwQzEz
+    LjE5LDExLjcsMTMuMTksMTEuMywxMi45NCwxMS4wNnoiLz4KCTxwYXRoIGNsYXNzPSJzdDAiIGQ9
+    Ik0yMi41LDE4LjEyYy0wLjM0LDAtMC42Mi0wLjI4LTAuNjItMC42MnYtNWMwLTAuMzUsMC4yOC0w
+    LjYyLDAuNjItMC42MnMwLjYyLDAuMjgsMC42MiwwLjYydjUKCQlDMjMuMTIsMTcuODUsMjIuODQs
+    MTguMTIsMjIuNSwxOC4xMnoiLz4KCTxwYXRoIGNsYXNzPSJzdDAiIGQ9Ik0yMC41LDI1LjEyYy0x
+    LjcyLDAtMy4xMi0xLjQtMy4xMi0zLjEyczEuNC0zLjEyLDMuMTItMy4xMnMzLjEyLDEuNCwzLjEy
+    LDMuMTJTMjIuMjIsMjUuMTIsMjAuNSwyNS4xMnoKCQkgTTIwLjUsMjAuMTJjLTEuMDMsMC0xLjg4
+    LDAuODQtMS44OCwxLjg4czAuODQsMS44OCwxLjg4LDEuODhzMS44OC0wLjg0LDEuODgtMS44OFMy
+    MS41MywyMC4xMiwyMC41LDIwLjEyeiIvPgoJPHBhdGggY2xhc3M9InN0MSIgZD0iTTI4Ljk0LDI1
+    LjA2Yy0wLjI0LTAuMjQtMC42NC0wLjI0LTAuODgsMGwtMC45MywwLjkzVjEyLjVjMC0wLjM1LTAu
+    MjgtMC42Mi0wLjYyLTAuNjJzLTAuNjIsMC4yOC0wLjYyLDAuNjIKCQl2MTMuNDlsLTAuOTMtMC45
+    M2MtMC4yNC0wLjI0LTAuNjQtMC4yNC0wLjg4LDBjLTAuMjQsMC4yNC0wLjI0LDAuNjQsMCwwLjg4
+    bDIsMmMwLjA2LDAuMDYsMC4xMywwLjExLDAuMjEsMC4xNAoJCWMwLjA4LDAuMDMsMC4xNiwwLjA1
+    LDAuMjQsMC4wNWMwLjA4LDAsMC4xNi0wLjAyLDAuMjQtMC4wNWMwLDAsMCwwLDAsMGMwLjA3LTAu
+    MDMsMC4xMy0wLjA3LDAuMTgtMC4xMgoJCWMwLjAxLTAuMDEsMC4wMS0wLjAxLDAuMDItMC4wMWwy
+    LTJDMjkuMTksMjUuNywyOS4xOSwyNS4zLDI4Ljk0LDI1LjA2eiIvPgoJPHBhdGggY2xhc3M9InN0
+    MCIgZD0iTTE0LjUsMjUuMTJjLTAuMzQsMC0wLjYyLTAuMjgtMC42Mi0wLjYydi01YzAtMC4zNSww
+    LjI4LTAuNjIsMC42Mi0wLjYyczAuNjIsMC4yOCwwLjYyLDAuNjJ2NQoJCUMxNS4xMiwyNC44NSwx
+    NC44NCwyNS4xMiwxNC41LDI1LjEyeiIvPgoJPHBhdGggY2xhc3M9InN0MCIgZD0iTTI2LjUsMTgu
+    MTJjLTAuMzQsMC0wLjYyLTAuMjgtMC42Mi0wLjYydi01YzAtMC4zNSwwLjI4LTAuNjIsMC42Mi0w
+    LjYyczAuNjIsMC4yOCwwLjYyLDAuNjJ2NQoJCUMyNy4xMiwxNy44NSwyNi44NCwxOC4xMiwyNi41
+    LDE4LjEyeiIvPgoJPHBhdGggY2xhc3M9InN0MCIgZD0iTTEwLjUsMjUuMTJjLTAuMzQsMC0wLjYy
+    LTAuMjgtMC42Mi0wLjYydi01YzAtMC4zNSwwLjI4LTAuNjIsMC42Mi0wLjYyczAuNjIsMC4yOCww
+    LjYyLDAuNjJ2NQoJCUMxMS4xMiwyNC44NSwxMC44NCwyNS4xMiwxMC41LDI1LjEyeiIvPgo8L2c+
+    Cjwvc3ZnPgo=
+  tags:
+    - streams
+    - kafka
+    - nodejs
+  durationMinutes: 15
+  description: Binding an application to Red Hat OpenShift Streams for Apache Kafka using the OpenShift web console
+  prerequisites:
+    - Your OpenShift cluster is running on OpenShift 4.8 or later.
+    - You've completed the **Connecting OpenShift to Red Hat OpenShift Streams for Apache Kafka using the CLI** quick start.
+    - You have privileges to deploy applications in the OpenShift project that you connected your Kafka instance to.
+    - You've installed [Git](https://github.com/git-guides/).
+    - Your Kafka instance in [Streams for Apache Kafka](https://console.redhat.com/beta/application-services/streams/) is in the **Ready** state.
+
+  introduction: |-
+      ### This quick start shows how to use the OpenShift web console to bind an example Node.js application to a Kafka instance in Red Hat OpenShift Streams for Apache Kafka.
+
+      As a developer of applications and services, you can connect applications running on OpenShift to Kafka instances in Streams for Apache Kafka. Specifically, you can use a specialized Operator called the Service Binding Operator to automatically provide an application with the parameters required to connect to a Kafka instance. This process is called *service binding*.
+
+      In this quick start, you'll use the OpenShift web console to bind an example Node.js application to a Kafka instance. [Node.js](https://nodejs.org/en/about/) is a server-side JavaScript runtime that's designed to build scalable network applications. Node.js provides an I/O model based on events and non-blocking operations, which enables efficient applications.
+
+      When you bind a Kafka instance with an application, the Service Binding Operator automatically injects connection parameters as files into the pod for the application. The example Node.js application uses the `kube-service-bindings` [package](https://www.npmjs.com/package/kube-service-bindings). This means that the application automatically detects the injected connection parameters and converts the information into the format used by two popular Node.js clients; [KafkaJS](https://kafka.js.org/) and [node-rdkafka](https://github.com/blizzard/node-rdkafka). This automatic injection and detection of connection parameters eliminates the need for manual configuration of the application.
+
+      #### Prerequisites
+      - Your OpenShift cluster is running on OpenShift 4.8 or later.
+      - You've completed the **Connecting OpenShift to Red Hat OpenShift Streams for Apache Kafka using the CLI** quick start.
+      - You have privileges to deploy applications in the OpenShift project that you connected your Kafka instance to.
+      - Your Kafka instance in [Streams for Apache Kafka](https://console.redhat.com/beta/application-services/streams/) is in the **Ready** state.
+
+  tasks:
+    - title: Installing the Service Binding Operator
+      description: |-
+        To bind Kafka instances in Streams for Apache Kafka to applications on OpenShift, you need to install the Service Binding Operator on your OpenShift cluster. In this task, you'll install the Service Binding Operator.
+
+        #### Prerequisites
+        - You can access your OpenShift cluster with the `dedicated-admin` role (OpenShift Dedicated) or `cluster-admin` role. Only these roles have privileges to install an Operator on a cluster.
+
+        #### Procedure
+
+        1. Ensure that you're logged in to the OpenShift web console with the `dedicated-admin` role (OpenShift Dedicated) or `cluster-admin` role.
+
+        1. Click the [perspective switcher]{{highlight qs-perspective-switcher}}.  Switch to the **Administrator** perspective.
+
+        1. In the left menu, click **Operators** > **OperatorHub**.
+
+        1. In the **Filter by keyword** field, enter `Service Binding`.
+
+        1. In the filtered results, select **Service Binding Operator**.
+
+           An information sidebar for the Service Binding Operator opens.
+
+        1. In the sidebar, review the information about the Service Binding Operator and then click **Install**.
+
+           The **Install Operator** page opens.
+
+        1. On the **Install Operator** page, perform the following actions:
+
+            i. For the **Update channel** option, select `beta`.
+
+            ii. For the **Installation mode** option, ensure that `All namespaces on the cluster` is selected.
+
+            iii. For the **Installed Namespace** and **Update approval** options, keep the default values.
+
+            iv. Click **Install**.
+
+         1. When the installation process is finished, click **View Operator** to see the Operator details.
+
+            The **Operator details** page for the Service Binding Operator opens in the **Installed Operators** section of the web console.
+
+            On the **Operator details** page, the **Status** field should show a value of `Succeeded`.
+            Also, you should see that the Service Binding Operator is installed in the `openshift-operators` namespace.
+      review:
+        instructions: |-
+          #### Verify that you successfully installed the Service Binding Operator
+           * Did the **Operator details** page of the Service Binding Operator open?
+           * Did the the **Status** field on the **Operator details** page show a value of `Succeeded`?
+        failedTaskHelp: This task isn’t verified yet. Try the task again.
+      summary:
+        success: >-
+          You've installed the Service Binding Operator. You're ready to deploy an example Node.js application.
+        failed: Try the steps again.
+
+    - title: Deploying an example Node.js application
+      description: |-
+        In this task, you'll deploy an example Node.js application in the same project that you previously connected your Kafka instance to. After you understand the concepts and tasks in this quick start, you can use your own Node.js applications with Streams for Apache Kafka in the same way.
+
+        To deploy the example application, you'll use sample code from the Nodeshift Application Starters [reactive-example](https://github.com/nodeshift-starters/reactive-example) repository in GitHub. In particular, you'll install the following components of the Node.js application:
+
+        - A `producer-backend` component that generates random country names and sends these names to a topic in your Kafka instance.
+        - A `consumer-backend` component that consumes the country names from the Kafka topic.
+
+        #### Prerequisites
+        - You've completed the **Connecting OpenShift to Red Hat OpenShift Streams for Apache Kafka using the CLI** quick start.
+        - You have privileges to deploy applications in the OpenShift project that you connected your Kafka instance to.
+
+        #### Procedure
+
+        1. Log in to the OpenShift web console with privileges to deploy applications in the project that you previously connected your Kafka instance to.
+
+        1. Click the [perspective switcher]{{highlight qs-perspective-switcher}}. Switch to the **Developer** perspective.
+
+           The **Topology** page opens.
+
+        1. Ensure that the current OpenShift project is the one you previously connected your Kafka instance to.
+
+            i. At the top of the **Topology** page, click the **Project** drop-down menu.
+
+            ii. Select the project that you previously connected your Kafka instance to.
+
+        1. Log in to the OpenShift CLI using a token.
+
+            i. In the upper-right corner of the console, next to your user name, click the drop-down menu. Select **Copy login command**.
+               A new page opens.
+
+            ii. Click the **Display Token** link.
+
+            iii. In the section entitled **Log in with this token**, copy the full `oc login` command shown.
+
+            iv. On your computer, open a command-line window.
+
+            v. On the command line, paste the login command you copied. Right-click on the command line and select **Paste**. The following code shows an example.
+
+            **Logging in to the OpenShift CLI using a token**
+            ```
+            $ oc login --token=sha256~0WJOGcha7EOAkCmJpSSb6pyo2EawSUwZJKDEw3c-Ox4 --server=https://example.com:6443
+            ```
+            You should see output confirming that you're logged in to your OpenShift cluster and the current project that you're using. The current project should be the one that you set earlier in this task.
+
+        1. On the command line, clone the Nodeshift Application Starters [reactive-example](https://github.com/nodeshift-starters/reactive-example) repository from GitHub.
+
+           **Cloning the reactive-example repository**
+           ```
+           $ git clone https://github.com/nodeshift-starters/reactive-example.git
+           ```
+        1. Navigate to the `reactive-example` directory of the repository that you cloned.
+
+           **Navigating to the reactive-example directory**
+           ```
+           $ cd reactive-example
+           ```
+
+        1. Navigate to the directory for the consumer component. Use Node Package Manager (npm) to install the dependencies for this component.
+
+           **Installing dependencies for the consumer component**
+           ```
+           $ cd consumer-backend
+           $ npm install
+           ```
+
+        1. Build the consumer component and deploy it to your OpenShift project.
+
+           **Deploying to OpenShift**
+           ```
+           $ npm run openshift
+           ```
+
+        1. In the OpenShift web console, ensure that you're on the [Topology]{{highlight qs-nav-topology}} page.
+
+           You should see an icon for the consumer component that you deployed. The component is a `DeploymentConfig` object and is labelled `DC`. After some time, OpenShift completes the deployment.
+
+        1. Click the icon for the consumer component.
+
+           A sidebar opens with the **Resources** tab displayed. Under **Pods**, you should see a single pod.
+
+        1. Next to the name of the pod, click **View logs**.
+
+           In the logs of the pod for the consumer component, you should see errors indicating that this component can't connect to Kafka. You'll establish this connection in a later task.
+
+        1. On the command line, in the repository that you cloned, navigate to the directory for the producer component. Use Node Package Manager to install the dependencies for this component.
+
+           **Installing dependencies for the producer component**
+           ```
+           $ cd ..
+           $ cd producer-backend
+           $ npm install
+           ```
+
+        1. Build the producer component and deploy it to your OpenShift project.
+
+           **Deploying to OpenShift**
+           ```
+           $ npm run openshift
+           ```
+           You should see an icon for the producer component that you deployed. The producer component is also a `DeploymentConfig` object and labelled `DC`. After some time, OpenShift completes the deployment.
+
+        1. Open the logs of the pod for the producer component, in the same way that you did for the consumer component.
+
+           In the logs, you should see errors indicating that the producer component can't connect to Kafka. You'll also establish this connection in a later task.
+
+      review:
+        instructions: |-
+          #### Verify that you successfully deployed the producer and consumer components of the example Node.js application
+           * Did you see the `producer-backend` and `consumer-backend` components of the application on the **Topology** page of your project?
+           * Did the logs of the pod for each component show that the component couldn't connect to a Kafka instance?
+        failedTaskHelp: This task isn’t verified yet. Try the task again.
+      summary:
+        success: >-
+          You've successfully deployed the producer and consumer components of the Node.js application to your OpenShift project.
+        failed: Try the steps again.
+
+    - title: Creating a Kafka topic for your Node.js application
+      description: |-
+        In the previous task, you deployed the producer and consumer components of an example Node.js application. These components use a Kafka topic called `countries` to produce and consume messages. In this task, you'll create the `countries` topic in your Kafka instance.
+
+        #### Prerequisites
+        - Your Kafka instance in [Streams for Apache Kafka](https://console.redhat.com/beta/application-services/streams/) is in the **Ready** state.
+
+        #### Procedure
+
+        1. In your web browser, open the [Kafka Instances](https://console.redhat.com/beta/application-services/streams/kafkas) page of the Streams for Apache Kafka web console. Click the name of the Kafka instance that you want to add a topic to.
+
+        1. Click **Create topic** and follow the guided steps to define the topic details. Click **Next** to complete each step and click **Finish** to complete the setup.
+
+           Specify the following values:
+
+           **Topic name**: ```countries```.
+
+           **Partitions**: ```1```.
+
+           **Retention time**: ```1 day```
+
+           **Replicas**: By default, this option is preconfigured to `3` replicas and `2` minimum in-sync-replicas.
+
+           After you complete the topic setup, the new Kafka topic is listed in the topics table. You're now ready to bind the components of the example Node.js application to your Kafka instance, so that the application can use the topic to produce and consume messages.
+
+      review:
+        instructions: |-
+          #### Verify that you successfully created the Kafka topic
+          - Was the `countries` topic listed in the topics table?
+        failedTaskHelp: This task isn’t verified yet. Try the task again.
+      summary:
+        success: >-
+              You successfully created the `countries` topic used by the example Node.js application. You're now ready to bind the components of the application to your Kafka instance.
+        failed: Try the steps again.
+
+    - title: Binding the Node.js application to your Kafka instance
+      description: |-
+
+        In this task, you'll use the OpenShift web console to bind your Kafka instance to the producer and consumer components of the example Node.js application that you deployed. When you perform this binding, the Service Binding Operator injects connection parameters as files into the pod for each component.
+
+        The example Node.js application uses the `kube-service-bindings` [package](https://www.npmjs.com/package/kube-service-bindings). This means that the application automatically detects and uses the injected connection parameters.
+
+        #### Prerequisites
+        - You've completed the **Connecting OpenShift to Red Hat OpenShift Streams for Apache Kafka using the CLI** quick start.
+        - You've deployed the producer and consumer components of the example Node.js application.
+        - Your Kafka instance in [Streams for Apache Kafka](https://console.redhat.com/beta/application-services/streams/) is in the **Ready** state.
+        - You've created the `countries` topic in your Kafka instance.
+
+        #### Procedure
+
+        1. Ensure that you're logged in to the OpenShift web console as the same user who deployed the components of the Node.js application earlier in this quick start.
+
+        1. Click the [perspective switcher]{{highlight qs-perspective-switcher}}. Switch to the **Developer** perspective.
+
+           The **Topology** page opens.
+
+        1. Ensure that the current OpenShift project is the one you previously connected your Kafka instance to.
+
+            i. At the top of the **Topology** page, click the **Project** drop-down menu.
+
+            ii. Select the project that you previously connected your Kafka instance to.
+
+            On the **Topology** page for your project, you should see an icon for the `KafkaConnection` object that was created when you connected a Kafka instance to the project. The icon for the `KafkaConnection` object is labelled `AKC`.
+
+            You should also see icons for the producer and consumer components that you deployed. Each component is a `DeploymentConfig` object and is labelled `DC`.
+
+        1. Hover the mouse pointer over the icon for the consumer component.
+
+           An arrow with a dotted line appears from the icon.
+
+        1. Left-click and drag the head of the arrow until it's directly over the icon for the `KafkaConnection` object.
+
+           A tooltip appears over the icon for the `KafkaConnection` object. The tooltip indicates that you're about to create a binding connection.
+
+        1. Release the left mouse button to create the binding connection.
+
+           When you create the binding connection, the Service Binding Operator injects connection parameters as files into the pod for the consumer component. The `kube-service-bindings` [package](https://www.npmjs.com/package/kube-service-bindings) used by the consumer component automatically detects these files and converts the information into the format required by the KafkaJS client that the component uses by default.
+
+        1. To bind the producer component to the `KafkaConnection` object, drag a connection to the `KafkaConnection` object in the same way that you did for the consumer component.
+
+        1. Click the icon for the producer component.
+
+           A sidebar opens with the **Resources** tab displayed. Under **Pods**, you still see a single pod corresponding to the component.
+
+        1. Next to the name of the pod, click **View logs**.
+
+           You should now see that the producer has connected to the Kafka instance. The producer generates random country names and sends these as messages to the `countries` Kafka topic that you created.
+
+        1. Open the logs for the pod of the consumer component, in the same way that you did for the producer component.
+
+           You should now see that the consumer has connected to the Kafka instance. The consumer displays the same country names that the producer sends to the `countries` Kafka topic, and in the same order.
+
+      review:
+        instructions: |-
+          #### Verify that you successfully bound the components of your Node.js application to your Kakfa instance in OpenShift Streams for Apache Kafka
+          - Did the logs for each component show that the component was connected to a Kafka instance?
+          - Did the logs for the consumer component display the same country names generated by the producer component?
+        failedTaskHelp: This task isn’t verified yet. Try the task again.
+      summary:
+        success: >-
+          Congratulations! You successfully bound an example Node.js application running in OpenShift to a Kafka instance in Streams for Apache Kafka.
+        failed: Try the steps again.
+
+  conclusion: >-
+    Congratulations! You successfully bound an example Node.js application running on OpenShift to a Kafka instance in Streams for Apache Kafka.
+    The Service Binding Operator automatically injected the components of the Node.js application with the connection parameters required to connect to the Kafka instance.
