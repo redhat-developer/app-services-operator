@@ -81,7 +81,7 @@ spec:
         (meaning, when you execute `rhoas login` it will start a sign-in flow in your web browser). Since our terminal in OpenShift does not have access to a browser,
         we need to login using a token.
 
-        1. Navigate to [https://cloud.redhat.com/openshift/token](https://cloud.redhat.com/openshift/token) and copy the token to your clipboard using the **Copy to clipboard** button.
+        1. Navigate to [https://console.redhat.com/openshift/token](https://console.redhat.com/openshift/token) and copy the token to your clipboard using the **Copy to clipboard** button.
 
         1. In your terminal, execute the RHOAS CLI login command, replacing *{token}* with the token you've just copied to your clipboard: `rhoas login --token={token}`.
         You should see a response saying: **You are now logged in as {user}**.
@@ -107,7 +107,7 @@ spec:
 
         1. The CLI will print the **Connection Details** and asks you to confirm. Type `y` and press **Enter** to continue.
 
-        1. You will be asked to provide a token, which again can be retrieved from https://cloud.redhat.com/openshift/token . Navigate to this URL again, copy the token to your clipboard, and copy it into your terminal. Press **Enter** to continue.
+        1. You will be asked to provide a token, which again can be retrieved from https://console.redhat.com/openshift/token . Navigate to this URL again, copy the token to your clipboard, and copy it into your terminal. Press **Enter** to continue.
         You should see the message: **KafkaConnection successfully installed on your cluster.**
 
         1. To verify that the connection has been successfully created, execute the following **oc** command: `oc get KafkaConnection`. This should return a **KafkaConnection** with the name of your Kafka instance.

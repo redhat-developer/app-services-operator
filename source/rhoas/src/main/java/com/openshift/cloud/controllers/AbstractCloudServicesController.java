@@ -1,5 +1,7 @@
 package com.openshift.cloud.controllers;
 
+import static com.openshift.cloud.v1alpha.models.KafkaConnection.*;
+
 import com.openshift.cloud.v1alpha.models.CloudServiceAccountRequest;
 import com.openshift.cloud.v1alpha.models.CloudServicesRequest;
 import com.openshift.cloud.v1alpha.models.KafkaCondition;
@@ -11,9 +13,12 @@ import io.javaoperatorsdk.operator.api.Context;
 import io.javaoperatorsdk.operator.api.DeleteControl;
 import io.javaoperatorsdk.operator.api.ResourceController;
 import io.javaoperatorsdk.operator.api.UpdateControl;
+
+import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 
 /** This class manages conditions and checks for updates on startup. */
 public abstract class AbstractCloudServicesController<T extends CustomResource>
@@ -21,6 +26,7 @@ public abstract class AbstractCloudServicesController<T extends CustomResource>
 
   private static final Logger LOG =
       Logger.getLogger(AbstractCloudServicesController.class.getName());
+
 
   /**
    * Implementations of this method should only change the status subresource. If you need to change
@@ -35,7 +41,9 @@ public abstract class AbstractCloudServicesController<T extends CustomResource>
   /** This method is overriden by the proxies, but should not be overriden by you, the developer. */
   public UpdateControl<T> createOrUpdateResource(T resource, Context<T> context) {
     LOG.info("Updating resource " + resource.getCRDName());
+
     if (shouldProcess(resource)) {
+      var updateLabels = requiresLabelUpdate(resource);
       sealedInitializeConditions(resource);
       try {
 
@@ -52,11 +60,34 @@ public abstract class AbstractCloudServicesController<T extends CustomResource>
         finished.setMessage(t.getMessage());
         finished.setStatus(Status.False);
       }
-
-      return UpdateControl.updateStatusSubResource(resource);
+      if (!updateLabels) {
+        return UpdateControl.updateStatusSubResource(resource);
+      } else {
+        return UpdateControl.updateCustomResourceAndStatus(resource);
+      }
     } else {
       return UpdateControl.noUpdate();
     }
+  }
+
+  private boolean requiresLabelUpdate(T resource) {
+    var updateRequired = false;
+    if (resource instanceof KafkaConnection) {
+      var labels = resource.getMetadata().getLabels();
+
+      if (labels == null) {
+        resource.getMetadata().setLabels(labels = new HashMap());
+      }
+
+      updateRequired = !(labels.containsKey(COMPONENT_LABEL_KEY));
+
+      if (updateRequired) {
+        labels.put(COMPONENT_LABEL_KEY, COMPONENT_LABEL_VALUE);
+        labels.put(MANAGED_BY_LABEL_KEY, MANAGED_BY_LABEL_VALUE);
+      }
+
+    }
+    return updateRequired;
   }
 
   /**

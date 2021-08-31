@@ -1,6 +1,7 @@
 package com.openshift.cloud.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static com.openshift.cloud.v1alpha.models.KafkaConnection.*;
 
 import com.openshift.cloud.controllers.ConditionUtil;
 import com.openshift.cloud.controllers.KafkaConnectionController;
@@ -53,13 +54,17 @@ public class KafkaConnectionControllerTest {
 
   @Test
   public void testKafkaConnectionRequest() {
-    var kafkaConnectionRequest = new KafkaConnectionBuilder()
-        .withMetadata(new ObjectMetaBuilder().withGeneration(10l).withNamespace("test")
-            .withName("kc-test").build())
-        .withSpec(new KafkaConnectionSpecBuilder()
-            .withAccessTokenSecretName("rh-managed-services-api-accesstoken")
-            .withCredentials(new Credentials("sa-secret")).withKafkaId("1234567890").build())
-        .build();
+    var kafkaConnectionRequest =
+        new KafkaConnectionBuilder()
+            .withMetadata(new ObjectMetaBuilder().withGeneration(10l).withNamespace("test")
+                .withLabels(Map.of(KafkaConnection.COMPONENT_LABEL_KEY,
+                    KafkaConnection.COMPONENT_LABEL_VALUE, KafkaConnection.MANAGED_BY_LABEL_KEY,
+                    KafkaConnection.MANAGED_BY_LABEL_VALUE))
+                .withName("kc-test").build())
+            .withSpec(new KafkaConnectionSpecBuilder()
+                .withAccessTokenSecretName("rh-managed-services-api-accesstoken")
+                .withCredentials(new Credentials("sa-secret")).withKafkaId("1234567890").build())
+            .build();
     var result = controller.createOrUpdateResource(kafkaConnectionRequest,
         EmptyContext.emptyContext(KafkaConnection.class));
 
@@ -79,7 +84,7 @@ public class KafkaConnectionControllerTest {
     var metaData = status.getMetadata();
     assertEquals("PLAIN", metaData.get("saslMechanism"));
     assertEquals("SASL_SSL", metaData.get("securityProtocol"));
-    assertEquals("https://cloud.redhat.com/beta/application-services/streams/kafkas/1234567890",
+    assertEquals("https://console.redhat.com/beta/application-services/streams/kafkas/1234567890",
         metaData.get("cloudUI"));
     assertEquals("rhoas", metaData.get("provider"));
     assertEquals("kafka", metaData.get("type"));

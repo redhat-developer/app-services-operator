@@ -4,7 +4,7 @@ This operator creates and manages custom resources for RHOAS cloud services
 # Prerequesites
  * Java 11+
  * Maven
- * A service-api token from cloud.redhat.com (Talk to Pete)
+ * A service-api token from console.redhat.com
  * Access to a rhoas services instance.
 
 # Building and Running
