@@ -3,7 +3,7 @@ kind: ConsoleQuickStart
 metadata:
   name: rhosak-openshift-nodejs-bind-console-quickstart
 spec:
-  displayName: Binding an application to Red Hat OpenShift Streams for Apache Kafka using the OpenShift web console
+  displayName: Binding a Node.js application to Red Hat OpenShift Streams for Apache Kafka using the OpenShift web console
   icon: >-
     data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPCEtLSBHZW5lcmF0b3I6IEFk
     b2JlIElsbHVzdHJhdG9yIDI1LjIuMCwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246
