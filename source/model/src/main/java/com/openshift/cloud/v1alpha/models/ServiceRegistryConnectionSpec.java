@@ -11,20 +11,10 @@ public class ServiceRegistryConnectionSpec {
   private String serviceRegistryId;
   private String accessTokenSecretName;
   private Credentials credentials;
-  private String direction = "outgoing";
-
-
+  
 
   public String getServiceRegistryId() {
     return serviceRegistryId;
-  }
-
-  public String getDirection() {
-    return direction;
-  }
-
-  public void setDirection(String direction) {
-    this.direction = direction;
   }
 
   public Credentials getCredentials() {

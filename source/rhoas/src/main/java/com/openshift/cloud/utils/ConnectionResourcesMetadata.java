@@ -25,12 +25,11 @@ public class ConnectionResourcesMetadata {
     return map;
   }
 
-  public static Map<String, String> buildServiceMetadata(String oauthHost,String direction) {
+  public static Map<String, String> buildServiceMetadata(String oauthHost) {
     var map = new HashMap<String, String>();
     map.put("provider", "rhoas");
     map.put("oAuthHost", oauthHost);
     map.put("type", "serviceregistry");
-    map.put("direction", direction);
     return map;
   }
 }
