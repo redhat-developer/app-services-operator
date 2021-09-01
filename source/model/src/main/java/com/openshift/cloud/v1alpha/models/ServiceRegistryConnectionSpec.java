@@ -11,7 +11,7 @@ public class ServiceRegistryConnectionSpec {
   private String serviceRegistryId;
   private String accessTokenSecretName;
   private Credentials credentials;
-  
+
 
   public String getServiceRegistryId() {
     return serviceRegistryId;
