@@ -381,4 +381,4 @@ spec:
     Congratulations! You successfully connected a Kafka instance in Streams for Apache Kafka to a project in your OpenShift cluster.
     You're now ready to bind applications in the project to the Kafka instance.
   nextQuickStart:
-    - rhosak-devsandbox-quarkus-bind-cli-toolscontainer-quickstart
+    - rhosak-openshift-quarkus-bind-cli-toolscontainer-quickstart
