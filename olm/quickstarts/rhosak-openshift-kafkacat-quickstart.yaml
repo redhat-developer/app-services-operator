@@ -1,7 +1,7 @@
 apiVersion: console.openshift.io/v1
 kind: ConsoleQuickStart
 metadata:
-  name: rhosak-devsandbox-kafkacat-toolscontainer-quickstart
+  name: rhosak-openshift-kafkacat-toolscontainer-quickstart
 spec:
   displayName: Using Kafkacat with Kafka instances in Red Hat OpenShift Streams for Apache Kafka
   icon: >-
