@@ -173,4 +173,4 @@ spec:
     Congratulations! You successfully completed the Red Hat OpenShift Streams for Apache Kafka Getting Started quick start,
     and are now ready to use the service.
   nextQuickStart:
-    - rhosak-devsandbox-kafkacat-toolscontainer-quickstart
+    - rhosak-openshift-kafkacat-toolscontainer-quickstart

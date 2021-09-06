@@ -240,4 +240,4 @@ spec:
     Congratulations! You successfully completed the Streams for Apache Kafka Kafkacat quick start,
     and are now ready to produce and consume messages in the service.
   nextQuickStart:
-    - rhosak-devsandbox-connect-cli-toolscontainer-quickstart
+    - rhosak-openshift-connect-cli-toolscontainer-quickstart
