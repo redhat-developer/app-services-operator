@@ -260,7 +260,7 @@ spec:
 
         1. In your web browser, open the [Kafka Instances](https://console.redhat.com/beta/application-services/streams/kafkas) page of the Streams for Apache Kafka web console. Click the name of the Kafka instance that you want to add a topic to.
 
-        1. Click **Create topic** and follow the guided steps to define the topic details. Click **Next** to complete each step and click **Finish** to complete the setup.
+        1. Select the **Topics** tab, click **Create topic**, and follow the guided steps to define the topic details. Click **Next** to complete each step and click **Finish** to complete the setup.
 
            Specify the following values:
 
