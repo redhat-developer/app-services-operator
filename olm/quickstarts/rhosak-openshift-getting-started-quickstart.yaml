@@ -75,12 +75,12 @@ spec:
 
         1. In the [web console of Application Services](https://console.redhat.com/beta/application-services), select **Kafka Instances** in the **Streams for Apache kafka** menu. Click *Create Kafka instance*.
 
-        1. Enter a unique *Instance name*, such as `my-first-kafka-instance`. For this release of Streams for Apache Kafka, all other fields are preconfigured.
+        1. Enter a unique **Name**, such as `my-first-kafka-instance`. For this release of Streams for Apache Kafka, all other fields are preconfigured.
 
         1. Click *Create instance* to start the creation process for your Kafka instance.
 
 
-        The new Kafka instance is listed in the instances table. When the instance *Status* is *Ready*, you can start using the Kafka instance. You can use the options icon (three vertical dots) to view, connect to, or delete the instance as needed.
+        The new Kafka instance is listed in the instances table. When the instance **Status** is **Ready**, you can start using the Kafka instance. You can use the options icon (three vertical dots) to view instance details, connect to the instance, or delete the instance.
 
 
         NOTE: Although you can see Kafka instances created by other users in your organization, you can't manage or connect to those instances. Only the user who creates an instance can edit or delete the instance, access the associated service account and topics, or connect to the instance.
@@ -102,7 +102,7 @@ spec:
         You’ll use the service account information later when you configure your application.
 
         1. In the **Kafka Instances** page of the web console, for the relevant Kafka instance that you want to connect to,
-        select the options icon (three vertical dots) and click **View connection information**.
+        select the options icon (three vertical dots) and click **Connection**.
 
         1. In the **Connection** page, copy the **Bootstrap server** endpoint to a secure location.
         This is the bootstrap server endpoint that you'll need for connecting to this Kafka instance.
@@ -136,7 +136,7 @@ spec:
 
         1. In the **Kafka Instances** page of the web console, click on the name of the Kafka instance that you want to add a topic to.
 
-        1. Click **Create topic** and follow the guided steps to define the topic details.
+        1. Select the **Topics** tab, click **Create topic**, and follow the guided steps to define the topic details.
         Click **Next** to complete each step and click **Finish** to complete the setup.
 
             **Topic name**: Enter a unique topic name, such as ```my-first-kafka-topic```.
