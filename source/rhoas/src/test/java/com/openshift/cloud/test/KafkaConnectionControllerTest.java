@@ -55,17 +55,17 @@ public class KafkaConnectionControllerTest {
 
   @Test
   public void testKafkaConnectionRequest() {
-    var kafkaConnectionRequest =
-        new KafkaConnectionBuilder()
-            .withMetadata(new ObjectMetaBuilder().withGeneration(10l).withNamespace("test")
-                .withLabels(Map.of(AbstractCloudServicesController.COMPONENT_LABEL_KEY,
-                AbstractCloudServicesController.COMPONENT_LABEL_VALUE, AbstractCloudServicesController.MANAGED_BY_LABEL_KEY,
+    var kafkaConnectionRequest = new KafkaConnectionBuilder()
+        .withMetadata(new ObjectMetaBuilder().withGeneration(10l).withNamespace("test")
+            .withLabels(Map.of(AbstractCloudServicesController.COMPONENT_LABEL_KEY,
+                AbstractCloudServicesController.COMPONENT_LABEL_VALUE,
+                AbstractCloudServicesController.MANAGED_BY_LABEL_KEY,
                 AbstractCloudServicesController.MANAGED_BY_LABEL_VALUE))
-                .withName("kc-test").build())
-            .withSpec(new KafkaConnectionSpecBuilder()
-                .withAccessTokenSecretName("rh-managed-services-api-accesstoken")
-                .withCredentials(new Credentials("sa-secret")).withKafkaId("1234567890").build())
-            .build();
+            .withName("kc-test").build())
+        .withSpec(new KafkaConnectionSpecBuilder()
+            .withAccessTokenSecretName("rh-managed-services-api-accesstoken")
+            .withCredentials(new Credentials("sa-secret")).withKafkaId("1234567890").build())
+        .build();
     var result = controller.createOrUpdateResource(kafkaConnectionRequest,
         EmptyContext.emptyContext(KafkaConnection.class));
 

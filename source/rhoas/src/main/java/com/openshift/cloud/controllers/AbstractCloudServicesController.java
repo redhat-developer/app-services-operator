@@ -26,11 +26,11 @@ import java.util.logging.Logger;
 public abstract class AbstractCloudServicesController<T extends CustomResource>
     implements ResourceController<T> {
 
-      public static final String COMPONENT_LABEL_KEY = "app.kubernetes.io/component";
-      public static final String MANAGED_BY_LABEL_KEY = "app.kubernetes.io/managed-by";
-    
-      public static final String COMPONENT_LABEL_VALUE = "external-service";
-      public static final String MANAGED_BY_LABEL_VALUE = "rhoas";
+  public static final String COMPONENT_LABEL_KEY = "app.kubernetes.io/component";
+  public static final String MANAGED_BY_LABEL_KEY = "app.kubernetes.io/managed-by";
+
+  public static final String COMPONENT_LABEL_VALUE = "external-service";
+  public static final String MANAGED_BY_LABEL_VALUE = "rhoas";
 
   private static final Logger LOG =
       Logger.getLogger(AbstractCloudServicesController.class.getName());
