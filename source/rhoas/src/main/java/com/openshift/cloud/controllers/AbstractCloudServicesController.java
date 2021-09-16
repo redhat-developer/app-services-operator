@@ -26,6 +26,12 @@ import java.util.logging.Logger;
 public abstract class AbstractCloudServicesController<T extends CustomResource>
     implements ResourceController<T> {
 
+      public static final String COMPONENT_LABEL_KEY = "app.kubernetes.io/component";
+      public static final String MANAGED_BY_LABEL_KEY = "app.kubernetes.io/managed-by";
+    
+      public static final String COMPONENT_LABEL_VALUE = "external-service";
+      public static final String MANAGED_BY_LABEL_VALUE = "rhoas";
+
   private static final Logger LOG =
       Logger.getLogger(AbstractCloudServicesController.class.getName());
 
@@ -74,7 +80,7 @@ public abstract class AbstractCloudServicesController<T extends CustomResource>
 
   private boolean requiresLabelUpdate(T resource) {
     var updateRequired = false;
-    if (resource instanceof KafkaConnection) {
+    if (resource instanceof KafkaConnection || resource instanceof ServiceRegistryConnection) {
       var labels = resource.getMetadata().getLabels();
 
       if (labels == null) {

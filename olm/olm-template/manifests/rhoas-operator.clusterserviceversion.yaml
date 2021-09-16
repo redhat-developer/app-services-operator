@@ -3,7 +3,56 @@ kind: ClusterServiceVersion
 metadata:
   annotations:
     alm-examples: >-
-      [{"apiVersion":"rhoas.redhat.com/v1alpha1","kind":"KafkaConnection","metadata":{"name":"example", "namespace":"example-namespace", "labels":{"app.kubernetes.io/component":"external-service", "app.kubernetes.io/managed-by":"rhoas"}},"spec":{"accessTokenSecretName":"rh-managed-services-api-accesstoken", "kafkaId":"exampleId","credentials":{"serviceAccountSecretName":"service-account-secret"}}},{"apiVersion":"rhoas.redhat.com/v1alpha1","kind":"CloudServiceAccountRequest","metadata":{"name":"example","namespace":"example-namespace"},"spec":{"serviceAccountName": "RhoasOperatorServiceAccount","serviceAccountDescription": "Operator created service account","serviceAccountSecretName": "service-account-credentials",  "accessTokenSecretName": "rh-managed-services-api-accesstoken"}},{"apiVersion":"rhoas.redhat.com/v1alpha1","kind":"CloudServicesRequest","metadata":{"name":"example","namespace":"example-namespace", "labels":{"app.kubernetes.io/component":"external-service", "app.kubernetes.io/managed-by":"rhoas"}},"spec":{"accessTokenSecretName": "rh-cloud-services-api-accesstoken"}}]
+      [
+        {
+          "apiVersion": "rhoas.redhat.com/v1alpha1",
+          "kind": "ServiceRegistryConnection",
+          "metadata": {
+            "name": "example",
+            "namespace": "example-namespace",
+            "labels": {
+              "app.kubernetes.io/component": "external-service",
+              "app.kubernetes.io/managed-by": "rhoas"
+            }
+          },
+          "spec": {
+            "accessTokenSecretName": "rh-managed-services-api-accesstoken",
+            "serviceRegistryId": "exampleId",
+            "credentials": {
+              "serviceAccountSecretName": "service-account-secret"
+            }
+          }
+        },
+        {
+          "apiVersion": "rhoas.redhat.com/v1alpha1",
+          "kind": "CloudServiceAccountRequest",
+          "metadata": {
+            "name": "example",
+            "namespace": "example-namespace"
+          },
+          "spec": {
+            "serviceAccountName": "rhoas-sa",
+            "serviceAccountDescription": "Operator created service account",
+            "serviceAccountSecretName": "service-account-credentials",
+            "accessTokenSecretName": "rh-managed-services-api-accesstoken"
+          }
+        },
+        {
+          "apiVersion": "rhoas.redhat.com/v1alpha1",
+          "kind": "CloudServicesRequest",
+          "metadata": {
+            "name": "example",
+            "namespace": "example-namespace",
+            "labels": {
+              "app.kubernetes.io/component": "external-service",
+              "app.kubernetes.io/managed-by": "rhoas"
+            }
+          },
+          "spec": {
+            "accessTokenSecretName": "rh-cloud-services-api-accesstoken"
+          }
+        }
+      ]
     categories: 'Developer Tools, OpenShift Optional, Integration & Delivery'
     certified: 'false'
     description: 'Red Hat OpenShift Application Services Operator'
