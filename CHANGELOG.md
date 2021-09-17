@@ -1,4 +1,19 @@
 
+<a name="0.7.9"></a>
+## [0.7.9](https://github.com/redhat-developer/app-services-operator/compare/0.7.8...0.7.9) (2021-09-07)
+
+### Bug Fixes
+
+* creating string constants for KafkkaConnection labels
+* /s/cloud.redhat.com/console.redhat.com/g ([#249](https://github.com/redhat-developer/app-services-operator/issues/249))
+* using new operatorhub repository ([#248](https://github.com/redhat-developer/app-services-operator/issues/248))
+
+### Features
+
+* enforcing labels on KafaConnection
+* changing org names from com.openshift.cloud to cloud.redhat.com ([#255](https://github.com/redhat-developer/app-services-operator/issues/255))
+
+
 <a name="0.7.8"></a>
 ## [0.7.8](https://github.com/redhat-developer/app-services-operator/compare/0.7.7...0.7.8) (2021-08-03)
 
