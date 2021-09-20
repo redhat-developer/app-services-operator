@@ -9,6 +9,7 @@ rules:
       - rhoas.redhat.com
     resources:
       - kafkaconnections
+      - serviceregistryconnections
     verbs:
       - get
       - list
