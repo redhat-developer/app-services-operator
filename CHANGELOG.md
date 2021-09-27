@@ -1,4 +1,8 @@
 
+<a name="0.7.10"></a>
+## [0.7.10](https://github.com/redhat-developer/app-services-operator/compare/0.7.9...0.7.10) (2021-09-17)
+
+
 <a name="0.7.9"></a>
 ## [0.7.9](https://github.com/redhat-developer/app-services-operator/compare/0.7.8...0.7.9) (2021-09-07)
 
