@@ -126,16 +126,13 @@ spec:
 
         For more information about Kafkacat configuration options, see [Configuration](https://github.com/edenhill/kafkacat#configuration) in the Kafkacat documentation.
 
-        1. On the command line, set the Kafka instance bootstrap server, client credentials, and consumer group ID as environment variables
+        1. On the command line, set the Kafka instance bootstrap server and client credentials as environment variables
         to be used by Kafkacat or other applications. Replace the values with your own bootstrap server host and port and the *client id* and *client secret* of your service account.
-
-            All consumers with the same group ID belong to the consumer group with that ID.
 
             ```
             $ export BOOTSTRAP_SERVER=<bootstrap_server>
             $ export USER=<client_id>
             $ export PASSWORD=<client_secret>
-            $ export GROUP_ID=<group_id>
             ```
 
       review:
