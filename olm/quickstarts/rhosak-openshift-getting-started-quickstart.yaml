@@ -173,7 +173,7 @@ spec:
       description: >-
         After you create Kafka topics in your Kafka instance and start producing and consuming messages in your services, use the **Dashboard** tab in the Kafka instance to view metrics for the instance and topics. These metrics help you understand the performance and data usage for your Kafka instance and topics.
 
-        1. In the **Kafka Instances** page of the web console, click the name of the Kafka instance that you want to view metrics of.
+        1. In the **Kafka Instances** page of the web console, click the name of the Kafka instance for which you want to view metrics.
 
         1. Select the **Dashboard** tab and review the metrics for your Kafka instance and topics. Use the drop-down filters to refine the displayed metrics as needed.
 
