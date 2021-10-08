@@ -130,6 +130,34 @@ spec:
         success: >-
           You have completed this task!
         failed: Try the steps again.
+    - title: Setting permissions for a service account in a Kafka instance in Streams for Apache Kafka
+      description: >-
+        After you create a service account to connect to a Kafka instance, you must also set the appropriate level of access for that new account in the Access Control List (ACL) of the Kafka instance. {product} uses ACLs provided by Kafka that enable you to manage how other user accounts and service accounts are permitted to interact with the Kafka resources that you create.
+
+        1. In the **Kafka Instances** page of the web console, click the name of the Kafka instance that you want the service account to access.
+
+        1. Click the **Access** tab to view the current ACL for this instance.
+
+        1. Click **Manage access**, use the **Account** drop-down menu to select the service account that you previously created, and click **Next**.
+
+        1. Under **Assign Permissions**, use the drop-down menus to set the permissions shown in the following list for this service account. Click **Add** to add each new resource permission.
+
+            These permissions enable applications associated with the service account to create and delete topics in the instance, to produce and consume messages in any topic in the instance, and to use any consumer group and any producer.
+
+            **Example ACL permissions for a new service account**
+            - **Topic**: ```Is``` = ```*```, ```Allow```, ```All```
+            - **Consumer group**: ```Is``` = ```*```, ```Allow```, ```Read```
+            - **Transactional ID**: ```Is``` = ```*```, ```Allow```, ```All```
+
+        1. After you add these permissions for the service account, click **Save** to finish.
+      review:
+        instructions: |-
+          Are the new permissions for the service account listed in the **Access** page of the Kafka instance?
+        failedTaskHelp: This task isn’t verified yet. Try the task again.
+      summary:
+        success: >-
+          You have completed this task!
+        failed: Try the steps again.
     - title: Creating a Kafka topic in Streams for Apache Kafka
       description: >-
         When you have a Kafka instance available, you can create Kafka topics to start producing and consuming messages in your services.
