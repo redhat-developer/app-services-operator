@@ -27,12 +27,12 @@ public class ServiceRegistryConnectionController
       defaultValue = "https://identity.api.openshift.com/auth/")
   String oAuthHost;
 
-  @ConfigProperty(name = "rhoas.client.srsOAuthRealm",
-      defaultValue = "rhoas")
+  @ConfigProperty(name = "rhoas.client.srsOAuthRealm", defaultValue = "rhoas")
   String oAuthRealm;
 
 
-  @ConfigProperty(name = "rhoas.client.srsOAuthTokenPath", defaultValue = "protocol/openid-connect/token")
+  @ConfigProperty(name = "rhoas.client.srsOAuthTokenPath",
+      defaultValue = "protocol/openid-connect/token")
   String oAuthTokenPath;
 
   @Override
@@ -55,7 +55,8 @@ public class ServiceRegistryConnectionController
     status.setUpdated(Instant.now().toString());
     status.setRegistryUrl(registry.getRegistryUrl());
     status.setServiceAccountSecretName(serviceAccountSecretName);
-    status.setMetadata(ConnectionResourcesMetadata.buildServiceMetadata(oAuthHost, oAuthRealm, oAuthTokenPath));
+    status.setMetadata(
+        ConnectionResourcesMetadata.buildServiceMetadata(oAuthHost, oAuthRealm, oAuthTokenPath));
 
   }
 

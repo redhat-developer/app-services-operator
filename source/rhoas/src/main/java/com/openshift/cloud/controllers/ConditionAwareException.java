@@ -10,8 +10,9 @@ public class ConditionAwareException extends Exception {
   private final CloudServiceCondition.Status status;
   private String reason, conditionMessage;
 
-  public ConditionAwareException(String exceptionMessage, Throwable cause, CloudServiceCondition.Type type,
-      CloudServiceCondition.Status status, String reason, String conditionMessage) {
+  public ConditionAwareException(String exceptionMessage, Throwable cause,
+      CloudServiceCondition.Type type, CloudServiceCondition.Status status, String reason,
+      String conditionMessage) {
     super(exceptionMessage, cause);
     this.type = type;
     this.status = status;

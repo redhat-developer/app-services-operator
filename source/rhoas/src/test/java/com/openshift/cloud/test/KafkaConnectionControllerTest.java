@@ -67,8 +67,10 @@ public class KafkaConnectionControllerTest {
 
     var labels = ((KafkaConnection) result.getCustomResource()).getMetadata().getLabels();
 
-    assertEquals(AbstractCloudServicesController.COMPONENT_LABEL_VALUE, labels.get(AbstractCloudServicesController.COMPONENT_LABEL_KEY));
-    assertEquals(AbstractCloudServicesController.MANAGED_BY_LABEL_VALUE, labels.get(AbstractCloudServicesController.MANAGED_BY_LABEL_KEY));
+    assertEquals(AbstractCloudServicesController.COMPONENT_LABEL_VALUE,
+        labels.get(AbstractCloudServicesController.COMPONENT_LABEL_KEY));
+    assertEquals(AbstractCloudServicesController.MANAGED_BY_LABEL_VALUE,
+        labels.get(AbstractCloudServicesController.MANAGED_BY_LABEL_KEY));
 
   }
 

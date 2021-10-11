@@ -77,8 +77,9 @@ public class KafkaApiClient {
       return createSecurityClient(accessToken).createServiceAccount(serviceAccountRequest);
     } catch (ApiException e) {
       String message = ConditionUtil.getStandarizedErrorMessage(e.getCode(), e);
-      throw new ConditionAwareException(message, e, CloudServiceCondition.Type.ServiceAccountCreated,
-          CloudServiceCondition.Status.False, e.getClass().getName(), message);
+      throw new ConditionAwareException(message, e,
+          CloudServiceCondition.Type.ServiceAccountCreated, CloudServiceCondition.Status.False,
+          e.getClass().getName(), message);
     }
   }
 
@@ -114,8 +115,8 @@ public class KafkaApiClient {
       k8sClient.secrets().inNamespace(secret.getMetadata().getNamespace()).create(secret);
     } catch (Exception e) {
       throw new ConditionAwareException(e.getMessage(), e,
-          CloudServiceCondition.Type.ServiceAccountSecretCreated, CloudServiceCondition.Status.False,
-          e.getClass().getName(), e.getMessage());
+          CloudServiceCondition.Type.ServiceAccountSecretCreated,
+          CloudServiceCondition.Status.False, e.getClass().getName(), e.getMessage());
     }
   }
 }
