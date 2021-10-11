@@ -76,12 +76,12 @@ spec:
       kind: CloudServicesRequest
       name: cloudservicesrequests.rhoas.redhat.com
       version: v1alpha1
-    - description: Binds Cloud Kafka
+    - description: Binds Kafka Instance
       displayName: Kafka Connection
       kind: KafkaConnection
       name: kafkaconnections.rhoas.redhat.com
       version: v1alpha1   
-    - description: Binds Cloud Service Registry
+    - description: Binds Service Registry Instance
       displayName: Service Registry Connection
       kind: ServiceRegistryConnection
       name: serviceregistryconnections.rhoas.redhat.com
