@@ -199,7 +199,7 @@ spec:
         failed: Try the steps again.
     - title: Viewing metrics for a Kafka instance in Streams for Apache Kafka
       description: >-
-        After you create Kafka topics in your Kafka instance and start producing and consuming messages in your services, use the **Dashboard** tab in the Kafka instance to view metrics for the instance and topics. These metrics help you understand the performance and data usage for your Kafka instance and topics.
+        After you create Kafka topics in your Kafka instance, you can start producing and consuming messages in your services using your preferred method, such as using Kafka scripts, Kafkacat, or a Quarkus application. As you interact with your Kafka instance and topics, return to the Kafka instance in the web console and use the **Dashboard** page to view metrics for the instance and topics. These metrics help you understand the performance and data usage for your Kafka instance and topics.
 
         1. In the **Kafka Instances** page of the web console, click the name of the Kafka instance for which you want to view metrics.
 
