@@ -8,6 +8,7 @@ public class ConnectionResourcesMetadata {
 
   private static final String UI_REF_TEMPLATE =
       "https://console.redhat.com/beta/application-services/streams/kafkas/%s";
+  
 
   /**
    * Contains hardcoded values for all metadata for Kafka specific properties
@@ -25,10 +26,12 @@ public class ConnectionResourcesMetadata {
     return map;
   }
 
-  public static Map<String, String> buildServiceMetadata(String oauthHost) {
+  public static Map<String, String> buildServiceMetadata(String oauthHost,String oauthRealm, String tokenPath) {
     var map = new HashMap<String, String>();
     map.put("provider", "rhoas");
-    map.put("oauthTokenUrl", oauthHost);
+    map.put("oauthServerUrl", oauthHost);
+    map.put("realm", oauthRealm);
+    map.put("oauthTokenUrl", oauthHost + "/" + tokenPath);
     map.put("type", "serviceregistry");
     return map;
   }

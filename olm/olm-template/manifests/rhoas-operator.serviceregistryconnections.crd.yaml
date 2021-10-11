@@ -11,9 +11,9 @@ metadata:
            path={.status.serviceAccountSecretName},objectType=Secret,sourceKey=client-id
     service.binding/clientSecret: >-
       path={.status.serviceAccountSecretName},objectType=Secret,sourceKey=client-secret
-    service.binding/oAuthHost: 'path={.status.metadata.oAuthHost}'  
-    ## Lowercase versions for old versions of quarkus (to be removed later)
-    service.binding/registryurl: 'path={.status.registryUrl}'
+    service.binding/oauthTokenUrl: 'path={.status.metadata.oauthTokenUrl}'  
+    service.binding/oauthRealm: 'path={.status.metadata.oauthRealm}'
+    service.binding/oauthServerUrl: 'path={.status.metadata.oauthServerUrl}'
 spec:
   group: rhoas.redhat.com
   names:
