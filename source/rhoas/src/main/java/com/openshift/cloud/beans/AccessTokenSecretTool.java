@@ -3,7 +3,7 @@ package com.openshift.cloud.beans;
 import com.openshift.cloud.api.kas.invoker.ApiException;
 import com.openshift.cloud.controllers.ConditionAwareException;
 import com.openshift.cloud.controllers.ConditionUtil;
-import com.openshift.cloud.v1alpha.models.KafkaCondition;
+import com.openshift.cloud.v1alpha.models.CloudServiceCondition;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.vertx.core.json.JsonObject;
 import java.io.IOException;
@@ -65,7 +65,7 @@ public class AccessTokenSecretTool {
       // Unexpected exception or error (NPE, IOException, out of memory, etc)
       LOG.log(Level.SEVERE, ex.getMessage());
       throw new ConditionAwareException(ex.getMessage(), ex,
-          KafkaCondition.Type.AcccesTokenSecretValid, KafkaCondition.Status.False,
+          CloudServiceCondition.Type.AcccesTokenSecretValid, CloudServiceCondition.Status.False,
           ex.getClass().getName(), ex.getMessage());
     }
   }
@@ -99,7 +99,7 @@ public class AccessTokenSecretTool {
     }
     // We expect the token to exist, and if it doesn't raise an exception.
     throw new ConditionAwareException(String.format("Missing Offline Token Secret %s", secretName),
-        null, KafkaCondition.Type.AcccesTokenSecretValid, KafkaCondition.Status.False,
+        null, CloudServiceCondition.Type.AcccesTokenSecretValid, CloudServiceCondition.Status.False,
         "ConditionAwareException", String.format("Missing Offline Token Secret %s", secretName));
   }
 
@@ -132,12 +132,12 @@ public class AccessTokenSecretTool {
         var apiError = ConditionUtil.getStandarizedErrorMessage(response.statusCode(),
             new ApiException(response.statusCode(), null));
         throw new ConditionAwareException(response.body(), null,
-            KafkaCondition.Type.AcccesTokenSecretValid, KafkaCondition.Status.False,
+            CloudServiceCondition.Type.AcccesTokenSecretValid, CloudServiceCondition.Status.False,
             String.format("Http Error Code %d", response.statusCode()), apiError);
       }
     } catch (IOException | InterruptedException e) {
       throw new ConditionAwareException(e.getMessage(), e,
-          KafkaCondition.Type.AcccesTokenSecretValid, KafkaCondition.Status.False,
+          CloudServiceCondition.Type.AcccesTokenSecretValid, CloudServiceCondition.Status.False,
           e.getClass().getName(), e.getMessage());
     }
   }

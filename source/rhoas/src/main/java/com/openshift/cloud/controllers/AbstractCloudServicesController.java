@@ -4,9 +4,9 @@ import static com.openshift.cloud.v1alpha.models.KafkaConnection.*;
 
 import com.openshift.cloud.v1alpha.models.CloudServiceAccountRequest;
 import com.openshift.cloud.v1alpha.models.CloudServicesRequest;
-import com.openshift.cloud.v1alpha.models.KafkaCondition;
-import com.openshift.cloud.v1alpha.models.KafkaCondition.Status;
-import com.openshift.cloud.v1alpha.models.KafkaCondition.Type;
+import com.openshift.cloud.v1alpha.models.CloudServiceCondition;
+import com.openshift.cloud.v1alpha.models.CloudServiceCondition.Status;
+import com.openshift.cloud.v1alpha.models.CloudServiceCondition.Type;
 import com.openshift.cloud.v1alpha.models.KafkaConnection;
 import com.openshift.cloud.v1alpha.models.ServiceRegistryConnection;
 
@@ -66,7 +66,7 @@ public abstract class AbstractCloudServicesController<T extends CustomResource>
       } catch (Throwable t) {
         LOG.log(Level.SEVERE, t.getMessage(), t);
 
-        KafkaCondition finished = getSealedErrorCondition(resource, Type.Finished);
+        CloudServiceCondition finished = getSealedErrorCondition(resource, Type.Finished);
         finished.setReason(t.getClass().getName());
         finished.setMessage(t.getMessage());
         finished.setStatus(Status.False);
@@ -114,7 +114,7 @@ public abstract class AbstractCloudServicesController<T extends CustomResource>
       return true;
     }
 
-    List<KafkaCondition> conditions = getConditions(resource);
+    List<CloudServiceCondition> conditions = getConditions(resource);
 
     if (conditions == null || conditions.isEmpty()) {
       return true;
@@ -134,7 +134,7 @@ public abstract class AbstractCloudServicesController<T extends CustomResource>
     }
   }
 
-  private List<KafkaCondition> getConditions(T resource) {
+  private List<CloudServiceCondition> getConditions(T resource) {
     if (resource instanceof KafkaConnection) {
       return (((KafkaConnection) resource).getStatus().getConditions());
     } else if (resource instanceof ServiceRegistryConnection) {
@@ -204,7 +204,7 @@ public abstract class AbstractCloudServicesController<T extends CustomResource>
     }
   }
 
-  private KafkaCondition getSealedErrorCondition(T resource, Type type) {
+  private CloudServiceCondition getSealedErrorCondition(T resource, Type type) {
     if (resource instanceof KafkaConnection) {
       return ConditionUtil.getCondition(((KafkaConnection) resource).getStatus().getConditions(),
           type);

@@ -1,14 +1,14 @@
 package com.openshift.cloud.controllers;
 
-import static com.openshift.cloud.v1alpha.models.KafkaCondition.Status.False;
-import static com.openshift.cloud.v1alpha.models.KafkaCondition.Status.True;
+import static com.openshift.cloud.v1alpha.models.CloudServiceCondition.Status.False;
+import static com.openshift.cloud.v1alpha.models.CloudServiceCondition.Status.True;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.openshift.cloud.api.kas.invoker.ApiException;
 import com.openshift.cloud.utils.InvalidUserInputException;
 import com.openshift.cloud.v1alpha.models.*;
-import com.openshift.cloud.v1alpha.models.KafkaCondition.Status;
+import com.openshift.cloud.v1alpha.models.CloudServiceCondition.Status;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -52,20 +52,20 @@ public class ConditionUtil {
     }
   }
 
-  private static List<KafkaCondition> cloudServicesRequestDefaultConditions(long generation) {
+  private static List<CloudServiceCondition> cloudServicesRequestDefaultConditions(long generation) {
     return List.of(
-        new KafkaCondition().setLastTransitionTime(isoNow()).setLastTransitionGeneration(generation)
-            .setType(KafkaCondition.Type.AcccesTokenSecretValid).setReason("").setMessage("")
-            .setStatus(KafkaCondition.Status.Unknown),
-        new KafkaCondition().setLastTransitionTime(isoNow()).setLastTransitionGeneration(generation)
-            .setType(KafkaCondition.Type.ServiceRegistriesUpToDate).setReason("").setMessage("")
-            .setStatus(KafkaCondition.Status.Unknown),
-        new KafkaCondition().setLastTransitionTime(isoNow()).setLastTransitionGeneration(generation)
-            .setReason("").setMessage("").setType(KafkaCondition.Type.Finished)
-            .setStatus(KafkaCondition.Status.Unknown),
-        new KafkaCondition().setLastTransitionTime(isoNow()).setLastTransitionGeneration(generation)
-            .setReason("").setMessage("").setType(KafkaCondition.Type.UserKafkasUpToDate)
-            .setStatus(KafkaCondition.Status.Unknown));
+        new CloudServiceCondition().setLastTransitionTime(isoNow()).setLastTransitionGeneration(generation)
+            .setType(CloudServiceCondition.Type.AcccesTokenSecretValid).setReason("").setMessage("")
+            .setStatus(CloudServiceCondition.Status.Unknown),
+        new CloudServiceCondition().setLastTransitionTime(isoNow()).setLastTransitionGeneration(generation)
+            .setType(CloudServiceCondition.Type.ServiceRegistriesUpToDate).setReason("").setMessage("")
+            .setStatus(CloudServiceCondition.Status.Unknown),
+        new CloudServiceCondition().setLastTransitionTime(isoNow()).setLastTransitionGeneration(generation)
+            .setReason("").setMessage("").setType(CloudServiceCondition.Type.Finished)
+            .setStatus(CloudServiceCondition.Status.Unknown),
+        new CloudServiceCondition().setLastTransitionTime(isoNow()).setLastTransitionGeneration(generation)
+            .setReason("").setMessage("").setType(CloudServiceCondition.Type.UserKafkasUpToDate)
+            .setStatus(CloudServiceCondition.Status.Unknown));
   }
 
   /**
@@ -74,7 +74,7 @@ public class ConditionUtil {
    * @param conditions a list of conditions that contains the condition in e as well as False.
    * @param e the exception
    */
-  public static void setConditionFromException(List<KafkaCondition> conditions,
+  public static void setConditionFromException(List<CloudServiceCondition> conditions,
       ConditionAwareException e) {
     var condition = getCondition(conditions, e.getType());
     condition.setLastTransitionTime(isoNow());
@@ -82,7 +82,7 @@ public class ConditionUtil {
     condition.setStatus(e.getStatus());
     condition.setReason(e.getReason());
 
-    var finishedCondition = getCondition(conditions, KafkaCondition.Type.Finished);
+    var finishedCondition = getCondition(conditions, CloudServiceCondition.Type.Finished);
 
     // There should be a finishedCondition, if not just write a debug log.
     if (finishedCondition == null) {
@@ -95,8 +95,8 @@ public class ConditionUtil {
     }
   }
 
-  public static KafkaCondition getCondition(List<KafkaCondition> resource,
-      KafkaCondition.Type type) {
+  public static CloudServiceCondition getCondition(List<CloudServiceCondition> resource,
+      CloudServiceCondition.Type type) {
     return resource.stream().filter(condition -> condition.getType() == (type)).findFirst()
         .orElseThrow(() -> {
           return new RuntimeException(
@@ -120,23 +120,23 @@ public class ConditionUtil {
     }
   }
 
-  private static List<KafkaCondition> kafkaServiceAccountRequestDefaultConditions(long generation) {
+  private static List<CloudServiceCondition> kafkaServiceAccountRequestDefaultConditions(long generation) {
     return List.of(
-        new KafkaCondition().setLastTransitionTime(isoNow()).setLastTransitionGeneration(generation)
-            .setType(KafkaCondition.Type.AcccesTokenSecretValid).setReason("").setMessage("")
-            .setStatus(KafkaCondition.Status.Unknown),
-        new KafkaCondition().setLastTransitionTime(isoNow()).setLastTransitionGeneration(generation)
-            .setReason("").setMessage("").setType(KafkaCondition.Type.ServiceAccountCreated)
-            .setStatus(KafkaCondition.Status.Unknown),
-        new KafkaCondition().setLastTransitionTime(isoNow()).setLastTransitionGeneration(generation)
-            .setReason("").setMessage("").setType(KafkaCondition.Type.ServiceAccountSecretCreated)
-            .setStatus(KafkaCondition.Status.Unknown),
-        new KafkaCondition().setLastTransitionTime(isoNow()).setLastTransitionGeneration(generation)
-            .setReason("").setMessage("").setType(KafkaCondition.Type.Finished)
+        new CloudServiceCondition().setLastTransitionTime(isoNow()).setLastTransitionGeneration(generation)
+            .setType(CloudServiceCondition.Type.AcccesTokenSecretValid).setReason("").setMessage("")
+            .setStatus(CloudServiceCondition.Status.Unknown),
+        new CloudServiceCondition().setLastTransitionTime(isoNow()).setLastTransitionGeneration(generation)
+            .setReason("").setMessage("").setType(CloudServiceCondition.Type.ServiceAccountCreated)
+            .setStatus(CloudServiceCondition.Status.Unknown),
+        new CloudServiceCondition().setLastTransitionTime(isoNow()).setLastTransitionGeneration(generation)
+            .setReason("").setMessage("").setType(CloudServiceCondition.Type.ServiceAccountSecretCreated)
+            .setStatus(CloudServiceCondition.Status.Unknown),
+        new CloudServiceCondition().setLastTransitionTime(isoNow()).setLastTransitionGeneration(generation)
+            .setReason("").setMessage("").setType(CloudServiceCondition.Type.Finished)
             .setStatus(Status.Unknown));
   }
 
-  public static void setAllConditionsTrue(List<KafkaCondition> conditions) {
+  public static void setAllConditionsTrue(List<CloudServiceCondition> conditions) {
     conditions.forEach(condition -> {
       condition.setLastTransitionTime(isoNow());
       condition.setMessage("");
@@ -167,30 +167,30 @@ public class ConditionUtil {
     }
   }
 
-  private static List<KafkaCondition> serviceRegistryConnectionDefaultConditions(long generation) {
+  private static List<CloudServiceCondition> serviceRegistryConnectionDefaultConditions(long generation) {
     return List.of(
-        new KafkaCondition().setLastTransitionTime(isoNow()).setLastTransitionGeneration(generation)
-            .setType(KafkaCondition.Type.AcccesTokenSecretValid).setReason("").setMessage("")
-            .setStatus(KafkaCondition.Status.Unknown),
-        new KafkaCondition().setLastTransitionTime(isoNow())
-            .setType(KafkaCondition.Type.FoundServiceRegistryById)
+        new CloudServiceCondition().setLastTransitionTime(isoNow()).setLastTransitionGeneration(generation)
+            .setType(CloudServiceCondition.Type.AcccesTokenSecretValid).setReason("").setMessage("")
+            .setStatus(CloudServiceCondition.Status.Unknown),
+        new CloudServiceCondition().setLastTransitionTime(isoNow())
+            .setType(CloudServiceCondition.Type.FoundServiceRegistryById)
             .setLastTransitionGeneration(generation).setReason("").setMessage("")
-            .setStatus(KafkaCondition.Status.Unknown),
-        new KafkaCondition().setLastTransitionTime(isoNow()).setLastTransitionGeneration(generation)
-            .setReason("").setMessage("").setType(KafkaCondition.Type.Finished)
+            .setStatus(CloudServiceCondition.Status.Unknown),
+        new CloudServiceCondition().setLastTransitionTime(isoNow()).setLastTransitionGeneration(generation)
+            .setReason("").setMessage("").setType(CloudServiceCondition.Type.Finished)
             .setStatus(Status.Unknown));
   }
 
-  private static List<KafkaCondition> kafkaConnectionDefaultConditions(long generation) {
+  private static List<CloudServiceCondition> kafkaConnectionDefaultConditions(long generation) {
     return List.of(
-        new KafkaCondition().setLastTransitionTime(isoNow()).setLastTransitionGeneration(generation)
-            .setType(KafkaCondition.Type.AcccesTokenSecretValid).setReason("").setMessage("")
-            .setStatus(KafkaCondition.Status.Unknown),
-        new KafkaCondition().setLastTransitionTime(isoNow())
-            .setType(KafkaCondition.Type.FoundKafkaById).setLastTransitionGeneration(generation)
-            .setReason("").setMessage("").setStatus(KafkaCondition.Status.Unknown),
-        new KafkaCondition().setLastTransitionTime(isoNow()).setLastTransitionGeneration(generation)
-            .setReason("").setMessage("").setType(KafkaCondition.Type.Finished)
+        new CloudServiceCondition().setLastTransitionTime(isoNow()).setLastTransitionGeneration(generation)
+            .setType(CloudServiceCondition.Type.AcccesTokenSecretValid).setReason("").setMessage("")
+            .setStatus(CloudServiceCondition.Status.Unknown),
+        new CloudServiceCondition().setLastTransitionTime(isoNow())
+            .setType(CloudServiceCondition.Type.FoundKafkaById).setLastTransitionGeneration(generation)
+            .setReason("").setMessage("").setStatus(CloudServiceCondition.Status.Unknown),
+        new CloudServiceCondition().setLastTransitionTime(isoNow()).setLastTransitionGeneration(generation)
+            .setReason("").setMessage("").setType(CloudServiceCondition.Type.Finished)
             .setStatus(Status.Unknown));
   }
 

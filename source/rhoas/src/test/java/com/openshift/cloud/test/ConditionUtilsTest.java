@@ -2,7 +2,7 @@ package com.openshift.cloud.test;
 
 import com.openshift.cloud.controllers.ConditionAwareException;
 import com.openshift.cloud.controllers.ConditionUtil;
-import com.openshift.cloud.v1alpha.models.KafkaCondition;
+import com.openshift.cloud.v1alpha.models.CloudServiceCondition;
 import com.openshift.cloud.v1alpha.models.KafkaConnection;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -17,8 +17,8 @@ public class ConditionUtilsTest {
 
     var resourceConditions = resource.getStatus().getConditions();
 
-    Assertions.assertEquals(KafkaCondition.Status.Unknown,
-        ConditionUtil.getCondition(resourceConditions, KafkaCondition.Type.Finished).getStatus());
+    Assertions.assertEquals(CloudServiceCondition.Status.Unknown,
+        ConditionUtil.getCondition(resourceConditions, CloudServiceCondition.Type.Finished).getStatus());
   }
 
   @Test
@@ -30,11 +30,11 @@ public class ConditionUtilsTest {
     var resourceConditions = resource.getStatus().getConditions();
 
     var exception = new ConditionAwareException("Test Exception please Igrnore",
-        new RuntimeException(), KafkaCondition.Type.AcccesTokenSecretValid,
-        KafkaCondition.Status.False, "Ignore", "Ignore");
+        new RuntimeException(), CloudServiceCondition.Type.AcccesTokenSecretValid,
+        CloudServiceCondition.Status.False, "Ignore", "Ignore");
     ConditionUtil.setConditionFromException(resourceConditions, exception);
 
-    Assertions.assertEquals(KafkaCondition.Status.False,
-        ConditionUtil.getCondition(resourceConditions, KafkaCondition.Type.Finished).getStatus());
+    Assertions.assertEquals(CloudServiceCondition.Status.False,
+        ConditionUtil.getCondition(resourceConditions, CloudServiceCondition.Type.Finished).getStatus());
   }
 }

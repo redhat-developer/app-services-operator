@@ -9,9 +9,9 @@ import com.openshift.cloud.controllers.KafkaConnectionController;
 import com.openshift.cloud.test.util.EmptyContext;
 import com.openshift.cloud.test.util.MockAccessTokenSecretToolProfile;
 import com.openshift.cloud.v1alpha.models.Credentials;
-import com.openshift.cloud.v1alpha.models.KafkaCondition;
-import com.openshift.cloud.v1alpha.models.KafkaCondition.Status;
-import com.openshift.cloud.v1alpha.models.KafkaCondition.Type;
+import com.openshift.cloud.v1alpha.models.CloudServiceCondition;
+import com.openshift.cloud.v1alpha.models.CloudServiceCondition.Status;
+import com.openshift.cloud.v1alpha.models.CloudServiceCondition.Type;
 import com.openshift.cloud.v1alpha.models.KafkaConnection;
 import com.openshift.cloud.v1alpha.models.KafkaConnectionBuilder;
 import com.openshift.cloud.v1alpha.models.KafkaConnectionSpecBuilder;
@@ -94,7 +94,7 @@ public class KafkaConnectionControllerTest {
 
     var status = ((KafkaConnection) result.getCustomResource()).getStatus();
 
-    KafkaCondition condition =
+    CloudServiceCondition condition =
         ConditionUtil.getCondition(status.getConditions(), Type.AcccesTokenSecretValid);
     assertEquals(Status.True, condition.getStatus());
 

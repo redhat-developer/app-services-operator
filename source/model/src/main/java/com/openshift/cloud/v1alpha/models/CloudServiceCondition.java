@@ -1,7 +1,7 @@
 package com.openshift.cloud.v1alpha.models;
 
-// TODO This needs to be renamed because we're more than just Kafkas now
-public class KafkaCondition {
+
+public class CloudServiceCondition {
   public enum Type {
     AcccesTokenSecretValid, UserKafkasUpToDate, ServiceRegistriesUpToDate, ServiceAccountCreated, ServiceAccountSecretCreated, Finished, FoundKafkaById, FoundServiceRegistryById;
   }
@@ -37,7 +37,7 @@ public class KafkaCondition {
     return lastTransitionTime;
   }
 
-  public KafkaCondition setType(String type) {
+  public CloudServiceCondition setType(String type) {
     if ("AcccesTokenSecretAvailable".equalsIgnoreCase(type)) {
       // Old value from before release, keeping for migration from 0.1.x
       this.type = Type.AcccesTokenSecretValid;
@@ -47,32 +47,32 @@ public class KafkaCondition {
     return this;
   }
 
-  public KafkaCondition setType(Type type) {
+  public CloudServiceCondition setType(Type type) {
     this.type = type;
     return this;
   }
 
-  public KafkaCondition setReason(String reason) {
+  public CloudServiceCondition setReason(String reason) {
     this.reason = reason;
     return this;
   }
 
-  public KafkaCondition setMessage(String message) {
+  public CloudServiceCondition setMessage(String message) {
     this.message = message;
     return this;
   }
 
-  public KafkaCondition setStatus(Status status) {
+  public CloudServiceCondition setStatus(Status status) {
     this.status = status;
     return this;
   }
 
-  public KafkaCondition setStatus(String status) {
+  public CloudServiceCondition setStatus(String status) {
     this.status = Status.valueOf(status);
     return this;
   }
 
-  public KafkaCondition setLastTransitionTime(String lastTransitionTime) {
+  public CloudServiceCondition setLastTransitionTime(String lastTransitionTime) {
     this.lastTransitionTime = lastTransitionTime;
     return this;
   }
@@ -81,7 +81,7 @@ public class KafkaCondition {
     return lastTransitionGeneration;
   }
 
-  public KafkaCondition setLastTransitionGeneration(Long lastTransitionGeneration) {
+  public CloudServiceCondition setLastTransitionGeneration(Long lastTransitionGeneration) {
     this.lastTransitionGeneration = lastTransitionGeneration;
     return this;
   }

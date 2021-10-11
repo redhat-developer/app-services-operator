@@ -11,7 +11,7 @@ public class KafkaConnectionStatus {
   private String updated;
   private String bootstrapServerHost;
   private String serviceAccountSecretName;
-  private List<KafkaCondition> conditions;
+  private List<CloudServiceCondition> conditions;
   private Map<String, String> metadata;
 
   /** No args constructor for use in serialization */
@@ -57,11 +57,11 @@ public class KafkaConnectionStatus {
     this.serviceAccountSecretName = serviceAccountSecretName;
   }
 
-  public List<KafkaCondition> getConditions() {
+  public List<CloudServiceCondition> getConditions() {
     return conditions;
   }
 
-  public void setConditions(List<KafkaCondition> conditions) {
+  public void setConditions(List<CloudServiceCondition> conditions) {
     this.conditions = conditions;
   }
 

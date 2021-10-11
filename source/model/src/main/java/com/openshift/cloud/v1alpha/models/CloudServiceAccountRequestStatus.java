@@ -10,7 +10,7 @@ public class CloudServiceAccountRequestStatus {
   private String message = "";
   private String updated = "";
   private String serviceAccountSecretName = "";
-  private List<KafkaCondition> conditions = new ArrayList<>();
+  private List<CloudServiceCondition> conditions = new ArrayList<>();
 
   /** No args constructor for use in serialization */
   public CloudServiceAccountRequestStatus() {}
@@ -52,11 +52,11 @@ public class CloudServiceAccountRequestStatus {
     this.serviceAccountSecretName = serviceAccountSecretName;
   }
 
-  public List<KafkaCondition> getConditions() {
+  public List<CloudServiceCondition> getConditions() {
     return conditions;
   }
 
-  public void setConditions(List<KafkaCondition> conditions) {
+  public void setConditions(List<CloudServiceCondition> conditions) {
     this.conditions = conditions;
   }
 }
