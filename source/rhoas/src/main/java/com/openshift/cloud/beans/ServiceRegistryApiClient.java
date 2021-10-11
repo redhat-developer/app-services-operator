@@ -38,8 +38,9 @@ public class ServiceRegistryApiClient {
       return createRegistriesClient(accessToken).getRegistries(null, null, null, null).getItems();
     } catch (ApiException e) {
       String message = ConditionUtil.getStandarizedErrorMessage(e.getCode(), e);
-      throw new ConditionAwareException(message, e, CloudServiceCondition.Type.ServiceRegistriesUpToDate,
-          CloudServiceCondition.Status.False, e.getClass().getName(), message);
+      throw new ConditionAwareException(message, e,
+          CloudServiceCondition.Type.ServiceRegistriesUpToDate, CloudServiceCondition.Status.False,
+          e.getClass().getName(), message);
     }
 
   }
@@ -50,8 +51,9 @@ public class ServiceRegistryApiClient {
       return createRegistriesClient(accessToken).getRegistry(registryId);
     } catch (ApiException e) {
       String message = ConditionUtil.getStandarizedErrorMessage(e.getCode(), e);
-      throw new ConditionAwareException(message, e, CloudServiceCondition.Type.FoundServiceRegistryById,
-          CloudServiceCondition.Status.False, e.getClass().getName(), message);
+      throw new ConditionAwareException(message, e,
+          CloudServiceCondition.Type.FoundServiceRegistryById, CloudServiceCondition.Status.False,
+          e.getClass().getName(), message);
     }
   }
 

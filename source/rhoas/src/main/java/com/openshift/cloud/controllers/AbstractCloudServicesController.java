@@ -33,7 +33,8 @@ public abstract class AbstractCloudServicesController<T extends CustomResource>
   public static final String COMPONENT_LABEL_VALUE = "external-service";
   public static final String MANAGED_BY_LABEL_VALUE = "rhoas";
 
-  public static List<Class<?>> CRS_THAT_REQUIRE_LABELS = Arrays.asList(KafkaConnection.class, ServiceRegistryConnection.class);
+  public static List<Class<?>> CRS_THAT_REQUIRE_LABELS =
+      Arrays.asList(KafkaConnection.class, ServiceRegistryConnection.class);
 
   private static final Logger LOG =
       Logger.getLogger(AbstractCloudServicesController.class.getName());

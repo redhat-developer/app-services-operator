@@ -17,8 +17,8 @@ public class ConditionUtilsTest {
 
     var resourceConditions = resource.getStatus().getConditions();
 
-    Assertions.assertEquals(CloudServiceCondition.Status.Unknown,
-        ConditionUtil.getCondition(resourceConditions, CloudServiceCondition.Type.Finished).getStatus());
+    Assertions.assertEquals(CloudServiceCondition.Status.Unknown, ConditionUtil
+        .getCondition(resourceConditions, CloudServiceCondition.Type.Finished).getStatus());
   }
 
   @Test
@@ -34,7 +34,7 @@ public class ConditionUtilsTest {
         CloudServiceCondition.Status.False, "Ignore", "Ignore");
     ConditionUtil.setConditionFromException(resourceConditions, exception);
 
-    Assertions.assertEquals(CloudServiceCondition.Status.False,
-        ConditionUtil.getCondition(resourceConditions, CloudServiceCondition.Type.Finished).getStatus());
+    Assertions.assertEquals(CloudServiceCondition.Status.False, ConditionUtil
+        .getCondition(resourceConditions, CloudServiceCondition.Type.Finished).getStatus());
   }
 }
