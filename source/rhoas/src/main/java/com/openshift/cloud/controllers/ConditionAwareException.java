@@ -1,17 +1,17 @@
 package com.openshift.cloud.controllers;
 
-import com.openshift.cloud.v1alpha.models.KafkaCondition;
+import com.openshift.cloud.v1alpha.models.CloudServiceCondition;
 
 public class ConditionAwareException extends Exception {
 
   private static final long serialVersionUID = 18383451L;
 
-  private final KafkaCondition.Type type;
-  private final KafkaCondition.Status status;
+  private final CloudServiceCondition.Type type;
+  private final CloudServiceCondition.Status status;
   private String reason, conditionMessage;
 
-  public ConditionAwareException(String exceptionMessage, Throwable cause, KafkaCondition.Type type,
-      KafkaCondition.Status status, String reason, String conditionMessage) {
+  public ConditionAwareException(String exceptionMessage, Throwable cause, CloudServiceCondition.Type type,
+      CloudServiceCondition.Status status, String reason, String conditionMessage) {
     super(exceptionMessage, cause);
     this.type = type;
     this.status = status;
@@ -19,11 +19,11 @@ public class ConditionAwareException extends Exception {
     this.conditionMessage = conditionMessage;
   }
 
-  public KafkaCondition.Type getType() {
+  public CloudServiceCondition.Type getType() {
     return type;
   }
 
-  public KafkaCondition.Status getStatus() {
+  public CloudServiceCondition.Status getStatus() {
     return status;
   }
 

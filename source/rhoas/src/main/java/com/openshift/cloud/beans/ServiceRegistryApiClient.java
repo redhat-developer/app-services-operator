@@ -3,7 +3,7 @@ package com.openshift.cloud.beans;
 import java.util.List;
 
 import javax.enterprise.context.ApplicationScoped;
-import com.openshift.cloud.v1alpha.models.KafkaCondition;
+import com.openshift.cloud.v1alpha.models.CloudServiceCondition;
 import com.openshift.cloud.api.srs.invoker.ApiClient;
 import com.openshift.cloud.api.srs.invoker.ApiException;
 import com.openshift.cloud.api.srs.invoker.Configuration;
@@ -38,8 +38,8 @@ public class ServiceRegistryApiClient {
       return createRegistriesClient(accessToken).getRegistries(null, null, null, null).getItems();
     } catch (ApiException e) {
       String message = ConditionUtil.getStandarizedErrorMessage(e.getCode(), e);
-      throw new ConditionAwareException(message, e, KafkaCondition.Type.ServiceRegistriesUpToDate,
-          KafkaCondition.Status.False, e.getClass().getName(), message);
+      throw new ConditionAwareException(message, e, CloudServiceCondition.Type.ServiceRegistriesUpToDate,
+          CloudServiceCondition.Status.False, e.getClass().getName(), message);
     }
 
   }
@@ -50,8 +50,8 @@ public class ServiceRegistryApiClient {
       return createRegistriesClient(accessToken).getRegistry(registryId);
     } catch (ApiException e) {
       String message = ConditionUtil.getStandarizedErrorMessage(e.getCode(), e);
-      throw new ConditionAwareException(message, e, KafkaCondition.Type.FoundServiceRegistryById,
-          KafkaCondition.Status.False, e.getClass().getName(), message);
+      throw new ConditionAwareException(message, e, CloudServiceCondition.Type.FoundServiceRegistryById,
+          CloudServiceCondition.Status.False, e.getClass().getName(), message);
     }
   }
 

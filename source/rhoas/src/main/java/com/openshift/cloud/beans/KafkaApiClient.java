@@ -14,7 +14,7 @@ import com.openshift.cloud.controllers.ConditionAwareException;
 import com.openshift.cloud.controllers.ConditionUtil;
 import com.openshift.cloud.v1alpha.models.CloudServiceAccountRequest;
 import com.openshift.cloud.v1alpha.models.CloudServiceAccountRequestSpec;
-import com.openshift.cloud.v1alpha.models.KafkaCondition;
+import com.openshift.cloud.v1alpha.models.CloudServiceCondition;
 import io.fabric8.kubernetes.api.model.OwnerReferenceBuilder;
 import io.fabric8.kubernetes.api.model.SecretBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
@@ -53,8 +53,8 @@ public class KafkaApiClient {
       return createClient(accessToken).getKafkaById(kafkaId);
     } catch (ApiException e) {
       String message = ConditionUtil.getStandarizedErrorMessage(e.getCode(), e);
-      throw new ConditionAwareException(message, e, KafkaCondition.Type.FoundKafkaById,
-          KafkaCondition.Status.False, e.getClass().getName(), message);
+      throw new ConditionAwareException(message, e, CloudServiceCondition.Type.FoundKafkaById,
+          CloudServiceCondition.Status.False, e.getClass().getName(), message);
     }
   }
 
@@ -63,8 +63,8 @@ public class KafkaApiClient {
       return createClient(accessToken).getKafkas(null, null, null, null);
     } catch (ApiException e) {
       String message = ConditionUtil.getStandarizedErrorMessage(e.getCode(), e);
-      throw new ConditionAwareException(message, e, KafkaCondition.Type.UserKafkasUpToDate,
-          KafkaCondition.Status.False, e.getClass().getName(), message);
+      throw new ConditionAwareException(message, e, CloudServiceCondition.Type.UserKafkasUpToDate,
+          CloudServiceCondition.Status.False, e.getClass().getName(), message);
     }
   }
 
@@ -77,8 +77,8 @@ public class KafkaApiClient {
       return createSecurityClient(accessToken).createServiceAccount(serviceAccountRequest);
     } catch (ApiException e) {
       String message = ConditionUtil.getStandarizedErrorMessage(e.getCode(), e);
-      throw new ConditionAwareException(message, e, KafkaCondition.Type.ServiceAccountCreated,
-          KafkaCondition.Status.False, e.getClass().getName(), message);
+      throw new ConditionAwareException(message, e, CloudServiceCondition.Type.ServiceAccountCreated,
+          CloudServiceCondition.Status.False, e.getClass().getName(), message);
     }
   }
 
@@ -114,7 +114,7 @@ public class KafkaApiClient {
       k8sClient.secrets().inNamespace(secret.getMetadata().getNamespace()).create(secret);
     } catch (Exception e) {
       throw new ConditionAwareException(e.getMessage(), e,
-          KafkaCondition.Type.ServiceAccountSecretCreated, KafkaCondition.Status.False,
+          CloudServiceCondition.Type.ServiceAccountSecretCreated, CloudServiceCondition.Status.False,
           e.getClass().getName(), e.getMessage());
     }
   }

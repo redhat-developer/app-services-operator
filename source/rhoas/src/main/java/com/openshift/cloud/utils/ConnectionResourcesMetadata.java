@@ -28,7 +28,7 @@ public class ConnectionResourcesMetadata {
   public static Map<String, String> buildServiceMetadata(String oauthHost) {
     var map = new HashMap<String, String>();
     map.put("provider", "rhoas");
-    map.put("oAuthHost", oauthHost);
+    map.put("oauthTokenUrl", oauthHost);
     map.put("type", "serviceregistry");
     return map;
   }

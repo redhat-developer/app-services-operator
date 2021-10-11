@@ -11,7 +11,7 @@ public class ServiceRegistryConnectionStatus {
   private String updated;
   private String registryUrl;
   private String serviceAccountSecretName;
-  private List<KafkaCondition> conditions;
+  private List<CloudServiceCondition> conditions;
   private Map<String, String> metadata;
 
 
@@ -40,11 +40,11 @@ public class ServiceRegistryConnectionStatus {
     this.serviceAccountSecretName = serviceAccountSecretName;
   }
 
-  public List<KafkaCondition> getConditions() {
+  public List<CloudServiceCondition> getConditions() {
     return conditions;
   }
 
-  public void setConditions(List<KafkaCondition> conditions) {
+  public void setConditions(List<CloudServiceCondition> conditions) {
     this.conditions = conditions;
   }
 
