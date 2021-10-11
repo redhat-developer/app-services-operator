@@ -16,6 +16,7 @@ import io.javaoperatorsdk.operator.api.DeleteControl;
 import io.javaoperatorsdk.operator.api.ResourceController;
 import io.javaoperatorsdk.operator.api.UpdateControl;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
@@ -31,6 +32,8 @@ public abstract class AbstractCloudServicesController<T extends CustomResource>
 
   public static final String COMPONENT_LABEL_VALUE = "external-service";
   public static final String MANAGED_BY_LABEL_VALUE = "rhoas";
+
+  public static List<Class<?>> CRS_THAT_REQUIRE_LABELS = Arrays.asList(KafkaConnection.class, ServiceRegistryConnection.class);
 
   private static final Logger LOG =
       Logger.getLogger(AbstractCloudServicesController.class.getName());
@@ -80,7 +83,7 @@ public abstract class AbstractCloudServicesController<T extends CustomResource>
 
   private boolean requiresLabelUpdate(T resource) {
     var updateRequired = false;
-    if (resource instanceof KafkaConnection || resource instanceof ServiceRegistryConnection) {
+    if (CRS_THAT_REQUIRE_LABELS.contains(resource.getClass())) {
       var labels = resource.getMetadata().getLabels();
 
       if (labels == null) {
