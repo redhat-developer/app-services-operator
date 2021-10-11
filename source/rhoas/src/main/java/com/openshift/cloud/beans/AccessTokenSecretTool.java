@@ -160,4 +160,9 @@ public class AccessTokenSecretTool {
 
     return HttpRequest.BodyPublishers.ofString(builder.toString());
   }
+
+  public String getTokenPath() {
+    return this.tokenPath;
+  }
+
 }
