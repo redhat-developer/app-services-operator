@@ -1,15 +1,8 @@
 package com.openshift.cloud.controllers;
 
-import static com.openshift.cloud.v1alpha.models.KafkaConnection.*;
-
-import com.openshift.cloud.v1alpha.models.CloudServiceAccountRequest;
-import com.openshift.cloud.v1alpha.models.CloudServicesRequest;
-import com.openshift.cloud.v1alpha.models.CloudServiceCondition;
+import com.openshift.cloud.v1alpha.models.*;
 import com.openshift.cloud.v1alpha.models.CloudServiceCondition.Status;
 import com.openshift.cloud.v1alpha.models.CloudServiceCondition.Type;
-import com.openshift.cloud.v1alpha.models.KafkaConnection;
-import com.openshift.cloud.v1alpha.models.ServiceRegistryConnection;
-
 import io.fabric8.kubernetes.client.CustomResource;
 import io.javaoperatorsdk.operator.api.Context;
 import io.javaoperatorsdk.operator.api.DeleteControl;

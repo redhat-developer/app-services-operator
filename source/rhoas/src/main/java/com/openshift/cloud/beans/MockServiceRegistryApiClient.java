@@ -1,10 +1,7 @@
 package com.openshift.cloud.beans;
 
-import com.openshift.cloud.api.srs.invoker.ApiException;
-import com.openshift.cloud.api.srs.models.RegistryRest;
+import com.openshift.cloud.api.srs.models.Registry;
 import com.openshift.cloud.controllers.ConditionAwareException;
-import com.openshift.cloud.controllers.ConditionUtil;
-import com.openshift.cloud.v1alpha.models.CloudServiceCondition;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -19,13 +16,13 @@ public class MockServiceRegistryApiClient extends ServiceRegistryApiClient {
   @ConfigProperty(name = "rhoas.client.apiBasePath")
   String clientBasePath;
 
-  public List<RegistryRest> listRegistries(String accessToken) throws ConditionAwareException {
+  public List<Registry> listRegistries(String accessToken) throws ConditionAwareException {
     return new ArrayList<>();
   }
 
-  public RegistryRest getServiceRegistryById(String registryId, String accessToken)
+  public Registry getServiceRegistryById(String registryId, String accessToken)
       throws ConditionAwareException {
-    return new RegistryRest();
+    return new Registry();
   }
 
 }

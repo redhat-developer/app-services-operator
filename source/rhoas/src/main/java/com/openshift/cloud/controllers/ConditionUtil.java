@@ -1,14 +1,11 @@
 package com.openshift.cloud.controllers;
 
-import static com.openshift.cloud.v1alpha.models.CloudServiceCondition.Status.False;
-import static com.openshift.cloud.v1alpha.models.CloudServiceCondition.Status.True;
-
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.openshift.cloud.api.kas.invoker.ApiException;
 import com.openshift.cloud.utils.InvalidUserInputException;
 import com.openshift.cloud.v1alpha.models.*;
 import com.openshift.cloud.v1alpha.models.CloudServiceCondition.Status;
+
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -18,6 +15,9 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+
+import static com.openshift.cloud.v1alpha.models.CloudServiceCondition.Status.False;
+import static com.openshift.cloud.v1alpha.models.CloudServiceCondition.Status.True;
 
 /**
  * This class contains utility methods to set conditions on {@link CloudServicesRequest},

@@ -8,7 +8,7 @@ public class ConditionAwareException extends Exception {
 
   private final CloudServiceCondition.Type type;
   private final CloudServiceCondition.Status status;
-  private String reason, conditionMessage;
+  private final String reason, conditionMessage;
 
   public ConditionAwareException(String exceptionMessage, Throwable cause,
       CloudServiceCondition.Type type, CloudServiceCondition.Status status, String reason,
