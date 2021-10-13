@@ -1,18 +1,15 @@
 package com.openshift.cloud.controllers;
 
-import java.time.Instant;
-
-import javax.inject.Inject;
-
 import com.openshift.cloud.beans.AccessTokenSecretTool;
 import com.openshift.cloud.beans.ServiceRegistryApiClient;
 import com.openshift.cloud.utils.ConnectionResourcesMetadata;
 import com.openshift.cloud.utils.InvalidUserInputException;
 import com.openshift.cloud.v1alpha.models.ServiceRegistryConnection;
-
+import io.javaoperatorsdk.operator.api.Context;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
-import io.javaoperatorsdk.operator.api.Context;
+import javax.inject.Inject;
+import java.time.Instant;
 
 public class ServiceRegistryConnectionController
     extends AbstractCloudServicesController<ServiceRegistryConnection> {
