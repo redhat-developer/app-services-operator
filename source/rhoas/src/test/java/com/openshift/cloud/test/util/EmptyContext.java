@@ -10,10 +10,6 @@ import java.util.Optional;
 public class EmptyContext {
   public static <T extends CustomResource> Context<T> emptyContext(Class<T> clazz) {
     return new Context<T>() {
-      @Override
-      public EventSourceManager getEventSourceManager() {
-        return null;
-      }
 
       @Override
       public EventList getEvents() {

@@ -2,17 +2,18 @@ package com.openshift.cloud.controllers;
 
 import com.openshift.cloud.beans.AccessTokenSecretTool;
 import com.openshift.cloud.beans.KafkaApiClient;
-import com.openshift.cloud.beans.KafkaK8sClients;
 import com.openshift.cloud.beans.ServiceRegistryApiClient;
 import com.openshift.cloud.utils.InvalidUserInputException;
 import com.openshift.cloud.v1alpha.models.CloudServicesRequest;
 import com.openshift.cloud.v1alpha.models.ServiceRegistry;
 import com.openshift.cloud.v1alpha.models.UserKafka;
-import io.javaoperatorsdk.operator.api.*;
+import io.javaoperatorsdk.operator.api.Context;
+import io.javaoperatorsdk.operator.api.Controller;
 import io.javaoperatorsdk.operator.processing.event.EventSourceManager;
+
+import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.logging.Logger;
-import javax.inject.Inject;
 
 @Controller
 public class CloudServicesRequestController
@@ -25,9 +26,6 @@ public class CloudServicesRequestController
   AccessTokenSecretTool accessTokenSecretTool;
 
   @Inject
-  KafkaK8sClients kafkaClientFactory;
-
-  @Inject
   KafkaApiClient kasApiClient;
 
   @Inject
@@ -35,7 +33,9 @@ public class CloudServicesRequestController
 
   public CloudServicesRequestController() {}
 
-  /** @return true if there were changes, false otherwise */
+  /**
+   * @return true if there were changes, false otherwise
+   **/
   @Override
   public void init(EventSourceManager eventSourceManager) {
     LOG.info("Init! This is where we would add watches for child resources");
@@ -48,7 +48,7 @@ public class CloudServicesRequestController
     var accessTokenSecretName = resource.getSpec().getAccessTokenSecretName();
     var namespace = resource.getMetadata().getNamespace();
     validateResource(resource);
-    String accessToken = null;
+    String accessToken;
     accessToken = accessTokenSecretTool.getAccessToken(accessTokenSecretName, namespace);
     var kafkaList = kasApiClient.listKafkas(accessToken);
     var registryList = srsApiClient.listRegistries(accessToken);

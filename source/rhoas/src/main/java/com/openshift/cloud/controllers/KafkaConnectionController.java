@@ -2,13 +2,16 @@ package com.openshift.cloud.controllers;
 
 import com.openshift.cloud.beans.AccessTokenSecretTool;
 import com.openshift.cloud.beans.KafkaApiClient;
+import com.openshift.cloud.beans.ServiceAccountUtil;
 import com.openshift.cloud.utils.ConnectionResourcesMetadata;
 import com.openshift.cloud.utils.InvalidUserInputException;
 import com.openshift.cloud.v1alpha.models.KafkaConnection;
-import io.javaoperatorsdk.operator.api.*;
+import io.javaoperatorsdk.operator.api.Context;
+import io.javaoperatorsdk.operator.api.Controller;
+
+import javax.inject.Inject;
 import java.time.Instant;
 import java.util.logging.Logger;
-import javax.inject.Inject;
 
 @Controller
 public class KafkaConnectionController extends AbstractCloudServicesController<KafkaConnection> {
@@ -20,6 +23,9 @@ public class KafkaConnectionController extends AbstractCloudServicesController<K
 
   @Inject
   AccessTokenSecretTool accessTokenSecretTool;
+
+  @Inject
+  ServiceAccountUtil serviceAccountUtil;
 
   @Override
   void doCreateOrUpdateResource(KafkaConnection resource, Context<KafkaConnection> context)
@@ -38,6 +44,9 @@ public class KafkaConnectionController extends AbstractCloudServicesController<K
     var kafkaServiceInfo = apiClient.getKafkaById(kafkaId, accessToken);
 
     var bootStrapHost = kafkaServiceInfo.getBootstrapServerHost();
+
+    //var principal = serviceAccountUtil.getServiceAccountSecret(serviceAccountSecretName, namespace);
+    // TODO add ACL to principal
 
     var status = resource.getStatus();
     status.setMessage("Created");

@@ -6,11 +6,12 @@ import com.openshift.cloud.api.kas.models.ServiceAccount;
 import com.openshift.cloud.controllers.ConditionAwareException;
 import com.openshift.cloud.v1alpha.models.CloudServiceAccountRequest;
 import com.openshift.cloud.v1alpha.models.CloudServiceAccountRequestSpec;
+
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.Alternative;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.Alternative;
 
 @ApplicationScoped
 @Alternative
@@ -39,13 +40,6 @@ public class MockKafkaApiClient extends KafkaApiClient {
 
   public MockKafkaApiClient() {
     kafkaRequestsById.put(DEFAULT_KAFKA.getId(), DEFAULT_KAFKA);
-  }
-
-  @Override
-  public void createSecretForServiceAccount(CloudServiceAccountRequest resource,
-      ServiceAccount serviceAccount) throws ConditionAwareException {
-    // NOOP
-    // The secret is pseudo hard coded and will be returned as a hard coded value by the k8s mock
   }
 
   @Override

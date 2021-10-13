@@ -1,6 +1,7 @@
 package com.openshift.cloud.beans;
 
 import com.openshift.cloud.controllers.ConditionAwareException;
+
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Alternative;
 
