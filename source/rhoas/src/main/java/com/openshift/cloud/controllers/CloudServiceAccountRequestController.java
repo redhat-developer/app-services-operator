@@ -2,12 +2,14 @@ package com.openshift.cloud.controllers;
 
 import com.openshift.cloud.beans.AccessTokenSecretTool;
 import com.openshift.cloud.beans.KafkaApiClient;
-import com.openshift.cloud.beans.KafkaK8sClients;
+import com.openshift.cloud.beans.ServiceAccountUtil;
 import com.openshift.cloud.utils.InvalidUserInputException;
 import com.openshift.cloud.v1alpha.models.CloudServiceAccountRequest;
-import io.javaoperatorsdk.operator.api.*;
-import java.time.Instant;
+import io.javaoperatorsdk.operator.api.Context;
+import io.javaoperatorsdk.operator.api.Controller;
+
 import javax.inject.Inject;
+import java.time.Instant;
 
 /** Controller for CloudServiceAccountRequest CRs */
 @Controller
@@ -18,10 +20,10 @@ public class CloudServiceAccountRequestController
   AccessTokenSecretTool accessTokenSecretTool;
 
   @Inject
-  KafkaK8sClients kafkaClientFactory;
+  KafkaApiClient apiClient;
 
   @Inject
-  KafkaApiClient apiClient;
+  ServiceAccountUtil serviceAccountUtil;
 
   @Override
   void doCreateOrUpdateResource(CloudServiceAccountRequest resource,
@@ -38,7 +40,7 @@ public class CloudServiceAccountRequestController
 
     var serviceAccount = apiClient.createServiceAccount(resource.getSpec(), accessToken);
 
-    apiClient.createSecretForServiceAccount(resource, serviceAccount);
+    serviceAccountUtil.createSecretForServiceAccount(resource, serviceAccount);
 
     var status = resource.getStatus();
     status.setMessage("Created");

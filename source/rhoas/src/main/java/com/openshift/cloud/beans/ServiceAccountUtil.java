@@ -1,44 +1,56 @@
 package com.openshift.cloud.beans;
 
-import com.openshift.cloud.api.kas.invoker.ApiException;
+import com.openshift.cloud.api.kas.models.ServiceAccount;
 import com.openshift.cloud.controllers.ConditionAwareException;
-import com.openshift.cloud.controllers.ConditionUtil;
+import com.openshift.cloud.v1alpha.models.CloudServiceAccountRequest;
 import com.openshift.cloud.v1alpha.models.CloudServiceCondition;
+import io.fabric8.kubernetes.api.model.OwnerReferenceBuilder;
+import io.fabric8.kubernetes.api.model.SecretBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import io.vertx.core.json.JsonObject;
-import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URLEncoder;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-import java.nio.charset.StandardCharsets;
-import java.time.Duration;
+import java.nio.charset.Charset;
 import java.util.Base64;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/** Utility bean to exchange offline tokens for access tokens */
+/** Utility bean to manage service accounts */
 @ApplicationScoped
-public class SecretUtil {
-  private static final Logger LOG = Logger.getLogger(SecretUtil.class.getName());
+public class ServiceAccountUtil {
+  private static final Logger LOG = Logger.getLogger(ServiceAccountUtil.class.getName());
 
-  private static final String TOKEN_SECRET_KEY = "clientID";
-
+  private static final String TOKEN_CLIENT_ID_KEY = "client-id";
+  private static final String TOKEN_CLIENT_SECRET_KEY = "client-secret";
   @Inject
   KubernetesClient k8sClient;
 
-  private boolean isNullOrEmpty(String... strings) {
-    for (String string : strings) {
-      if (string == null || string.isEmpty()) {
-        return true;
-      }
+  public void createSecretForServiceAccount(CloudServiceAccountRequest resource,
+                                            ServiceAccount serviceAccount) throws ConditionAwareException {
+    try {
+      var secret = new SecretBuilder().editOrNewMetadata()
+              .withName(resource.getSpec().getServiceAccountSecretName())
+              .withNamespace(resource.getMetadata().getNamespace())
+              .withOwnerReferences(List.of(new OwnerReferenceBuilder()
+                      .withApiVersion(resource.getApiVersion()).withController(true)
+                      .withKind(resource.getKind()).withName(resource.getMetadata().getName())
+                      .withUid(resource.getMetadata().getUid()).build()))
+              .endMetadata()
+              .withData(Map.of(TOKEN_CLIENT_SECRET_KEY, Base64.getEncoder()
+                              .encodeToString(serviceAccount.getClientSecret().getBytes(Charset.defaultCharset())),
+                      TOKEN_CLIENT_ID_KEY,
+                      Base64.getEncoder()
+                              .encodeToString(serviceAccount.getClientId().getBytes(Charset.defaultCharset()))))
+              .build();
+
+      k8sClient.secrets().inNamespace(secret.getMetadata().getNamespace()).create(secret);
+    } catch (Exception e) {
+      throw new ConditionAwareException(e.getMessage(), e,
+              CloudServiceCondition.Type.ServiceAccountSecretCreated,
+              CloudServiceCondition.Status.False, e.getClass().getName(), e.getMessage());
     }
-    return false;
   }
 
   /**
@@ -53,17 +65,17 @@ public class SecretUtil {
   public String getServiceAccountSecret(String secretName, String namespace)
       throws ConditionAwareException {
     try {
-      var token = k8sClient.secrets().inNamespace(namespace).withName(secretName).get();
-      if (token != null) {
-        var offlineToken = token.getData().get(TOKEN_SECRET_KEY);
-        // decode may throw IllegalArgumentException
-        offlineToken = new String(Base64.getDecoder().decode(offlineToken));
-        return offlineToken;
+      var serviceAccount = k8sClient.secrets().inNamespace(namespace).withName(secretName).get();
+      if (serviceAccount != null) {
+        var clientIdValue = serviceAccount.getData().get(TOKEN_CLIENT_ID_KEY);
+        clientIdValue = new String(Base64.getDecoder().decode(clientIdValue));
+
+        return clientIdValue;
       }
       // We expect the token to exist, and if it doesn't raise an exception.
-      throw new ConditionAwareException(String.format("Missing Offline Token Secret %s", secretName),
+      throw new ConditionAwareException(String.format("Missing Service Account Secret value %s", secretName),
               null, CloudServiceCondition.Type.AcccesTokenSecretValid, CloudServiceCondition.Status.False,
-              "ConditionAwareException", String.format("Missing Offline Token Secret %s", secretName));
+              "ConditionAwareException", String.format("Missing Service Account Secret value %s", secretName));
     } catch (ConditionAwareException ex) {
       // Log and rethrow exception
       LOG.log(Level.SEVERE, ex.getMessage());
@@ -72,71 +84,19 @@ public class SecretUtil {
       // Unexpected exception or error (NPE, IOException, out of memory, etc)
       LOG.log(Level.SEVERE, ex.getMessage());
       throw new ConditionAwareException(ex.getMessage(), ex,
-              CloudServiceCondition.Type., CloudServiceCondition.Status.False,
+              CloudServiceCondition.Type.Finished, CloudServiceCondition.Status.False,
               ex.getClass().getName(), ex.getMessage());
     }
   }
 
-  /**
-   * This method exchanges an offline token for a new refresh token
-   *
-   * @param offlineToken the token from ss.redhat.com
-   * @return a token to be used as a bearer token to authorize the user
-   * @throws ConditionAwareException
-   */
-  private String exchangeToken(String offlineToken) throws ConditionAwareException {
-    try {
-      HttpRequest request =
-          HttpRequest.newBuilder().uri(URI.create(authServerUrl + "/" + tokenPath))
-              .header("content-type", "application/x-www-form-urlencoded")
-              .timeout(Duration.ofMinutes(2)).POST(ofFormData("grant_type", "refresh_token",
-                  "client_id", clientId, "refresh_token", offlineToken))
-              .build();
-
-      HttpClient client = HttpClient.newBuilder().build();
-      HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-      if (response.statusCode() == 200) {
-        var tokens = response.body();
-        var json = new JsonObject(tokens);
-        return json.getString("access_token");
-      } else {
-        LOG.log(Level.SEVERE,
-            String.format("Exchange token failed with error %s", response.body()));
-        // Reusing API error but only with status code
-        var apiError = ConditionUtil.getStandarizedErrorMessage(response.statusCode(),
-            new ApiException(response.statusCode(), null));
-        throw new ConditionAwareException(response.body(), null,
-            CloudServiceCondition.Type.AcccesTokenSecretValid, CloudServiceCondition.Status.False,
-            String.format("Http Error Code %d", response.statusCode()), apiError);
+  private boolean isNullOrEmpty(String... strings) {
+    for (String string : strings) {
+      if (string == null || string.isEmpty()) {
+        return true;
       }
-    } catch (IOException | InterruptedException e) {
-      throw new ConditionAwareException(e.getMessage(), e,
-          CloudServiceCondition.Type.AcccesTokenSecretValid, CloudServiceCondition.Status.False,
-          e.getClass().getName(), e.getMessage());
     }
+    return false;
   }
 
-  private static HttpRequest.BodyPublisher ofFormData(String... data) {
-    var builder = new StringBuilder();
-    if (data.length % 2 == 1) {
-      throw new IllegalArgumentException(
-          "Data must be key value pairs, but an number of data were given. ");
-    }
-
-    for (int index = 0; index < data.length; index += 2) {
-      if (builder.length() > 0) {
-        builder.append("&");
-      }
-      builder.append(URLEncoder.encode(data[index], StandardCharsets.UTF_8));
-      builder.append("=");
-      builder.append(URLEncoder.encode(data[index + 1], StandardCharsets.UTF_8));
-    }
-
-    return HttpRequest.BodyPublishers.ofString(builder.toString());
-  }
-
-  public String getTokenPath() {
-    return this.tokenPath;
-  }
 
 }

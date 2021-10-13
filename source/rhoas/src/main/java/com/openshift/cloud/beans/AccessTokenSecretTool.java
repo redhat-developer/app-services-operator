@@ -6,6 +6,10 @@ import com.openshift.cloud.controllers.ConditionUtil;
 import com.openshift.cloud.v1alpha.models.CloudServiceCondition;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.vertx.core.json.JsonObject;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
+
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URLEncoder;
@@ -17,9 +21,6 @@ import java.time.Duration;
 import java.util.Base64;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 /** Utility bean to exchange offline tokens for access tokens */
 @ApplicationScoped
@@ -116,7 +117,7 @@ public class AccessTokenSecretTool {
           HttpRequest.newBuilder().uri(URI.create(authServerUrl + "/" + tokenPath))
               .header("content-type", "application/x-www-form-urlencoded")
               .timeout(Duration.ofMinutes(2)).POST(ofFormData("grant_type", "refresh_token",
-                  "client_id", "cloud-services", "refresh_token", offlineToken))
+                  "client_id", clientId, "refresh_token", offlineToken))
               .build();
 
       HttpClient client = HttpClient.newBuilder().build();
