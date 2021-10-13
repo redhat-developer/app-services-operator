@@ -13,9 +13,8 @@
   <name>rhoas-operator</name>
   <description>rhoas-operator</description>
   <properties>
-    <fabric8.version>5.2.1</fabric8.version>
-    <quarkus.operator.sdk.version>1.8.3</quarkus.operator.sdk.version>
-
+    <fabric8.version>5.8.0</fabric8.version>
+    <quarkus.operator.sdk.version>2.0.0.CR2</quarkus.operator.sdk.version>
   </properties>
   <dependencies>
     <dependency>
@@ -31,12 +30,17 @@
     <dependency>
       <groupId>com.redhat.cloud</groupId>
       <artifactId>kafka-management-sdk</artifactId>
-      <version>0.5.1</version>
+      <version>0.6.0</version>
+    </dependency>
+    <dependency>
+      <groupId>com.redhat.cloud</groupId>
+      <artifactId>kafka-instance-sdk</artifactId>
+      <version>0.6.0</version>
     </dependency>
     <dependency>
       <groupId>com.redhat.cloud</groupId>
       <artifactId>registry-management-sdk</artifactId>
-      <version>0.5.1</version>
+      <version>0.6.0</version>
   </dependency>
     <dependency>
       <groupId>cloud.redhat.com</groupId>
