@@ -1,4 +1,29 @@
 
+<a name="0.8.0"></a>
+## [0.8.0](https://github.com/redhat-developer/app-services-operator/compare/0.7.10...0.8.0) (2021-10-12)
+
+### Bug Fixes
+
+* permissions for sbo
+* removing direction
+* fixing binding
+* moving direction to status.metadata
+* adding direction to serviceregistryconnection
+* service registry id is a string
+* service binding tweaks
+* removing registryDeploymentId
+* cloud services include Service Registry condition now
+* installing service registry
+* apdating apis and fixing tests
+
+### Features
+
+* mas oauth host, realm, and token are now configurable
+* adding service labels to serviceregistryconnection
+* initial service registry connection implementation
+* schema registry added to cloud services request
+
+
 <a name="0.7.10"></a>
 ## [0.7.10](https://github.com/redhat-developer/app-services-operator/compare/0.7.9...0.7.10) (2021-09-17)
 
