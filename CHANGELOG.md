@@ -1,4 +1,12 @@
 
+<a name="0.8.1"></a>
+## [0.8.1](https://github.com/redhat-developer/app-services-operator/compare/0.8.0...0.8.1) (2021-10-15)
+
+### Bug Fixes
+
+* SBO 0.11.0 compatibility
+
+
 <a name="0.8.0"></a>
 ## [0.8.0](https://github.com/redhat-developer/app-services-operator/compare/0.7.10...0.8.0) (2021-10-12)
 
