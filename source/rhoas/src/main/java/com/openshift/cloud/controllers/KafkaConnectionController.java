@@ -45,7 +45,8 @@ public class KafkaConnectionController extends AbstractCloudServicesController<K
 
     var bootStrapHost = kafkaServiceInfo.getBootstrapServerHost();
 
-    //var principal = serviceAccountUtil.getServiceAccountSecret(serviceAccountSecretName, namespace);
+    // var principal = serviceAccountUtil.getServiceAccountSecret(serviceAccountSecretName,
+    // namespace);
     // TODO add ACL to principal
 
     var status = resource.getStatus();

@@ -42,13 +42,13 @@ public class KafkaApiClient {
   }
 
   public KafkaRequest getKafkaById(String kafkaId, String accessToken)
-          throws ConditionAwareException {
+      throws ConditionAwareException {
     try {
       return createClient(accessToken).getKafkaById(kafkaId);
     } catch (ApiException e) {
       String message = ConditionUtil.getStandarizedErrorMessage(e.getCode(), e);
       throw new ConditionAwareException(message, e, CloudServiceCondition.Type.FoundKafkaById,
-              CloudServiceCondition.Status.False, e.getClass().getName(), message);
+          CloudServiceCondition.Status.False, e.getClass().getName(), message);
     }
   }
 
@@ -58,12 +58,12 @@ public class KafkaApiClient {
     } catch (ApiException e) {
       String message = ConditionUtil.getStandarizedErrorMessage(e.getCode(), e);
       throw new ConditionAwareException(message, e, CloudServiceCondition.Type.UserKafkasUpToDate,
-              CloudServiceCondition.Status.False, e.getClass().getName(), message);
+          CloudServiceCondition.Status.False, e.getClass().getName(), message);
     }
   }
 
   public ServiceAccount createServiceAccount(CloudServiceAccountRequestSpec spec,
-                                             String accessToken) throws ConditionAwareException {
+      String accessToken) throws ConditionAwareException {
     try {
       var serviceAccountRequest = new ServiceAccountRequest();
       serviceAccountRequest.setDescription(spec.getServiceAccountDescription());
@@ -72,8 +72,8 @@ public class KafkaApiClient {
     } catch (ApiException e) {
       String message = ConditionUtil.getStandarizedErrorMessage(e.getCode(), e);
       throw new ConditionAwareException(message, e,
-              CloudServiceCondition.Type.ServiceAccountCreated, CloudServiceCondition.Status.False,
-              e.getClass().getName(), message);
+          CloudServiceCondition.Type.ServiceAccountCreated, CloudServiceCondition.Status.False,
+          e.getClass().getName(), message);
     }
   }
 
