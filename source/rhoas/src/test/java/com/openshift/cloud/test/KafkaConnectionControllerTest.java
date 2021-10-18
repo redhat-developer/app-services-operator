@@ -75,7 +75,7 @@ public class KafkaConnectionControllerTest {
   }
 
   // TODO create issue to cover the test
-  // @Test
+  @Test
   public void testKafkaConnectionRequest() {
     var kafkaConnectionRequest = new KafkaConnectionBuilder()
         .withMetadata(new ObjectMetaBuilder().withGeneration(10l).withNamespace("test")
