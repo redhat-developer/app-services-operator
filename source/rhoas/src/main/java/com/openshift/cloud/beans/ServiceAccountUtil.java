@@ -28,28 +28,29 @@ public class ServiceAccountUtil {
   KubernetesClient k8sClient;
 
   public void createSecretForServiceAccount(CloudServiceAccountRequest resource,
-                                            ServiceAccount serviceAccount) throws ConditionAwareException {
+      ServiceAccount serviceAccount) throws ConditionAwareException {
     try {
       var secret = new SecretBuilder().editOrNewMetadata()
-              .withName(resource.getSpec().getServiceAccountSecretName())
-              .withNamespace(resource.getMetadata().getNamespace())
-              .withOwnerReferences(List.of(new OwnerReferenceBuilder()
-                      .withApiVersion(resource.getApiVersion()).withController(true)
-                      .withKind(resource.getKind()).withName(resource.getMetadata().getName())
-                      .withUid(resource.getMetadata().getUid()).build()))
-              .endMetadata()
-              .withData(Map.of(TOKEN_CLIENT_SECRET_KEY, Base64.getEncoder()
-                              .encodeToString(serviceAccount.getClientSecret().getBytes(Charset.defaultCharset())),
-                      TOKEN_CLIENT_ID_KEY,
-                      Base64.getEncoder()
-                              .encodeToString(serviceAccount.getClientId().getBytes(Charset.defaultCharset()))))
-              .build();
+          .withName(resource.getSpec().getServiceAccountSecretName())
+          .withNamespace(resource.getMetadata().getNamespace())
+          .withOwnerReferences(List.of(new OwnerReferenceBuilder()
+              .withApiVersion(resource.getApiVersion()).withController(true)
+              .withKind(resource.getKind()).withName(resource.getMetadata().getName())
+              .withUid(resource.getMetadata().getUid()).build()))
+          .endMetadata()
+          .withData(Map.of(TOKEN_CLIENT_SECRET_KEY,
+              Base64.getEncoder().encodeToString(
+                  serviceAccount.getClientSecret().getBytes(Charset.defaultCharset())),
+              TOKEN_CLIENT_ID_KEY,
+              Base64.getEncoder()
+                  .encodeToString(serviceAccount.getClientId().getBytes(Charset.defaultCharset()))))
+          .build();
 
       k8sClient.secrets().inNamespace(secret.getMetadata().getNamespace()).create(secret);
     } catch (Exception e) {
       throw new ConditionAwareException(e.getMessage(), e,
-              CloudServiceCondition.Type.ServiceAccountSecretCreated,
-              CloudServiceCondition.Status.False, e.getClass().getName(), e.getMessage());
+          CloudServiceCondition.Type.ServiceAccountSecretCreated,
+          CloudServiceCondition.Status.False, e.getClass().getName(), e.getMessage());
     }
   }
 
@@ -73,9 +74,11 @@ public class ServiceAccountUtil {
         return clientIdValue;
       }
       // We expect the token to exist, and if it doesn't raise an exception.
-      throw new ConditionAwareException(String.format("Missing Service Account Secret value %s", secretName),
-              null, CloudServiceCondition.Type.AcccesTokenSecretValid, CloudServiceCondition.Status.False,
-              "ConditionAwareException", String.format("Missing Service Account Secret value %s", secretName));
+      throw new ConditionAwareException(
+          String.format("Missing Service Account Secret value %s", secretName), null,
+          CloudServiceCondition.Type.AcccesTokenSecretValid, CloudServiceCondition.Status.False,
+          "ConditionAwareException",
+          String.format("Missing Service Account Secret value %s", secretName));
     } catch (ConditionAwareException ex) {
       // Log and rethrow exception
       LOG.log(Level.SEVERE, ex.getMessage());
@@ -83,9 +86,8 @@ public class ServiceAccountUtil {
     } catch (Throwable ex) {
       // Unexpected exception or error (NPE, IOException, out of memory, etc)
       LOG.log(Level.SEVERE, ex.getMessage());
-      throw new ConditionAwareException(ex.getMessage(), ex,
-              CloudServiceCondition.Type.Finished, CloudServiceCondition.Status.False,
-              ex.getClass().getName(), ex.getMessage());
+      throw new ConditionAwareException(ex.getMessage(), ex, CloudServiceCondition.Type.Finished,
+          CloudServiceCondition.Status.False, ex.getClass().getName(), ex.getMessage());
     }
   }
 
