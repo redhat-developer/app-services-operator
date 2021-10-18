@@ -3,10 +3,10 @@ package com.openshift.cloud.beans;
 import com.openshift.cloud.v1alpha.models.*;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.ListOptionsBuilder;
-import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinition;
+import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinition;
 import io.fabric8.kubernetes.client.CustomResource;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.kubernetes.client.V1beta1ApiextensionAPIGroupDSL;
+import io.fabric8.kubernetes.client.V1ApiextensionAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
@@ -55,7 +55,7 @@ public final class KafkaK8sClients {
   public void init() {
     LOG.info("Init");
 
-    var crds = client.apiextensions().v1beta1();
+    var crds = client.apiextensions().v1();
 
     this.akcCrd = initKafkaConnectionCRDAndClient(crds);
     this.cscrCrd = initCloudServicesRequestCRDAndClient(crds);
@@ -65,7 +65,7 @@ public final class KafkaK8sClients {
 
   public void initQuickStarts() {
     if (hasConsoleQuickStart()) {
-      var quickstartCRD = client.apiextensions().v1beta1().customResourceDefinitions()
+      var quickstartCRD = client.apiextensions().v1().customResourceDefinitions()
           .withName("consolequickstarts.console.openshift.io").get();
       var quickstartContext = CustomResourceDefinitionContext.fromCrd(quickstartCRD);
       var quickStartClient = client.customResource(quickstartContext);
@@ -97,7 +97,7 @@ public final class KafkaK8sClients {
 
   private boolean hasConsoleQuickStart() {
 
-    return client.apiextensions().v1beta1().customResourceDefinitions()
+    return client.apiextensions().v1().customResourceDefinitions()
         .withName("consolequickstarts.console.openshift.io").get() != null;
   }
 
@@ -134,7 +134,7 @@ public final class KafkaK8sClients {
   }
 
   private CustomResourceDefinition initCloudServiceAccountRequestCRDAndClient(
-      V1beta1ApiextensionAPIGroupDSL crds) {
+      V1ApiextensionAPIGroupDSL crds) {
 
     CustomResourceDefinition akcCrd;
 
@@ -147,8 +147,8 @@ public final class KafkaK8sClients {
     if (akcCrdOptional.isEmpty()) {
       LOG.info("Creating CloudServiceAccountRequest CRD");
       akcCrd = CustomResourceDefinitionContext
-          .v1beta1CRDFromCustomResourceType(CloudServiceAccountRequest.class).build();
-      client.apiextensions().v1beta1().customResourceDefinitions().create(akcCrd);
+          .v1CRDFromCustomResourceType(CloudServiceAccountRequest.class).build();
+      client.apiextensions().v1().customResourceDefinitions().create(akcCrd);
       LOG.info("CloudServiceAccountRequest CRD Created");
     } else {
       LOG.info("Found CloudServiceAccountRequest CRD");
@@ -160,7 +160,7 @@ public final class KafkaK8sClients {
 
 
   private CustomResourceDefinition initServiceRegistryConnectionCRDAndClient(
-      V1beta1ApiextensionAPIGroupDSL crds) {
+      V1ApiextensionAPIGroupDSL crds) {
 
     CustomResourceDefinition akcCrd;
 
@@ -174,8 +174,8 @@ public final class KafkaK8sClients {
     if (srcCrdOptional.isEmpty()) {
       LOG.info("Creating ServiceRegistryConnection CRD");
       akcCrd = CustomResourceDefinitionContext
-          .v1beta1CRDFromCustomResourceType(ServiceRegistryConnection.class).build();
-      client.apiextensions().v1beta1().customResourceDefinitions().create(akcCrd);
+          .v1CRDFromCustomResourceType(ServiceRegistryConnection.class).build();
+      client.apiextensions().v1().customResourceDefinitions().create(akcCrd);
       LOG.info("ServiceRegistryConnection CRD Created");
     } else {
       LOG.info("Found ServiceRegistryConnection CRD");
@@ -185,8 +185,7 @@ public final class KafkaK8sClients {
     return akcCrd;
   }
 
-  private CustomResourceDefinition initKafkaConnectionCRDAndClient(
-      V1beta1ApiextensionAPIGroupDSL crds) {
+  private CustomResourceDefinition initKafkaConnectionCRDAndClient(V1ApiextensionAPIGroupDSL crds) {
 
     CustomResourceDefinition akcCrd;
 
@@ -198,9 +197,9 @@ public final class KafkaK8sClients {
 
     if (akcCrdOptional.isEmpty()) {
       LOG.info("Creating KafkaConnection CRD");
-      akcCrd = CustomResourceDefinitionContext
-          .v1beta1CRDFromCustomResourceType(KafkaConnection.class).build();
-      client.apiextensions().v1beta1().customResourceDefinitions().create(akcCrd);
+      akcCrd = CustomResourceDefinitionContext.v1CRDFromCustomResourceType(KafkaConnection.class)
+          .build();
+      client.apiextensions().v1().customResourceDefinitions().create(akcCrd);
       LOG.info("KafkaConnection CRD Created");
     } else {
       LOG.info("Found KafkaConnection CRD");
@@ -211,7 +210,7 @@ public final class KafkaK8sClients {
   }
 
   private CustomResourceDefinition initCloudServicesRequestCRDAndClient(
-      V1beta1ApiextensionAPIGroupDSL crds) {
+      V1ApiextensionAPIGroupDSL crds) {
 
     CustomResourceDefinition akcCrd;
 
@@ -224,8 +223,8 @@ public final class KafkaK8sClients {
     if (akcCrdOptional.isEmpty()) {
       LOG.info("Creating CloudServicesRequest CRD");
       akcCrd = CustomResourceDefinitionContext
-          .v1beta1CRDFromCustomResourceType(CloudServicesRequest.class).build();
-      client.apiextensions().v1beta1().customResourceDefinitions().create(akcCrd);
+          .v1CRDFromCustomResourceType(CloudServicesRequest.class).build();
+      client.apiextensions().v1().customResourceDefinitions().create(akcCrd);
       LOG.info("CloudServicesRequest CRD Created");
     } else {
       LOG.info("Found CloudServicesRequest CRD");
