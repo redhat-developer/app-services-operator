@@ -51,9 +51,9 @@ public class CloudServiceAccountRequestTest {
             .withName("csr-test").build())
         .withSpec(new CloudServiceAccountRequestSpecBuilder()
             .withAccessTokenSecretName("rh-managed-services-api-accesstoken")
-            .withNewServiceAccountDescription("Sample Description")
-            .withNewServiceAccountName("accountName")
-            .withNewServiceAccountSecretName("accountSecret").build())
+            .withServiceAccountDescription("Sample Description")
+            .withServiceAccountName("accountName").withServiceAccountSecretName("accountSecret")
+            .build())
         .build();
 
     var result = controller.createOrUpdateResource(csar,
