@@ -323,7 +323,7 @@ spec:
            NAME   		         AGE
            my-kafka-instance     2m35s
            ```
-           As shown in the output, the RHOAS Operator creates a `KafkaConnection` custom resource object that matches the name of your Kafka instance. In this example, the name matches a Kafka instance called `my-kafka-instance`.
+           As shown in the output, the RHOAS Operator creates a `KafkaConnection` custom resource object that matches the name of your Kafka instance. In this example, the name of the `KafkaConnection` object matches a Kafka instance called `my-kafka-instance`.
 
       review:
         instructions: |-
