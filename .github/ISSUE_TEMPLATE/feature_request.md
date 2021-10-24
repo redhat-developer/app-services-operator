@@ -12,7 +12,7 @@ A clear and concise description of what the feature or problem is.
 
 ### Proposed solution
 
-How will it benefit the CLI and its users?
+How will it benefit the Operator and its users?
 
 ### Additional context
 
