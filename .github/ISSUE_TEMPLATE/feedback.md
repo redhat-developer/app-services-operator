@@ -1,6 +1,6 @@
 ---
 name: "Feedback"
-about: Give us general feedback about the RHOAS CLI
+about: Give us general feedback about the RHOAS Operator
 title: ''
 labels: feedback
 assignees: ''
