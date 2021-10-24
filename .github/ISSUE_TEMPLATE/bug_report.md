@@ -7,7 +7,7 @@ labels: bug
 
 ## Description
 
-**Version**: <!-- Please add the CLI version number here --> 
+**Version**: <!-- Please add the operator version number here --> 
 
 <!-- Please provide as much detail about the bug as possible.-->
 
