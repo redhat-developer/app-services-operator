@@ -224,6 +224,7 @@ public class ConditionUtil {
         TypeReference<HashMap<String, Object>> typeRef = new TypeReference<>() {};
         errorObject = new ObjectMapper().readValue(e.getMessage(), typeRef);
         reason = errorObject.getOrDefault("reason", "").toString();
+
       }
     } catch (Exception exception) {
       LOG.warning(

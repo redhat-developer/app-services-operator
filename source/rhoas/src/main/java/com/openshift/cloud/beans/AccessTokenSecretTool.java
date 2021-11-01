@@ -1,5 +1,7 @@
 package com.openshift.cloud.beans;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.openshift.cloud.api.kas.invoker.ApiException;
 import com.openshift.cloud.controllers.ConditionAwareException;
 import com.openshift.cloud.controllers.ConditionUtil;
@@ -19,6 +21,7 @@ import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.Base64;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -127,11 +130,10 @@ public class AccessTokenSecretTool {
         var json = new JsonObject(tokens);
         return json.getString("access_token");
       } else {
-        LOG.log(Level.SEVERE,
-            String.format("Exchange token failed with error %s", response.body()));
-        // Reusing API error but only with status code
-        var apiError = ConditionUtil.getStandarizedErrorMessage(response.statusCode(),
-            new ApiException(response.statusCode(), null));
+        var body = response.body();
+        var apiError = String.format("Exchange token failed with error %s", body);
+        LOG.log(Level.SEVERE, apiError);
+
         throw new ConditionAwareException(response.body(), null,
             CloudServiceCondition.Type.AcccesTokenSecretValid, CloudServiceCondition.Status.False,
             String.format("Http Error Code %d", response.statusCode()), apiError);
