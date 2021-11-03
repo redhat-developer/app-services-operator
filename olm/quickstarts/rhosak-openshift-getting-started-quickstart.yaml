@@ -75,15 +75,17 @@ spec:
 
         1. In the [web console of Application Services](https://console.redhat.com/beta/application-services), select **Kafka Instances** in the **Streams for Apache kafka** menu. Click *Create Kafka instance*.
 
-        1. Enter a unique **Name**, such as `my-first-kafka-instance`. For this release of Streams for Apache Kafka, all other fields are preconfigured.
+        1. Enter a unique **Name**, such as `my-first-kafka-instance`, and select the relevant **Cloud region** option. All other fields are preconfigured.
 
         1. Click *Create instance* to start the creation process for your Kafka instance.
 
 
-        The new Kafka instance is listed in the instances table. When the instance **Status** is **Ready**, you can start using the Kafka instance. You can use the options icon (three vertical dots) to view instance details, connect to the instance, or delete the instance.
+        The new Kafka instance is listed in the instances table. In some cases, you might need to wait several minutes for the instance creation process to complete.
+
+        When the instance **Status** is **Ready**, you can start using the Kafka instance. You can use the options icon (three vertical dots) to view instance details, connect to the instance, change the instance owner, or delete the instance.
 
 
-        NOTE: Although you can see Kafka instances created by other users in your organization, you can't manage or connect to those instances. Only the user who creates an instance can edit or delete the instance, access the associated service account and topics, or connect to the instance.
+        NOTE: Although you can see Kafka instances created by other users in your organization, you might not be able manage or connect to those instances. Only the instance owner or users with permissions to access the instance can edit or delete the instance, access the associated service account and topics, or connect to the instance.
 
       review:
         instructions: |-
