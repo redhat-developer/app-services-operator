@@ -1,4 +1,16 @@
 
+<a name="0.9.0"></a>
+## [0.9.0](https://github.com/redhat-developer/app-services-operator/compare/0.8.2...0.9.0) (2021-10-18)
+
+### Bug Fixes
+
+* removing calls to v1beta1
+* minor formatting and style fixes
+* create util for managing service accounts
+* resolve registry SDK incompatibilities
+* update quarkus and other dependencies
+
+
 <a name="0.8.2"></a>
 ## [0.8.2](https://github.com/redhat-developer/app-services-operator/compare/0.8.1...0.8.2) (2021-10-16)
 
