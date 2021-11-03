@@ -80,7 +80,7 @@ spec:
         1. Click *Create instance* to start the creation process for your Kafka instance.
 
 
-        The new Kafka instance is listed in the instances table. In some cases, you might need to wait several minutes for the instance creation process to finish.
+        The new Kafka instance is listed in the instances table. Typically, you need to wait a few minutes for the instance creation process to finish.
 
         When the instance **Status** is **Ready**, you can start using the Kafka instance. You can use the options icon (three vertical dots) to view instance details, connect to the instance, change the instance owner, or delete the instance.
 
