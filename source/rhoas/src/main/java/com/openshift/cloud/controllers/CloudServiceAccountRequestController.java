@@ -12,7 +12,7 @@ import javax.inject.Inject;
 import java.time.Instant;
 
 /** Controller for CloudServiceAccountRequest CRs */
-@Controller
+@Controller(finalizerName = Controller.NO_FINALIZER)
 public class CloudServiceAccountRequestController
     extends AbstractCloudServicesController<CloudServiceAccountRequest> {
 

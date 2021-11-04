@@ -13,7 +13,7 @@ import javax.inject.Inject;
 import java.time.Instant;
 import java.util.logging.Logger;
 
-@Controller
+@Controller(finalizerName = Controller.NO_FINALIZER)
 public class KafkaConnectionController extends AbstractCloudServicesController<KafkaConnection> {
 
   private static final Logger LOG = Logger.getLogger(KafkaConnectionController.class.getName());

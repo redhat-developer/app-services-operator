@@ -6,11 +6,14 @@ import com.openshift.cloud.utils.ConnectionResourcesMetadata;
 import com.openshift.cloud.utils.InvalidUserInputException;
 import com.openshift.cloud.v1alpha.models.ServiceRegistryConnection;
 import io.javaoperatorsdk.operator.api.Context;
+import io.javaoperatorsdk.operator.api.Controller;
+
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import javax.inject.Inject;
 import java.time.Instant;
 
+@Controller(finalizerName = Controller.NO_FINALIZER)
 public class ServiceRegistryConnectionController
     extends AbstractCloudServicesController<ServiceRegistryConnection> {
 
