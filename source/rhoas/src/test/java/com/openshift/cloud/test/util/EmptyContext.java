@@ -12,6 +12,11 @@ public class EmptyContext {
     return new Context<T>() {
 
       @Override
+      public EventSourceManager getEventSourceManager() {
+        return null;
+      }
+      
+      @Override
       public EventList getEvents() {
         return null;
       }
