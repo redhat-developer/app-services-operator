@@ -1,4 +1,14 @@
 
+<a name="0.9.1"></a>
+## [0.9.1](https://github.com/redhat-developer/app-services-operator/compare/0.9.0...0.9.1) (2021-11-05)
+
+### Bug Fixes
+
+* upgrading quarkus operator sdk version
+* removing automatic finalizer creation
+* when the token can not be exchanged put the error message in the status
+
+
 <a name="0.9.0"></a>
 ## [0.9.0](https://github.com/redhat-developer/app-services-operator/compare/0.8.2...0.9.0) (2021-10-18)
 
