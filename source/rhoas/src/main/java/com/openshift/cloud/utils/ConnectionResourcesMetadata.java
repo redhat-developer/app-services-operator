@@ -31,7 +31,7 @@ public class ConnectionResourcesMetadata {
     var map = new HashMap<String, String>();
     map.put("provider", "rhoas");
     map.put("oauthServerUrl", oauthHost);
-    map.put("realm", oauthRealm);
+    map.put("oauthRealm", oauthRealm);
     map.put("oauthTokenUrl", oauthHost + "/" + tokenPath);
     map.put("type", "serviceregistry");
     return map;
