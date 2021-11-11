@@ -53,7 +53,7 @@ public class ServiceRegistryConnectionController
     var status = resource.getStatus();
     status.setMessage("Created");
     status.setUpdated(Instant.now().toString());
-    status.setRegistryUrl(registry.getRegistryUrl());
+    status.setRegistryUrl(registry.getRegistryUrl() + "/apis/registry/v2");
     status.setServiceAccountSecretName(serviceAccountSecretName);
     status.setMetadata(
         ConnectionResourcesMetadata.buildServiceMetadata(oAuthHost, oAuthRealm, oAuthTokenPath));
