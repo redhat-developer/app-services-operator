@@ -9,6 +9,7 @@ public class ConnectionResourcesMetadata {
   private static final String UI_REF_TEMPLATE =
       "https://console.redhat.com/beta/application-services/streams/kafkas/%s";
 
+  private static final String SRS_OAUTH_TEMPLATE = "%s/realms/%s/protocol/openid-connect/token";
 
   /**
    * Contains hardcoded values for all metadata for Kafka specific properties
@@ -26,13 +27,10 @@ public class ConnectionResourcesMetadata {
     return map;
   }
 
-  public static Map<String, String> buildServiceMetadata(String oauthHost, String oauthRealm,
-      String tokenPath) {
+  public static Map<String, String> buildServiceMetadata(String oauthHost, String oauthRealm) {
     var map = new HashMap<String, String>();
     map.put("provider", "rhoas");
-    map.put("oauthServerUrl", oauthHost);
-    map.put("oauthRealm", oauthRealm);
-    map.put("oauthTokenUrl", oauthHost + "/" + tokenPath);
+    map.put("oauthTokenUrl", String.format(SRS_OAUTH_TEMPLATE, oauthHost, oauthRealm));
     map.put("type", "serviceregistry");
     return map;
   }

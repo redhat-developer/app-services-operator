@@ -11,9 +11,7 @@ metadata:
            path={.status.serviceAccountSecretName},objectType=Secret,sourceKey=client-id
     service.binding/clientSecret: >-
       path={.status.serviceAccountSecretName},objectType=Secret,sourceKey=client-secret
-    service.binding/oauthTokenUrl: 'path={.status.metadata.oauthTokenUrl}'  
-    service.binding/oauthRealm: 'path={.status.metadata.oauthRealm}'
-    service.binding/oauthServerUrl: 'path={.status.metadata.oauthServerUrl}'
+    service.binding/oauthTokenUrl: 'path={.status.metadata.oauthTokenUrl}'
 spec:
   group: rhoas.redhat.com
   names:
