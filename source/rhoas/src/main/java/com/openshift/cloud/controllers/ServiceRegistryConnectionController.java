@@ -31,10 +31,6 @@ public class ServiceRegistryConnectionController
   String oAuthRealm;
 
 
-  @ConfigProperty(name = "rhoas.client.srsOAuthTokenPath",
-      defaultValue = "protocol/openid-connect/token")
-  String oAuthTokenPath;
-
   @Override
   void doCreateOrUpdateResource(ServiceRegistryConnection resource,
       Context<ServiceRegistryConnection> context) throws Throwable {
@@ -56,7 +52,7 @@ public class ServiceRegistryConnectionController
     status.setRegistryUrl(registry.getRegistryUrl() + "/apis/registry/v2");
     status.setServiceAccountSecretName(serviceAccountSecretName);
     status.setMetadata(
-        ConnectionResourcesMetadata.buildServiceMetadata(oAuthHost, oAuthRealm, oAuthTokenPath));
+        ConnectionResourcesMetadata.buildServiceMetadata(oAuthHost, oAuthRealm));
 
   }
 
