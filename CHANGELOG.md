@@ -1,4 +1,15 @@
 
+<a name="0.9.2"></a>
+## [0.9.2](https://github.com/redhat-developer/app-services-operator/compare/0.9.1...0.9.2) (2021-11-10)
+
+### Bug Fixes
+
+* fixing registry url path
+* fix default identity url
+* realm property should be oauthRealm for binding
+* dev documenation for operator
+
+
 <a name="0.9.1"></a>
 ## [0.9.1](https://github.com/redhat-developer/app-services-operator/compare/0.9.0...0.9.1) (2021-11-05)
 
