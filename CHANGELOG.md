@@ -1,4 +1,12 @@
 
+<a name="0.9.3"></a>
+## [0.9.3](https://github.com/redhat-developer/app-services-operator/compare/0.9.2...0.9.3) (2021-11-24)
+
+### Bug Fixes
+
+* changing srs service bindings to use only token endpoint
+
+
 <a name="0.9.2"></a>
 ## [0.9.2](https://github.com/redhat-developer/app-services-operator/compare/0.9.1...0.9.2) (2021-11-10)
 
