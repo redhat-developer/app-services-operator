@@ -81,28 +81,32 @@ public class RHOASOperator implements QuarkusApplication {
 
   private void cleanupDeletedLegacyFinalizers() {
 
-    //Clean up legacy Finalizers for deleted resources
-    //We removed finalizers for several types, but didn't correctly remove them from instanced resources in k8s
-    //if those resources were deleted then we need to remove the finalizers here outside of the normal reconsiliation loop
+    // Clean up legacy Finalizers for deleted resources
+    // We removed finalizers for several types, but didn't correctly remove them from instanced
+    // resources in k8s
+    // if those resources were deleted then we need to remove the finalizers here outside of the
+    // normal reconsiliation loop
     var srcs = new ArrayList<>(client.serviceRegistryConnection().list().getItems());
     srcs.removeIf(item -> !item.isMarkedForDeletion());
-    srcs.forEach(src->src.removeFinalizer("serviceregistryconnections.rhoas.redhat.com/finalizer"));
-    srcs.forEach(src->client.serviceRegistryConnection().createOrReplace(src));
+    srcs.forEach(
+        src -> src.removeFinalizer("serviceregistryconnections.rhoas.redhat.com/finalizer"));
+    srcs.forEach(src -> client.serviceRegistryConnection().createOrReplace(src));
 
-    var csrs  = new ArrayList<>(client.cloudServicesRequest().list().getItems());
+    var csrs = new ArrayList<>(client.cloudServicesRequest().list().getItems());
     csrs.removeIf(item -> !item.isMarkedForDeletion());
-    csrs.forEach(csr->csr.removeFinalizer("cloudservicesrequests.rhoas.redhat.com/finalizer"));
-    csrs.forEach(csr->client.cloudServicesRequest().createOrReplace(csr));
+    csrs.forEach(csr -> csr.removeFinalizer("cloudservicesrequests.rhoas.redhat.com/finalizer"));
+    csrs.forEach(csr -> client.cloudServicesRequest().createOrReplace(csr));
 
     var akcs = new ArrayList<>(client.kafkaConnection().list().getItems());
     akcs.removeIf(item -> !item.isMarkedForDeletion());
-    akcs.forEach(akc->akc.removeFinalizer("kafkaconnections.rhoas.redhat.com/finalizer"));
-    akcs.forEach(akc->client.kafkaConnection().createOrReplace(akc));
+    akcs.forEach(akc -> akc.removeFinalizer("kafkaconnections.rhoas.redhat.com/finalizer"));
+    akcs.forEach(akc -> client.kafkaConnection().createOrReplace(akc));
 
     var csars = new ArrayList<>(client.cloudServiceAccountRequest().list().getItems());
     csars.removeIf(item -> !item.isMarkedForDeletion());
-    csars.forEach(csar->csar.removeFinalizer("cloudserviceaccountrequests.rhoas.redhat.com/finalizer"));
-    csars.forEach(csar->client.cloudServiceAccountRequest().createOrReplace(csar));
+    csars.forEach(
+        csar -> csar.removeFinalizer("cloudserviceaccountrequests.rhoas.redhat.com/finalizer"));
+    csars.forEach(csar -> client.cloudServiceAccountRequest().createOrReplace(csar));
 
 
   }

@@ -121,13 +121,14 @@ public final class KafkaK8sClients {
     KubernetesDeserializer.registerCustomKind(getApiVersion(CloudServiceAccountRequest.class),
         csarCrd.getKind(), CloudServiceAccountRequest.class);
 
-        return client.resources(CloudServiceAccountRequest.class, CloudServiceAccountRequestList.class);
+    return client.resources(CloudServiceAccountRequest.class, CloudServiceAccountRequestList.class);
   }
+
   public MixedOperation<ServiceRegistryConnection, ServiceRegistryConnectionList, Resource<ServiceRegistryConnection>> serviceRegistryConnection() {
     KubernetesDeserializer.registerCustomKind(getApiVersion(ServiceRegistryConnection.class),
         srcCrd.getKind(), ServiceRegistryConnection.class);
 
-        return client.resources(ServiceRegistryConnection.class, ServiceRegistryConnectionList.class);
+    return client.resources(ServiceRegistryConnection.class, ServiceRegistryConnectionList.class);
   }
 
   private CustomResourceDefinition initCloudServiceAccountRequestCRDAndClient(
