@@ -25,12 +25,11 @@ public abstract class AbstractCloudServicesController<T extends CustomResource>
   public static final String COMPONENT_LABEL_KEY = "app.kubernetes.io/component";
   public static final String MANAGED_BY_LABEL_KEY = "app.kubernetes.io/managed-by";
 
-  public static final List<String> LEGACY_FINALIZERS = List.of(
-    "cloudservicesrequests.rhoas.redhat.com/finalizer",
-    "cloudserviceaccountrequests.rhoas.redhat.com/finalizer",
-    "kafkaconnections.rhoas.redhat.com/finalizer",
-    "serviceregistryconnections.rhoas.redhat.com/finalizer"
-  );
+  public static final List<String> LEGACY_FINALIZERS =
+      List.of("cloudservicesrequests.rhoas.redhat.com/finalizer",
+          "cloudserviceaccountrequests.rhoas.redhat.com/finalizer",
+          "kafkaconnections.rhoas.redhat.com/finalizer",
+          "serviceregistryconnections.rhoas.redhat.com/finalizer");
 
   public static final String COMPONENT_LABEL_VALUE = "external-service";
   public static final String MANAGED_BY_LABEL_VALUE = "rhoas";
@@ -110,21 +109,23 @@ public abstract class AbstractCloudServicesController<T extends CustomResource>
   }
 
   /**
-   * We used to have finalizers for some classes, but these were removed.
-   * This method checks to see if a legacy finalizer is attatched and removes it.
+   * We used to have finalizers for some classes, but these were removed. This method checks to see
+   * if a legacy finalizer is attatched and removes it.
    * 
    * @param resource
    * @return if a finalizer should be removed
    */
   private boolean shouldRemoveFinalizer(T resource) {
     var finalizers = resource.getMetadata().getFinalizers();
-    var toRemove = finalizers.stream().filter(finalizer -> LEGACY_FINALIZERS.contains(finalizer)).collect(Collectors.toList());
+    var toRemove = finalizers.stream().filter(finalizer -> LEGACY_FINALIZERS.contains(finalizer))
+        .collect(Collectors.toList());
     return toRemove.size() > 0;
   }
 
   private void removeFinalizer(T resource) {
     var finalizers = resource.getMetadata().getFinalizers();
-    var toRemove = finalizers.stream().filter(finalizer -> LEGACY_FINALIZERS.contains(finalizer)).collect(Collectors.toList());
+    var toRemove = finalizers.stream().filter(finalizer -> LEGACY_FINALIZERS.contains(finalizer))
+        .collect(Collectors.toList());
     LOG.warning("Found legacy Finalizers " + toRemove);
     toRemove.forEach(finalizer -> resource.removeFinalizer(finalizer));
   }
