@@ -105,32 +105,29 @@ public final class KafkaK8sClients {
     KubernetesDeserializer.registerCustomKind(getApiVersion(KafkaConnection.class),
         akcCrd.getKind(), KafkaConnection.class);
 
-    var akcCrdContext = CustomResourceDefinitionContext.fromCrd(this.akcCrd);
-
     // lets create a client for the CRD
-    return client.customResources(akcCrdContext, KafkaConnection.class, KafkaConnectionList.class);
+    return client.resources(KafkaConnection.class, KafkaConnectionList.class);
   }
 
   public MixedOperation<CloudServicesRequest, CloudServicesRequestList, Resource<CloudServicesRequest>> cloudServicesRequest() {
     KubernetesDeserializer.registerCustomKind(getApiVersion(CloudServicesRequest.class),
         cscrCrd.getKind(), CloudServicesRequest.class);
 
-    var akcCrdContext = CustomResourceDefinitionContext.fromCrd(this.cscrCrd);
-
     // lets create a client for the CRD
-    return client.customResources(akcCrdContext, CloudServicesRequest.class,
-        CloudServicesRequestList.class);
+    return client.resources(CloudServicesRequest.class, CloudServicesRequestList.class);
   }
 
   public MixedOperation<CloudServiceAccountRequest, CloudServiceAccountRequestList, Resource<CloudServiceAccountRequest>> cloudServiceAccountRequest() {
     KubernetesDeserializer.registerCustomKind(getApiVersion(CloudServiceAccountRequest.class),
         csarCrd.getKind(), CloudServiceAccountRequest.class);
 
-    var akcCrdContext = CustomResourceDefinitionContext.fromCrd(this.csarCrd);
+        return client.resources(CloudServiceAccountRequest.class, CloudServiceAccountRequestList.class);
+  }
+  public MixedOperation<ServiceRegistryConnection, ServiceRegistryConnectionList, Resource<ServiceRegistryConnection>> serviceRegistryConnection() {
+    KubernetesDeserializer.registerCustomKind(getApiVersion(ServiceRegistryConnection.class),
+        srcCrd.getKind(), ServiceRegistryConnection.class);
 
-    // lets create a client for the CRD
-    return client.customResources(akcCrdContext, CloudServiceAccountRequest.class,
-        CloudServiceAccountRequestList.class);
+        return client.resources(ServiceRegistryConnection.class, ServiceRegistryConnectionList.class);
   }
 
   private CustomResourceDefinition initCloudServiceAccountRequestCRDAndClient(
