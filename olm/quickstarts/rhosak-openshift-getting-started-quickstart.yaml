@@ -199,26 +199,6 @@ spec:
         success: >-
           You have completed this task!
         failed: Try the steps again.
-    - title: Viewing metrics for a Kafka instance in Streams for Apache Kafka
-      description: >-
-        After you create Kafka topics in your Kafka instance, you can start producing and consuming messages using methods such as [Kafka](https://kafka.apache.org/downloads) scripts, [Kafkacat](https://github.com/edenhill/kcat), or a [Quarkus](https://quarkus.io/) application. You'll learn in the next quick starts how to connect applications to produce and consume messages.
-
-        After you produce and consume messages in your services, you can return to the Kafka instance in the web console and use the **Dashboard** page to view metrics for the instance and topics. The metrics help you understand the performance and data usage for your Kafka instance and topics.
-
-        - In the **Kafka Instances** page of the web console, click the name of the Kafka instance and select the **Dashboard** tab.
-
-            When you create your Kafka instance and topics, the **Dashboard** page is initially empty. After you start producing and consuming messages in your services, you can return to this page to view related metrics.
-
-            NOTE: In some cases, after you start producing and consuming messages, you might need to wait several minutes for the latest metrics to appear. You might also need to wait until your instance and topics contain enough data for metrics to appear.
-
-      review:
-        instructions: |-
-          Did you note how to navigate to the instance **Dashboard** page to view metrics later?
-        failedTaskHelp: This task isn’t verified yet. Try the task again.
-      summary:
-        success: >-
-          You have completed this task!
-        failed: Try the steps again.
   conclusion: >-
     Congratulations! You successfully completed the Red Hat OpenShift Streams for Apache Kafka Getting Started quick start,
     and are now ready to use the service.
