@@ -1,4 +1,12 @@
 
+<a name="0.9.4"></a>
+## [0.9.4](https://github.com/redhat-developer/app-services-operator/compare/0.9.3...0.9.4) (2021-12-09)
+
+### Bug Fixes
+
+* delete unused finalizers and cleanup deleted resources
+
+
 <a name="0.9.3"></a>
 ## [0.9.3](https://github.com/redhat-developer/app-services-operator/compare/0.9.2...0.9.3) (2021-11-24)
 
