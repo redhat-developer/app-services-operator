@@ -1,5 +1,7 @@
 # RHOAS Connection Operator
 
+> Developer Preview
+
 Connect Red Hat OpenShift Application Services with your OpenShift and Kubernetes instance to 
 automatically discover configuration and credentials.
 
