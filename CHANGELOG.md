@@ -1,4 +1,12 @@
 
+<a name="0.9.5"></a>
+## [0.9.5](https://github.com/redhat-developer/app-services-operator/compare/0.9.4...0.9.5) (2021-12-10)
+
+### Bug Fixes
+
+* update version of log4j
+
+
 <a name="0.9.4"></a>
 ## [0.9.4](https://github.com/redhat-developer/app-services-operator/compare/0.9.3...0.9.4) (2021-12-09)
 
