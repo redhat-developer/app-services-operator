@@ -1,0 +1,85 @@
+== Service Binding 
+
+When you are writing an application that requires multiple services (such as Kafka and a Service Registry), you normally have to configure connections to these services by hand in a configuration file. These connections often include public data such as well known urls as well as private data such as passwords and account IDs. Custom resources managed by the RHOAS operator provide service binding annotations which allows the link:{https://redhat-developer.github.io/service-binding-operator/userguide/intro.html}[Service Binding Operator (SBO)] to expose this connection information to your application. Because the SBO manages this information it can stay securely inside of your Open Shift cluster instead of being shared around in configuration files in source control.
+
+The RHOAS Operator works with the SBO by setting values on `KafkaConnection` and `ServiceRegistryConnection` instances' status subresource which match the values in their binding annotations. This allows the Service Binding Operator to inject values on these custom resources into end user workloads.
+
+image::servicebinding.drawio.png["Service Binding Overview Diagram"]
+
+=== Annotation Details
+
+The Service Binding annotations can be found on the crd's for the link:{https://github.com/redhat-developer/app-services-operator/blob/main/olm/olm-template/manifests/rhoas-operator.kafkaconnections.crd.yaml}[`KafkaConnection`] and link:{https://github.com/redhat-developer/app-services-operator/blob/main/olm/olm-template/manifests/rhoas-operator.serviceregistryconnections.crd.yaml}[`ServiceRegistryConneciton`] resources.
+
+Here are the annotations for the `ServiceRegistryConnector` resource
+
+.servicegresitryannotations.example.yaml
+[source,yaml]
+----
+  annotations:
+    service.binding/registryUrl: 'path={.status.registryUrl}'
+    ## Additional binding metadata required for Quarkus
+    service.binding/type: 'path={.status.metadata.type}'
+     ## OAUTH BEARER credentials
+    service.binding/clientId: >-
+           path={.status.serviceAccountSecretName},objectType=Secret,sourceKey=client-id
+    service.binding/clientSecret: >-
+      path={.status.serviceAccountSecretName},objectType=Secret,sourceKey=client-secret
+    service.binding/oauthTokenUrl: 'path={.status.metadata.oauthTokenUrl}'
+----
+
+These annotations instruct the SBO to map the fields `registryUrl`, `type`, `clientId`, `clientSecret`, and `oauthTokenUrl` to properties provided by the service registry connection as well as references to properties stored securley in a secret. In this instance the client credentials are actually resolved by a secret lookup using the value of `.status.serviceAccountSecretName`.
+
+Likewise, the `KafkaConnection` custom resource provides the following binding annotations
+.kafkaconnection.example.yaml
+[source,yaml]
+----
+  annotations:
+    service.binding/bootstrapServers: 'path={.status.bootstrapServerHost}'
+    ## SASL PLAIN credentials
+    service.binding/user: >-
+      path={.status.serviceAccountSecretName},objectType=Secret,sourceKey=client-id
+    service.binding/password: >-
+      path={.status.serviceAccountSecretName},objectType=Secret,sourceKey=client-secret
+    ## SASL OAUTH BEARER credentials
+    service.binding/clientId: >-
+           path={.status.serviceAccountSecretName},objectType=Secret,sourceKey=client-id
+    service.binding/clientSecret: >-
+      path={.status.serviceAccountSecretName},objectType=Secret,sourceKey=client-secret
+    service.binding/saslMechanism: 'path={.status.metadata.saslMechanism}'
+    service.binding/securityProtocol: 'path={.status.metadata.securityProtocol}'
+    ## Additional binding metadata required for Quarkus
+    service.binding/type: 'path={.status.metadata.type}'
+    service.binding/provider: 'path={.status.metadata.provider}'
+----
+
+Similarly to the `ServiceRegistryConnection` annotations, these allow the SBO to create the bindings `bootstrapServers`, `user`, `password`, `clientId`, `clientSecret`, `saslMechanism`, `securityProtocol`, `type`, and `provider` from values provided on KafkaConnection instances.
+
+=== Binding Example
+
+If you have a deployment named `kafka-avro-schema-quickstart-app` and a ServiceRegistryConnection `quickstart-service-registry` the following ServiceBinding resource can be used to bind the Service Registry connection information into the pods of the deployment. The application in the deployment may look these properties up as values on the filesystem, or use a quarkus extension to automatically consume them in their application.
+
+.srs_binding.yaml
+[source,yaml]
+----
+apiVersion: binding.operators.coreos.com/v1alpha1
+kind: ServiceBinding
+metadata:
+  name: movies
+  namespace: default
+spec:
+  application:
+    group: apps
+    name: kafka-avro-schema-quickstart-app
+    resource: deployments
+    version: v1
+  bindAsFiles: true
+  services:
+  - group: rhoas.redhat.com
+    version: v1alpha1
+    kind: ServiceRegistryConnection
+    name: quickstart-service-registry
+----
+
+=== Conclusion
+
+In the above examples we've focused on the `ServiceRegistryConnection` object, but the information (minus implementaiton details) is the same for `KafkaConnection` instances as well. If you want to learn more about service binding you should look at the link{https://redhat-developer.github.io/service-binding-operator/userguide/intro.html}[Service Binding Operator documentation] and the link{https://github.com/servicebinding/spec}[Service Binding Specification for Kubernetes].
