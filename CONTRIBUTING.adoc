@@ -25,3 +25,9 @@ These guides are for developers who wish to edit the RHOAS codebase. If you wish
 
 * link:./build_docs/building.adoc[Developing and Building]
 * link:./build_docs/release.adoc[GitHub Release Workflow]
+
+== Formating source code
+
+```
+mvn formatter:format
+```
