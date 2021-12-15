@@ -6,12 +6,12 @@ The RHOAS Operator watches its link:./custom_resources.adoc[custom resources] an
 
 === Contents
 
-link:./service_binding.adoc[Introduction]
+link:./service_binding.html[Introduction]
 
-link:./installation.adoc[Installation process]
+link:./installation.html[Installation process]
 
-link:./custom_resources.adoc[Custom Resources]
+link:./custom_resources.html[Custom Resources]
 
-link:./controllers.adoc[Controllers]
+link:./controllers.html[Controllers]
 
-link:./mocks.adoc[API Mocks]
+link:./mocks.html[API Mocks]
