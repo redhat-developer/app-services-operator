@@ -14,8 +14,6 @@ import io.quarkus.runtime.annotations.QuarkusMain;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.jboss.logging.Logger;
 
-import java.util.ArrayList;
-
 import javax.inject.Inject;
 
 @QuarkusMain
@@ -76,5 +74,5 @@ public class RHOASOperator implements QuarkusApplication {
     Quarkus.waitForExit();
     return 0;
   }
- 
+
 }
