@@ -183,6 +183,92 @@ Fields and subresources in the ` KafkaConnection` CR are described below.
 `Finished`:: Indicates whether the Operator has successfully finished processing the CR. For more information, see xref:finished-condition[Finished condition].
 `AcccesTokenSecretValid`:: Indicates whether the token specified as a value for the `accessTokenSecretName` field was available and successfully exchanged with the authentication service. For more information, see xref:access-token-secret-valid[AcccesTokenSecretValid condition].
 
+[id="ServiceRegistryConnection"]
+== ServiceRegistryConnection
+
+The `ServiceRegistryConnection` CR represents a binding between a service account and a managed Service Registry instance. The Operator references the service account name using both of these values:
+
+* The value of the `serviceAccountSecretName` field provided by the `CloudServiceAccountRequest` CR
+* The value of the `serviceRegistryId` property for a `serviceRegistries` instance provided by the `CloudServicesRequest` CR
+
+=== Example
+
+An example of the `ServiceRegistryConnection` CR is shown below.
+
+.example.yaml
+[source,yaml]
+----
+apiVersion: rhoas.redhat.com/v1alpha1
+kind: ServiceRegistryConnection
+metadata:
+  name: test-connection
+  namespace: rhoas-operator
+spec:
+  accessTokenSecretName: rh-managed-services-api-accesstoken
+  serviceRegistryId: "valid-service-regsitry-id"
+  credentials:
+    serviceAccountSecretName: service-account-secret
+#status:
+#  conditions:
+#  - lastTransitionGeneration: 1
+#    lastTransitionTime: "2021-12-09T16:42:34.874951655Z"
+#    message: ""
+#    reason: ""
+#    status: "True"
+#    type: AcccesTokenSecretValid
+#  - lastTransitionGeneration: 1
+#    lastTransitionTime: "2021-12-09T16:42:34.874971145Z"
+#    message: ""
+#    reason: ""
+#    status: "True"
+#    type: FoundServiceRegistryById
+#  - lastTransitionGeneration: 1
+#    lastTransitionTime: "2021-12-09T16:42:34.874980304Z"
+#    message: ""
+#    reason: ""
+#    status: "True"
+#    type: Finished
+#  message: Created
+#  metadata:
+#    oauthTokenUrl: https://identity.api.openshift.com/auth/realms/rhoas/protocol/openid-connect/token
+#    provider: rhoas
+#    type: serviceregistry
+#  registryUrl: https://bu98.serviceregistry.rhcloud.com/t/ca6b69b3-12be-4ec9-add5-0098567008f5/apis/registry/v2
+#  serviceAccountSecretName: rh-cloud-services-service-account
+#  updated: "2021-12-09T16:42:34.874851028Z"
+
+----
+
+=== Specification details
+
+Fields and subresources in the `ServiceRegistryConnection` CR are described below.
+
+[discrete]
+=== spec
+
+`serviceRegistryId`:: ID of the Service Registry instance. For more information, see xref:serviceRegistries[status.serviceRegistries] in the `CloudServicesRequest` CR.
+`credentials`:: Credentials object to be used when accessing the `kafkaId` instance. For more information, see the xref:CloudServicesRequest[CloudServicesRequest CR].
+`accessTokenSecretName`:: Name of the secret that contains an offline access token. The Operator uses this offline token to request a *live* access token from an authentication service. The live access token, in turn, authenticates with the Cloud Services API. The `status` field for the `AcccesTokenSecretValid` condition indicates whether the token was available and successfully exchanged with the authentication service. For more information, see xref:access-token-secret-valid[AcccesTokenSecretValid condition].
+
+==== spec.credentials
+
+`serviceAccountSecretName`:: Name of the secret that contains service account credentials
+
+[discrete]
+=== spec.status
+
+`registryUrl`:: URL for the server of the Service Registry instance
+`oauthTokenUrl`:: URL for the token authentication endpoint for the Service Registry instance
+`serviceAccountSecretName`:: Name of the secret that contains the service account credentials used to connect to the Service Registry instance
+
+[discrete]
+=== spec.status.conditions
+
+`FoundServiceRegistryById`:: If value is `True`, then the value of the `serviceRegistryId` field matches a Service Registry instance ID.
+`Finished`:: Indicates whether the Operator has successfully finished processing the CR. For more information, see xref:finished-condition[Finished condition].
+`AcccesTokenSecretValid`:: Indicates whether the token specified as a value for the `accessTokenSecretName` field was available and successfully exchanged with the authentication service. For more information, see xref:access-token-secret-valid[AcccesTokenSecretValid condition].
+
+
 == CloudServiceAccountRequest
 
 The `CloudServiceAccountRequest` CR creates service accounts to connect to Kafka instances. Credentials for the service account are stored in a secret. The name of the credentials secret is specified by the value of the `serviceAccountSecretName` field. For more information about connecting to Kafka instances, see the xref:KafkaConnection[KafkaConnection CR].
