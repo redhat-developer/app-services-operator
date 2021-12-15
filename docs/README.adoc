@@ -6,6 +6,8 @@ The RHOAS Operator watches its link:./custom_resources.adoc[custom resources] an
 
 === Contents
 
+link:./service_binding.adoc[Introduction]
+
 link:./installation.adoc[Installation process]
 
 link:./custom_resources.adoc[Custom Resources]
