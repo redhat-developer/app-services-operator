@@ -8,9 +8,9 @@ image::servicebinding.drawio.png["Service Binding Overview Diagram"]
 
 === Annotation Details
 
-The service binding annotations can be found in the the link:{https://github.com/redhat-developer/app-services-operator/blob/main/olm/olm-template/manifests/rhoas-operator.kafkaconnections.crd.yaml}[`KafkaConnection`] and link:{https://github.com/redhat-developer/app-services-operator/blob/main/olm/olm-template/manifests/rhoas-operator.serviceregistryconnections.crd.yaml}[`ServiceRegistryConneciton`] custom resource definitions (CRDs).
+The service binding annotations can be found in the the link:{https://github.com/redhat-developer/app-services-operator/blob/main/olm/olm-template/manifests/rhoas-operator.kafkaconnections.crd.yaml}[`KafkaConnection`] and link:{https://github.com/redhat-developer/app-services-operator/blob/main/olm/olm-template/manifests/rhoas-operator.serviceregistryconnections.crd.yaml}[`ServiceRegistryConnection`] custom resource definitions (CRDs).
 
-Shown below are the service binding annotations in a CR for a `ServiceRegistryConnector` object:
+Shown below are the service binding annotations in a CR for a `ServiceRegistryConnection` object:
 
 .servicegresitryannotations.example.yaml
 [source,yaml]
