@@ -252,14 +252,14 @@ Fields and subresources in the `ServiceRegistryConnection` CR are described belo
 
 ==== spec.credentials
 
-`serviceAccountSecretName`:: Name of the secret that contains service account credentials
+`serviceAccountSecretName`:: Name of the secret that contains service account credentials.
 
 [discrete]
 === spec.status
 
-`registryUrl`:: URL for the server of the Service Registry instance
-`oauthTokenUrl`:: URL for the token authentication endpoint for the Service Registry instance
-`serviceAccountSecretName`:: Name of the secret that contains the service account credentials used to connect to the Service Registry instance
+`registryUrl`:: URL for the server of the Service Registry instance.
+`oauthTokenUrl`:: URL for the token authentication endpoint for the Service Registry instance.
+`serviceAccountSecretName`:: Name of the secret that contains the service account credentials used to connect to the Service Registry instance.
 
 [discrete]
 === spec.status.conditions

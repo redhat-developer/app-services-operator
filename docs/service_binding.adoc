@@ -1,16 +1,16 @@
-== Service Binding 
+== Service Binding
 
-When you are writing an application that requires multiple services (such as Kafka and a Service Registry), you normally have to configure connections to these services by hand in a configuration file. These connections often include public data such as well known urls as well as private data such as passwords and account IDs. Custom resources managed by the RHOAS operator provide service binding annotations which allows the link:{https://redhat-developer.github.io/service-binding-operator/userguide/intro.html}[Service Binding Operator (SBO)] to expose this connection information to your application. Because the SBO manages this information it can stay securely inside of your Open Shift cluster instead of being shared across different configuration files in source control.
+When you're developing an application that uses multiple services (such as Kafka and a Service Registry), you normally have to manually configure connections to these services in a configuration file. These connection configurations often include public data such as well-known URLs, as well as private data such as passwords and account IDs. Custom resources (CRs) managed by the RHOAS Operator provide service binding annotations. This allows the link:{https://redhat-developer.github.io/service-binding-operator/userguide/intro.html}[Service Binding Operator (SBO)] to expose connection information to your application. Because the SBO manages the connection information, the information stays securely inside your OpenShift cluster instead of being shared across different configuration files in source control.
 
-The RHOAS Operator works with the SBO by setting values on `KafkaConnection` and `ServiceRegistryConnection` instances' status subresource which match the values in their binding annotations. This allows the Service Binding Operator to inject values on these custom resources into end user workloads.
+The RHOAS Operator works with the SBO by setting values in the status subresource of `KafkaConnection` and `ServiceRegistryConnection` objects. These values match the values in the binding annotations. This method allows the Service Binding Operator to inject values from the CRs for these objects into end-user workloads.
 
 image::servicebinding.drawio.png["Service Binding Overview Diagram"]
 
 === Annotation Details
 
-The Service Binding annotations can be found on the crd's for the link:{https://github.com/redhat-developer/app-services-operator/blob/main/olm/olm-template/manifests/rhoas-operator.kafkaconnections.crd.yaml}[`KafkaConnection`] and link:{https://github.com/redhat-developer/app-services-operator/blob/main/olm/olm-template/manifests/rhoas-operator.serviceregistryconnections.crd.yaml}[`ServiceRegistryConneciton`] resources.
+The service binding annotations can be found in the the link:{https://github.com/redhat-developer/app-services-operator/blob/main/olm/olm-template/manifests/rhoas-operator.kafkaconnections.crd.yaml}[`KafkaConnection`] and link:{https://github.com/redhat-developer/app-services-operator/blob/main/olm/olm-template/manifests/rhoas-operator.serviceregistryconnections.crd.yaml}[`ServiceRegistryConneciton`] custom resource definitions (CRDs).
 
-Here are the annotations for the `ServiceRegistryConnector` resource
+Shown below are the service binding annotations in a CR for a `ServiceRegistryConnector` object:
 
 .servicegresitryannotations.example.yaml
 [source,yaml]
@@ -27,9 +27,9 @@ Here are the annotations for the `ServiceRegistryConnector` resource
     service.binding/oauthTokenUrl: 'path={.status.metadata.oauthTokenUrl}'
 ----
 
-These annotations instruct the SBO to map the fields `registryUrl`, `type`, `clientId`, `clientSecret`, and `oauthTokenUrl` to properties provided by the service registry connection as well as references to properties stored securley in a secret. In this instance the client credentials are actually resolved by a secret lookup using the value of `.status.serviceAccountSecretName`.
+These annotations instruct the SBO to map the fields `registryUrl`, `type`, `clientId`, `clientSecret`, and `oauthTokenUrl` to properties provided by the `ServiceRegistryConnection` object, as well as references to properties stored securely in a secret. In this case, the client credentials are actually resolved by a secret lookup, using the value of `.status.serviceAccountSecretName`.
 
-Likewise, the `KafkaConnection` custom resource provides the following binding annotations
+Likewise, the CR for a `KafkaConnection` object has the following service binding annotations:
 .kafkaconnection.example.yaml
 [source,yaml]
 ----
@@ -52,11 +52,11 @@ Likewise, the `KafkaConnection` custom resource provides the following binding a
     service.binding/provider: 'path={.status.metadata.provider}'
 ----
 
-Similarly to the `ServiceRegistryConnection` annotations, these allow the SBO to create the bindings `bootstrapServers`, `user`, `password`, `clientId`, `clientSecret`, `saslMechanism`, `securityProtocol`, `type`, and `provider` from values provided on KafkaConnection instances.
+Similar to the annotations in a `ServiceRegistryConnection` CR, the annotations in a `KafkaConnection` CR allow the SBO to map the fields `bootstrapServers`, `user`, `password`, `clientId`, `clientSecret`, `saslMechanism`, `securityProtocol`, `type`, and `provider` binding values to properties provided by the `KafkaConnection` object.
 
 === Binding Example
 
-For a deployment named `kafka-avro-schema-quickstart-app` and a ServiceRegistryConnection `quickstart-service-registry` the following ServiceBinding resource can be used to bind the Service Registry connection information into the pods of the deployment. The application in the deployment may look these properties up as values on the filesystem, or use a quarkus extension to automatically consume them in their application.
+For a deployment named `kafka-avro-schema-quickstart-app` and a `ServiceRegistryConnection` object called `quickstart-service-registry`, the following `ServiceBinding` resource can be used to bind the Service Registry connection information into the pods of the deployment. The application in the deployment can look these properties up as values in the file system, or use a Quarkus extension to automatically consume them.
 
 .srs_binding.yaml
 [source,yaml]
@@ -82,4 +82,4 @@ spec:
 
 === Conclusion
 
-In the above examples we've focused on the `ServiceRegistryConnection` object, but the information (minus implementaiton details) is the same for `KafkaConnection` instances as well. If you want to learn more about service binding you should look at the link{https://redhat-developer.github.io/service-binding-operator/userguide/intro.html}[Service Binding Operator documentation] and the link{https://github.com/servicebinding/spec}[Service Binding Specification for Kubernetes].
+In the preceding examples, we focused on the `ServiceRegistryConnection` object, but the information (minus implementation details) is the same for `KafkaConnection` objects as well. If you want to learn more about service binding, you should look at the link{https://redhat-developer.github.io/service-binding-operator/userguide/intro.html}[Service Binding Operator documentation] and the link{https://github.com/servicebinding/spec}[Service Binding Specification for Kubernetes].
