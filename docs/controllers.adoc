@@ -72,7 +72,7 @@ This controller consumes a `ServiceRegistryConnection` CR. When the controller p
 
  * `ServiceRegistryConnection` loads the value of the `accessTokenSecretName` field of the CR. The controller exchanges the value with the SSO service, to get a live access token.
  * The live access token authenticates with the Cloud Services API.
- * `ServiceRegistryConnectionController` loads connection information for the Service Registry instance from the Cloud Services API, using the `spec.serviceRegistryId` field.
- * `AbstractCloudServicesController` updates the status subresource with the `registryUrl` value of the Service Registry instance, 'serviceAccountSecretName' which is the secret for the service account, and `metadata.oauthTokenUrl` which is the authentication url of the Service Registry instance
+ * `ServiceRegistryConnectionController` loads connection information for the Service Registry instance from the Cloud Services API, using the value of the `spec.serviceRegistryId` field.
+ * `AbstractCloudServicesController` updates the status subresource with the `registryUrl` value of the Service Registry instance, 'serviceAccountSecretName' (the secret for the service account), and `metadata.oauthTokenUrl` (the authentication URL of the Service Registry instance).
 
 This controller uses the default delete operation and deletes the `ServiceRegistryConnection` CR.
