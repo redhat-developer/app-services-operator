@@ -12,10 +12,9 @@
   <name>rhoas-model</name>
   <description>rhoas-model</description>
   <properties>
-    <fabric8.version>5.8.0</fabric8.version>
+    <fabric8.version>5.10.1</fabric8.version>
     <sundrio.version>0.50.2</sundrio.version>
-    <fabric8.models.version>5.2.0</fabric8.models.version>
-    <fabric8.crdgen.version>5.2.0</fabric8.crdgen.version>
+    <fabric8.models.version>5.10.1</fabric8.models.version>
   </properties>
   <dependencyManagement>
     <dependencies>
@@ -40,14 +39,6 @@
           <version>2.4</version>
           <scope>compile</scope>
       </dependency>
-<!--      Create issue to use quarkus generator as this is no longer needed/supported-->
-<!--        <dependency>-->
-<!--          <groupId>io.fabric8</groupId>-->
-<!--          <artifactId>crd-generator-apt</artifactId>-->
-<!--          <scope>compile</scope>-->
-<!--          <version>${fabric8.crdgen.version}</version>-->
-<!--        </dependency>-->
-        <!-- This dependency will not be needed anymore in a future release of the kubernetes-client -->
         <dependency>
           <groupId>io.fabric8</groupId>
           <artifactId>kubernetes-model-common</artifactId>
