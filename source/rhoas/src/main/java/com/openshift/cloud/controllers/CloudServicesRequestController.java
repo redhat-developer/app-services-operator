@@ -15,7 +15,7 @@ import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
-@Controller(finalizerName = Controller.NO_FINALIZER)
+@Controller
 public class CloudServicesRequestController
     extends AbstractCloudServicesController<CloudServicesRequest> {
 
