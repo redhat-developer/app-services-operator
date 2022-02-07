@@ -1,4 +1,13 @@
 
+<a name="0.9.6"></a>
+## [0.9.6](https://github.com/redhat-developer/app-services-operator/compare/0.9.5...0.9.6) (2022-01-27)
+
+### Bug Fixes
+
+* restore finalizers for deletion
+* add dev preview label
+
+
 <a name="0.9.5"></a>
 ## [0.9.5](https://github.com/redhat-developer/app-services-operator/compare/0.9.4...0.9.5) (2021-12-10)
 
