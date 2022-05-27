@@ -38,7 +38,7 @@ public class ServiceRegistryConnectionController
 
     String accessToken = accessTokenSecretTool.getAccessToken(accessTokenSecretName, namespace);
 
-    var provider= ssoApiClient.getSSOProviders(accessToken);
+    var provider = ssoApiClient.getSSOProviders(accessToken);
 
     var registry = apiClient.getServiceRegistryById(registryId, accessToken);
     var status = resource.getStatus();

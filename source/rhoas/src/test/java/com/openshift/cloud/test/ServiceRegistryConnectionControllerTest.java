@@ -64,12 +64,13 @@ public class ServiceRegistryConnectionControllerTest {
             .withName("kc-test").build())
         .withSpec(new ServiceRegistryConnectionSpecBuilder()
             .withAccessTokenSecretName("rh-managed-services-api-accesstoken")
-            .withCredentials(new Credentials("sa-secret")).withServiceRegistryId("1234567890").build())
+            .withCredentials(new Credentials("sa-secret")).withServiceRegistryId("1234567890")
+            .build())
         .build();
     var result = controller.createOrUpdateResource(registryConnection,
         EmptyContext.emptyContext(ServiceRegistryConnection.class));
 
-    var labels =  result.getCustomResource().getMetadata().getLabels();
+    var labels = result.getCustomResource().getMetadata().getLabels();
 
     assertEquals(AbstractCloudServicesController.COMPONENT_LABEL_VALUE,
         labels.get(AbstractCloudServicesController.COMPONENT_LABEL_KEY));
@@ -85,7 +86,8 @@ public class ServiceRegistryConnectionControllerTest {
             .withName("kc-test").build())
         .withSpec(new ServiceRegistryConnectionSpecBuilder()
             .withAccessTokenSecretName("rh-managed-services-api-accesstoken")
-            .withCredentials(new Credentials("sa-secret")).withServiceRegistryId("1234567890").build())
+            .withCredentials(new Credentials("sa-secret")).withServiceRegistryId("1234567890")
+            .build())
         .build();
 
     var result = controller.createOrUpdateResource(registryConnection,
@@ -106,6 +108,8 @@ public class ServiceRegistryConnectionControllerTest {
     var metaData = status.getMetadata();
     assertEquals("rhoas", metaData.get("provider"));
     assertEquals("serviceregistry", metaData.get("type"));
-    assertEquals("https://identity.api.openshift.com/auth/realms/rhoas/protocol/openid-connect/token", metaData.get("oauthTokenUrl"));
+    assertEquals(
+        "https://identity.api.openshift.com/auth/realms/rhoas/protocol/openid-connect/token",
+        metaData.get("oauthTokenUrl"));
   }
 }
