@@ -30,12 +30,12 @@
     <dependency>
       <groupId>com.redhat.cloud</groupId>
       <artifactId>kafka-management-sdk</artifactId>
-      <version>0.15.1</version>
+      <version>0.20.3</version>
     </dependency>
     <dependency>
       <groupId>com.redhat.cloud</groupId>
       <artifactId>kafka-instance-sdk</artifactId>
-      <version>0.15.1</version>
+      <version>0.20.3</version>
     </dependency>
     <dependency>
       <groupId>com.redhat.cloud</groupId>

@@ -1,6 +1,7 @@
 package com.openshift.cloud.controllers;
 
 import com.openshift.cloud.beans.AccessTokenSecretTool;
+import com.openshift.cloud.beans.KafkaApiClient;
 import com.openshift.cloud.beans.ServiceRegistryApiClient;
 import com.openshift.cloud.utils.ConnectionResourcesMetadata;
 import com.openshift.cloud.utils.InvalidUserInputException;
@@ -18,15 +19,10 @@ public class ServiceRegistryConnectionController
   ServiceRegistryApiClient apiClient;
 
   @Inject
+  KafkaApiClient ssoApiClient;
+
+  @Inject
   AccessTokenSecretTool accessTokenSecretTool;
-
-  @ConfigProperty(name = "rhoas.client.srsOAuthHost",
-      defaultValue = "https://identity.api.openshift.com/auth")
-  String oAuthHost;
-
-  @ConfigProperty(name = "rhoas.client.srsOAuthRealm", defaultValue = "rhoas")
-  String oAuthRealm;
-
 
   @Override
   void doCreateOrUpdateResource(ServiceRegistryConnection resource,
@@ -42,14 +38,15 @@ public class ServiceRegistryConnectionController
 
     String accessToken = accessTokenSecretTool.getAccessToken(accessTokenSecretName, namespace);
 
+    var provider= ssoApiClient.getSSOProviders(accessToken);
+
     var registry = apiClient.getServiceRegistryById(registryId, accessToken);
     var status = resource.getStatus();
     status.setMessage("Created");
     status.setUpdated(Instant.now().toString());
     status.setRegistryUrl(registry.getRegistryUrl() + "/apis/registry/v2");
     status.setServiceAccountSecretName(serviceAccountSecretName);
-    status.setMetadata(ConnectionResourcesMetadata.buildServiceMetadata(oAuthHost, oAuthRealm));
-
+    status.setMetadata(ConnectionResourcesMetadata.buildServiceMetadata(provider.getTokenUrl()));
   }
 
   private void validateResource(ServiceRegistryConnection resource)
