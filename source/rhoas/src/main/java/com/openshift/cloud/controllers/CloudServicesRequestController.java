@@ -7,15 +7,15 @@ import com.openshift.cloud.utils.InvalidUserInputException;
 import com.openshift.cloud.v1alpha.models.CloudServicesRequest;
 import com.openshift.cloud.v1alpha.models.ServiceRegistry;
 import com.openshift.cloud.v1alpha.models.UserKafka;
-import io.javaoperatorsdk.operator.api.Context;
-import io.javaoperatorsdk.operator.api.Controller;
+import io.javaoperatorsdk.operator.api.reconciler.Context;
+import io.javaoperatorsdk.operator.api.reconciler.ControllerConfiguration;
 import io.javaoperatorsdk.operator.processing.event.EventSourceManager;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
-@Controller
+@ControllerConfiguration
 public class CloudServicesRequestController
     extends AbstractCloudServicesController<CloudServicesRequest> {
 
@@ -32,14 +32,6 @@ public class CloudServicesRequestController
   ServiceRegistryApiClient srsApiClient;
 
   public CloudServicesRequestController() {}
-
-  /**
-   * @return true if there were changes, false otherwise
-   **/
-  @Override
-  public void init(EventSourceManager eventSourceManager) {
-    LOG.info("Init! This is where we would add watches for child resources");
-  }
 
   @Override
   void doCreateOrUpdateResource(CloudServicesRequest resource,

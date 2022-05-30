@@ -56,9 +56,9 @@ public class CloudServiceAccountRequestTest {
             .build())
         .build();
 
-    var result = controller.createOrUpdateResource(csar,
+    var result = controller.reconcile(csar,
         EmptyContext.emptyContext(CloudServiceAccountRequest.class));
 
-    Assertions.assertTrue(result.isUpdateStatusSubResource());
+    Assertions.assertTrue(result.isUpdateStatus());
   }
 }

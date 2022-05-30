@@ -6,14 +6,14 @@ import com.openshift.cloud.beans.ServiceAccountUtil;
 import com.openshift.cloud.utils.ConnectionResourcesMetadata;
 import com.openshift.cloud.utils.InvalidUserInputException;
 import com.openshift.cloud.v1alpha.models.KafkaConnection;
-import io.javaoperatorsdk.operator.api.Context;
-import io.javaoperatorsdk.operator.api.Controller;
+import io.javaoperatorsdk.operator.api.reconciler.Context;
+import io.javaoperatorsdk.operator.api.reconciler.ControllerConfiguration;
 
 import javax.inject.Inject;
 import java.time.Instant;
 import java.util.logging.Logger;
 
-@Controller
+@ControllerConfiguration
 public class KafkaConnectionController extends AbstractCloudServicesController<KafkaConnection> {
 
   private static final Logger LOG = Logger.getLogger(KafkaConnectionController.class.getName());
@@ -23,9 +23,6 @@ public class KafkaConnectionController extends AbstractCloudServicesController<K
 
   @Inject
   AccessTokenSecretTool accessTokenSecretTool;
-
-  @Inject
-  ServiceAccountUtil serviceAccountUtil;
 
   @Override
   void doCreateOrUpdateResource(KafkaConnection resource, Context<KafkaConnection> context)

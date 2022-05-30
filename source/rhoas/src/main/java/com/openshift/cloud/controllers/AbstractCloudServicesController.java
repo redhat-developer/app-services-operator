@@ -4,10 +4,9 @@ import com.openshift.cloud.v1alpha.models.*;
 import com.openshift.cloud.v1alpha.models.CloudServiceCondition.Status;
 import com.openshift.cloud.v1alpha.models.CloudServiceCondition.Type;
 import io.fabric8.kubernetes.client.CustomResource;
-import io.javaoperatorsdk.operator.api.Context;
-import io.javaoperatorsdk.operator.api.DeleteControl;
-import io.javaoperatorsdk.operator.api.ResourceController;
-import io.javaoperatorsdk.operator.api.UpdateControl;
+import io.javaoperatorsdk.operator.api.reconciler.Context;
+import io.javaoperatorsdk.operator.api.reconciler.Reconciler;
+import io.javaoperatorsdk.operator.api.reconciler.UpdateControl;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -18,7 +17,7 @@ import java.util.logging.Logger;
 
 /** This class manages conditions and checks for updates on startup. */
 public abstract class AbstractCloudServicesController<T extends CustomResource>
-    implements ResourceController<T> {
+    implements Reconciler<T> {
 
   public static final String COMPONENT_LABEL_KEY = "app.kubernetes.io/component";
   public static final String MANAGED_BY_LABEL_KEY = "app.kubernetes.io/managed-by";
@@ -43,7 +42,8 @@ public abstract class AbstractCloudServicesController<T extends CustomResource>
 
   @Override
   /** This method is overriden by the proxies, but should not be overriden by you, the developer. */
-  public UpdateControl<T> createOrUpdateResource(T resource, Context<T> context) {
+  public UpdateControl<T> reconcile(
+      T resource, Context<T> context) {
     LOG.info("Updating resource " + resource.getCRDName());
 
     if (shouldProcess(resource)) {
@@ -65,9 +65,9 @@ public abstract class AbstractCloudServicesController<T extends CustomResource>
         finished.setStatus(Status.False);
       }
       if (!updateLabels) {
-        return UpdateControl.updateStatusSubResource(resource);
+        return UpdateControl.updateStatus(resource);
       } else {
-        return UpdateControl.updateCustomResourceAndStatus(resource);
+        return UpdateControl.updateResourceAndStatus(resource);
       }
     } else {
       return UpdateControl.noUpdate();
@@ -214,10 +214,5 @@ public abstract class AbstractCloudServicesController<T extends CustomResource>
       throw new IllegalArgumentException(
           String.format("Resource of type %s is not supported", resource.getCRDName()));
     }
-  }
-
-  @Override
-  public DeleteControl deleteResource(T resource, Context<T> context) {
-    return DeleteControl.DEFAULT_DELETE;
   }
 }

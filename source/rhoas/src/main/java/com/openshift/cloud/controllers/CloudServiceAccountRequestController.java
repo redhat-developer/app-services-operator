@@ -5,14 +5,14 @@ import com.openshift.cloud.beans.KafkaApiClient;
 import com.openshift.cloud.beans.ServiceAccountUtil;
 import com.openshift.cloud.utils.InvalidUserInputException;
 import com.openshift.cloud.v1alpha.models.CloudServiceAccountRequest;
-import io.javaoperatorsdk.operator.api.Context;
-import io.javaoperatorsdk.operator.api.Controller;
+import io.javaoperatorsdk.operator.api.reconciler.Context;
+import io.javaoperatorsdk.operator.api.reconciler.ControllerConfiguration;
 
 import javax.inject.Inject;
 import java.time.Instant;
 
 /** Controller for CloudServiceAccountRequest CRs */
-@Controller
+@ControllerConfiguration
 public class CloudServiceAccountRequestController
     extends AbstractCloudServicesController<CloudServiceAccountRequest> {
 

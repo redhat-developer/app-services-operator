@@ -62,10 +62,10 @@ public class KafkaConnectionControllerTest {
             .withAccessTokenSecretName("rh-managed-services-api-accesstoken")
             .withCredentials(new Credentials("sa-secret")).withKafkaId("1234567890").build())
         .build();
-    var result = controller.createOrUpdateResource(kafkaConnectionRequest,
+    var result = controller.reconcile(kafkaConnectionRequest,
         EmptyContext.emptyContext(KafkaConnection.class));
 
-    var labels = ((KafkaConnection) result.getCustomResource()).getMetadata().getLabels();
+    var labels = ((KafkaConnection) result.getResource()).getMetadata().getLabels();
 
     assertEquals(AbstractCloudServicesController.COMPONENT_LABEL_VALUE,
         labels.get(AbstractCloudServicesController.COMPONENT_LABEL_KEY));
@@ -88,14 +88,14 @@ public class KafkaConnectionControllerTest {
             .withAccessTokenSecretName("rh-managed-services-api-accesstoken")
             .withCredentials(new Credentials("sa-secret")).withKafkaId("1234567890").build())
         .build();
-    var result = controller.createOrUpdateResource(kafkaConnectionRequest,
+    var result = controller.reconcile(kafkaConnectionRequest,
         EmptyContext.emptyContext(KafkaConnection.class));
 
     Assertions.assertNotNull(result);
-    Assertions.assertNotNull(result.getCustomResource());
-    Assertions.assertNotNull(result.getCustomResource().getStatus());
+    Assertions.assertNotNull(result.getResource());
+    Assertions.assertNotNull(result.getResource().getStatus());
 
-    var status = ((KafkaConnection) result.getCustomResource()).getStatus();
+    var status = ((KafkaConnection) result.getResource()).getStatus();
 
     CloudServiceCondition condition =
         ConditionUtil.getCondition(status.getConditions(), Type.AcccesTokenSecretValid);

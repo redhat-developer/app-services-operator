@@ -67,10 +67,10 @@ public class ServiceRegistryConnectionControllerTest {
             .withCredentials(new Credentials("sa-secret")).withServiceRegistryId("1234567890")
             .build())
         .build();
-    var result = controller.createOrUpdateResource(registryConnection,
+    var result = controller.reconcile(registryConnection,
         EmptyContext.emptyContext(ServiceRegistryConnection.class));
 
-    var labels = result.getCustomResource().getMetadata().getLabels();
+    var labels = result.getResource().getMetadata().getLabels();
 
     assertEquals(AbstractCloudServicesController.COMPONENT_LABEL_VALUE,
         labels.get(AbstractCloudServicesController.COMPONENT_LABEL_KEY));
@@ -90,13 +90,13 @@ public class ServiceRegistryConnectionControllerTest {
             .build())
         .build();
 
-    var result = controller.createOrUpdateResource(registryConnection,
+    var result = controller.reconcile(registryConnection,
         EmptyContext.emptyContext(ServiceRegistryConnection.class));
     Assertions.assertNotNull(result);
-    Assertions.assertNotNull(result.getCustomResource());
-    Assertions.assertNotNull(result.getCustomResource().getStatus());
+    Assertions.assertNotNull(result.getResource());
+    Assertions.assertNotNull(result.getResource().getStatus());
 
-    var status = result.getCustomResource().getStatus();
+    var status = result.getResource().getStatus();
 
     CloudServiceCondition condition =
         ConditionUtil.getCondition(status.getConditions(), Type.AcccesTokenSecretValid);

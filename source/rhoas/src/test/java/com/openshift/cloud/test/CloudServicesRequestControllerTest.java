@@ -70,21 +70,21 @@ public class CloudServicesRequestControllerTest {
             .withName("csr-test").build())
         .withSpec(new CloudServicesRequestSpec("rh-managed-services-api-accesstoken")).build();
 
-    var result = controller.createOrUpdateResource(cloudServicesRequest,
+    var result = controller.reconcile(cloudServicesRequest,
         EmptyContext.emptyContext(CloudServicesRequest.class));
 
     Assertions.assertNotNull(result);
-    Assertions.assertNotNull(result.getCustomResource());
-    Assertions.assertNotNull(result.getCustomResource().getStatus());
+    Assertions.assertNotNull(result.getResource());
+    Assertions.assertNotNull(result.getResource().getStatus());
 
     CloudServicesRequestStatus status =
-        (CloudServicesRequestStatus) result.getCustomResource().getStatus();
+        (CloudServicesRequestStatus) result.getResource().getStatus();
 
     var condition = ConditionUtil.getCondition(status.getConditions(), Type.AcccesTokenSecretValid);
     assertEquals(Status.True, condition.getStatus());
 
     List<UserKafka> userKafkas =
-        ((CloudServicesRequest) result.getCustomResource()).getStatus().getUserKafkas();
+        ((CloudServicesRequest) result.getResource()).getStatus().getUserKafkas();
     Assertions.assertNotNull(userKafkas);
     Assertions.assertEquals("1234567890", userKafkas.get(0).getId());
   }
@@ -102,20 +102,20 @@ public class CloudServicesRequestControllerTest {
             .withName("csr-test").build())
         .withSpec(new CloudServicesRequestSpec("rh-managed-services-api-accesstoken")).build();
 
-    var result = controller.createOrUpdateResource(cloudServicesRequest,
+    var result = controller.reconcile(cloudServicesRequest,
         EmptyContext.emptyContext(CloudServicesRequest.class));
 
-    UserKafka userKafkas = (result.getCustomResource()).getStatus().getUserKafkas().get(0);
+    UserKafka userKafkas = (result.getResource()).getStatus().getUserKafkas().get(0);
 
     // change the default kafka status from "status" to "ready"
     changeDefaultKafkaInMock();
 
     cloudServicesRequest.getMetadata().setGeneration(11l);
 
-    result = controller.createOrUpdateResource(cloudServicesRequest,
+    result = controller.reconcile(cloudServicesRequest,
         EmptyContext.emptyContext(CloudServicesRequest.class));
 
-    UserKafka userKafkas2 = (result.getCustomResource()).getStatus().getUserKafkas().get(0);
+    UserKafka userKafkas2 = (result.getResource()).getStatus().getUserKafkas().get(0);
     assertEquals("status", userKafkas.getStatus());
     assertEquals("ready", userKafkas2.getStatus());
   }

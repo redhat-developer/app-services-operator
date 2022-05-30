@@ -58,16 +58,16 @@ public class RHOASOperator implements QuarkusApplication {
     LOG.info("Using API URL: " + clientBasePath);
 
     ControllerConfiguration<?> config = configuration.getConfigurationFor(connectionController);
-    LOG.info("CR class: " + config.getCustomResourceClass());
+    LOG.info("CR class: " + config.getResourceClass());
 
     config = configuration.getConfigurationFor(requestController);
-    LOG.info("CR class: " + config.getCustomResourceClass());
+    LOG.info("CR class: " + config.getResourceClass());
 
     config = configuration.getConfigurationFor(serviceAccountRequestController);
-    LOG.info("CR class: " + config.getCustomResourceClass());
+    LOG.info("CR class: " + config.getResourceClass());
 
     config = configuration.getConfigurationFor(serviceRegistryConnectionController);
-    LOG.info("CR class: " + config.getCustomResourceClass());
+    LOG.info("CR class: " + config.getResourceClass());
 
     operator.start();
 
