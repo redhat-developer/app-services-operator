@@ -230,7 +230,7 @@ spec:
 #    type: Finished
 #  message: Created
 #  metadata:
-#    oauthTokenUrl: https://identity.api.openshift.com/auth/realms/rhoas/protocol/openid-connect/token
+#    oauthTokenUrl: https://sso.redhat.com/auth/realms/redhat-external/protocol/openid-connect/token
 #    provider: rhoas
 #    type: serviceregistry
 #  registryUrl: https://bu98.serviceregistry.rhcloud.com/t/ca6b69b3-12be-4ec9-add5-0098567008f5/apis/registry/v2
