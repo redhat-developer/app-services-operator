@@ -20,8 +20,7 @@ public class ServiceRegistryConnectionController
   @Inject
   AccessTokenSecretTool accessTokenSecretTool;
 
-  @ConfigProperty(name = "rhoas.client.srsOAuthHost",
-      defaultValue = "https://identity.api.openshift.com/auth")
+  @ConfigProperty(name = "rhoas.client.srsOAuthHost")
   String oAuthHost;
 
   @ConfigProperty(name = "rhoas.client.srsOAuthRealm", defaultValue = "rhoas")
