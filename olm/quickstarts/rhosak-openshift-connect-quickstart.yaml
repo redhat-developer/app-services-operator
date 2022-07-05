@@ -117,7 +117,7 @@ spec:
             ii. On the **Add** page, click **Container images**.
                 The **Deploy Image** page opens.
 
-            iii. For the **Image name from external registry** option, enter `quay.io/rhosak/rhoas-tools`.
+            iii. For the **Image name from external registry** option, enter `quay.io/rhoas/tools`.
 
             iv. For the **Runtime icon** option, select `openshift`.
 
