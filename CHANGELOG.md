@@ -1,4 +1,14 @@
 
+<a name="0.9.7"></a>
+## [0.9.7](https://github.com/redhat-developer/app-services-operator/compare/0.9.6...0.9.7) (2022-07-05)
+
+### Bug Fixes
+
+* use rhoas tools image ([#308](https://github.com/redhat-developer/app-services-operator/issues/308))
+* update sso configuration for service ([#307](https://github.com/redhat-developer/app-services-operator/issues/307))
+* update rhoas sdks ([#304](https://github.com/redhat-developer/app-services-operator/issues/304))
+
+
 <a name="0.9.6"></a>
 ## [0.9.6](https://github.com/redhat-developer/app-services-operator/compare/0.9.5...0.9.6) (2022-01-27)
 
