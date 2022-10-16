@@ -1,6 +1,7 @@
 package com.openshift.cloud.beans;
 
 import com.openshift.cloud.api.kas.models.ServiceAccount;
+import com.openshift.cloud.api.serviceaccounts.models.ServiceAccountData;
 import com.openshift.cloud.controllers.ConditionAwareException;
 import com.openshift.cloud.v1alpha.models.CloudServiceAccountRequest;
 import com.openshift.cloud.v1alpha.models.CloudServiceCondition;
@@ -28,7 +29,7 @@ public class ServiceAccountUtil {
   KubernetesClient k8sClient;
 
   public void createSecretForServiceAccount(CloudServiceAccountRequest resource,
-      ServiceAccount serviceAccount) throws ConditionAwareException {
+      ServiceAccountData serviceAccount) throws ConditionAwareException {
     try {
       var secret = new SecretBuilder().editOrNewMetadata()
           .withName(resource.getSpec().getServiceAccountSecretName())
@@ -40,7 +41,7 @@ public class ServiceAccountUtil {
           .endMetadata()
           .withData(Map.of(TOKEN_CLIENT_SECRET_KEY,
               Base64.getEncoder().encodeToString(
-                  serviceAccount.getClientSecret().getBytes(Charset.defaultCharset())),
+                  serviceAccount.getSecret().getBytes(Charset.defaultCharset())),
               TOKEN_CLIENT_ID_KEY,
               Base64.getEncoder()
                   .encodeToString(serviceAccount.getClientId().getBytes(Charset.defaultCharset()))))
