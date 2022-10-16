@@ -43,7 +43,7 @@ public class MockKafkaApiClient extends KafkaApiClient {
 
   @Override
   public ServiceAccountData createServiceAccount(CloudServiceAccountRequestSpec spec,
-                                                 String accessToken) throws ConditionAwareException {
+      String accessToken) throws ConditionAwareException {
     var sa = new com.openshift.cloud.api.serviceaccounts.models.ServiceAccountData();
     sa.setClientId("clientID");
     sa.setSecret("clientSecret");

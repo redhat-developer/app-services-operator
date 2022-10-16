@@ -66,7 +66,7 @@ public class KafkaApiClient {
   }
 
   public ServiceAccountData createServiceAccount(CloudServiceAccountRequestSpec spec,
-                                                 String accessToken) throws ConditionAwareException {
+      String accessToken) throws ConditionAwareException {
     try {
       var serviceAccountRequest = new ServiceAccountCreateRequestData();
       serviceAccountRequest.setDescription(spec.getServiceAccountDescription());

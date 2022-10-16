@@ -40,8 +40,8 @@ public class ServiceAccountUtil {
               .withUid(resource.getMetadata().getUid()).build()))
           .endMetadata()
           .withData(Map.of(TOKEN_CLIENT_SECRET_KEY,
-              Base64.getEncoder().encodeToString(
-                  serviceAccount.getSecret().getBytes(Charset.defaultCharset())),
+              Base64.getEncoder()
+                  .encodeToString(serviceAccount.getSecret().getBytes(Charset.defaultCharset())),
               TOKEN_CLIENT_ID_KEY,
               Base64.getEncoder()
                   .encodeToString(serviceAccount.getClientId().getBytes(Charset.defaultCharset()))))
