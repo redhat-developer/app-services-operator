@@ -4,7 +4,6 @@ import com.openshift.cloud.v1alpha.models.*;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.ListOptionsBuilder;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinition;
-import io.fabric8.kubernetes.client.CustomResource;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.V1ApiextensionAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
@@ -21,6 +20,7 @@ import javax.inject.Inject;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * This class is processed at startup and checks that CRDs are installed and provides apiClients for
@@ -136,11 +136,8 @@ public final class KafkaK8sClients {
 
     CustomResourceDefinition akcCrd;
 
-    var crdsItems = crds.customResourceDefinitions().list().getItems();
-    var kafkaConnectionCRDName = CustomResource.getCRDName(CloudServiceAccountRequest.class);
-
-    var akcCrdOptional = crdsItems.stream()
-        .filter(crd -> kafkaConnectionCRDName.equals(crd.getMetadata().getName())).findFirst();
+    var akcCrdOptional = Optional.ofNullable(crds.customResourceDefinitions()
+        .withName("cloudserviceaccountrequests.rhoas.redhat.com").get());
 
     if (akcCrdOptional.isEmpty()) {
       LOG.info("Creating CloudServiceAccountRequest CRD");
@@ -162,12 +159,8 @@ public final class KafkaK8sClients {
 
     CustomResourceDefinition akcCrd;
 
-    var crdsItems = crds.customResourceDefinitions().list().getItems();
-    var serviceRegistryConnectionCRD = CustomResource.getCRDName(ServiceRegistryConnection.class);
-
-    var srcCrdOptional = crdsItems.stream()
-        .filter(crd -> serviceRegistryConnectionCRD.equals(crd.getMetadata().getName()))
-        .findFirst();
+    var srcCrdOptional = Optional.ofNullable(crds.customResourceDefinitions()
+        .withName("serviceregistryconnections.rhoas.redhat.com").get());
 
     if (srcCrdOptional.isEmpty()) {
       LOG.info("Creating ServiceRegistryConnection CRD");
@@ -187,11 +180,8 @@ public final class KafkaK8sClients {
 
     CustomResourceDefinition akcCrd;
 
-    var crdsItems = crds.customResourceDefinitions().list().getItems();
-    var kafkaConnectionCRDName = CustomResource.getCRDName(KafkaConnection.class);
-
-    var akcCrdOptional = crdsItems.stream()
-        .filter(crd -> kafkaConnectionCRDName.equals(crd.getMetadata().getName())).findFirst();
+    var akcCrdOptional = Optional.ofNullable(
+        crds.customResourceDefinitions().withName("kafkaconnections.rhoas.redhat.com").get());
 
     if (akcCrdOptional.isEmpty()) {
       LOG.info("Creating KafkaConnection CRD");
@@ -212,11 +202,8 @@ public final class KafkaK8sClients {
 
     CustomResourceDefinition akcCrd;
 
-    var crdsItems = crds.customResourceDefinitions().list().getItems();
-    var cloudServicesRequestCRDName = CustomResource.getCRDName(CloudServicesRequest.class);
-
-    var akcCrdOptional = crdsItems.stream()
-        .filter(crd -> cloudServicesRequestCRDName.equals(crd.getMetadata().getName())).findFirst();
+    var akcCrdOptional = Optional.ofNullable(
+        crds.customResourceDefinitions().withName("cloudservicesrequests.rhoas.redhat.com").get());
 
     if (akcCrdOptional.isEmpty()) {
       LOG.info("Creating CloudServicesRequest CRD");
