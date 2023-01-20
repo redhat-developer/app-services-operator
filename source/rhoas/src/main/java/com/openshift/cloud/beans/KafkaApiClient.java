@@ -1,15 +1,15 @@
 package com.openshift.cloud.beans;
 
 import com.openshift.cloud.api.kas.DefaultApi;
+import com.openshift.cloud.api.kas.SecurityApi;
 import com.openshift.cloud.api.kas.invoker.ApiClient;
 import com.openshift.cloud.api.kas.invoker.ApiException;
 import com.openshift.cloud.api.kas.invoker.Configuration;
 import com.openshift.cloud.api.kas.invoker.auth.HttpBearerAuth;
 import com.openshift.cloud.api.kas.models.KafkaRequest;
 import com.openshift.cloud.api.kas.models.KafkaRequestList;
-import com.openshift.cloud.api.serviceaccounts.ServiceAccountsApi;
-import com.openshift.cloud.api.serviceaccounts.models.ServiceAccountCreateRequestData;
-import com.openshift.cloud.api.serviceaccounts.models.ServiceAccountData;
+import com.openshift.cloud.api.kas.models.ServiceAccount;
+import com.openshift.cloud.api.kas.models.ServiceAccountRequest;
 import com.openshift.cloud.controllers.ConditionAwareException;
 import com.openshift.cloud.controllers.ConditionUtil;
 import com.openshift.cloud.v1alpha.models.CloudServiceAccountRequestSpec;
@@ -29,11 +29,8 @@ public class KafkaApiClient {
   @ConfigProperty(name = "rhoas.client.apiBasePath")
   String clientBasePath;
 
-  @ConfigProperty(name = "auth.serverUrl")
-  String saAPIURL;
-
-
   private DefaultApi createClient(String bearerToken) {
+
     ApiClient defaultClient = Configuration.getDefaultApiClient();
     defaultClient.setBasePath(clientBasePath);
 
@@ -65,14 +62,14 @@ public class KafkaApiClient {
     }
   }
 
-  public ServiceAccountData createServiceAccount(CloudServiceAccountRequestSpec spec,
+  public ServiceAccount createServiceAccount(CloudServiceAccountRequestSpec spec,
       String accessToken) throws ConditionAwareException {
     try {
-      var serviceAccountRequest = new ServiceAccountCreateRequestData();
+      var serviceAccountRequest = new ServiceAccountRequest();
       serviceAccountRequest.setDescription(spec.getServiceAccountDescription());
       serviceAccountRequest.setName(spec.getServiceAccountName());
       return createSecurityClient(accessToken).createServiceAccount(serviceAccountRequest);
-    } catch (com.openshift.cloud.api.serviceaccounts.invoker.ApiException e) {
+    } catch (ApiException e) {
       String message = ConditionUtil.getStandarizedErrorMessage(e.getCode(), e);
       throw new ConditionAwareException(message, e,
           CloudServiceCondition.Type.ServiceAccountCreated, CloudServiceCondition.Status.False,
@@ -80,15 +77,17 @@ public class KafkaApiClient {
     }
   }
 
-  private ServiceAccountsApi createSecurityClient(String bearerToken) {
-    var defaultClient = new com.openshift.cloud.api.serviceaccounts.invoker.ApiClient();
-    defaultClient.setBasePath(saAPIURL);
+  // TODO create ACLs
+
+  private SecurityApi createSecurityClient(String bearerToken) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath(clientBasePath);
 
     // Configure HTTP bearer authorization: Bearer
     HttpBearerAuth Bearer = (HttpBearerAuth) defaultClient.getAuthentication("Bearer");
     Bearer.setBearerToken(bearerToken);
 
-    return new ServiceAccountsApi(defaultClient);
+    return new SecurityApi(defaultClient);
   }
 }
 

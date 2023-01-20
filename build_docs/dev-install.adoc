@@ -148,6 +148,6 @@ The operator also has several values which may be set via environment variables.
  * AUTH_CLIENTID :  The SSO client client-id, defaults to `cloud-services`
  * AUTH_TOKENPATH : The path to use with AUTH_SERVERURL to exchange the access token, defaults to `protocol/openid-connect/token`
  * CLOUD_SERVICES_API : The base path for the cloud services API, defaults to `https://api.stage.openshift.com`
- * MAS_AUTH_URL : This is the URL for Managed Service SSO.
+ * MAS_AUTH_URL : This is the URL for Managed Service SSO. Defaults to `https://identity.api.openshift.com/auth/`
  * MAS_AUTH_REALM : This is the realm for Managed Service SSO. Defaults to `rhoas`
  * MAS_AUTH_URL_TOKEN_PATH : This is the token path used to exchange OAuth tokens for Mas services. Defaults to `realms/rhoas/protocol/openid-connect/token`. When injected a full token url will be of the form $MAS_AUTH_URL + $MAS_AUTH_URL_TOKEN_PATH.

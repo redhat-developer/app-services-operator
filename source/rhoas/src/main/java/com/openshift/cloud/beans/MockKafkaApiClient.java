@@ -2,8 +2,9 @@ package com.openshift.cloud.beans;
 
 import com.openshift.cloud.api.kas.models.KafkaRequest;
 import com.openshift.cloud.api.kas.models.KafkaRequestList;
-import com.openshift.cloud.api.serviceaccounts.models.ServiceAccountData;
+import com.openshift.cloud.api.kas.models.ServiceAccount;
 import com.openshift.cloud.controllers.ConditionAwareException;
+import com.openshift.cloud.v1alpha.models.CloudServiceAccountRequest;
 import com.openshift.cloud.v1alpha.models.CloudServiceAccountRequestSpec;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -42,11 +43,11 @@ public class MockKafkaApiClient extends KafkaApiClient {
   }
 
   @Override
-  public ServiceAccountData createServiceAccount(CloudServiceAccountRequestSpec spec,
+  public ServiceAccount createServiceAccount(CloudServiceAccountRequestSpec spec,
       String accessToken) throws ConditionAwareException {
-    var sa = new com.openshift.cloud.api.serviceaccounts.models.ServiceAccountData();
+    ServiceAccount sa = new ServiceAccount();
     sa.setClientId("clientID");
-    sa.setSecret("clientSecret");
+    sa.setClientSecret("clientSecret");
     sa.setDescription(spec.getServiceAccountDescription());
     sa.setId("123456789");
     sa.setName(spec.getServiceAccountName());
