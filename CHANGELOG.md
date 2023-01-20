@@ -1,4 +1,8 @@
 
+<a name="0.11.0"></a>
+## [0.11.0](https://github.com/redhat-developer/app-services-operator/compare/0.10.0...0.11.0) (2023-01-19)
+
+
 <a name="0.10.0"></a>
 ## [0.10.0](https://github.com/redhat-developer/app-services-operator/compare/0.9.7...0.10.0) (2022-10-16)
 
