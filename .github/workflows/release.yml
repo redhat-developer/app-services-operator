@@ -21,7 +21,8 @@ jobs:
       id: version-number
       run: echo "::set-output name=version::$(cat olm/version)"
     - name: Commit updated version
-      uses: ad-m/github-push-action@master
+      # master
+      uses: ad-m/github-push-action@0fafdd62b84042d49ec0cb92d9cac7f7ce4ec79e
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}            
     - name: Login to Quay.io
